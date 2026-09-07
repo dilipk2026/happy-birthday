@@ -4,7 +4,7 @@
 ===============================================================================
 DEVELOPER CONTRIBUTION GUIDE & ENGINEERING STANDARDS
 Project: Eternal Love — Ultra-Luxurious Romantic Celebration Web Application
-Celebrant: Queen Komal 👑 | Dedicated with Infinite Love by: Dilip 💖
+Celebrant: Queen Nishika 👑 | Dedicated with Infinite Love by: Dilip 💖
 Standard: Clean Vanilla JS (ES6+), Vanilla CSS3 Tokens & Semantic HTML5
 ===============================================================================
 ```
@@ -202,4 +202,4 @@ git commit -m "feat(synth): add acoustic guitar arpeggio melody mode"
 
 ---
 
-*Thank you for contributing to Queen Komal's Eternal Love Celebration!* 👑💖
+*Thank you for contributing to Queen Nishika's Eternal Love Celebration!* 👑💖

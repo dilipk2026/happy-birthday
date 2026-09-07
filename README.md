@@ -9,10 +9,10 @@
    ╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝   ╚═══╝  ╚══════╝
 ```
 
-> ### *A Celestial, Animated & Deeply Personalized Digital Experience Handcrafted with Infinite Love for Komal*
+> ### *A Celestial, Animated & Deeply Personalized Digital Experience Handcrafted with Infinite Love for Nishika*
 
 [![Live Local Server](https://img.shields.io/badge/Preview%20Live-http%3A%2F%2Flocalhost%3A8080-ff1493?style=for-the-badge&logo=googlechrome&logoColor=white)](http://localhost:8080)
-[![Celebrant](https://img.shields.io/badge/Celebrant-Queen%20Komal%20👑-ffd700?style=for-the-badge)](#-overview)
+[![Celebrant](https://img.shields.io/badge/Celebrant-Queen%20Nishika%20👑-ffd700?style=for-the-badge)](#-overview)
 [![Dedicated By](https://img.shields.io/badge/Dedicated%20By-Dilip%20💖-ff4081?style=for-the-badge)](#-overview)
 [![Tech Stack](https://img.shields.io/badge/Stack-Vanilla%20HTML5%20%7C%20CSS3%20%7C%20ES6+-00f2fe?style=for-the-badge&logo=javascript&logoColor=white)](#-pure-vanilla-architecture)
 
@@ -44,7 +44,7 @@
 ---
 
 ### 📲 Instant QR Code Access & Gift Card Asset
-*Scan with your smartphone camera to immediately unbox the celebration or print directly on a greeting card for Queen Komal:*
+*Scan with your smartphone camera to immediately unbox the celebration or print directly on a greeting card for Queen Nishika:*
 
 <div align="center">
   <a href="webqr.png">
@@ -57,13 +57,13 @@
 
 ## 🌟 Overview
 
-**Eternal Love** is an ultra-luxurious, production-grade romantic celebration website handcrafted specifically for **Komal's Birthday on September 5th**, dedicated with infinite devotion by **Dilip**.
+**Eternal Love** is an ultra-luxurious, production-grade romantic celebration website handcrafted specifically for **Nishika's Birthday on September 5th**, dedicated with infinite devotion by **Dilip**.
 
 Built from scratch with zero external UI frameworks, it combines high-performance native Web APIs (Web Audio API polyphonic sound synthesis, HTML5 Canvas particle physics, 3D CSS perspective stages, and local storage state management) into a permanent digital keepsake.
 
 | Key Attribute | Specification |
 | :--- | :--- |
-| **👑 Birthday Celebrant** | **Komal** *(The Birthday Queen)* |
+| **👑 Birthday Celebrant** | **Nishika** *(The Birthday Queen)* |
 | **🎂 Birthday Date** | **September 5th** |
 | **💖 Dedicated By** | **Dilip** |
 | **⏳ Relationship Anniversary** | **December 29, 2025** *(Live Precision Counter)* |
@@ -81,7 +81,7 @@ Explore the comprehensive 11-document engineering, user, and operational specifi
 | :--- | :--- | :---: |
 | 🧭 **Documentation Index** | Master navigation hub, reading paths, and quality scorecards | [DOCUMENTATION_INDEX.md](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/documentation/DOCUMENTATION_INDEX.md) |
 | 🗺️ **Visual Project Structure** | Graphical file layout, Mermaid topologies & component map | [PROJECT_STRUCTURE.md](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/documentation/PROJECT_STRUCTURE.md) |
-| 📖 **User Guide & Handbook** | Step-by-step interactive manual for Queen Komal, Dilip & guests | [USER_GUIDE.md](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/documentation/USER_GUIDE.md) |
+| 📖 **User Guide & Handbook** | Step-by-step interactive manual for Queen Nishika, Dilip & guests | [USER_GUIDE.md](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/documentation/USER_GUIDE.md) |
 | 🏛️ **Architecture & Procurement** | System design, serverless topology, and $0.00 zero-cost TCO blueprint | [ARCHITECTURE_AND_PROCUREMENT.md](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/documentation/ARCHITECTURE_AND_PROCUREMENT.md) |
 | 📡 **API & Backend Reference** | Google Apps Script webhook schemas, payloads & Code.gs functions | [API_DOCUMENTATION.md](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/documentation/API_DOCUMENTATION.md) |
 | 📜 **Software Requirements (SRS)** | IEEE-830 compliant functional requirements (FR-01 to FR-28) | [SOFTWARE_REQUIREMENTS_SPECIFICATION.md](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/documentation/SOFTWARE_REQUIREMENTS_SPECIFICATION.md) |
@@ -102,7 +102,7 @@ Deploy this celebration in **less than 60 seconds** to GitHub Pages with automat
 
 1. **Create GitHub Repository**:
    - Navigate to [github.com/new](https://github.com/new).
-   - Name your repo (e.g. `happy-birthday-komal` or `eternal-love`).
+   - Name your repo (e.g. `happy-birthday-nishika` or `eternal-love`).
    - Set repository visibility to **Public**.
 
 2. **Push Your Code**:
@@ -125,7 +125,7 @@ Deploy this celebration in **less than 60 seconds** to GitHub Pages with automat
    - 🎉 **Your live celebration URL:** `https://<YOUR-USERNAME>.github.io/<REPO-NAME>/`
 
 4. **⏳ Automatic September 20 Launch Transition**:
-   - Prior to September 20, 2026: The URL displays the live countdown on [`coming-soon.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/coming-soon.html). (Queen Komal can bypass with PIN `2912` or `?preview=true`).
+   - Prior to September 20, 2026: The URL displays the live countdown on [`coming-soon.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/coming-soon.html). (Queen Nishika can bypass with PIN `2912` or `?preview=true`).
    - On & after September 20, 2026: The URL automatically serves the full [`index.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html) celebration without any manual intervention!
 
 ---
@@ -157,7 +157,7 @@ Every wish written on the Celebration Pinboard, real couple photo uploaded into 
 ### 🌟 Why This Cloud Sync Engine is Full-Proof:
 * **100% Free Forever**: Zero monthly subscriptions, zero paid API keys, and zero limits.
 * **Serverless Google Apps Script (GAS)**: Executes serverless code directly on your Google Account with Google's enterprise reliability.
-* **Auto Google Drive Folder Storage**: Google Sheets cells have a 50,000-character ceiling, which causes base64 images to fail in typical apps. Our script automatically saves high-resolution uploaded images into a dedicated Google Drive folder (`Eternal Love Memories (Komal)`), marks them viewable with link, and places the direct link + a live `=IMAGE(url)` thumbnail preview formula directly inside the spreadsheet!
+* **Auto Google Drive Folder Storage**: Google Sheets cells have a 50,000-character ceiling, which causes base64 images to fail in typical apps. Our script automatically saves high-resolution uploaded images into a dedicated Google Drive folder (`Eternal Love Memories (Nishika)`), marks them viewable with link, and places the direct link + a live `=IMAGE(url)` thumbnail preview formula directly inside the spreadsheet!
 * **Offline & Local-First Resilience**: Even without a Google Sheet URL, or when offline, every submission saves instantly to browser `localStorage`. No celebration freeze, no audio drop, and zero data loss.
 
 <br/>
@@ -168,7 +168,7 @@ Every wish written on the Celebration Pinboard, real couple photo uploaded into 
 <summary><b>1️⃣ Step 1: Create Your Free Google Sheet</b></summary>
 
 1. Go to [sheets.new](https://sheets.new) (opens a fresh Google Sheet in your Google account).
-2. Name your spreadsheet (e.g. `Eternal Love — Komal's Birthday Archive 👑`).
+2. Name your spreadsheet (e.g. `Eternal Love — Nishika's Birthday Archive 👑`).
 3. *(Optional)* You do not need to create columns or tabs manually — our script will automatically create the **Wishes**, **Photos**, and **Secret Wishes** tabs with formatted pastel pink headers on the very first submission!
 
 </details>
@@ -191,7 +191,7 @@ Every wish written on the Celebration Pinboard, real couple photo uploaded into 
 ```javascript
 /**
  * 👑 ETERNAL LOVE — GOOGLE APPS SCRIPT CLOUD COLLECTOR (Code.gs)
- * Handcrafted for Komal's Birthday & Dedicated by Dilip.
+ * Handcrafted for Nishika's Birthday & Dedicated by Dilip.
  */
 
 // GET Health Check Endpoint
@@ -222,7 +222,7 @@ function doPost(e) {
         sheet.getRange(1, 1, 1, 7).setFontWeight('bold').setFontFamily('Arial').setFontColor('#831843').setBackground('#fce7f3').setHorizontalAlignment('center');
         sheet.setFrozenRows(1);
       }
-      sheet.appendRow([new Date(), data.localTime || new Date().toLocaleString(), data.celebrant || 'Komal', data.dedicatedBy || 'Dilip', data.author || 'Anonymous', data.message || '', data.styleClass || '']);
+      sheet.appendRow([new Date(), data.localTime || new Date().toLocaleString(), data.celebrant || 'Nishika', data.dedicatedBy || 'Dilip', data.author || 'Anonymous', data.message || '', data.styleClass || '']);
       return ContentService.createTextOutput(JSON.stringify({ status: 'success', type: 'wish' })).setMimeType(ContentService.MimeType.JSON);
     }
 
@@ -240,14 +240,14 @@ function doPost(e) {
       var imageFormula = '';
 
       if (data.dataUrl && data.dataUrl.indexOf(',') !== -1) {
-        var folderName = 'Eternal Love Memories (Komal)';
+        var folderName = 'Eternal Love Memories (Nishika)';
         var folders = DriveApp.getFoldersByName(folderName);
         var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(folderName);
 
         var mimeType = data.dataUrl.substring(5, data.dataUrl.indexOf(';')) || 'image/jpeg';
         var base64Data = data.dataUrl.substring(data.dataUrl.indexOf(',') + 1);
         var dateFormatted = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || 'GMT+0530', 'yyyy-MM-dd_HH-mm-ss');
-        var fileName = 'Komal_Memory_' + dateFormatted + '.jpg';
+        var fileName = 'Nishika_Memory_' + dateFormatted + '.jpg';
 
         var blob = Utilities.newBlob(Utilities.base64Decode(base64Data), mimeType, fileName);
         var file = folder.createFile(blob);
@@ -258,7 +258,7 @@ function doPost(e) {
         imageFormula = '=IMAGE("' + directImgUrl + '")';
       }
 
-      sheet.appendRow([new Date(), data.localTime || new Date().toLocaleString(), data.celebrant || 'Komal', data.dedicatedBy || 'Dilip', data.caption || 'Our memory', data.tag || 'Real Moment', fileUrl, imageFormula]);
+      sheet.appendRow([new Date(), data.localTime || new Date().toLocaleString(), data.celebrant || 'Nishika', data.dedicatedBy || 'Dilip', data.caption || 'Our memory', data.tag || 'Real Moment', fileUrl, imageFormula]);
       sheet.setRowHeight(sheet.getLastRow(), 90);
       return ContentService.createTextOutput(JSON.stringify({ status: 'success', type: 'photo', fileUrl: fileUrl })).setMimeType(ContentService.MimeType.JSON);
     }
@@ -271,7 +271,7 @@ function doPost(e) {
         sheet.getRange(1, 1, 1, 5).setFontWeight('bold').setFontFamily('Arial').setFontColor('#831843').setBackground('#fce7f3').setHorizontalAlignment('center');
         sheet.setFrozenRows(1);
       }
-      sheet.appendRow([new Date(), data.localTime || new Date().toLocaleString(), data.celebrant || 'Komal', data.dedicatedBy || 'Dilip', data.wish || '']);
+      sheet.appendRow([new Date(), data.localTime || new Date().toLocaleString(), data.celebrant || 'Nishika', data.dedicatedBy || 'Dilip', data.wish || '']);
       return ContentService.createTextOutput(JSON.stringify({ status: 'success', type: 'secret_wish' })).setMimeType(ContentService.MimeType.JSON);
     }
 
@@ -317,7 +317,7 @@ Choose either of the two easy methods:
 * **Method B: Via Shareable URL Parameter**:
   Simply append `&sheet=<YOUR-URL>` to your celebration link:
   ```
-  https://<your-domain>/?name=Komal&sender=Dilip&sheet=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycb...%2Fexec
+  https://<your-domain>/?name=Nishika&sender=Dilip&sheet=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycb...%2Fexec
   ```
 
 </details>
@@ -329,14 +329,14 @@ Choose either of the two easy methods:
 You can personalize the recipient, sender, anniversary date, birthday headline, and atmospheric color scheme dynamically via URL parameters without modifying code:
 
 ```
-https://<your-domain>/?name=Komal&sender=Dilip&date=2025-12-29&theme=theme-magical
+https://<your-domain>/?name=Nishika&sender=Dilip&date=2025-12-29&theme=theme-magical
 ```
 
 ### 🔗 URL Parameters Reference
 
 | Parameter | Default Value | Description | Example |
 | :--- | :---: | :--- | :--- |
-| `name` | `Komal` | Name of the birthday celebrant | `?name=Komal` |
+| `name` | `Nishika` | Name of the birthday celebrant | `?name=Nishika` |
 | `sender` | `Dilip` | Name of the person dedicating the gift | `?sender=Dilip` |
 | `date` | `2025-12-29` | Anniversary date for live counter | `?date=2025-12-29` |
 | `theme` | `theme-magical` | Atmosphere color scheme | `?theme=theme-sunset` |
@@ -406,14 +406,14 @@ Glowing vertical milestone ribbon tracing the journey of your relationship acros
 ---
 
 ### 7. 🛋️ Section 5: Cozy Starlit Cuddle Haven (3D Couple Cinema)
-3D animated scene of Dilip & Komal cuddling on a plush sofa under a moonlit skylight with a warm fireside glow. Features rhythmic breathing animation, custom monogrammed blanket, and camera angle switcher.
+3D animated scene of Dilip & Nishika cuddling on a plush sofa under a moonlit skylight with a warm fireside glow. Features rhythmic breathing animation, custom monogrammed blanket, and camera angle switcher.
 
 ![Cozy Starlit Cuddle Haven](screenshots/03-desktop-cuddle.png)
 
 ---
 
 ### 8. 🏺 Section 6: "100 Reasons Why I Love You" Magic Jar & 3D Origami Heart
-Glowing glass jar with floating fireflies and sweet love notes. Features 3D origami heart unfold physics and categorized confession pills (*Pure Romance, Cute Habits, Safe Haven, Queen Komal, Little Things, Forever*).
+Glowing glass jar with floating fireflies and sweet love notes. Features 3D origami heart unfold physics and categorized confession pills (*Pure Romance, Cute Habits, Safe Haven, Queen Nishika, Little Things, Forever*).
 
 ![Love Jar & Origami Heart](screenshots/08-mobile-jar.png)
 
@@ -457,7 +457,7 @@ Polaroid snapshots with realistic paper tilts, handwritten captions, and instant
 ---
 
 ### 14. ✨ Section 12: Constellation of Our Love & Star Registry
-Interactive celestial night sky with twinkling stars and an official printable "Star Registry Certificate" registered in Komal's name.
+Interactive celestial night sky with twinkling stars and an official printable "Star Registry Certificate" registered in Nishika's name.
 
 ![Constellation of Our Love](screenshots/17-constellation-sky.png)
 
@@ -484,10 +484,30 @@ Retro movie projector with spinning golden reels and flickering vintage film gra
 
 ---
 
-### 18. 🪞 Section 16: The Enchanted "Mirror of Queen Komal"
+### 18. 🪞 Section 16: The Enchanted "Mirror of Queen Nishika"
 Interactive ornate gold mirror reflecting randomized royal daily affirmations for the Queen of your heart.
 
 ![Enchanted Magic Mirror](screenshots/20-magic-mirror.png)
+
+---
+
+### 19. 🎡 Section 17: Couple's Date Night Fortune Roulette
+Interactive 3D spinning wheel with physics-driven angular momentum, ticker sound synthesis, custom date night creator, and instant love coupon generator.
+
+---
+
+### 20. 🌌 Section 18: Cosmic Ambient Soundscape Sanctuary
+Multi-track procedural audio synthesizer generating relaxing rain on glass, cozy fireplace embers, ocean swells, starlight chimes, dreamy lo-fi piano chords, and Parisian café ambiance with mood presets and auto-sleep timer.
+
+---
+
+### 21. ⏳ Section 19: Future Love Time Capsule Vault
+Time-locked digital envelopes and milestone letters with live countdown padlocks that unlock on future anniversaries, with single-tap Queen VIP Heart Key bypass.
+
+---
+
+### 22. 🗺️ Section 20: Our Cosmic Journey & Romance Milestones Map
+Real-time astronomical metrics (calculating millions of kilometers traveled around the Sun and heartbeats shared) with an interactive constellation milestone roadmap.
 
 ---
 
@@ -559,6 +579,6 @@ eternal-love/
 
 *“In all the universe, across all the stars and timelines, loving you is my greatest adventure.”*
 
-### Handcrafted with Infinite Devotion for Queen Komal 👑
+### Handcrafted with Infinite Devotion for Queen Nishika 👑
 ### Dedicated by Dilip 💕
 *Anniversary: December 29, 2025 • Birthday: September 5th*

@@ -1,7 +1,7 @@
 /**
  * 👑 ETERNAL LOVE — GOOGLE APPS SCRIPT CLOUD COLLECTOR (Code.gs)
  * ============================================================================
- * Handcrafted for Komal's Birthday & Dedicated by Dilip.
+ * Handcrafted for Nishika's Birthday & Dedicated by Dilip.
  * 
  * Automatically saves:
  *   1. 💌 Celebration Pinboard Wishes -> "Wishes" Sheet Tab
@@ -59,7 +59,7 @@ function doPost(e) {
       sheet.appendRow([
         new Date(),
         data.localTime || new Date().toLocaleString(),
-        data.celebrant || 'Komal',
+        data.celebrant || 'Nishika',
         data.dedicatedBy || 'Dilip',
         data.author || 'Anonymous Loved One',
         data.message || '',
@@ -97,7 +97,7 @@ function doPost(e) {
 
       if (data.dataUrl && data.dataUrl.indexOf(',') !== -1) {
         // Target Google Drive Folder
-        var folderName = 'Eternal Love Memories (Komal)';
+        var folderName = 'Eternal Love Memories (Nishika)';
         var folders = DriveApp.getFoldersByName(folderName);
         var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(folderName);
 
@@ -105,7 +105,7 @@ function doPost(e) {
         var mimeType = data.dataUrl.substring(5, data.dataUrl.indexOf(';')) || 'image/jpeg';
         var base64Data = data.dataUrl.substring(data.dataUrl.indexOf(',') + 1);
         var dateFormatted = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || 'GMT+0530', 'yyyy-MM-dd_HH-mm-ss');
-        var fileName = 'Komal_Memory_' + dateFormatted + '.jpg';
+        var fileName = 'Nishika_Memory_' + dateFormatted + '.jpg';
 
         var blob = Utilities.newBlob(Utilities.base64Decode(base64Data), mimeType, fileName);
         var file = folder.createFile(blob);
@@ -121,7 +121,7 @@ function doPost(e) {
       sheet.appendRow([
         new Date(),
         data.localTime || new Date().toLocaleString(),
-        data.celebrant || 'Komal',
+        data.celebrant || 'Nishika',
         data.dedicatedBy || 'Dilip',
         data.caption || 'Our unforgettable memory',
         data.tag || 'Real Moment',
@@ -162,7 +162,7 @@ function doPost(e) {
       sheet.appendRow([
         new Date(),
         data.localTime || new Date().toLocaleString(),
-        data.celebrant || 'Komal',
+        data.celebrant || 'Nishika',
         data.dedicatedBy || 'Dilip',
         data.wish || ''
       ]);

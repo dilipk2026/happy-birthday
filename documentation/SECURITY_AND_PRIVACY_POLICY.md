@@ -4,7 +4,7 @@
 ===============================================================================
 SECURITY SPECIFICATION, PRIVACY ARCHITECTURE & DATA PROTECTION POLICY
 Application: Eternal Love — Ultra-Luxurious Romantic Celebration Web App
-Celebrant: Queen Komal 👑 | Architecture: Client-First Privacy & Serverless Shield
+Celebrant: Queen Nishika 👑 | Architecture: Client-First Privacy & Serverless Shield
 Classification: CONFIDENTIAL & SECURED ROMANTIC VAULT
 ===============================================================================
 ```
@@ -84,7 +84,7 @@ All client preferences, coupon redemption states, favorited reasons, and local w
 * **Security Implication**: The public can POST wishes and memory photos to the script endpoint, but NO visitor or external entity can query, view, modify, or delete existing entries from the Google Sheet or Google Drive without authenticating into the owner's Google Account.
 
 ### 4.2 Drive Permission Scoping
-* Uploaded photos are stored inside a dedicated root folder: `Eternal Love Memories (Komal)`.
+* Uploaded photos are stored inside a dedicated root folder: `Eternal Love Memories (Nishika)`.
 * File permissions are scoped to direct view links (`DriveApp.Access.ANYONE_WITH_LINK`), preventing unauthorized folder listing.
 
 ---
@@ -108,7 +108,7 @@ Access to Dilip's private birthday promises and the sealed love capsule is guard
 ```
 
 1. **Passcode Challenge**: The numeric keypad validates the 4-digit sequence `2912`. Upon matching, the DOM unhides the secret capsule stage with smooth fade-in animations.
-2. **Queen's Heart Bypass**: Provides Queen Komal with an instant authorization mechanism, bypassing manual PIN entry while maintaining full romantic presentation.
+2. **Queen's Heart Bypass**: Provides Queen Nishika with an instant authorization mechanism, bypassing manual PIN entry while maintaining full romantic presentation.
 
 ---
 
@@ -145,7 +145,7 @@ Eternal Love guarantees complete user privacy:
 ## 8. 📋 Compliance, Data Retention & Right to Erase
 
 ### 8.1 Data Ownership
-100% of data (photos, wishes, love notes, state variables) is owned solely by **Dilip and Queen Komal**.
+100% of data (photos, wishes, love notes, state variables) is owned solely by **Dilip and Queen Nishika**.
 
 ### 8.2 Right to Erase (Instant Reset)
 To erase all locally stored data on a device:
@@ -156,7 +156,7 @@ To erase all locally stored data on a device:
    localStorage.removeItem('eternal_love_sheet_url');
    location.reload();
    ```
-3. To delete cloud records, simply delete rows from your Google Sheet or remove files from the `Eternal Love Memories (Komal)` folder in Google Drive.
+3. To delete cloud records, simply delete rows from your Google Sheet or remove files from the `Eternal Love Memories (Nishika)` folder in Google Drive.
 
 ---
 

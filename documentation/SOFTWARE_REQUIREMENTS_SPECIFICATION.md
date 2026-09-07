@@ -5,7 +5,7 @@
 SOFTWARE REQUIREMENTS SPECIFICATION (IEEE-830 COMPLIANT)
 Project: Eternal Love — Ultra-Luxurious Romantic Birthday Celebration
 System Identifier: EL-PROD-2026-V2
-Celebrant: Queen Komal 👑 | Stakeholder: Dilip 💖
+Celebrant: Queen Nishika 👑 | Stakeholder: Dilip 💖
 Standard: IEEE Std 830-1998 (Recommended Practice for Software Requirements)
 ===============================================================================
 ```
@@ -58,7 +58,7 @@ This Software Requirements Specification (SRS) establishes the complete function
 * **MAY**: Optional capability.
 
 ### 1.3 Intended Audience
-* **Primary Stakeholder & Celebrant**: Queen Komal 👑 & Dilip 💖
+* **Primary Stakeholder & Celebrant**: Queen Nishika 👑 & Dilip 💖
 * **Software Engineers & Maintainers**: Full-stack web engineers maintaining the client and cloud pipelines.
 * **QA & Test Automation Engineers**: Reviewing test plans against functional requirements.
 
@@ -111,7 +111,7 @@ Eternal Love operates as an autonomous, client-first web application deployed on
 * Live cloud guestbook synchronized to Google Sheets in real-time.
 
 ### 2.3 User Classes and Characteristics
-1. **The Queen (Komal)**: Primary user, recipient of dedicated love notes, unlocked bypass keys, personalized messages, and love coupons.
+1. **The Queen (Nishika)**: Primary user, recipient of dedicated love notes, unlocked bypass keys, personalized messages, and love coupons.
 2. **The Creator (Dilip)**: Primary author, administrator of Google Cloud databases, sender of custom letters and promises.
 3. **Celebration Guests**: Friends and family viewing the celebration and writing public birthday wishes on the guestbook.
 
@@ -162,7 +162,7 @@ Eternal Love operates as an autonomous, client-first web application deployed on
 ### 3.7 Module 7: Secret Vault Security
 * **FR-19 (PIN Verification)**: The system SHALL require the 4-digit PIN `2912` to unlock the Secret Vault.
 * **FR-20 (Biometric Bypass)**: The system SHALL provide a single-tap "Queen's Heart Key" bypass button for immediate access.
-* **FR-21 (Secret Wish Sealing)**: The system SHALL accept and seal Queen Komal's secret birthday wish, dispatching it to the `"Secret Wishes"` ledger.
+* **FR-21 (Secret Wish Sealing)**: The system SHALL accept and seal Queen Nishika's secret birthday wish, dispatching it to the `"Secret Wishes"` ledger.
 
 ### 3.8 Module 8: Live Cloud Guestbook
 * **FR-22 (Wish Submission)**: The system SHALL accept visitor name, message, and color theme selection.
@@ -171,9 +171,22 @@ Eternal Love operates as an autonomous, client-first web application deployed on
 * **FR-25 (Local Fallback)**: If network connectivity fails, the system SHALL store the wish locally and display an offline synchronization status chip.
 
 ### 3.9 Module 9: Automated Launch Gate & Pre-Launch Teaser
-* **FR-26 (Pre-Launch Dynamic Router)**: The system SHALL evaluate client time on root initialization and redirect traffic to `coming-soon.html` if `Date.now() < 2026-09-20T00:00:00+05:30` unless a verified VIP bypass token is present.
-* **FR-27 (VIP Early Access Bypass)**: The system SHALL permit immediate access to `index.html` upon entering PIN `2912` or tapping the Queen's Heart Key on the Coming Soon page, caching authorization in `sessionStorage` and `localStorage`.
-* **FR-28 (Post-Launch Auto Handover)**: On or after September 20, 2026, the system SHALL automatically serve `index.html` as the default primary stage without requiring manual server redeployment.
+* **FR-26 (Pre-Launch Dynamic Router)**: The system SHALL evaluate client time on root initialization and redirect traffic to `coming-soon.html` if `Date.now() < 2026-09-21T23:00:00+05:30` (September 21, 2026, 23:00 IST) unless a verified VIP bypass token is present.
+* **FR-27 (VIP Early Access Bypass)**: The system SHALL permit immediate access to `index.html` upon entering PIN `2912` or tapping the Queen's Heart Key on the Coming Soon page, caching authorization in `sessionStorage` and `localStorage` to preserve access across page refreshes.
+* **FR-28 (Post-Launch Auto Handover)**: On or after September 21, 2026 at 23:00 IST, the system SHALL automatically serve `index.html` as the default primary stage without requiring manual server redeployment.
+* **FR-33 (Pre-Launch Sticky Wall & Photo Upload Engine)**: The Pre-Launch Teaser SHALL feature an interactive Sticky Notes Wall and Client-Side Canvas Compressed Photo Uploader with dynamic Polaroid rendering, full-screen Cinema Lightbox modal, and bidirectional persistence sharing with the main celebration arena.
+
+### 3.10 Module 10: Couple's Date Night Fortune Roulette
+* **FR-29 (Physics Deceleration & Sector Synthesis)**: The system SHALL animate the 3D roulette wheel with angular momentum decay, trigger ticker bounce animations, synthesize sector boundary audio ticks, and allow claiming winning date outcomes as VIP love vouchers.
+
+### 3.11 Module 11: Cosmic Ambient Soundscape Sanctuary
+* **FR-30 (Multi-Track Web Audio Procedural Synthesis)**: The system SHALL generate 6 procedural polyphonic sound layers (Rain, Fireplace, Ocean Waves, Starlight Chimes, Lo-Fi Piano, and Café) using native Web Audio API oscillators, biquad filters, and noise buffers with individual and master volume faders, mood presets, and sleep timers.
+
+### 3.12 Module 12: Future Love Time Capsule Vault
+* **FR-31 (Time-Locked Milestone Crypt)**: The system SHALL encrypt and lock future love letters with live countdown tickers until their designated unlock date, providing single-tap VIP Heart Key unlock bypass for Queen Nishika.
+
+### 3.13 Module 13: Cosmic Journey & Milestones Map
+* **FR-32 (Astronomical Metrics & Milestone Consecration)**: The system SHALL calculate real-time celestial orbital distance traveled around the Sun and heartbeats shared since relationship inception, rendering an interactive constellation roadmap with custom memory pin addition.
 
 ---
 

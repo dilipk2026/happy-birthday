@@ -3,7 +3,7 @@
 ```
 ========================================================================================
 👑 ETERNAL LOVE CELEBRATION — VISUAL PROJECT LAYOUT & SYSTEM TOPOLOGY
-Celebrant: Queen Komal 👑 | Dedicated with Infinite Love by: Dilip 💖
+Celebrant: Queen Nishika 👑 | Dedicated with Infinite Love by: Dilip 💖
 Standard: Enterprise Graphical Layout & Component Interaction Specification
 Architecture: Pure Vanilla Web APIs + Serverless Google Cloud Micro-Engine
 ========================================================================================
@@ -122,7 +122,7 @@ graph TD
 sequenceDiagram
     autonumber
     actor Visitor as 🌍 Website Visitor
-    actor Queen as 👑 Queen Komal / Dilip
+    actor Queen as 👑 Queen Nishika / Dilip
     participant Edge as 🌐 GitHub Pages Root (/)
     participant Router as ⚙️ `<head>` Date Router
     participant CS as ⏳ coming-soon.html
@@ -172,9 +172,9 @@ sequenceDiagram
 │   │
 │   ├── 🧭 2-Row Sticky Navigation Header (.app-header)
 │   │   ├── Row 1: Logo, Web Audio Synthesizer Toggle, Mode Switcher, Candlelight, Confetti, VIP Shortcuts
-│   │   └── Row 2: Horizontally Scrollable 21-Module Quick Jump Chips
+│   │   └── Row 2: Horizontally Scrollable 25-Module Quick Jump Chips
 │   │
-│   └── 🎪 21 Handcrafted Celebration Stages (.content-container)
+│   └── 🎪 25 Handcrafted Celebration Stages (.content-container)
 │       ├── #heroSec          ──> Live Countdown from Dec 29, 2025 & Cheer Buttons
 │       ├── #letterSec        ──> 3D Velvet Envelope with Monogram Wax Seal & Typewriter Letter
 │       ├── #openWhenSec      ──> 6 "Open When..." Situation Envelopes
@@ -195,14 +195,22 @@ sequenceDiagram
 │       ├── #lanternSec       ──> Floating Sky Lanterns with Physics Release
 │       ├── #clawSec          ──> Romantic Arcade Love Claw Machine
 │       ├── #projectorSec     ──> Vintage 8mm Film Projector Narrative Reel
-│       └── #mirrorSec        ──> Enchanted Mirror with Royal Daily Affirmations
+│       ├── #mirrorSec        ──> Enchanted Mirror with Royal Daily Affirmations
+│       ├── #rouletteSec      ──> Couple's Date Night Fortune Roulette Wheel
+│       ├── #soundscapeSec    ──> Cosmic Ambient Soundscape Sanctuary (6-Track Synth)
+│       ├── #capsuleSec       ──> Future Love Time Capsule Vault (Time-Locked Letters)
+│       └── #journeySec       ──> Our Cosmic Journey & Romance Milestones Map
 │
 └── 🪟 ACCESSIBLE MODAL DIALOGS
     ├── #wishModal            ──> Birthday Candle Secret Wish Composer
     ├── #customizeModal       ──> Dynamic Name, Anniversary Date & Theme Switcher
     ├── #keepsakeModal        ──> Royal Keepsake Love Certificate Printable Exporter
     ├── #openWhenLetterModal  ──> Gold Deckled Parchment Stationery Reader
-    └── #secretWishVaultModal ──> Queen's Secret Vault (PIN 2912 / Queen's Heart Key)
+    ├── #secretWishVaultModal ──> Queen's Secret Vault (PIN 2912 / Queen's Heart Key)
+    ├── #newDateIdeaModal     ──> Custom Date Night Fantasy / Idea Creator
+    ├── #createCapsuleModal   ──> Time Capsule Encryption & Sealing Modal
+    ├── #viewCapsuleModal     ──> Unsealed Time Capsule Letter Reader
+    └── #addJourneyPinModal   ──> Cosmic Milestone Memory Pin Consecrator
 ```
 
 ---
@@ -259,15 +267,16 @@ sequenceDiagram
 
 | File Path | Role & Primary Responsibility | Language / Format | Size (Bytes) | Runtime Dependencies |
 | :--- | :--- | :---: | :---: | :---: |
-| [`index.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html) | Main single-page application shell, semantic structure, 21 stages & modals | HTML5 | ~149.5 KB | **0 (Zero)** |
-| [`coming-soon.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/coming-soon.html) | Pre-launch teaser, live countdown to Sept 20, VIP bypass keypad & blessing box | HTML5 + Embedded CSS/JS | ~40.1 KB | **0 (Zero)** |
-| [`style.css`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/style.css) | Complete design system, 6 themes, 3D stages, glassmorphism & keyframes | CSS3 | ~197.4 KB | **0 (Zero)** |
-| [`script.js`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/script.js) | Interactive controllers, Web Audio synthesizer, canvas particles, cloud sync | ES6+ JavaScript | ~195.2 KB | **0 (Zero)** |
+| [`index.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html) | Main single-page application shell, semantic structure, 24 celebration stages & modals | HTML5 | ~181 KB | **0 (Zero)** |
+| [`coming-soon.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/coming-soon.html) | Pre-launch teaser, countdown to Sept 21 23:00 IST, VIP keypad, photo uploader & sticky wall | HTML5 + Embedded CSS/JS | ~85 KB | **0 (Zero)** |
+| [`style.css`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/style.css) | Complete design system, 6 themes, 3D stages, glassmorphism & master responsive system | CSS3 | ~220 KB | **0 (Zero)** |
+| [`script.js`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/script.js) | Interactive controllers, Web Audio synthesizer, canvas particles, photo & wish cloud sync | ES6+ JavaScript | ~246 KB | **0 (Zero)** |
+| [`favicon.svg`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/favicon.svg) | Scalable vector SVG icon with golden crown and glowing ruby heart | Vector SVG | ~1.1 KB | None |
 | [`Code.gs`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/Code.gs) | Serverless Google Apps Script backend router, Sheets ledger & Drive uploader | Google Apps Script (V8) | ~7.4 KB | Google Cloud API |
 | [`webqr.png`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/webqr.png) | Instant Mobile Access QR code image for gift cards and photo frames | PNG Image | 811 Bytes | None |
 | [`.nojekyll`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/.nojekyll) | GitHub Pages directive to bypass Jekyll and serve static assets directly | Configuration | 44 Bytes | GitHub Pages |
 | [`README.md`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/README.md) | Master repository showcase, badges, visual previews & deployment quickstart | Markdown | ~31.8 KB | None |
-| [`documentation/`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/documentation/) | Complete 13-document architecture, IEEE-830 SRS, user guide, API & runbooks | Markdown Suite | ~150.0 KB | None |
+| [`documentation/`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/documentation/) | Complete 13-document architecture, IEEE-830 SRS, user guide, testing report & runbooks | Markdown Suite | ~160 KB | None |
 
 ---
 

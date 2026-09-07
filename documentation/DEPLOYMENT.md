@@ -3,7 +3,7 @@
 ```
 ===============================================================================
 OFFICIAL GITHUB PAGES DEPLOYMENT & HOSTING GUIDE
-Target Web App: Eternal Love (Queen Komal 👑 | Dilip 💖)
+Target Web App: Eternal Love (Queen Nishika 👑 | Dilip 💖)
 Architecture: Static Pure Vanilla HTML5 / CSS3 / ES6+ (Zero Build Pipeline)
 Hosting Cost: 100% Free Forever with Automated Global HTTPS & Fastly Edge CDN
 ===============================================================================
@@ -17,7 +17,7 @@ Hosting Cost: 100% Free Forever with Automated Global HTTPS & Fastly Edge CDN
 
 1. [🚀 1. Step-by-Step GitHub Pages Deployment](#1-step-by-step-github-pages-deployment)
 2. [⏳ 2. Automated Launch Lifecycle (September 20 Launch)](#2-automated-launch-lifecycle-september-20-launch)
-3. [🏷️ 3. Free Custom Domain Setup (e.g. `happybirthdaykomal.com`)](#3-free-custom-domain-setup-eg-happybirthdaykomalcom)
+3. [🏷️ 3. Free Custom Domain Setup (e.g. `happybirthdaynishika.com`)](#3-free-custom-domain-setup-eg-happybirthdaynishikacom)
 4. [📱 4. Generating a Free QR Code for Physical Gift Cards](#4-generating-a-free-qr-code-for-physical-gift-cards)
 5. [🛡️ 5. GitHub Pages Production Checklist](#5-github-pages-production-checklist)
 
@@ -27,7 +27,7 @@ Hosting Cost: 100% Free Forever with Automated Global HTTPS & Fastly Edge CDN
 
 ### Step 1: Create a GitHub Repository
 1. Navigate to [github.com/new](https://github.com/new).
-2. Set your **Repository Name** (e.g., `happy-birthday-komal` or `eternal-love`).
+2. Set your **Repository Name** (e.g., `happy-birthday-nishika` or `eternal-love`).
 3. Set visibility to **Public** (required for free GitHub Pages hosting).
 4. Do **not** check "Add a README file" (the repository already has complete documentation).
 5. Click **Create repository**.
@@ -98,18 +98,18 @@ The website includes an automated client-side launch router built into `<head>`:
 1. **Before September 20, 2026**:
    - Visitors opening your GitHub Pages link automatically see [`coming-soon.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/coming-soon.html) with the live countdown clock, sneak peeks, and early blessing collector.
 2. **VIP Early Access Bypass**:
-   - Queen Komal or Dilip can unlock the full [`index.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html) anytime before September 20 by entering PIN **`2912`** or clicking the **Queen Komal 👑 Instant Access Key** on the Coming Soon page (or visiting `https://<YOUR-USERNAME>.github.io/<REPO>/?preview=true`).
+   - Queen Nishika or Dilip can unlock the full [`index.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html) anytime before September 20 by entering PIN **`2912`** or clicking the **Queen Nishika 👑 Instant Access Key** on the Coming Soon page (or visiting `https://<YOUR-USERNAME>.github.io/<REPO>/?preview=true`).
 3. **On & After September 20, 2026**:
    - The website automatically transitions [`index.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html) to the primary landing page for all visitors worldwide without requiring any manual redeployment or repo changes!
 
 ---
 
-## 3. 🏷️ Free Custom Domain Setup (e.g. `happybirthdaykomal.com`)
+## 3. 🏷️ Free Custom Domain Setup (e.g. `happybirthdaynishika.com`)
 
 If you want a personalized custom domain:
 
 1. In your GitHub repository $\rightarrow$ **Settings** $\rightarrow$ **Pages** $\rightarrow$ **Custom domain**.
-2. Enter your custom domain (e.g. `happybirthdaykomal.com`).
+2. Enter your custom domain (e.g. `happybirthdaynishika.com`).
 3. In your DNS provider (Namecheap, GoDaddy, Cloudflare):
    - Add **A Records** pointing to GitHub Pages IP addresses:
      - `185.199.108.153`
@@ -129,7 +129,7 @@ To make the birthday gift presentation unforgettable, you can print a physical Q
 2. Go to any free, high-resolution QR generator (such as [qrserver.com](https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=https://your-url)).
 3. Download the high-resolution PNG QR code.
 4. Print it on a card with the title:  
-   *“Scan with your phone to unbox your surprise, Queen Komal 👑”*
+   *“Scan with your phone to unbox your surprise, Queen Nishika 👑”*
 
 ---
 
@@ -142,4 +142,4 @@ To make the birthday gift presentation unforgettable, you can print a physical Q
 
 ---
 
-*Handcrafted with infinite love for Queen Komal 👑 | Dedicated by Dilip 💖*
+*Handcrafted with infinite love for Queen Nishika 👑 | Dedicated by Dilip 💖*

@@ -18,10 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const DEFAULT_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec';
 
   const state = {
-    recipientName: savedData.recipientName || 'Komal',
+    recipientName: savedData.recipientName || 'Nishika',
     senderName: savedData.senderName || 'Dilip',
     startDate: savedData.startDate || '2025-12-29',
-    message: savedData.message || 'To the most incredible, beautiful, and radiant woman in my life, Komal: May your birthday be filled with infinite joy, sweet surprises, and all the happiness you bring into my world! 💖',
+    message: savedData.message || 'To the most incredible, beautiful, and radiant woman in my life, Nishika: May your birthday be filled with infinite joy, sweet surprises, and all the happiness you bring into my world! 💖',
     theme: savedData.theme || 'theme-magical',
     isMusicPlaying: false,
     musicMode: 'piano', // 'piano' or 'birthday'
@@ -37,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
     favoriteReasons: savedData.favoriteReasons || [],
     completedBucketItems: savedData.completedBucketItems || ['b1', 'b2'],
     customBucketItems: savedData.customBucketItems || [],
+    customDateIdeas: savedData.customDateIdeas || [],
+    soundscapeVolumes: savedData.soundscapeVolumes || { master: 80, rain: 70, fire: 45, ocean: 0, chimes: 60, piano: 50, cafe: 0 },
+    timeCapsules: savedData.timeCapsules || [],
+    customJourneyPins: savedData.customJourneyPins || [],
     googleSheetUrl: savedData.googleSheetUrl || localStorage.getItem('eternal_love_sheet_url') || DEFAULT_GOOGLE_SHEET_URL
   };
 
@@ -74,6 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
         favoriteReasons: state.favoriteReasons,
         completedBucketItems: state.completedBucketItems,
         customBucketItems: state.customBucketItems,
+        customDateIdeas: state.customDateIdeas,
+        soundscapeVolumes: state.soundscapeVolumes,
+        timeCapsules: state.timeCapsules,
+        customJourneyPins: state.customJourneyPins,
         googleSheetUrl: state.googleSheetUrl
       }));
       if (state.googleSheetUrl) {
@@ -213,9 +221,12 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const enrichedPayload = {
         ...payload,
+        name: payload.name || payload.author || state.senderName || 'Well-wisher',
+        author: payload.author || payload.name || state.senderName || 'Well-wisher',
+        message: payload.message || payload.text || payload.wish || '',
         celebrant: state.recipientName,
         dedicatedBy: state.senderName,
-        timestamp: new Date().toISOString(),
+        timestamp: payload.timestamp || new Date().toISOString(),
         localTime: new Date().toLocaleString()
       };
 
@@ -834,6 +845,187 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
+  // 5.5 MASTER ROYAL BIRTHDAY PASSCODE CONTROLLER (Password: 22092000)
+  // --------------------------------------------------------------------------
+  const MASTER_PASSCODE = '22092000';
+  const pagePasscodeOverlay = document.getElementById('pagePasscodeOverlay');
+  const pagePasscodeInput = document.getElementById('pagePasscodeInput');
+  const pagePasscodeSubmitBtn = document.getElementById('pagePasscodeSubmitBtn');
+  const pagePasscodeFeedback = document.getElementById('pagePasscodeFeedback');
+  const togglePasscodeVisibilityBtn = document.getElementById('togglePasscodeVisibilityBtn');
+  const passcodeEyeIcon = document.getElementById('passcodeEyeIcon');
+  const pagePasscodeHintToggleBtn = document.getElementById('pagePasscodeHintToggleBtn');
+  const pagePasscodeHintBox = document.getElementById('pagePasscodeHintBox');
+  const pagePasscodeKeypad = document.getElementById('pagePasscodeKeypad');
+
+  function checkPasscodeAuth() {
+    let isAuthed = false;
+    try {
+      const urlP = new URLSearchParams(window.location.search);
+      const passedPass = urlP.get('passcode') || urlP.get('pwd');
+      if (passedPass === '22092000') {
+        sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+        localStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+        isAuthed = true;
+      } else {
+        isAuthed = sessionStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
+                   localStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000';
+      }
+    } catch(e) {
+      isAuthed = false;
+    }
+
+    if (isAuthed && pagePasscodeOverlay) {
+      pagePasscodeOverlay.classList.add('unlocked', 'fade-out');
+      pagePasscodeOverlay.style.display = 'none';
+    }
+  }
+
+  // Initial check on load
+  checkPasscodeAuth();
+
+  function updatePasscodeDots(val) {
+    for (let i = 0; i < 8; i++) {
+      const dot = document.getElementById('pDot' + i);
+      if (!dot) continue;
+      if (i < val.length) {
+        dot.textContent = '•';
+        dot.classList.add('active');
+        dot.classList.remove('error', 'success');
+      } else {
+        dot.textContent = '•';
+        dot.classList.remove('active', 'error', 'success');
+      }
+    }
+  }
+
+  function verifyPagePasscode() {
+    if (!pagePasscodeInput) return;
+    const rawVal = pagePasscodeInput.value.trim();
+    const cleanVal = rawVal.replace(/[^0-9]/g, '');
+
+    if (cleanVal === MASTER_PASSCODE || rawVal === '22-09-2000' || rawVal === '22/09/2000') {
+      // Success State
+      if (pagePasscodeFeedback) {
+        pagePasscodeFeedback.className = 'passcode-feedback success';
+        pagePasscodeFeedback.innerHTML = '<i class="fa-solid fa-crown"></i> Passcode Verified! Opening Birthday Surprise 👑';
+      }
+
+      for (let i = 0; i < 8; i++) {
+        const dot = document.getElementById('pDot' + i);
+        if (dot) dot.classList.add('success');
+      }
+
+      audioSynth.playCelebrationFanfare();
+      burstConfetti(window.innerWidth / 2, window.innerHeight / 2, 80);
+
+      try {
+        sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+        localStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+      } catch(e) {}
+
+      setTimeout(() => {
+        if (pagePasscodeOverlay) {
+          pagePasscodeOverlay.classList.add('unlocked', 'fade-out');
+          setTimeout(() => {
+            pagePasscodeOverlay.style.display = 'none';
+          }, 600);
+        }
+        showToast("👑 Royal Passcode Verified! Welcome Queen Nishika ✨");
+      }, 700);
+    } else {
+      // Failure State
+      if (pagePasscodeFeedback) {
+        pagePasscodeFeedback.className = 'passcode-feedback error';
+        pagePasscodeFeedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Incorrect passcode! Hint: Queen Nishika\'s Birthday (DDMMYYYY)';
+      }
+
+      const card = document.querySelector('.page-passcode-card');
+      if (card) {
+        card.classList.add('shake');
+        setTimeout(() => card.classList.remove('shake'), 600);
+      }
+
+      for (let i = 0; i < 8; i++) {
+        const dot = document.getElementById('pDot' + i);
+        if (dot) dot.classList.add('error');
+      }
+
+      audioSynth.playChime(220, 0.3); // Low error tone
+    }
+  }
+
+  if (pagePasscodeInput) {
+    pagePasscodeInput.addEventListener('input', (e) => {
+      updatePasscodeDots(e.target.value);
+      if (pagePasscodeFeedback) {
+        pagePasscodeFeedback.className = 'passcode-feedback';
+        pagePasscodeFeedback.innerHTML = '';
+      }
+      if (e.target.value.length === 8) {
+        verifyPagePasscode();
+      }
+    });
+
+    pagePasscodeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        verifyPagePasscode();
+      }
+    });
+  }
+
+  if (pagePasscodeSubmitBtn) {
+    pagePasscodeSubmitBtn.addEventListener('click', verifyPagePasscode);
+  }
+
+  if (togglePasscodeVisibilityBtn && pagePasscodeInput && passcodeEyeIcon) {
+    togglePasscodeVisibilityBtn.addEventListener('click', () => {
+      if (pagePasscodeInput.type === 'password') {
+        pagePasscodeInput.type = 'text';
+        passcodeEyeIcon.className = 'fa-solid fa-eye-slash';
+      } else {
+        pagePasscodeInput.type = 'password';
+        passcodeEyeIcon.className = 'fa-solid fa-eye';
+      }
+    });
+  }
+
+  if (pagePasscodeHintToggleBtn && pagePasscodeHintBox) {
+    pagePasscodeHintToggleBtn.addEventListener('click', () => {
+      pagePasscodeHintBox.classList.toggle('active');
+      audioSynth.playChime(659.25, 0.2);
+    });
+  }
+
+  // Glass Keypad click handler
+  if (pagePasscodeKeypad && pagePasscodeInput) {
+    pagePasscodeKeypad.addEventListener('click', (e) => {
+      const btn = e.target.closest('.pk-btn');
+      if (!btn) return;
+      const key = btn.dataset.key;
+      audioSynth.playChime(523.25, 0.1);
+
+      if (key === 'C') {
+        pagePasscodeInput.value = '';
+      } else if (key === 'BACK') {
+        pagePasscodeInput.value = pagePasscodeInput.value.slice(0, -1);
+      } else if (key && pagePasscodeInput.value.length < 8) {
+        pagePasscodeInput.value += key;
+      }
+
+      updatePasscodeDots(pagePasscodeInput.value);
+      if (pagePasscodeFeedback) {
+        pagePasscodeFeedback.className = 'passcode-feedback';
+        pagePasscodeFeedback.innerHTML = '';
+      }
+      if (pagePasscodeInput.value.length === 8) {
+        verifyPagePasscode();
+      }
+    });
+  }
+
+  // --------------------------------------------------------------------------
   // 6. STAGE 1: 3D GIFT BOX UNBOXING CEREMONY
   // --------------------------------------------------------------------------
   const introOverlay = document.getElementById('introOverlay');
@@ -1143,12 +1335,12 @@ document.addEventListener('DOMContentLoaded', () => {
     submitPasscodeBtn.addEventListener('click', () => {
       const pin = vaultPasscodeInput.value.trim();
       const dateDigits = (state.startDate || '2025-12-29').replace(/\D/g, '');
-      const validPins = ['2912', '1229', '2025', '0509', '0905', dateDigits.slice(-4), dateDigits.slice(0, 4)];
-      if (validPins.includes(pin) || pin === '2912' || pin.length === 4) {
+      const validPins = ['22092000', '2912', '1229', '2025', '0509', '0905', dateDigits.slice(-4), dateDigits.slice(0, 4)];
+      if (validPins.includes(pin) || pin === '22092000' || pin === '2912' || pin.length >= 4) {
         unlockWishVault();
       } else {
         audioSynth.playPopSound();
-        showToast("Incorrect PIN! Hint: Anniversary PIN (2912) or tap Queen's Heart Key below 💕");
+        showToast("Incorrect Passcode! Hint: Queen Nishika's Date of Birth (DDMMYYYY) or tap Queen's Heart Key below 💕");
       }
     });
   }
@@ -1588,7 +1780,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cutStatusCaption) cutStatusCaption.textContent = '✨ Lifting the royal celebratory first slice toward the golden plate... 🍰💖';
       if (feedSliceBtn) feedSliceBtn.style.display = 'inline-flex';
     } else {
-      if (cutStatusCaption) cutStatusCaption.textContent = '🎉 Royal slice is served! Click "Feed to Komal" below! 🍓👑';
+      if (cutStatusCaption) cutStatusCaption.textContent = '🎉 Royal slice is served! Click "Feed to Nishika" below! 🍓👑';
       if (feedSliceBtn) feedSliceBtn.style.display = 'inline-flex';
     }
   }
@@ -1727,7 +1919,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cakeCutWedgeGap) cakeCutWedgeGap.className = 'cake-cut-wedge-gap revealed';
       if (platedCakeSlice) platedCakeSlice.className = 'plated-cake-slice placed';
       if (feedSliceBtn) feedSliceBtn.style.display = 'inline-flex';
-      if (cutStatusCaption) cutStatusCaption.textContent = '🎉 Scene 4: Sliced & placed on plate! Click "Feed to Komal" below! 🍓💖';
+      if (cutStatusCaption) cutStatusCaption.textContent = '🎉 Scene 4: Sliced & placed on plate! Click "Feed to Nishika" below! 🍓💖';
     }
   }
 
@@ -1871,7 +2063,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let cuddleSynthInterval = null;
 
   const cuddleSubtitles = [
-    `"In your arms is where I always want to be... Happy Birthday, my Queen Komal." 💖`,
+    `"In your arms is where I always want to be... Happy Birthday, my Queen Nishika." 💖`,
     `"Every storm in the universe fades away the moment I hold you close." 🛋️✨`,
     `"Under every star in the cosmos, my heart chooses you in every lifetime." 🌌`,
     `"Wrapped in this blanket with you, forever feels like it's just beginning." ☕🕯️`,
@@ -1973,12 +2165,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const cuddleFloatingArena = document.getElementById('cuddleFloatingArena');
 
   const cuddleWhispersList = [
-    `"Holding you, Komal, is the most peaceful feeling in the universe." 💖`,
+    `"Holding you, Nishika, is the most peaceful feeling in the universe." 💖`,
     `"Happy Birthday to my eternal love, my sweetest comfort, my Queen." 👑✨`,
     `"With every breath, Dilip falls deeper in love with you." 💓`,
     `"Under millions of stars, you shine brighter than them all." 🌌`,
     `"Forever wrapped in warm cashmere and endless love with you." ☕🛋️`,
-    `"Your smile is my favorite constellation, my Queen Komal." 💫`
+    `"Your smile is my favorite constellation, my Queen Nishika." 💫`
   ];
   let whisperIndex = 0;
 
@@ -2159,7 +2351,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (owModalContent) {
       owModalContent.innerHTML = letter.paragraphs
-        .map(p => `<p>${p.replace(/Queen Komal/g, `Queen ${state.recipientName}`).replace(/Komal/g, state.recipientName)}</p>`)
+        .map(p => `<p>${p.replace(/Queen Nishika/g, `Queen ${state.recipientName}`).replace(/Nishika/g, state.recipientName)}</p>`)
         .join('');
     }
 
@@ -2260,7 +2452,7 @@ const romanticReasons = [
   { cat: "🏡 Safe Haven", text: "How you inspire me to be the strongest, kindest, and most loving version of myself." },
   { cat: "🏡 Safe Haven", text: "The simple truth that you are my anchor, my peace, and my sweetest sanctuary." },
 
-  // 👑 Radiant Queen Komal (61-80)
+  // 👑 Radiant Queen Nishika (61-80)
   { cat: "👑 Radiant Queen", text: "Your natural elegance, royal grace, and the dignified way you carry yourself everywhere." },
   { cat: "👑 Radiant Queen", text: "The radiant beauty that shines from your pure golden heart and illuminates your face." },
   { cat: "👑 Radiant Queen", text: "How fierce, dedicated, and hardworking you are when pursuing your goals and passions." },
@@ -2276,7 +2468,7 @@ const romanticReasons = [
   { cat: "👑 Radiant Queen", text: "The genuine love and thoughtful care you pour into your family and close friends." },
   { cat: "👑 Radiant Queen", text: "How you inspire everyone blessed to know you to become better and kinder human beings." },
   { cat: "👑 Radiant Queen", text: "The gentle authority and poise you possess that commands natural respect and love." },
-  { cat: "👑 Radiant Queen", text: "How proud and honored Dilip feels every single day to walk beside Queen Komal." },
+  { cat: "👑 Radiant Queen", text: "How proud and honored Dilip feels every single day to walk beside Queen Nishika." },
   { cat: "👑 Radiant Queen", text: "Your rare combination of boundless empathy, sharp intellect, and irresistible sweetness." },
   { cat: "👑 Radiant Queen", text: "How you turn every ordinary space into a royal palace simply by being in it." },
   { cat: "👑 Radiant Queen", text: "The sparkle of wisdom and kindness in your eyes that never dims." },
@@ -2303,7 +2495,7 @@ const romanticReasons = [
   { cat: "💫 Forever Love", text: "The sacred vow that no storm in the universe could ever shake our devotion to each other." },
   { cat: "💫 Forever Love", text: "How you make the concept of 'forever' feel not just possible, but the greatest adventure imaginable." },
   { cat: "💫 Forever Love", text: "The certainty that in any universe, in any timeline, my soul would find and choose you again." },
-  { cat: "💫 Forever Love", text: "How every sunrise is a fresh opportunity for Dilip to love, protect, and cherish Queen Komal." },
+  { cat: "💫 Forever Love", text: "How every sunrise is a fresh opportunity for Dilip to love, protect, and cherish Queen Nishika." },
   { cat: "💫 Forever Love", text: "The eternal truth that I love you more than all words, more than all stars, endlessly and forever." }
 ];
 
@@ -3467,7 +3659,7 @@ const romanticReasons = [
       if (heroBouquet3D) heroBouquet3D.className = 'hero-bouquet-3d gift-offering';
       if (giftingStatusCaption) giftingStatusCaption.textContent = `💎 Scene 2: Dilip extends his arms forward, gifting the forever bouquet to his Queen in 3D perspective... ✨`;
     } else if (giftingCurrentTime < 8.5) {
-      // Scene 3: Queen Komal Embraces Bouquet with Falling Petals
+      // Scene 3: Queen Nishika Embraces Bouquet with Falling Petals
       if (heroBouquet3D) heroBouquet3D.className = 'hero-bouquet-3d gift-received';
       if (giftingStatusCaption) giftingStatusCaption.textContent = `👑 Scene 3: Queen ${state.recipientName} joyfully receives her blooms under a shower of falling petals! 🌸`;
     } else {
@@ -3938,8 +4130,11 @@ const romanticReasons = [
         // Sync to Google Drive & Google Sheet
         sendToGoogleSheet({
           type: 'photo',
+          name: state.senderName || 'Dilip',
+          author: state.senderName || 'Dilip',
           caption: photoItem.caption,
           tag: photoItem.tag,
+          base64: photoItem.dataUrl,
           dataUrl: photoItem.dataUrl
         }, {
           chipElement: document.getElementById('photoSyncChip'),
@@ -4053,8 +4248,10 @@ const romanticReasons = [
       // Sync wish to Google Sheets
       sendToGoogleSheet({
         type: 'wish',
+        name: author,
         author: author,
         message: text,
+        text: text,
         styleClass: randomStickyClass
       }, {
         chipElement: document.getElementById('wishSyncChip'),
@@ -4185,7 +4382,7 @@ const romanticReasons = [
   if (customizeForm) {
     customizeForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      state.recipientName = (custNameInput && custNameInput.value.trim()) || 'Komal';
+      state.recipientName = (custNameInput && custNameInput.value.trim()) || 'Nishika';
       if (custSenderInput) state.senderName = custSenderInput.value.trim() || 'Dilip';
       if (custStartDateInput && custStartDateInput.value) state.startDate = custStartDateInput.value;
       if (custMsgInput) state.message = custMsgInput.value.trim() || state.message;
@@ -4252,7 +4449,7 @@ const romanticReasons = [
   }
 
   // --------------------------------------------------------------------------
-  // 20. CONSTELLATION OF LOVE & STAR REGISTRY FOR KOMAL
+  // 20. CONSTELLATION OF LOVE & STAR REGISTRY FOR NISHIKA (MOBILE-OPTIMIZED)
   // --------------------------------------------------------------------------
   const constellationCanvas = document.getElementById('constellationCanvas');
   const starModal = document.getElementById('starModal');
@@ -4267,47 +4464,70 @@ const romanticReasons = [
   if (constellationCanvas) {
     const starCtx = constellationCanvas.getContext('2d');
     let activeConstellationPattern = 'crown';
+    let userPlacedStars = [];
+    let isConstellationVisible = false;
+    let constelAnimId = null;
 
+    // Normalized coordinates kept within upper 60% of canvas height (y: 0.12 - 0.58)
+    // guaranteeing 100% full visibility and zero obstruction by the bottom dock on mobile!
     const constellationPatterns = {
       crown: [
-        { x: 0.2, y: 0.65 }, { x: 0.35, y: 0.35 }, { x: 0.5, y: 0.55 },
-        { x: 0.65, y: 0.35 }, { x: 0.8, y: 0.65 }, { x: 0.5, y: 0.8 }, { x: 0.2, y: 0.65 }
+        { x: 0.18, y: 0.46 }, { x: 0.34, y: 0.20 }, { x: 0.5, y: 0.36 },
+        { x: 0.66, y: 0.20 }, { x: 0.82, y: 0.46 }, { x: 0.5, y: 0.56 }, { x: 0.18, y: 0.46 }
       ],
       heart: [
-        { x: 0.5, y: 0.35 }, { x: 0.4, y: 0.2 }, { x: 0.25, y: 0.25 },
-        { x: 0.2, y: 0.45 }, { x: 0.5, y: 0.8 }, { x: 0.8, y: 0.45 },
-        { x: 0.75, y: 0.25 }, { x: 0.6, y: 0.2 }, { x: 0.5, y: 0.35 }
+        { x: 0.5, y: 0.24 }, { x: 0.38, y: 0.12 }, { x: 0.24, y: 0.16 },
+        { x: 0.2, y: 0.32 }, { x: 0.5, y: 0.58 }, { x: 0.8, y: 0.32 },
+        { x: 0.76, y: 0.16 }, { x: 0.62, y: 0.12 }, { x: 0.5, y: 0.24 }
       ],
       infinity: [
-        { x: 0.25, y: 0.5 }, { x: 0.35, y: 0.3 }, { x: 0.5, y: 0.5 },
-        { x: 0.65, y: 0.7 }, { x: 0.75, y: 0.5 }, { x: 0.65, y: 0.3 },
-        { x: 0.5, y: 0.5 }, { x: 0.35, y: 0.7 }, { x: 0.25, y: 0.5 }
+        { x: 0.22, y: 0.35 }, { x: 0.34, y: 0.20 }, { x: 0.5, y: 0.35 },
+        { x: 0.66, y: 0.50 }, { x: 0.78, y: 0.35 }, { x: 0.66, y: 0.20 },
+        { x: 0.5, y: 0.35 }, { x: 0.34, y: 0.50 }, { x: 0.22, y: 0.35 }
       ]
     };
 
+    let constelLogicalW = 800;
+    let constelLogicalH = 380;
+
+    function resizeConstellationCanvas() {
+      if (!constellationCanvas || !constellationCanvas.parentElement) return;
+      const rect = constellationCanvas.parentElement.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      constelLogicalW = rect.width || constellationCanvas.parentElement.clientWidth || 360;
+      constelLogicalH = rect.height || constellationCanvas.parentElement.clientHeight || 380;
+      constellationCanvas.width = Math.round(constelLogicalW * dpr);
+      constellationCanvas.height = Math.round(constelLogicalH * dpr);
+      starCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      drawConstellationSky();
+    }
+
     function drawConstellationSky() {
       if (!starCtx) return;
-      const w = constellationCanvas.width;
-      const h = constellationCanvas.height;
+      const w = constelLogicalW;
+      const h = constelLogicalH;
       starCtx.clearRect(0, 0, w, h);
 
-      // Draw faint background stars
-      for (let i = 0; i < 40; i++) {
-        const sx = (Math.sin(i * 99) * 0.5 + 0.5) * w;
-        const sy = (Math.cos(i * 33) * 0.5 + 0.5) * h;
+      const time = Date.now() * 0.002;
+
+      // 1. Draw faint background twinkling cosmos
+      for (let i = 0; i < 35; i++) {
+        const sx = ((Math.sin(i * 127 + 1) * 0.5 + 0.5) * w);
+        const sy = ((Math.cos(i * 73 + 2) * 0.5 + 0.5) * (h * 0.85));
+        const twinkle = Math.sin(time + i) * 0.3 + 0.5;
         starCtx.beginPath();
         starCtx.arc(sx, sy, 1.2, 0, Math.PI * 2);
-        starCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        starCtx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.15, twinkle)})`;
         starCtx.fill();
       }
 
-      // Draw active constellation lines
+      // 2. Draw active constellation connecting lines
       const pts = constellationPatterns[activeConstellationPattern] || constellationPatterns.crown;
       starCtx.beginPath();
-      starCtx.strokeStyle = 'rgba(251, 191, 36, 0.75)';
-      starCtx.lineWidth = 2;
+      starCtx.strokeStyle = 'rgba(251, 191, 36, 0.82)';
+      starCtx.lineWidth = 2.2;
       starCtx.shadowColor = '#fbbf24';
-      starCtx.shadowBlur = 12;
+      starCtx.shadowBlur = 14;
 
       pts.forEach((pt, idx) => {
         const px = pt.x * w;
@@ -4318,36 +4538,110 @@ const romanticReasons = [
       starCtx.stroke();
       starCtx.shadowBlur = 0;
 
-      // Draw glowing constellation star nodes
-      pts.forEach(pt => {
+      // 3. Draw user-placed custom glowing stars
+      for (let i = userPlacedStars.length - 1; i >= 0; i--) {
+        const uStar = userPlacedStars[i];
+        uStar.alpha -= 0.004;
+        if (uStar.alpha <= 0) {
+          userPlacedStars.splice(i, 1);
+          continue;
+        }
+        starCtx.save();
+        starCtx.beginPath();
+        starCtx.arc(uStar.x, uStar.y, uStar.radius, 0, Math.PI * 2);
+        starCtx.fillStyle = `rgba(255, 245, 180, ${uStar.alpha})`;
+        starCtx.shadowColor = '#fbbf24';
+        starCtx.shadowBlur = 15;
+        starCtx.fill();
+
+        // Sparkle crosshairs
+        starCtx.strokeStyle = `rgba(255, 255, 255, ${uStar.alpha * 0.8})`;
+        starCtx.lineWidth = 1;
+        starCtx.beginPath();
+        starCtx.moveTo(uStar.x - 8, uStar.y);
+        starCtx.lineTo(uStar.x + 8, uStar.y);
+        starCtx.moveTo(uStar.x, uStar.y - 8);
+        starCtx.lineTo(uStar.x, uStar.y + 8);
+        starCtx.stroke();
+        starCtx.restore();
+      }
+
+      // 4. Draw glowing constellation star nodes with breathing radiance
+      pts.forEach((pt, idx) => {
         const px = pt.x * w;
         const py = pt.y * h;
+        const pulse = Math.sin(time * 2 + idx) * 1.5;
+
+        // Outer starlight halo
+        const halo = starCtx.createRadialGradient(px, py, 2, px, py, 14 + pulse);
+        halo.addColorStop(0, 'rgba(251, 191, 36, 0.7)');
+        halo.addColorStop(0.5, 'rgba(192, 132, 252, 0.4)');
+        halo.addColorStop(1, 'rgba(192, 132, 252, 0)');
+        starCtx.fillStyle = halo;
         starCtx.beginPath();
-        starCtx.arc(px, py, 4.5, 0, Math.PI * 2);
-        starCtx.fillStyle = '#fff';
-        starCtx.shadowColor = '#c084fc';
-        starCtx.shadowBlur = 10;
+        starCtx.arc(px, py, 14 + pulse, 0, Math.PI * 2);
+        starCtx.fill();
+
+        // Core bright diamond star
+        starCtx.beginPath();
+        starCtx.arc(px, py, 4.5 + pulse * 0.3, 0, Math.PI * 2);
+        starCtx.fillStyle = '#ffffff';
+        starCtx.shadowColor = '#ffd700';
+        starCtx.shadowBlur = 12;
         starCtx.fill();
         starCtx.shadowBlur = 0;
       });
     }
 
-    function resizeInteractiveCanvases() {
-      if (constellationCanvas && constellationCanvas.parentElement) {
-        constellationCanvas.width = constellationCanvas.parentElement.clientWidth || 800;
-        constellationCanvas.height = constellationCanvas.parentElement.clientHeight || 380;
-        drawConstellationSky();
+    function animateConstellationLoop() {
+      if (!isConstellationVisible) {
+        constelAnimId = null;
+        return;
       }
-      if (lanternCanvas && lanternCanvas.parentElement) {
-        lanternCanvas.width = lanternCanvas.parentElement.clientWidth || 800;
-        lanternCanvas.height = lanternCanvas.parentElement.clientHeight || 350;
-      }
+      drawConstellationSky();
+      constelAnimId = requestAnimationFrame(animateConstellationLoop);
     }
 
-    window.addEventListener('resize', resizeInteractiveCanvases);
-    setTimeout(resizeInteractiveCanvases, 100);
+    const constelObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isConstellationVisible = entry.isIntersecting;
+        if (isConstellationVisible && !constelAnimId) {
+          constelAnimId = requestAnimationFrame(animateConstellationLoop);
+        }
+      });
+    }, { threshold: 0.05 });
+    constelObserver.observe(constellationCanvas);
 
-    drawConstellationSky();
+    // Interactive Touch / Tap / Click on Constellation Sky
+    function handleConstellationTap(clientX, clientY) {
+      if (!constellationCanvas) return;
+      const rect = constellationCanvas.getBoundingClientRect();
+      const clickX = clientX - rect.left;
+      const clickY = clientY - rect.top;
+
+      userPlacedStars.push({
+        x: clickX,
+        y: clickY,
+        radius: Math.random() * 2.5 + 3,
+        alpha: 1.0
+      });
+
+      if (audioSynth && typeof audioSynth.playMagicChime === 'function') {
+        audioSynth.playMagicChime();
+      }
+      burstConfetti(clientX, clientY, 15);
+    }
+
+    constellationCanvas.addEventListener('click', (e) => {
+      if (e.target && e.target.closest && e.target.closest('.constellation-info-dock')) return;
+      handleConstellationTap(e.clientX, e.clientY);
+    });
+
+    constellationCanvas.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches[0]) {
+        handleConstellationTap(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
 
     document.querySelectorAll('.constellation-chip').forEach(chip => {
       chip.addEventListener('click', () => {
@@ -4355,14 +4649,16 @@ const romanticReasons = [
         chip.classList.add('active');
         activeConstellationPattern = chip.getAttribute('data-constellation');
         drawConstellationSky();
-        audioSynth.playMagicChime();
+        if (audioSynth && typeof audioSynth.playMagicChime === 'function') {
+          audioSynth.playMagicChime();
+        }
         burstConfetti(window.innerWidth / 2, window.innerHeight * 0.6, 25);
       });
     });
   }
 
   // --------------------------------------------------------------------------
-  // 21. FLOATING SKY LANTERNS FESTIVAL
+  // 21. FLOATING SKY LANTERNS FESTIVAL (MOBILE-OPTIMIZED)
   // --------------------------------------------------------------------------
   const lanternCanvas = document.getElementById('lanternCanvas');
   const lanternWishInput = document.getElementById('lanternWishInput');
@@ -4371,83 +4667,153 @@ const romanticReasons = [
 
   if (lanternCanvas) {
     const lCtx = lanternCanvas.getContext('2d');
-
-    function spawnLantern(wishText) {
-      activeLanterns.push({
-        x: Math.random() * (lanternCanvas.width - 120) + 60,
-        y: lanternCanvas.height + 40,
-        vy: -(Math.random() * 0.8 + 0.9),
-        vx: (Math.random() - 0.5) * 0.35,
-        width: 38,
-        height: 52,
-        sway: Math.random() * 2,
-        wish: wishText || 'For Komal 💖'
-      });
-    }
-
-    // Default starting ambient lanterns
-    for (let i = 0; i < 6; i++) {
-      activeLanterns.push({
-        x: Math.random() * 700 + 50,
-        y: Math.random() * 300 + 40,
-        vy: -(Math.random() * 0.4 + 0.4),
-        vx: (Math.random() - 0.5) * 0.2,
-        width: 30,
-        height: 42,
-        sway: Math.random() * 2,
-        wish: 'Happy Birthday Komal 👑'
-      });
-    }
-
     let isLanternsVisible = false;
     let lanternAnimId = null;
+    let lanternLogicalW = 800;
+    let lanternLogicalH = 380;
+
+    const ambientWishes = [
+      'Happy Birthday Nishika 👑',
+      'Endless Love 💖',
+      'Forever Dilip & Nishika ✨',
+      'Nishika\'s Radiant Smile 🌟',
+      'Eternal Joy & Peace 🌸',
+      'Queen of My Heart 💎'
+    ];
+
+    function resizeLanternCanvas() {
+      if (!lanternCanvas || !lanternCanvas.parentElement) return;
+      const rect = lanternCanvas.parentElement.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      lanternLogicalW = rect.width || lanternCanvas.parentElement.clientWidth || 360;
+      lanternLogicalH = rect.height || lanternCanvas.parentElement.clientHeight || 380;
+      lanternCanvas.width = Math.round(lanternLogicalW * dpr);
+      lanternCanvas.height = Math.round(lanternLogicalH * dpr);
+      lCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function spawnLantern(wishText, customX, customY) {
+      const w = lanternLogicalW;
+      const h = lanternLogicalH;
+      const startX = (typeof customX === 'number') 
+        ? Math.max(30, Math.min(w - 30, customX))
+        : (Math.random() * (Math.max(140, w - 80)) + 40);
+      const startY = (typeof customY === 'number') ? customY : (h + 30);
+
+      activeLanterns.push({
+        x: startX,
+        y: startY,
+        vy: -(Math.random() * 0.7 + 0.8),
+        vx: (Math.random() - 0.5) * 0.3,
+        width: Math.min(36, Math.max(28, w * 0.08)),
+        height: Math.min(48, Math.max(38, w * 0.11)),
+        sway: Math.random() * Math.PI * 2,
+        swaySpeed: Math.random() * 0.002 + 0.0015,
+        wish: wishText || ambientWishes[Math.floor(Math.random() * ambientWishes.length)],
+        isUserSpawned: !!wishText
+      });
+    }
+
+    // Dynamic initial ambient lanterns positioned proportionally
+    function initAmbientLanterns() {
+      activeLanterns = [];
+      const count = 5;
+      for (let i = 0; i < count; i++) {
+        activeLanterns.push({
+          x: Math.random() * (Math.max(140, lanternLogicalW - 80)) + 40,
+          y: Math.random() * (lanternLogicalH * 0.7) + 40,
+          vy: -(Math.random() * 0.4 + 0.35),
+          vx: (Math.random() - 0.5) * 0.2,
+          width: Math.min(32, Math.max(26, lanternLogicalW * 0.075)),
+          height: Math.min(44, Math.max(36, lanternLogicalW * 0.1)),
+          sway: Math.random() * Math.PI * 2,
+          swaySpeed: 0.002,
+          wish: ambientWishes[i % ambientWishes.length],
+          isUserSpawned: false
+        });
+      }
+    }
 
     function renderSkyLanterns() {
       if (!lCtx || !isLanternsVisible) {
         lanternAnimId = null;
         return;
       }
-      lCtx.clearRect(0, 0, lanternCanvas.width, lanternCanvas.height);
+
+      const w = lanternLogicalW;
+      const h = lanternLogicalH;
+      lCtx.clearRect(0, 0, w, h);
+
+      // Auto-replenish ambient lanterns so the sky is never empty
+      if (activeLanterns.length < 5) {
+        spawnLantern(null);
+      }
+
+      const now = Date.now();
 
       for (let i = activeLanterns.length - 1; i >= 0; i--) {
         const lan = activeLanterns[i];
         lan.y += lan.vy;
-        lan.x += lan.vx + Math.sin(Date.now() * 0.002 + lan.sway) * 0.25;
+        lan.x += lan.vx + Math.sin(now * lan.swaySpeed + lan.sway) * 0.3;
 
+        // Wrap or remove if above top
         if (lan.y < -70) {
           activeLanterns.splice(i, 1);
           continue;
         }
 
-        // Draw glowing lantern body with performant radial glow
         lCtx.save();
         lCtx.translate(lan.x, lan.y);
 
-        // Soft outer ambient halo
-        const outerHalo = lCtx.createRadialGradient(0, 0, lan.height * 0.2, 0, 0, lan.height * 1.3);
-        outerHalo.addColorStop(0, 'rgba(251, 191, 36, 0.35)');
+        // Flame flicker factor
+        const flicker = Math.sin(now * 0.01 + lan.sway) * 1.5;
+
+        // 1. Soft Outer Radiant Gold/Rose Halo
+        const outerHalo = lCtx.createRadialGradient(0, 0, lan.height * 0.15, 0, 0, lan.height * 1.35 + flicker);
+        outerHalo.addColorStop(0, 'rgba(251, 191, 36, 0.45)');
+        outerHalo.addColorStop(0.6, 'rgba(244, 63, 94, 0.18)');
         outerHalo.addColorStop(1, 'rgba(251, 191, 36, 0)');
         lCtx.fillStyle = outerHalo;
         lCtx.beginPath();
-        lCtx.arc(0, 0, lan.height * 1.2, 0, Math.PI * 2);
+        lCtx.arc(0, 0, lan.height * 1.3 + flicker, 0, Math.PI * 2);
         lCtx.fill();
 
-        // Lantern Paper Shell
-        const grad = lCtx.createRadialGradient(0, 0, 5, 0, 0, lan.height);
-        grad.addColorStop(0, 'rgba(255, 245, 180, 0.95)');
-        grad.addColorStop(0.5, 'rgba(245, 158, 11, 0.85)');
-        grad.addColorStop(1, 'rgba(225, 29, 72, 0.6)');
+        // 2. Traditional Paper Shell with Warm Radiant Gradient
+        const grad = lCtx.createRadialGradient(0, lan.height * 0.2, 3, 0, 0, lan.height * 0.9);
+        grad.addColorStop(0, 'rgba(255, 252, 210, 0.98)');
+        grad.addColorStop(0.45, 'rgba(251, 191, 36, 0.92)');
+        grad.addColorStop(0.85, 'rgba(244, 63, 94, 0.78)');
+        grad.addColorStop(1, 'rgba(190, 18, 60, 0.65)');
 
         lCtx.fillStyle = grad;
         lCtx.beginPath();
         lCtx.roundRect(-lan.width / 2, -lan.height / 2, lan.width, lan.height, [8, 8, 4, 4]);
         lCtx.fill();
 
-        // Inner glowing core flame
-        lCtx.fillStyle = '#fff';
+        // Subtle wooden rib rings
+        lCtx.strokeStyle = 'rgba(180, 83, 9, 0.4)';
+        lCtx.lineWidth = 1;
         lCtx.beginPath();
-        lCtx.arc(0, lan.height / 3, 3.5, 0, Math.PI * 2);
+        lCtx.moveTo(-lan.width / 2 + 2, 0);
+        lCtx.lineTo(lan.width / 2 - 2, 0);
+        lCtx.stroke();
+
+        // 3. Inner Glowing Core Candle Flame
+        lCtx.fillStyle = '#ffffff';
+        lCtx.shadowColor = '#ffd700';
+        lCtx.shadowBlur = 8 + flicker;
+        lCtx.beginPath();
+        lCtx.arc(0, lan.height / 3.2, 3.2, 0, Math.PI * 2);
         lCtx.fill();
+        lCtx.shadowBlur = 0;
+
+        // 4. Subtle Wish Banner label
+        if (lan.wish && lan.y > 20) {
+          lCtx.font = `600 ${Math.max(9, Math.min(11, w * 0.028))}px sans-serif`;
+          lCtx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+          lCtx.textAlign = 'center';
+          lCtx.fillText(lan.wish.length > 22 ? lan.wish.substring(0, 20) + '…' : lan.wish, 0, -lan.height / 2 - 5);
+        }
 
         lCtx.restore();
       }
@@ -4455,7 +4821,6 @@ const romanticReasons = [
       lanternAnimId = requestAnimationFrame(renderSkyLanterns);
     }
 
-    // Only render when scrolled into view
     const lanternObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         isLanternsVisible = entry.isIntersecting;
@@ -4466,16 +4831,59 @@ const romanticReasons = [
     }, { threshold: 0.05 });
     lanternObserver.observe(lanternCanvas);
 
+    // Tap/Click anywhere on sky to release a custom lantern immediately
+    function handleLanternSkyTap(clientX, clientY) {
+      if (!lanternCanvas) return;
+      const rect = lanternCanvas.getBoundingClientRect();
+      const tapX = clientX - rect.left;
+      const tapY = clientY - rect.top;
+
+      const wish = (lanternWishInput && lanternWishInput.value.trim()) || ambientWishes[Math.floor(Math.random() * ambientWishes.length)];
+      spawnLantern(wish, tapX, tapY);
+
+      if (audioSynth && typeof audioSynth.playPopSound === 'function') {
+        audioSynth.playPopSound();
+      }
+      burstConfetti(clientX, clientY, 20);
+      showToast('Lantern released into the starlight! 🏮✨');
+    }
+
+    lanternCanvas.addEventListener('click', (e) => {
+      if (e.target && e.target.closest && e.target.closest('.lantern-composer-dock')) return;
+      handleLanternSkyTap(e.clientX, e.clientY);
+    });
+
+    lanternCanvas.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches[0]) {
+        handleLanternSkyTap(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+
     if (releaseLanternBtn) {
       releaseLanternBtn.addEventListener('click', () => {
-        const wish = (lanternWishInput && lanternWishInput.value.trim()) || 'Happy Birthday Komal 💖';
+        const wish = (lanternWishInput && lanternWishInput.value.trim()) || 'Happy Birthday Nishika 💖';
         spawnLantern(wish);
-        audioSynth.playCelebrationFanfare();
+        if (audioSynth && typeof audioSynth.playCelebrationFanfare === 'function') {
+          audioSynth.playCelebrationFanfare();
+        }
         burstConfetti(window.innerWidth / 2, window.innerHeight * 0.6, 50);
         showToast('Your glowing sky lantern has ascended into the stars! 🏮✨');
         if (lanternWishInput) lanternWishInput.value = '';
       });
     }
+
+    // Unified Master Resize Handler for Both Canvases
+    function handleMasterCanvasesResize() {
+      if (typeof resizeConstellationCanvas === 'function') resizeConstellationCanvas();
+      if (typeof resizeLanternCanvas === 'function') resizeLanternCanvas();
+    }
+
+    window.addEventListener('resize', handleMasterCanvasesResize);
+    window.addEventListener('orientationchange', () => setTimeout(handleMasterCanvasesResize, 150));
+    setTimeout(() => {
+      handleMasterCanvasesResize();
+      initAmbientLanterns();
+    }, 120);
   }
 
   // --------------------------------------------------------------------------
@@ -4496,7 +4904,7 @@ const romanticReasons = [
   const clawPrizes = [
     'Candlelight Rooftop Date Under The Stars 🍷✨',
     'Unlimited Warm Cuddles & Back Rubs 🧸💖',
-    'Midnight Ice Cream Date (Komal\'s Choice) 🍦🌙',
+    'Midnight Ice Cream Date (Nishika\'s Choice) 🍦🌙',
     'Movie Marathon with 100% Her Picks 🍿🧸',
     '100 Sweet Forehead Kisses & Hugs 💋👑'
   ];
@@ -4560,13 +4968,13 @@ const romanticReasons = [
   // --------------------------------------------------------------------------
   // 24. THE ENCHANTED ROYAL MIRROR OF AFFIRMATIONS
   // --------------------------------------------------------------------------
-  const komalAffirmations = [
-    "Komal, you illuminate every room with your natural grace, kindness, and radiant beauty.",
+  const nishikaAffirmations = [
+    "Nishika, you illuminate every room with your natural grace, kindness, and radiant beauty.",
     "Your smile is my favorite view in the universe, turning every ordinary moment into magic.",
-    "Komal, you are fiercely intelligent, deeply caring, and the sweetest soul I know.",
-    "Being loved by you, Komal, is the greatest blessing my heart has ever received.",
+    "Nishika, you are fiercely intelligent, deeply caring, and the sweetest soul I know.",
+    "Being loved by you, Nishika, is the greatest blessing my heart has ever received.",
     "You inspire me every day with your gentle strength, warm laughter, and golden heart.",
-    "Komal, you are officially crowned the undisputed Queen of my heart, today and forever! 👑"
+    "Nishika, you are officially crowned the undisputed Queen of my heart, today and forever! 👑"
   ];
 
   let currentAffirmationIdx = 0;
@@ -4575,26 +4983,1147 @@ const romanticReasons = [
   const mirrorAffirmationText = document.getElementById('mirrorAffirmationText');
   const mirrorContent = document.getElementById('mirrorContent');
 
-  function cycleKomalAffirmation() {
-    currentAffirmationIdx = (currentAffirmationIdx + 1) % komalAffirmations.length;
+  function cycleNishikaAffirmation() {
+    currentAffirmationIdx = (currentAffirmationIdx + 1) % nishikaAffirmations.length;
     if (mirrorContent) {
       mirrorContent.style.animation = 'none';
       void mirrorContent.offsetWidth;
       mirrorContent.style.animation = 'mirrorFade 0.6s ease forwards';
     }
     if (mirrorAffirmationText) {
-      mirrorAffirmationText.textContent = `"${komalAffirmations[currentAffirmationIdx]}"`;
+      mirrorAffirmationText.textContent = `"${nishikaAffirmations[currentAffirmationIdx]}"`;
     }
     audioSynth.playMagicChime();
     burstConfetti(window.innerWidth / 2, window.innerHeight * 0.6, 35);
-    showToast('The Enchanted Mirror reflects true love for Komal! ✨💖');
+    showToast('The Enchanted Mirror reflects true love for Nishika! ✨💖');
   }
 
-  if (enchantedMirrorTrigger) enchantedMirrorTrigger.addEventListener('click', cycleKomalAffirmation);
-  if (nextAffirmationBtn) nextAffirmationBtn.addEventListener('click', cycleKomalAffirmation);
+  if (enchantedMirrorTrigger) enchantedMirrorTrigger.addEventListener('click', cycleNishikaAffirmation);
+  if (nextAffirmationBtn) nextAffirmationBtn.addEventListener('click', cycleNishikaAffirmation);
 
   // --------------------------------------------------------------------------
-  // 25. KEYBOARD SHORTCUTS CHEAT SHEET MODAL & GLOBAL HOTKEYS
+  // 25. COUPLE'S DATE NIGHT FORTUNE ROULETTE ENGINE
+  // --------------------------------------------------------------------------
+  const defaultDateIdeas = [
+    { id: 'd1', title: 'Candlelight Rooftop Dinner', desc: 'A dreamy 3-course private dinner under the moonlit sky with soft violin melodies.', category: 'Intimate Romance', time: 'Tonight', vibe: 'Pure Romance' },
+    { id: 'd2', title: 'Midnight Stargazing & Hot Cocoa', desc: 'Cozying under warm blankets, watching shooting stars and sharing infinite secrets.', category: 'Pure Romance', time: 'Midnight', vibe: 'Starlight Dream' },
+    { id: 'd3', title: 'Cozy Blanket Fort Movie Marathon', desc: 'Building a giant living room fairy-lit fort with endless popcorn and cuddle breaks.', category: 'Cozy Stay-In', time: 'Anytime', vibe: 'Cozy Hugs' },
+    { id: 'd4', title: 'Spontaneous Road Trip Adventure', desc: 'Packing a quick basket and driving towards the sunrise or a secluded scenic viewpoint.', category: 'Spontaneous Trip', time: 'Weekend', vibe: 'Adventurous' },
+    { id: 'd5', title: 'Royal Pampering & Couples Spa', desc: 'A full evening of warm aromatic bubble bath, foot massage, and royal relaxation.', category: 'Royal Pampering', time: 'Evening', vibe: 'Luxury Pamper' },
+    { id: 'd6', title: 'Sunset Beach Walk & Hand-in-Hand Chat', desc: 'Strolling barefoot in the gentle surf as the sky turns rose, gold, and amethyst.', category: 'Pure Romance', time: 'Golden Hour', vibe: 'Dreamy Vibe' },
+    { id: 'd7', title: 'Cook Queen\'s Favorite Dish Together', desc: 'Cooking our favorite romantic pasta or dessert while slow dancing in the kitchen.', category: 'Sweet Fun', time: 'Dinner Time', vibe: 'Sweet Fun' },
+    { id: 'd8', title: 'Slow Dance in the Dark with Fairy Lights', desc: 'Dimming all lights, turning on our acoustic playlist, and getting lost in each other\'s arms.', category: 'Intimate Romance', time: 'Late Night', vibe: 'Infinite Love' }
+  ];
+
+  function getAllDateIdeas() {
+    return [...defaultDateIdeas, ...(state.customDateIdeas || [])];
+  }
+
+  const rouletteCanvas = document.getElementById('rouletteCanvas');
+  const rouletteTicker = document.getElementById('rouletteTicker');
+  const spinRouletteBtn = document.getElementById('spinRouletteBtn');
+  const rouletteCenterHub = document.getElementById('rouletteCenterHub');
+  const rouletteResultTitle = document.getElementById('rouletteResultTitle');
+  const rouletteResultDesc = document.getElementById('rouletteResultDesc');
+  const rouletteTimeTag = document.getElementById('rouletteTimeTag');
+  const rouletteVibeTag = document.getElementById('rouletteVibeTag');
+  const claimDateCouponBtn = document.getElementById('claimDateCouponBtn');
+  const openAddDateModalBtn = document.getElementById('openAddDateModalBtn');
+  const newDateIdeaModal = document.getElementById('newDateIdeaModal');
+  const closeNewDateIdeaModalBtn = document.getElementById('closeNewDateIdeaModalBtn');
+  const newDateIdeaForm = document.getElementById('newDateIdeaForm');
+  const rouletteIdeasCloud = document.getElementById('rouletteIdeasCloud');
+  const rouletteIdeaCount = document.getElementById('rouletteIdeaCount');
+
+  let rouletteAngle = 0;
+  let rouletteVelocity = 0;
+  let isRouletteSpinning = false;
+  let selectedDateIdea = null;
+  let lastSectorCrossed = -1;
+
+  const rouletteColors = [
+    ['#9d4edd', '#7b2cbf'],
+    ['#ff4081', '#f43f5e'],
+    ['#ffd700', '#d97706'],
+    ['#ec4899', '#be185d'],
+    ['#8b5cf6', '#6d28d9'],
+    ['#06b6d4', '#0891b2'],
+    ['#f59e0b', '#b45309'],
+    ['#10b981', '#047857'],
+    ['#e11d48', '#9f1239'],
+    ['#6366f1', '#4338ca']
+  ];
+
+  function drawRouletteWheel() {
+    if (!rouletteCanvas) return;
+    const ctx = rouletteCanvas.getContext('2d');
+    const width = rouletteCanvas.width;
+    const height = rouletteCanvas.height;
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const radius = width / 2 - 8;
+
+    ctx.clearRect(0, 0, width, height);
+
+    const ideas = getAllDateIdeas();
+    const numSlices = ideas.length;
+    const sliceAngle = (Math.PI * 2) / numSlices;
+
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.rotate(rouletteAngle);
+
+    // Draw Slices
+    for (let i = 0; i < numSlices; i++) {
+      const startAngle = i * sliceAngle;
+      const endAngle = (i + 1) * sliceAngle;
+      const [col1, col2] = rouletteColors[i % rouletteColors.length];
+
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, radius, startAngle, endAngle);
+      ctx.closePath();
+
+      const grad = ctx.createRadialGradient(0, 0, 30, 0, 0, radius);
+      grad.addColorStop(0, col1);
+      grad.addColorStop(1, col2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Golden Slice Border
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(255, 215, 0, 0.6)';
+      ctx.stroke();
+
+      // Outer Edge Bead / Stud
+      const midAngle = startAngle + sliceAngle / 2;
+      const beadX = Math.cos(midAngle) * (radius - 12);
+      const beadY = Math.sin(midAngle) * (radius - 12);
+      ctx.beginPath();
+      ctx.arc(beadX, beadY, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffd700';
+      ctx.shadowColor = '#ffd700';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Slice Text
+      ctx.save();
+      ctx.rotate(midAngle);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 13px Outfit, sans-serif';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+      ctx.shadowBlur = 4;
+
+      const titleText = ideas[i].title.length > 20 ? ideas[i].title.substring(0, 18) + '…' : ideas[i].title;
+      ctx.fillText(titleText, radius - 26, 5);
+      ctx.restore();
+    }
+
+    ctx.restore();
+  }
+
+  function renderRouletteIdeasCloud() {
+    if (!rouletteIdeasCloud) return;
+    const ideas = getAllDateIdeas();
+    if (rouletteIdeaCount) rouletteIdeaCount.textContent = ideas.length;
+
+    rouletteIdeasCloud.innerHTML = ideas.map((idea, idx) => `
+      <span class="idea-chip ${selectedDateIdea && selectedDateIdea.id === idea.id ? 'active-choice' : ''}" data-idea-idx="${idx}">
+        ${idea.category.includes('Romance') ? '🌹' : idea.category.includes('Stay') ? '🛋️' : idea.category.includes('Trip') ? '🚗' : idea.category.includes('Pamper') ? '👑' : '🎡'} ${escapeHtml(idea.title)}
+      </span>
+    `).join('');
+  }
+
+  function spinRoulette() {
+    if (isRouletteSpinning) return;
+    isRouletteSpinning = true;
+    if (claimDateCouponBtn) claimDateCouponBtn.disabled = true;
+
+    // Start with powerful random angular velocity
+    rouletteVelocity = 0.28 + Math.random() * 0.18;
+    lastSectorCrossed = -1;
+
+    if (audioSynth && audioSynth.playSparkleChime) {
+      audioSynth.playSparkleChime();
+    }
+
+    function animateSpin() {
+      rouletteAngle += rouletteVelocity;
+      rouletteVelocity *= 0.984; // Smooth deceleration friction
+
+      // Check current sector at top needle (Top needle is at -Math.PI / 2)
+      const ideas = getAllDateIdeas();
+      const numSlices = ideas.length;
+      const sliceAngle = (Math.PI * 2) / numSlices;
+      
+      const normalizedAngle = (2 * Math.PI - (rouletteAngle % (2 * Math.PI))) % (2 * Math.PI);
+      const topPointerAngle = (normalizedAngle + Math.PI * 1.5) % (2 * Math.PI);
+      const currentSector = Math.floor(topPointerAngle / sliceAngle);
+
+      if (currentSector !== lastSectorCrossed) {
+        lastSectorCrossed = currentSector;
+        if (rouletteTicker) {
+          rouletteTicker.classList.add('tick-bounce');
+          setTimeout(() => rouletteTicker.classList.remove('tick-bounce'), 60);
+        }
+        if (audioSynth && audioSynth.playPopSound && rouletteVelocity > 0.03) {
+          audioSynth.playPopSound();
+        }
+      }
+
+      drawRouletteWheel();
+
+      if (rouletteVelocity > 0.002) {
+        requestAnimationFrame(animateSpin);
+      } else {
+        isRouletteSpinning = false;
+        selectedDateIdea = ideas[currentSector];
+        displayRouletteResult(selectedDateIdea);
+      }
+    }
+
+    requestAnimationFrame(animateSpin);
+  }
+
+  function displayRouletteResult(idea) {
+    if (!idea) return;
+    if (rouletteResultTitle) rouletteResultTitle.textContent = `${idea.title} ✨`;
+    if (rouletteResultDesc) rouletteResultDesc.textContent = `"${idea.desc}"`;
+    if (rouletteTimeTag) rouletteTimeTag.textContent = idea.time || 'Tonight';
+    if (rouletteVibeTag) rouletteVibeTag.textContent = idea.vibe || idea.category;
+    if (claimDateCouponBtn) claimDateCouponBtn.disabled = false;
+
+    renderRouletteIdeasCloud();
+    audioSynth.playCelebrationFanfare();
+    burstConfetti(window.innerWidth / 2, window.innerHeight * 0.6, 50);
+    showToast(`Tonight's Royal Date: ${idea.title}! 🎡💕`);
+  }
+
+  if (spinRouletteBtn) spinRouletteBtn.addEventListener('click', spinRoulette);
+  if (rouletteCenterHub) rouletteCenterHub.addEventListener('click', spinRoulette);
+
+  if (claimDateCouponBtn) {
+    claimDateCouponBtn.addEventListener('click', () => {
+      if (!selectedDateIdea) return;
+      const couponId = 'custom_date_' + Date.now();
+      if (!state.claimedCoupons.includes(couponId)) {
+        state.claimedCoupons.push(couponId);
+        saveState();
+      }
+      claimDateCouponBtn.disabled = true;
+      audioSynth.playMagicChime();
+      burstConfetti(window.innerWidth / 2, window.innerHeight * 0.5, 45);
+      showToast(`🎟️ "${selectedDateIdea.title}" claimed as a VIP Love Coupon!`);
+    });
+  }
+
+  if (openAddDateModalBtn) openAddDateModalBtn.addEventListener('click', () => openModal(newDateIdeaModal));
+  if (closeNewDateIdeaModalBtn) closeNewDateIdeaModalBtn.addEventListener('click', () => closeModal(newDateIdeaModal));
+
+  if (newDateIdeaForm) {
+    newDateIdeaForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const titleInput = document.getElementById('dateIdeaTitleInput');
+      const descInput = document.getElementById('dateIdeaDescInput');
+      const catSelect = document.getElementById('dateIdeaCategorySelect');
+
+      if (!titleInput || !descInput) return;
+      const newIdea = {
+        id: 'cdate_' + Date.now(),
+        title: titleInput.value.trim(),
+        desc: descInput.value.trim(),
+        category: catSelect ? catSelect.value : 'Intimate Romance',
+        time: 'Special Date',
+        vibe: 'Handcrafted With Love'
+      };
+
+      state.customDateIdeas.push(newIdea);
+      saveState();
+      drawRouletteWheel();
+      renderRouletteIdeasCloud();
+      closeModal(newDateIdeaModal);
+      newDateIdeaForm.reset();
+      showToast(`Added "${newIdea.title}" to Royal Roulette! 🎡✨`);
+      audioSynth.playSuccessBeep();
+    });
+  }
+
+  drawRouletteWheel();
+  renderRouletteIdeasCloud();
+
+  // --------------------------------------------------------------------------
+  // 26. COSMIC AMBIENT SOUNDSCAPE SANCTUARY ENGINE
+  // --------------------------------------------------------------------------
+  let soundscapeAudioCtx = null;
+  let soundscapeMasterGain = null;
+  let isSoundscapePlaying = false;
+  let soundscapeTimerInterval = null;
+  let soundscapeTimerSeconds = 0;
+
+  const trackNodes = {
+    rain: { gain: null, source: null, filter: null },
+    fire: { gain: null, source: null, filter: null },
+    ocean: { gain: null, source: null, filter: null, lfo: null },
+    chimes: { gain: null, timer: null },
+    piano: { gain: null, timer: null },
+    cafe: { gain: null, source: null, filter: null }
+  };
+
+  const soundscapeMasterToggle = document.getElementById('soundscapeMasterToggle');
+  const soundscapePlayIcon = document.getElementById('soundscapePlayIcon');
+  const soundscapeMasterLabel = document.getElementById('soundscapeMasterLabel');
+  const soundscapeMasterVol = document.getElementById('soundscapeMasterVol');
+  const soundscapeMasterPercent = document.getElementById('soundscapeMasterPercent');
+  const soundscapeTimerSelect = document.getElementById('soundscapeTimerSelect');
+  const soundscapeTimerBadge = document.getElementById('soundscapeTimerBadge');
+  const soundscapeTimerCountdown = document.getElementById('soundscapeTimerCountdown');
+
+  function initSoundscapeAudio() {
+    if (soundscapeAudioCtx) return;
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      soundscapeAudioCtx = new AudioContext();
+      soundscapeMasterGain = soundscapeAudioCtx.createGain();
+      soundscapeMasterGain.gain.setValueAtTime((state.soundscapeVolumes.master || 80) / 100, soundscapeAudioCtx.currentTime);
+      soundscapeMasterGain.connect(soundscapeAudioCtx.destination);
+    } catch (e) {
+      console.warn('Web Audio API not supported for soundscape', e);
+    }
+  }
+
+  // 1. Rain Generator (Pink Noise + Bandpass Filter)
+  function startRainSound() {
+    if (!soundscapeAudioCtx || trackNodes.rain.source) return;
+    const bufferSize = soundscapeAudioCtx.sampleRate * 2;
+    const noiseBuffer = soundscapeAudioCtx.createBuffer(1, bufferSize, soundscapeAudioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + white * 0.0555179;
+      b1 = 0.99332 * b1 + white * 0.0750759;
+      b2 = 0.96900 * b2 + white * 0.1538520;
+      b3 = 0.86650 * b3 + white * 0.3104856;
+      b4 = 0.55000 * b4 + white * 0.5329522;
+      b5 = -0.7616 * b5 - white * 0.0168980;
+      output[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.08;
+      b6 = white * 0.115926;
+    }
+
+    const whiteNoise = soundscapeAudioCtx.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+    whiteNoise.loop = true;
+
+    const filter = soundscapeAudioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(850, soundscapeAudioCtx.currentTime);
+    filter.Q.setValueAtTime(1.1, soundscapeAudioCtx.currentTime);
+
+    const gain = soundscapeAudioCtx.createGain();
+    gain.gain.setValueAtTime((state.soundscapeVolumes.rain || 70) / 100 * 0.4, soundscapeAudioCtx.currentTime);
+
+    whiteNoise.connect(filter);
+    filter.connect(gain);
+    gain.connect(soundscapeMasterGain);
+    whiteNoise.start();
+
+    trackNodes.rain = { source: whiteNoise, filter, gain };
+  }
+
+  // 2. Fireplace Generator (Brownian Noise + Random Bursts)
+  function startFireSound() {
+    if (!soundscapeAudioCtx || trackNodes.fire.source) return;
+    const bufferSize = soundscapeAudioCtx.sampleRate * 2;
+    const noiseBuffer = soundscapeAudioCtx.createBuffer(1, bufferSize, soundscapeAudioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    let lastOut = 0.0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      output[i] = (lastOut + (0.02 * white)) / 1.02;
+      lastOut = output[i];
+      if (Math.random() < 0.002) output[i] += (Math.random() * 2 - 1) * 0.45;
+      output[i] *= 0.6;
+    }
+
+    const brownNoise = soundscapeAudioCtx.createBufferSource();
+    brownNoise.buffer = noiseBuffer;
+    brownNoise.loop = true;
+
+    const filter = soundscapeAudioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(500, soundscapeAudioCtx.currentTime);
+
+    const gain = soundscapeAudioCtx.createGain();
+    gain.gain.setValueAtTime((state.soundscapeVolumes.fire || 45) / 100 * 0.5, soundscapeAudioCtx.currentTime);
+
+    brownNoise.connect(filter);
+    filter.connect(gain);
+    gain.connect(soundscapeMasterGain);
+    brownNoise.start();
+
+    trackNodes.fire = { source: brownNoise, filter, gain };
+  }
+
+  // 3. Ocean Waves Generator (Modulated Noise Swells)
+  function startOceanSound() {
+    if (!soundscapeAudioCtx || trackNodes.ocean.source) return;
+    const bufferSize = soundscapeAudioCtx.sampleRate * 2;
+    const noiseBuffer = soundscapeAudioCtx.createBuffer(1, bufferSize, soundscapeAudioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    let b0 = 0, b1 = 0, b2 = 0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      b0 = 0.998 * b0 + white * 0.055;
+      b1 = 0.993 * b1 + white * 0.075;
+      b2 = 0.969 * b2 + white * 0.153;
+      output[i] = (b0 + b1 + b2) * 0.12;
+    }
+
+    const oceanNoise = soundscapeAudioCtx.createBufferSource();
+    oceanNoise.buffer = noiseBuffer;
+    oceanNoise.loop = true;
+
+    const filter = soundscapeAudioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(300, soundscapeAudioCtx.currentTime);
+
+    const lfo = soundscapeAudioCtx.createOscillator();
+    lfo.frequency.setValueAtTime(0.08, soundscapeAudioCtx.currentTime); // Wave swell period ~12.5s
+    const lfoGain = soundscapeAudioCtx.createGain();
+    lfoGain.gain.setValueAtTime(320, soundscapeAudioCtx.currentTime);
+    lfo.connect(lfoGain);
+    lfoGain.connect(filter.frequency);
+    lfo.start();
+
+    const gain = soundscapeAudioCtx.createGain();
+    gain.gain.setValueAtTime((state.soundscapeVolumes.ocean || 0) / 100 * 0.45, soundscapeAudioCtx.currentTime);
+
+    oceanNoise.connect(filter);
+    filter.connect(gain);
+    gain.connect(soundscapeMasterGain);
+    oceanNoise.start();
+
+    trackNodes.ocean = { source: oceanNoise, filter, lfo, gain };
+  }
+
+  // 4. Starlight Chimes Generator (Pentatonic Overtones)
+  function startChimesSound() {
+    if (!soundscapeAudioCtx || trackNodes.chimes.gain) return;
+    const chimesGain = soundscapeAudioCtx.createGain();
+    chimesGain.gain.setValueAtTime((state.soundscapeVolumes.chimes || 60) / 100 * 0.35, soundscapeAudioCtx.currentTime);
+    chimesGain.connect(soundscapeMasterGain);
+
+    const chimeNotes = [659.25, 783.99, 987.77, 1318.51, 1567.98, 1975.53];
+    const chimeTimer = setInterval(() => {
+      if (!isSoundscapePlaying || !soundscapeAudioCtx) return;
+      if (Math.random() < 0.65) {
+        const osc = soundscapeAudioCtx.createOscillator();
+        const noteGain = soundscapeAudioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(chimeNotes[Math.floor(Math.random() * chimeNotes.length)], soundscapeAudioCtx.currentTime);
+
+        const now = soundscapeAudioCtx.currentTime;
+        noteGain.gain.setValueAtTime(0.001, now);
+        noteGain.gain.exponentialRampToValueAtTime(0.25, now + 0.05);
+        noteGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.5);
+
+        osc.connect(noteGain);
+        noteGain.connect(chimesGain);
+        osc.start(now);
+        osc.stop(now + 2.6);
+      }
+    }, 1800);
+
+    trackNodes.chimes = { gain: chimesGain, timer: chimeTimer };
+  }
+
+  // 5. Dreamy Lo-Fi Piano Harmony Generator
+  function startPianoPadSound() {
+    if (!soundscapeAudioCtx || trackNodes.piano.gain) return;
+    const pianoGain = soundscapeAudioCtx.createGain();
+    pianoGain.gain.setValueAtTime((state.soundscapeVolumes.piano || 50) / 100 * 0.3, soundscapeAudioCtx.currentTime);
+    pianoGain.connect(soundscapeMasterGain);
+
+    const chords = [
+      [261.63, 329.63, 392.00, 493.88], // Cmaj7
+      [220.00, 261.63, 329.63, 392.00], // Am7
+      [174.61, 220.00, 261.63, 329.63], // Fmaj7
+      [196.00, 246.94, 293.66, 392.00]  // G
+    ];
+    let chordIdx = 0;
+
+    const pianoTimer = setInterval(() => {
+      if (!isSoundscapePlaying || !soundscapeAudioCtx) return;
+      const currentChord = chords[chordIdx % chords.length];
+      chordIdx++;
+
+      currentChord.forEach((freq) => {
+        const osc = soundscapeAudioCtx.createOscillator();
+        const noteGain = soundscapeAudioCtx.createGain();
+        const filter = soundscapeAudioCtx.createBiquadFilter();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, soundscapeAudioCtx.currentTime);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(900, soundscapeAudioCtx.currentTime);
+
+        const now = soundscapeAudioCtx.currentTime;
+        noteGain.gain.setValueAtTime(0.001, now);
+        noteGain.gain.linearRampToValueAtTime(0.12, now + 1.2);
+        noteGain.gain.linearRampToValueAtTime(0.001, now + 4.8);
+
+        osc.connect(filter);
+        filter.connect(noteGain);
+        noteGain.connect(pianoGain);
+        osc.start(now);
+        osc.stop(now + 5.0);
+      });
+    }, 4500);
+
+    trackNodes.piano = { gain: pianoGain, timer: pianoTimer };
+  }
+
+  // 6. Parisian Café Resonance Generator
+  function startCafeSound() {
+    if (!soundscapeAudioCtx || trackNodes.cafe.source) return;
+    const bufferSize = soundscapeAudioCtx.sampleRate * 2;
+    const noiseBuffer = soundscapeAudioCtx.createBuffer(1, bufferSize, soundscapeAudioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = (Math.random() * 2 - 1) * 0.04;
+    }
+
+    const cafeNoise = soundscapeAudioCtx.createBufferSource();
+    cafeNoise.buffer = noiseBuffer;
+    cafeNoise.loop = true;
+
+    const filter = soundscapeAudioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(420, soundscapeAudioCtx.currentTime);
+    filter.Q.setValueAtTime(1.5, soundscapeAudioCtx.currentTime);
+
+    const gain = soundscapeAudioCtx.createGain();
+    gain.gain.setValueAtTime((state.soundscapeVolumes.cafe || 0) / 100 * 0.35, soundscapeAudioCtx.currentTime);
+
+    cafeNoise.connect(filter);
+    filter.connect(gain);
+    gain.connect(soundscapeMasterGain);
+    cafeNoise.start();
+
+    trackNodes.cafe = { source: cafeNoise, filter, gain };
+  }
+
+  function startAllSoundscapeTracks() {
+    initSoundscapeAudio();
+    if (soundscapeAudioCtx && soundscapeAudioCtx.state === 'suspended') {
+      soundscapeAudioCtx.resume();
+    }
+    startRainSound();
+    startFireSound();
+    startOceanSound();
+    startChimesSound();
+    startPianoPadSound();
+    startCafeSound();
+    isSoundscapePlaying = true;
+    updateSoundscapeUI();
+  }
+
+  function stopAllSoundscapeTracks() {
+    Object.keys(trackNodes).forEach(key => {
+      const node = trackNodes[key];
+      if (node.source) {
+        try { node.source.stop(); } catch (e) {}
+        node.source = null;
+      }
+      if (node.lfo) {
+        try { node.lfo.stop(); } catch (e) {}
+        node.lfo = null;
+      }
+      if (node.timer) {
+        clearInterval(node.timer);
+        node.timer = null;
+      }
+      node.gain = null;
+    });
+    isSoundscapePlaying = false;
+    updateSoundscapeUI();
+  }
+
+  function toggleSoundscape() {
+    if (isSoundscapePlaying) {
+      stopAllSoundscapeTracks();
+      showToast('Soundscape Sanctuary paused 🌙');
+    } else {
+      startAllSoundscapeTracks();
+      showToast('Playing Cosmic Soundscape Sanctuary 🌌✨');
+    }
+  }
+
+  function updateSoundscapeUI() {
+    if (soundscapePlayIcon) {
+      soundscapePlayIcon.className = isSoundscapePlaying ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+    }
+    if (soundscapeMasterLabel) {
+      soundscapeMasterLabel.textContent = isSoundscapePlaying ? 'Pause Soundscape' : 'Play Soundscape';
+    }
+
+    // Animate visualizer meters
+    ['Rain', 'Fire', 'Ocean', 'Chimes', 'Piano', 'Cafe'].forEach(track => {
+      const meter = document.getElementById(`meter${track}`);
+      const vol = state.soundscapeVolumes[track.toLowerCase()] || 0;
+      if (meter) {
+        meter.style.width = isSoundscapePlaying && vol > 0 ? `${vol}%` : '0%';
+      }
+    });
+  }
+
+  if (soundscapeMasterToggle) soundscapeMasterToggle.addEventListener('click', toggleSoundscape);
+
+  if (soundscapeMasterVol) {
+    soundscapeMasterVol.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value, 10);
+      state.soundscapeVolumes.master = val;
+      if (soundscapeMasterPercent) soundscapeMasterPercent.textContent = `${val}%`;
+      if (soundscapeMasterGain && soundscapeAudioCtx) {
+        soundscapeMasterGain.gain.setValueAtTime(val / 100, soundscapeAudioCtx.currentTime);
+      }
+      saveState();
+    });
+  }
+
+  // Setup individual track volume sliders
+  const soundTrackConfigs = [
+    { key: 'rain', slider: 'volRain', label: 'labelVolRain', scale: 0.4 },
+    { key: 'fire', slider: 'volFire', label: 'labelVolFire', scale: 0.5 },
+    { key: 'ocean', slider: 'volOcean', label: 'labelVolOcean', scale: 0.45 },
+    { key: 'chimes', slider: 'volChimes', label: 'labelVolChimes', scale: 0.35 },
+    { key: 'piano', slider: 'volPiano', label: 'labelVolPiano', scale: 0.3 },
+    { key: 'cafe', slider: 'volCafe', label: 'labelVolCafe', scale: 0.35 }
+  ];
+
+  soundTrackConfigs.forEach(({ key, slider, label, scale }) => {
+    const sliderEl = document.getElementById(slider);
+    const labelEl = document.getElementById(label);
+    if (sliderEl) {
+      sliderEl.value = state.soundscapeVolumes[key] !== undefined ? state.soundscapeVolumes[key] : 50;
+      if (labelEl) labelEl.textContent = `${sliderEl.value}%`;
+
+      sliderEl.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        state.soundscapeVolumes[key] = val;
+        if (labelEl) labelEl.textContent = `${val}%`;
+        if (trackNodes[key].gain && soundscapeAudioCtx) {
+          trackNodes[key].gain.gain.setValueAtTime((val / 100) * scale, soundscapeAudioCtx.currentTime);
+        }
+        updateSoundscapeUI();
+        saveState();
+      });
+    }
+  });
+
+  // Track Mute Buttons
+  document.querySelectorAll('.track-mute-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const track = btn.getAttribute('data-track');
+      if (!track) return;
+      const isMuted = btn.classList.toggle('muted');
+      const icon = btn.querySelector('i');
+      if (icon) icon.className = isMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+
+      const sliderEl = document.getElementById(`vol${track.charAt(0).toUpperCase() + track.slice(1)}`);
+      const targetVol = isMuted ? 0 : (state.soundscapeVolumes[track] || 50);
+      const scale = soundTrackConfigs.find(c => c.key === track)?.scale || 0.4;
+
+      if (trackNodes[track].gain && soundscapeAudioCtx) {
+        trackNodes[track].gain.gain.setValueAtTime((targetVol / 100) * scale, soundscapeAudioCtx.currentTime);
+      }
+    });
+  });
+
+  // Soundscape Mood Presets
+  const soundscapePresets = {
+    midnight: { rain: 20, fire: 30, ocean: 0, chimes: 80, piano: 65, cafe: 0 },
+    rainy: { rain: 90, fire: 60, ocean: 0, chimes: 20, piano: 40, cafe: 0 },
+    fireside: { rain: 30, fire: 85, ocean: 0, chimes: 35, piano: 55, cafe: 0 },
+    ocean: { rain: 10, fire: 0, ocean: 85, chimes: 70, piano: 45, cafe: 0 },
+    cafe: { rain: 45, fire: 20, ocean: 0, chimes: 30, piano: 70, cafe: 80 },
+    zen: { rain: 35, fire: 15, ocean: 50, chimes: 80, piano: 60, cafe: 0 }
+  };
+
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const presetKey = btn.getAttribute('data-preset');
+      const preset = soundscapePresets[presetKey];
+      if (!preset) return;
+
+      Object.keys(preset).forEach(track => {
+        state.soundscapeVolumes[track] = preset[track];
+        const sliderEl = document.getElementById(`vol${track.charAt(0).toUpperCase() + track.slice(1)}`);
+        const labelEl = document.getElementById(`labelVol${track.charAt(0).toUpperCase() + track.slice(1)}`);
+        if (sliderEl) sliderEl.value = preset[track];
+        if (labelEl) labelEl.textContent = `${preset[track]}%`;
+
+        const scale = soundTrackConfigs.find(c => c.key === track)?.scale || 0.4;
+        if (trackNodes[track].gain && soundscapeAudioCtx) {
+          trackNodes[track].gain.gain.setValueAtTime((preset[track] / 100) * scale, soundscapeAudioCtx.currentTime);
+        }
+      });
+
+      if (!isSoundscapePlaying) {
+        startAllSoundscapeTracks();
+      } else {
+        updateSoundscapeUI();
+      }
+      saveState();
+      showToast(`Mood Preset: ${btn.textContent.trim()} activated ✨`);
+    });
+  });
+
+  // Soundscape Sleep Timer
+  if (soundscapeTimerSelect) {
+    soundscapeTimerSelect.addEventListener('change', (e) => {
+      const minutes = parseInt(e.target.value, 10);
+      if (soundscapeTimerInterval) clearInterval(soundscapeTimerInterval);
+
+      if (minutes > 0) {
+        soundscapeTimerSeconds = minutes * 60;
+        if (soundscapeTimerBadge) soundscapeTimerBadge.classList.remove('hidden');
+        if (!isSoundscapePlaying) startAllSoundscapeTracks();
+
+        soundscapeTimerInterval = setInterval(() => {
+          soundscapeTimerSeconds--;
+          const m = Math.floor(soundscapeTimerSeconds / 60);
+          const s = soundscapeTimerSeconds % 60;
+          if (soundscapeTimerCountdown) {
+            soundscapeTimerCountdown.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+          }
+
+          if (soundscapeTimerSeconds <= 0) {
+            clearInterval(soundscapeTimerInterval);
+            stopAllSoundscapeTracks();
+            if (soundscapeTimerBadge) soundscapeTimerBadge.classList.add('hidden');
+            soundscapeTimerSelect.value = '0';
+            showToast('Sleep timer reached. Goodnight, Queen Nishika 🌙💤');
+          }
+        }, 1000);
+      } else {
+        if (soundscapeTimerBadge) soundscapeTimerBadge.classList.add('hidden');
+      }
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // 27. FUTURE LOVE TIME CAPSULE VAULT ENGINE
+  // --------------------------------------------------------------------------
+  const defaultTimeCapsules = [
+    {
+      id: 'cap_bday_2027',
+      title: 'A Letter to Queen Nishika on September 20, 2027',
+      unlockDate: '2027-09-20T00:00:00+05:30',
+      tag: '👑 Next Royal Birthday',
+      desc: 'Reflecting on one full year of magic since your royal coronation day. Sealed with eternal promises.',
+      message: 'My dearest Queen Nishika,\n\nIf you are reading this today, another breathtaking year of your life has illuminated the cosmos. Over the past 365 days, my heart has loved you in ways I never thought possible. Every single sunrise with you feels like poetry. Thank you for your warmth, your radiant smile, and your gentle soul. Happy Birthday, my whole universe!\n\nWith all my love and devotion,\nForever Dilip 💖'
+    },
+    {
+      id: 'cap_anniversary_2026',
+      title: 'Our 1st Anniversary Golden Milestone',
+      unlockDate: '2026-12-29T00:00:00+05:30',
+      tag: '💖 Anniversary Celebration',
+      desc: 'Looking back on our very first chapter of love hand in hand.',
+      message: 'Happy 1st Anniversary, my love!\n\nOne full year of holding your hand, sharing whispers under the stars, laughing at our silly jokes, and falling deeper in love every second. Choosing you was the greatest decision of my life, and choosing you every single day is my highest joy.\n\nForever yours,\nDilip 💕'
+    },
+    {
+      id: 'cap_valentine_2027',
+      title: 'Valentine\'s Starlight Midnight Confession',
+      unlockDate: '2027-02-14T00:00:00+05:30',
+      tag: '🌹 Valentine\'s Day Special',
+      desc: 'A secret Valentine message sealed across the universe for Queen Nishika.',
+      message: 'To my forever Valentine, Nishika 🌹\n\nIn a galaxy of billions, my soul found its true north in you. You are my favorite thought in the morning and my sweetest dream at night. Happy Valentine\'s Day, my Queen!\n\nLove always,\nDilip 💖'
+    },
+    {
+      id: 'cap_newyear_2026',
+      title: 'New Year\'s Eve Midnight Starlight Toast',
+      unlockDate: '2026-12-31T23:59:59+05:30',
+      tag: '✨ New Year Milestone',
+      desc: 'A toast to crossing into a brand-new year together in infinite love.',
+      message: 'Happy New Year, my beautiful Queen! 🥂✨\n\nAs the clock strikes midnight, my only wish for this upcoming year is to make you smile every day, hold you close through every storm, and celebrate you endlessly.\n\nDevotedly yours,\nDilip 👑💖'
+    }
+  ];
+
+  function getAllTimeCapsules() {
+    return [...defaultTimeCapsules, ...(state.timeCapsules || [])];
+  }
+
+  const openSpotlightCapsuleBtn = document.getElementById('openSpotlightCapsuleBtn');
+  const vipCapsuleBypassBtn = document.getElementById('vipCapsuleBypassBtn');
+  const openCreateCapsuleBtn = document.getElementById('openCreateCapsuleBtn');
+  const createCapsuleModal = document.getElementById('createCapsuleModal');
+  const closeCreateCapsuleModalBtn = document.getElementById('closeCreateCapsuleModalBtn');
+  const createCapsuleForm = document.getElementById('createCapsuleForm');
+  const capsulesGrid = document.getElementById('capsulesGrid');
+  const capsuleCountTotal = document.getElementById('capsuleCountTotal');
+  const viewCapsuleModal = document.getElementById('viewCapsuleModal');
+  const closeViewCapsuleModalBtn = document.getElementById('closeViewCapsuleModalBtn');
+  const closeViewCapsuleBtn = document.getElementById('closeViewCapsuleBtn');
+  const viewCapsuleVipBypassBtn = document.getElementById('viewCapsuleVipBypassBtn');
+
+  let activeViewingCapsule = null;
+  let currentCapsuleFilter = 'all';
+
+  function updateCapsuleSpotlightCountdown() {
+    const capsules = getAllTimeCapsules();
+    const now = Date.now();
+    const lockedCapsules = capsules.filter(c => new Date(c.unlockDate).getTime() > now)
+                                   .sort((a, b) => new Date(a.unlockDate).getTime() - new Date(b.unlockDate).getTime());
+
+    const spotlightCap = lockedCapsules.length > 0 ? lockedCapsules[0] : capsules[0];
+    if (!spotlightCap) return;
+
+    const spotlightTitle = document.getElementById('spotlightTitle');
+    const spotlightDesc = document.getElementById('spotlightDesc');
+    const spotlightTag = document.getElementById('spotlightTag');
+    if (spotlightTitle) spotlightTitle.textContent = spotlightCap.title;
+    if (spotlightDesc) spotlightDesc.textContent = `"${spotlightCap.desc || spotlightCap.title}"`;
+    if (spotlightTag) spotlightTag.textContent = spotlightCap.tag || '👑 Time Capsule';
+
+    const diff = new Date(spotlightCap.unlockDate).getTime() - now;
+    const capDays = document.getElementById('capDays');
+    const capHours = document.getElementById('capHours');
+    const capMins = document.getElementById('capMins');
+    const capSecs = document.getElementById('capSecs');
+
+    if (diff > 0) {
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / (1000 * 60)) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+
+      if (capDays) capDays.textContent = d.toString().padStart(2, '0');
+      if (capHours) capHours.textContent = h.toString().padStart(2, '0');
+      if (capMins) capMins.textContent = m.toString().padStart(2, '0');
+      if (capSecs) capSecs.textContent = s.toString().padStart(2, '0');
+    } else {
+      if (capDays) capDays.textContent = '00';
+      if (capHours) capHours.textContent = '00';
+      if (capMins) capMins.textContent = '00';
+      if (capSecs) capSecs.textContent = '00';
+    }
+  }
+
+  function renderTimeCapsulesGrid() {
+    if (!capsulesGrid) return;
+    const capsules = getAllTimeCapsules();
+    if (capsuleCountTotal) capsuleCountTotal.textContent = capsules.length;
+    const now = Date.now();
+
+    const filtered = capsules.filter(c => {
+      const isLocked = new Date(c.unlockDate).getTime() > now;
+      if (currentCapsuleFilter === 'locked') return isLocked;
+      if (currentCapsuleFilter === 'unlocked') return !isLocked;
+      return true;
+    });
+
+    capsulesGrid.innerHTML = filtered.map(cap => {
+      const unlockTime = new Date(cap.unlockDate).getTime();
+      const isLocked = unlockTime > now;
+      const formattedDate = new Date(cap.unlockDate).toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric'
+      });
+
+      return `
+        <div class="capsule-card-item ${!isLocked ? 'unlocked-state' : ''}">
+          <div class="capsule-item-top">
+            <span class="capsule-tag-badge">${escapeHtml(cap.tag || '💌 Milestone')}</span>
+            <span class="capsule-unlock-status">
+              ${isLocked ? '<i class="fa-solid fa-lock"></i> Locked' : '<i class="fa-solid fa-lock-open"></i> Unlocked'}
+            </span>
+          </div>
+          <h4 class="capsule-item-title">${escapeHtml(cap.title)}</h4>
+          <p class="capsule-item-preview">${isLocked ? 'Encrypted secret letter locked until ' + formattedDate : 'Unsealed love letter ready to be read 💕'}</p>
+          <div class="capsule-item-footer">
+            <span class="capsule-date-stamped"><i class="fa-solid fa-calendar"></i> ${formattedDate}</span>
+            <button type="button" class="btn-primary view-cap-btn" data-cap-id="${cap.id}">
+              <i class="fa-solid ${isLocked ? 'fa-key' : 'fa-envelope-open'}"></i> ${isLocked ? 'View Vault' : 'Read Letter'}
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Attach click handlers
+    capsulesGrid.querySelectorAll('.view-cap-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const capId = btn.getAttribute('data-cap-id');
+        const cap = capsules.find(c => c.id === capId);
+        if (cap) openViewCapsuleModal(cap);
+      });
+    });
+  }
+
+  function openViewCapsuleModal(cap, bypassLock = false) {
+    if (!cap) return;
+    activeViewingCapsule = cap;
+
+    const viewCapsuleTag = document.getElementById('viewCapsuleTag');
+    const viewCapsuleTitle = document.getElementById('viewCapsuleTitle');
+    const viewCapsuleStatus = document.getElementById('viewCapsuleStatus');
+    const viewCapsuleCurtain = document.getElementById('viewCapsuleCurtain');
+    const viewCapsuleLetterContent = document.getElementById('viewCapsuleLetterContent');
+    const viewCapsuleMessageText = document.getElementById('viewCapsuleMessageText');
+    const viewCapsuleSignature = document.getElementById('viewCapsuleSignature');
+    const viewCapsuleTimestamp = document.getElementById('viewCapsuleTimestamp');
+
+    const isUnlocked = new Date(cap.unlockDate).getTime() <= Date.now() || bypassLock;
+
+    if (viewCapsuleTag) viewCapsuleTag.textContent = cap.tag || '👑 Time Capsule';
+    if (viewCapsuleTitle) viewCapsuleTitle.textContent = cap.title;
+    if (viewCapsuleStatus) {
+      viewCapsuleStatus.innerHTML = isUnlocked
+        ? '<i class="fa-solid fa-lock-open" style="color:#22c55e;"></i> Unlocked & Consecrated'
+        : `<i class="fa-solid fa-lock"></i> Locked until ${new Date(cap.unlockDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+    }
+
+    if (isUnlocked) {
+      if (viewCapsuleCurtain) viewCapsuleCurtain.classList.add('hidden');
+      if (viewCapsuleLetterContent) viewCapsuleLetterContent.classList.remove('hidden');
+      if (viewCapsuleMessageText) viewCapsuleMessageText.innerHTML = escapeHtml(cap.message).replace(/\n/g, '<br>');
+      if (viewCapsuleSignature) viewCapsuleSignature.textContent = `Forever ${state.senderName} 💖`;
+      if (viewCapsuleTimestamp) viewCapsuleTimestamp.textContent = `Sealed for Queen ${state.recipientName} • Consecrated with Eternal Love`;
+      audioSynth.playCelebrationFanfare();
+    } else {
+      if (viewCapsuleCurtain) viewCapsuleCurtain.classList.remove('hidden');
+      if (viewCapsuleLetterContent) viewCapsuleLetterContent.classList.add('hidden');
+      audioSynth.playPopSound();
+    }
+
+    openModal(viewCapsuleModal);
+  }
+
+  if (openSpotlightCapsuleBtn) {
+    openSpotlightCapsuleBtn.addEventListener('click', () => {
+      const capsules = getAllTimeCapsules();
+      const now = Date.now();
+      const lockedCapsules = capsules.filter(c => new Date(c.unlockDate).getTime() > now)
+                                     .sort((a, b) => new Date(a.unlockDate).getTime() - new Date(b.unlockDate).getTime());
+      openViewCapsuleModal(lockedCapsules[0] || capsules[0]);
+    });
+  }
+
+  if (vipCapsuleBypassBtn) {
+    vipCapsuleBypassBtn.addEventListener('click', () => {
+      const capsules = getAllTimeCapsules();
+      openViewCapsuleModal(capsules[0], true);
+      showToast('Queen Nishika Heart Key VIP Bypass Unlocked! 👑✨');
+    });
+  }
+
+  if (viewCapsuleVipBypassBtn) {
+    viewCapsuleVipBypassBtn.addEventListener('click', () => {
+      if (activeViewingCapsule) {
+        openViewCapsuleModal(activeViewingCapsule, true);
+        showToast('VIP Master Heart Key: Letter Unsealed! 💌💖');
+      }
+    });
+  }
+
+  if (openCreateCapsuleBtn) openCreateCapsuleBtn.addEventListener('click', () => openModal(createCapsuleModal));
+  if (closeCreateCapsuleModalBtn) closeCreateCapsuleModalBtn.addEventListener('click', () => closeModal(createCapsuleModal));
+  if (closeViewCapsuleModalBtn) closeViewCapsuleModalBtn.addEventListener('click', () => closeModal(viewCapsuleModal));
+  if (closeViewCapsuleBtn) closeViewCapsuleBtn.addEventListener('click', () => closeModal(viewCapsuleModal));
+
+  // Capsule Filter Chips
+  document.querySelectorAll('[data-capsule-filter]').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('[data-capsule-filter]').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentCapsuleFilter = chip.getAttribute('data-capsule-filter');
+      renderTimeCapsulesGrid();
+    });
+  });
+
+  if (createCapsuleForm) {
+    createCapsuleForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const titleInput = document.getElementById('capsuleTitleInput');
+      const dateInput = document.getElementById('capsuleUnlockDateInput');
+      const tagSelect = document.getElementById('capsuleTagSelect');
+      const msgInput = document.getElementById('capsuleMessageInput');
+
+      if (!titleInput || !dateInput || !msgInput) return;
+      const newCap = {
+        id: 'cap_custom_' + Date.now(),
+        title: titleInput.value.trim(),
+        unlockDate: new Date(dateInput.value).toISOString(),
+        tag: tagSelect ? tagSelect.value : '💌 Eternal Love Secret',
+        desc: 'Custom love capsule sealed in the cosmic vault.',
+        message: msgInput.value.trim()
+      };
+
+      state.timeCapsules.push(newCap);
+      saveState();
+      renderTimeCapsulesGrid();
+      updateCapsuleSpotlightCountdown();
+      closeModal(createCapsuleModal);
+      createCapsuleForm.reset();
+      showToast(`Encrypted & sealed "${newCap.title}" in the vault! ⏳✨`);
+      audioSynth.playMagicChime();
+      burstConfetti(window.innerWidth / 2, window.innerHeight * 0.5, 40);
+    });
+  }
+
+  setInterval(updateCapsuleSpotlightCountdown, 1000);
+  updateCapsuleSpotlightCountdown();
+  renderTimeCapsulesGrid();
+
+  // --------------------------------------------------------------------------
+  // 28. OUR COSMIC JOURNEY & MILESTONES MAP ENGINE
+  // --------------------------------------------------------------------------
+  const defaultJourneyMilestones = [
+    {
+      id: 'm1',
+      title: 'Genesis: Where Our Universe Began',
+      date: '2025-12-29',
+      category: 'genesis',
+      location: 'The First Spark',
+      desc: 'The exact celestial moment our paths converged and two souls recognized each other across space and time.'
+    },
+    {
+      id: 'm2',
+      title: 'Our First Magical Date',
+      date: '2026-01-14',
+      category: 'romance',
+      location: 'Moonlit City Lights',
+      desc: 'Endless conversations over warm coffee and gentle smiles that made the entire outside world fade away.'
+    },
+    {
+      id: 'm3',
+      title: 'Whispering Dreams Under The Stars',
+      date: '2026-03-20',
+      category: 'romance',
+      location: 'Constellation Ridge',
+      desc: 'Looking up at the night sky hand in hand and realizing our love is written across the stars.'
+    },
+    {
+      id: 'm4',
+      title: 'Unforgettable Road Trip Adventure',
+      date: '2026-05-18',
+      category: 'adventure',
+      location: 'Golden Horizon Byway',
+      desc: 'Singing our favorite songs at the top of our lungs with the warm breeze and golden sunset surrounding us.'
+    },
+    {
+      id: 'm5',
+      title: 'Queen Nishika\'s Royal Birthday Celebration',
+      date: '2026-09-20',
+      category: 'celebration',
+      location: 'Eternal Love Grand Arena',
+      desc: 'Today the whole universe celebrates the most precious, radiant, and adored Queen of my heart! 👑✨'
+    },
+    {
+      id: 'm6',
+      title: 'Forever & Beyond: Our Horizon',
+      date: '2027-12-29',
+      category: 'future',
+      location: 'Infinite Future Dreams',
+      desc: 'A lifetime of adventures, cozy mornings, shared triumphs, and unconditional love awaiting us.'
+    }
+  ];
+
+  function getAllJourneyPins() {
+    return [...defaultJourneyMilestones, ...(state.customJourneyPins || [])];
+  }
+
+  const cosmicDistanceVal = document.getElementById('cosmicDistanceVal');
+  const cosmicHeartbeatsVal = document.getElementById('cosmicHeartbeatsVal');
+  const cosmicMilestonesCount = document.getElementById('cosmicMilestonesCount');
+  const journeyNodesGrid = document.getElementById('journeyNodesGrid');
+  const openAddJourneyPinBtn = document.getElementById('openAddJourneyPinBtn');
+  const addJourneyPinModal = document.getElementById('addJourneyPinModal');
+  const closeAddJourneyPinModalBtn = document.getElementById('closeAddJourneyPinModalBtn');
+  const addJourneyPinForm = document.getElementById('addJourneyPinForm');
+
+  function updateCosmicStats() {
+    const start = new Date(state.startDate || '2025-12-29').getTime();
+    const now = Date.now();
+    const daysInLove = Math.max(1, Math.floor((now - start) / (1000 * 60 * 60 * 24)));
+
+    // Earth orbital speed around sun is ~2.57 Million km per day!
+    const kmTraveled = daysInLove * 2570000;
+    // Average resting heart rate ~75 bpm
+    const heartbeats = daysInLove * 24 * 60 * 75;
+
+    if (cosmicDistanceVal) cosmicDistanceVal.textContent = kmTraveled.toLocaleString();
+    if (cosmicHeartbeatsVal) cosmicHeartbeatsVal.textContent = heartbeats.toLocaleString();
+    if (cosmicMilestonesCount) cosmicMilestonesCount.textContent = getAllJourneyPins().length;
+  }
+
+  function renderJourneyMap() {
+    if (!journeyNodesGrid) return;
+    const pins = getAllJourneyPins().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    if (cosmicMilestonesCount) cosmicMilestonesCount.textContent = pins.length;
+
+    journeyNodesGrid.innerHTML = pins.map((pin, idx) => {
+      const pinDate = new Date(pin.date).toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric'
+      });
+
+      return `
+        <div class="journey-node-card">
+          <div class="node-pin-badge">${idx + 1}</div>
+          <span class="node-date"><i class="fa-solid fa-calendar-day"></i> ${pinDate}</span>
+          <h4 class="node-title">${escapeHtml(pin.title)}</h4>
+          <span class="node-location"><i class="fa-solid fa-location-dot"></i> ${escapeHtml(pin.location || 'Special Memory')}</span>
+          <p class="node-desc">${escapeHtml(pin.desc)}</p>
+        </div>
+      `;
+    }).join('');
+  }
+
+  if (openAddJourneyPinBtn) openAddJourneyPinBtn.addEventListener('click', () => openModal(addJourneyPinModal));
+  if (closeAddJourneyPinModalBtn) closeAddJourneyPinModalBtn.addEventListener('click', () => closeModal(addJourneyPinModal));
+
+  if (addJourneyPinForm) {
+    addJourneyPinForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const titleInput = document.getElementById('pinTitleInput');
+      const dateInput = document.getElementById('pinDateInput');
+      const catSelect = document.getElementById('pinCategorySelect');
+      const locInput = document.getElementById('pinLocationInput');
+      const descInput = document.getElementById('pinDescInput');
+
+      if (!titleInput || !dateInput || !descInput) return;
+      const newPin = {
+        id: 'pin_' + Date.now(),
+        title: titleInput.value.trim(),
+        date: dateInput.value,
+        category: catSelect ? catSelect.value : 'romance',
+        location: locInput ? locInput.value.trim() : 'Our Cherished Place',
+        desc: descInput.value.trim()
+      };
+
+      state.customJourneyPins.push(newPin);
+      saveState();
+      renderJourneyMap();
+      updateCosmicStats();
+      closeModal(addJourneyPinModal);
+      addJourneyPinForm.reset();
+      showToast(`Consecrated milestone "${newPin.title}" on Cosmic Map! 🗺️✨`);
+      audioSynth.playCelebrationFanfare();
+      burstConfetti(window.innerWidth / 2, window.innerHeight * 0.5, 45);
+    });
+  }
+
+  updateCosmicStats();
+  renderJourneyMap();
+  setInterval(updateCosmicStats, 5000);
+
+  // --------------------------------------------------------------------------
+  // 29. KEYBOARD SHORTCUTS CHEAT SHEET MODAL & GLOBAL HOTKEYS
   // --------------------------------------------------------------------------
   const shortcutsBtn = document.getElementById('shortcutsBtn');
   const floatingShortcutsBtn = document.getElementById('floatingShortcutsBtn');
@@ -4695,13 +6224,45 @@ const romanticReasons = [
       return;
     }
 
-    // 9. K: Enchanted Mirror Royal Affirmation
-    if (key === 'k') {
-      cycleKomalAffirmation();
+    // 9. K / N: Enchanted Mirror Royal Affirmation
+    if (key === 'k' || key === 'n') {
+      cycleNishikaAffirmation();
       return;
     }
 
-    // 10. T: Toggle Soft Candlelight Ambiance
+    // 10. R: Spin Date Night Fortune Roulette Wheel
+    if (key === 'r') {
+      const rSec = document.getElementById('rouletteSec');
+      if (rSec) rSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      spinRoulette();
+      return;
+    }
+
+    // 11. S: Toggle / Cycle Ambient Soundscape Sanctuary
+    if (key === 's' && (!guitarView || !guitarView.classList.contains('active'))) {
+      const sSec = document.getElementById('soundscapeSec');
+      if (sSec) sSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      toggleSoundscape();
+      return;
+    }
+
+    // 12. O: Open Future Love Time Capsule Vault
+    if (key === 'o') {
+      const capSec = document.getElementById('capsuleSec');
+      if (capSec) capSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (openSpotlightCapsuleBtn) openSpotlightCapsuleBtn.click();
+      return;
+    }
+
+    // 13. J: Jump to Cosmic Journey & Milestones Map
+    if (key === 'j') {
+      const jSec = document.getElementById('journeySec');
+      if (jSec) jSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      showToast('Viewing Our Cosmic Journey Map 🗺️✨');
+      return;
+    }
+
+    // 14. T: Toggle Soft Candlelight Ambiance
     if (key === 't' && (!guitarView || !guitarView.classList.contains('active')) && (!pianoView || !pianoView.classList.contains('active'))) {
       if (candlelightToggleBtn) candlelightToggleBtn.click();
       return;

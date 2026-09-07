@@ -4,7 +4,7 @@
 ===============================================================================
 OPERATIONS MANUAL, ANNUAL RUNBOOK & DISASTER RECOVERY PROTOCOL
 Project: Eternal Love — Ultra-Luxurious Romantic Celebration Web Application
-Celebrant: Queen Komal 👑 | Dedicated with Infinite Love by: Dilip 💖
+Celebrant: Queen Nishika 👑 | Dedicated with Infinite Love by: Dilip 💖
 Standard: SRE Operations & Long-Term Digital Archival Protocol
 ===============================================================================
 ```
@@ -74,7 +74,7 @@ Eternal Love runs 100% within **Google's Free Tier Quotas**. Review the limits b
 3. Save the backup as `Eternal_Love_Wishes_Backup_YYYY.csv`.
 
 ### 3.2 Google Drive Memory Photos Bulk Export
-1. Navigate to Google Drive $\rightarrow$ Folder: **`Eternal Love Memories (Komal)`**.
+1. Navigate to Google Drive $\rightarrow$ Folder: **`Eternal Love Memories (Nishika)`**.
 2. Right-click the folder and select **Download**.
 3. Google will package all uploaded photos into a single `.zip` archive for offline safekeeping.
 
@@ -103,7 +103,7 @@ Eternal Love runs 100% within **Google's Free Tier Quotas**. Review the limits b
 
 ## 5. 🏛️ 5. Long-Term Permanent Preservation (Offline Kept)
 
-To guarantee that Queen Komal can open and experience this celebration 10, 20, or 50 years from now without relying on cloud services:
+To guarantee that Queen Nishika can open and experience this celebration 10, 20, or 50 years from now without relying on cloud services:
 
 1. **Local Self-Contained Archive**:
    - Because Eternal Love utilizes **zero external dependencies**, the repository directory itself is a completely self-contained, perpetual digital keepsake.

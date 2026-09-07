@@ -4,7 +4,7 @@
 ===============================================================================
 SYSTEM BLUEPRINT & PROCUREMENT SPECIFICATION
 Project: Eternal Love — Ultra-Luxurious Romantic Birthday Celebration
-Celebrant: Queen Komal 👑 | Dedicated by: Dilip 💖
+Celebrant: Queen Nishika 👑 | Dedicated by: Dilip 💖
 Architecture: Pure Vanilla Web APIs + Serverless Google Cloud Micro-Engine
 Total Cost of Ownership (TCO): $0.00 (100% Free Forever, Zero Recurring Fees)
 ===============================================================================
@@ -53,7 +53,7 @@ Eternal Love is engineered as a **hybrid local-first progressive static web appl
 │              PERSONAL GOOGLE SHEET               │ │        PERSONAL GOOGLE DRIVE      │
 │                                                  │ │                                   │
 │  • "Wishes" Tab (Timestamp, Sender, Note, Style) │ │  • Folder:                        │
-│  • "Secret Wishes" Tab (Sealed Birthday Wishes)  │ │    "Eternal Love Memories (Komal)"│
+│  • "Secret Wishes" Tab (Sealed Birthday Wishes)  │ │    "Eternal Love Memories (Nishika)"│
 │  • "Photos" Tab (Direct Drive URL & Live Preview)│ │  • Auto Base64 Blob Decode        │
 │    Formula: `=IMAGE("drive.google.com/uc?id=..")`│ │  • Public View Permission Set     │
 └──────────────────────────────────────────────────┘ └───────────────────────────────────┘
@@ -84,11 +84,11 @@ The application architecture is structured into 21 distinct modular stages acros
 | **13**| `#memoriesSec`| **Vintage Polaroid Gallery** | Polaroid snapshots with paper tilts, canvas downscaled image uploader, auto Google Drive sync. | **Google Drive + Sheets `"Photos"` Tab** |
 | **14**| `#wishSec` | **Celebration Pinboard** | Interactive post-it notes with pastel colors, real-time submission form, auto Google Sheet sync. | **Google Sheets `"Wishes"` Tab** |
 | **15**| `#fortuneSec` | **Mystery Birthday Fortune Cards** | Crystal ball gaze, 3 golden fortune envelopes with randomized sweet predictions. | In-memory state |
-| **16**| `#constellationSec`| **Constellation of Our Love** | Twinkling night sky star registry and printable official "Star Registry Certificate" in Komal's name. | `#keepsakeModal` |
+| **16**| `#constellationSec`| **Constellation of Our Love** | Twinkling night sky star registry and printable official "Star Registry Certificate" in Nishika's name. | `#keepsakeModal` |
 | **17**| `#lanternSec` | **Floating Sky Lantern Release** | Interactive paper lantern with custom wish inscription launched into the night sky with floating physics. | Physics particle loop |
 | **18**| `#clawSec` | **"Love Claw" Surprise Arcade** | Controllable mechanical crane with Left/Right/Drop buttons, grabs golden surprise eggs. | Arcade canvas physics |
 | **19**| `#projectorSec`| **Cinematic 8mm Story Projector** | Retro movie projector with spinning reels, vintage film grain, and narrative love story frames. | Frame scrubber |
-| **20**| `#mirrorSec` | **Enchanted Mirror of Queen Komal** | Ornate gold mirror reflecting randomized daily royal affirmations for the Queen. | Procedural text pool |
+| **20**| `#mirrorSec` | **Enchanted Mirror of Queen Nishika** | Ornate gold mirror reflecting randomized daily royal affirmations for the Queen. | Procedural text pool |
 
 ---
 
@@ -136,7 +136,7 @@ The entire architecture is designed with **$0.00 total cost of ownership (TCO)**
 ### Workflow 1: How Dilip Personalizes the Celebration (In-App)
 1. Launch the website in any browser.
 2. Click the **⚙️ Personalize** button in the top navigation bar.
-3. Edit her name (e.g. `Komal`, `Queen Komal`, `My Love`).
+3. Edit her name (e.g. `Nishika`, `Queen Nishika`, `My Love`).
 4. Set the relationship start date for the precision countdown ticker (`2025-12-29`).
 5. Choose from any of the **9 Curated Luxury Themes** (*Magical Violet, Emerald Aurora, Sunset Rose Gold, etc.*).
 6. Verify or update the **Google Sheets Webhook URL**.
@@ -146,7 +146,7 @@ The entire architecture is designed with **$0.00 total cost of ownership (TCO)**
 1. Open the **⚙️ Personalize** modal.
 2. The read-only box at the bottom dynamically generates your live personalized URL:
    ```
-   https://<your-domain>/?name=Komal&sender=Dilip&date=2025-12-29&theme=theme-magical&sheet=https%3A%2F%2Fscript.google.com%2F...
+   https://<your-domain>/?name=Nishika&sender=Dilip&date=2025-12-29&theme=theme-magical&sheet=https%3A%2F%2Fscript.google.com%2F...
    ```
 3. Click **Copy Link** to share directly via WhatsApp, Instagram, or iMessage.
 
@@ -164,9 +164,9 @@ The entire architecture is designed with **$0.00 total cost of ownership (TCO)**
 3. The client-side canvas engine automatically resizes the photo to max 800px and compresses it to ~40KB.
 4. The photo appears instantly inside the tilted polaroid gallery.
 5. In the background, the image data dispatches to your Google Apps Script endpoint.
-6. The script creates a file in your Google Drive folder (`Eternal Love Memories (Komal)`), sets public viewing permissions, and logs the direct Drive URL and `=IMAGE(url)` formula into the `"Photos"` tab of your Google Sheet!
+6. The script creates a file in your Google Drive folder (`Eternal Love Memories (Nishika)`), sets public viewing permissions, and logs the direct Drive URL and `=IMAGE(url)` formula into the `"Photos"` tab of your Google Sheet!
 
-### Workflow 5: How Komal Unlocks Her Secret Wish Vault
+### Workflow 5: How Nishika Unlocks Her Secret Wish Vault
 1. Scroll to Section 5: **3D Birthday Cake Ceremony**.
 2. Click **View or Unlock Secret Wish Vault 🗝️**.
 3. Enter anniversary PIN `2912` (or tap the golden **Queen's Heart Key**).

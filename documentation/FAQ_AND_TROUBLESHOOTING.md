@@ -4,7 +4,7 @@
 ===============================================================================
 OPERATIONAL FAQ, DIAGNOSTIC PROCEDURES & TROUBLESHOOTING GUIDE
 Project: Eternal Love — Ultra-Luxurious Romantic Birthday Celebration
-Celebrant: Queen Komal 👑 | Dedicated with Infinite Love by: Dilip 💖
+Celebrant: Queen Nishika 👑 | Dedicated with Infinite Love by: Dilip 💖
 Support Classification: Level 1-3 Diagnostic Runbook
 ===============================================================================
 ```
@@ -89,7 +89,7 @@ Support Classification: Level 1-3 Diagnostic Runbook
 ### 3.2 Photos are not appearing in the Google Drive folder
 * **Diagnostic Check**:
   1. Open your Google Drive at [drive.google.com](https://drive.google.com).
-  2. Search for the folder named **`Eternal Love Memories (Komal)`**.
+  2. Search for the folder named **`Eternal Love Memories (Nishika)`**.
   3. Verify that your Google Account has sufficient free cloud storage space (Google provides 15 GB free).
 
 ---

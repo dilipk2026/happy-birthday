@@ -3,12 +3,12 @@
 ```
 ===============================================================================
 👑 ETERNAL LOVE CELEBRATION — USER & INTERACTION HANDBOOK
-Celebrant: Queen Komal 👑 | Dedicated with Infinite Love by: Dilip 💖
+Celebrant: Queen Nishika 👑 | Dedicated with Infinite Love by: Dilip 💖
 Birthday: September 5th | Relationship Milestone: December 29, 2025
 ===============================================================================
 ```
 
-> **Welcome to Eternal Love** — A bespoke, luxury digital experience crafted to celebrate Queen Komal's birthday and immortalize your beautiful romantic journey. This handbook guides you through every interactive feature, secret Easter egg, musical melody, and customization tool available in the celebration.
+> **Welcome to Eternal Love** — A bespoke, luxury digital experience crafted to celebrate Queen Nishika's birthday and immortalize your beautiful romantic journey. This handbook guides you through every interactive feature, secret Easter egg, musical melody, and customization tool available in the celebration.
 
 ---
 
@@ -29,6 +29,11 @@ Birthday: September 5th | Relationship Milestone: December 29, 2025
 13. [🎵 Polyphonic Web Audio Synthesizer & Sound Controls](#13--polyphonic-web-audio-synthesizer--sound-controls)
 14. [💬 Live Cloud Guestbook & Wish Dispatcher](#14--live-cloud-guestbook--wish-dispatcher)
 15. [📱 Mobile Gestures, Shortcuts & Accessibility](#15--mobile-gestures-shortcuts--accessibility)
+16. [🔒 Pre-Launch Gatekeeper, Real Photo Uploader & Sticky Notes Wall](#16--pre-launch-gatekeeper-real-photo-uploader--sticky-notes-wall)
+17. [🎡 Couple's Date Night Fortune Roulette](#17--couples-date-night-fortune-roulette)
+18. [🌌 Cosmic Ambient Soundscape Sanctuary](#18--cosmic-ambient-soundscape-sanctuary)
+19. [⏳ Future Love Time Capsule Vault](#19--future-love-time-capsule-vault)
+20. [🗺️ Our Cosmic Journey & Romance Milestones Map](#20-️-our-cosmic-journey--romance-milestones-map)
 
 ---
 
@@ -37,7 +42,7 @@ Birthday: September 5th | Relationship Milestone: December 29, 2025
 When you first launch the celebration website:
 1. **Audio Ignition**: Click anywhere on the screen or tap the **🎵 Play Music** floating button to awaken the polyphonic audio synthesizer.
 2. **Cosmic Atmosphere**: Watch dynamic shooting stars, floating heart particles, and ambient fireflies dance across the viewport.
-3. **Personalized Header**: Notice Queen Komal's custom regal banner and real-time live relationship counters.
+3. **Personalized Header**: Notice Queen Nishika's custom regal banner and real-time live relationship counters.
 
 ---
 
@@ -83,14 +88,14 @@ The **Relationship Milestone Tracker** precisely measures the time since **Decem
 
 ## 4. 🎂 Interactive 3D Birthday Cake & Candle Ceremony
 
-Celebrate Komal's birthday with a fully interactive 3D physics-based cake ceremony:
+Celebrate Nishika's birthday with a fully interactive 3D physics-based cake ceremony:
 
 ```
                   🕯️  🕯️  🕯️  (Glowing Flickering Flames)
                ┌────────────────┐
                │  HAPPY BIRTHDAY │  <- Tier 2 (Velvet Frosting)
             ┌──┴────────────────┴──┐
-            │   QUEEN KOMAL 👑    │  <- Tier 1 (Golden Pearls)
+            │   QUEEN NISHIKA 👑    │  <- Tier 1 (Golden Pearls)
          ┌──┴──────────────────────┴──┐
          │ Dilip 💖 Forever & Always │  <- Golden Base Stand
          └────────────────────────────┘
@@ -99,14 +104,14 @@ Celebrate Komal's birthday with a fully interactive 3D physics-based cake ceremo
 ### How to Perform the Ceremony:
 1. **Blow the Candles**: Click or tap the **💨 Blow Out Candles** button (or tap individual candles). The flame animations dissolve with a gentle smoke particle effect, accompanied by an acoustic wind chime audio note.
 2. **Grab the Golden Knife**: Tap the **🔪 Cut Birthday Cake** button.
-3. **The Royal Slice**: Drag or click the golden cake knife engraved with `Dilip & Komal 💖`. A smooth slicing animation cuts through the frosting.
+3. **The Royal Slice**: Drag or click the golden cake knife engraved with `Dilip & Nishika 💖`. A smooth slicing animation cuts through the frosting.
 4. **Confetti Fanfare**: As the slice is completed, a full-screen multi-color confetti cannon launches, and the audio synthesizer bursts into the festive *Happy Birthday Fanfare*!
 
 ---
 
 ## 5. 🏺 Magical 100+ Reasons Love Jar
 
-The **Love Jar** contains curated, heartfelt reasons why Komal is cherished:
+The **Love Jar** contains curated, heartfelt reasons why Nishika is cherished:
 
 ### Interactive Operations:
 * **🏺 Pull a Love Note**: Click on the 3D glass jar or tap **✨ Draw Another Reason**. The jar gently shakes with a glass chime sound, and a glowing parchment unfolds with a personalized love reason.
@@ -164,9 +169,9 @@ A high-security, luxury digital vault housing Dilip's most confidential, deeply 
 
 ### Unlocking the Vault:
 * **The Anniversary PIN**: Enter the 4-digit secret passcode: **`2912`** (representing your anniversary date December 29).
-* **Queen's Heart Bypass**: If you are Queen Komal, simply tap the **🔑 Queen's Heart Key** button for instant biometric unlock.
+* **Queen's Heart Bypass**: If you are Queen Nishika, simply tap the **🔑 Queen's Heart Key** button for instant biometric unlock.
 * **Inside the Vault**: Unlocks a private audio recording player, encrypted long-form love declaration, and hidden surprise video/message capsule.
-* **Sealing a Secret Wish**: Komal can write her most secret birthday wish and seal it with a digital wax seal; it is stored safely in the Google Cloud database under the *Secret Wishes* ledger.
+* **Sealing a Secret Wish**: Nishika can write her most secret birthday wish and seal it with a digital wax seal; it is stored safely in the Google Cloud database under the *Secret Wishes* ledger.
 
 ---
 
@@ -191,7 +196,7 @@ An ultra-cozy relaxation retreat:
   - *Gentle Midnight Rain on the Window*
   - *Soft Oceanic Night Waves*
   - *Café Jazz & Lo-Fi Vinyl Warmth*
-* **Blanket Monogram**: Interactive plush blanket displaying `Dilip + Komal 💖`.
+* **Blanket Monogram**: Interactive plush blanket displaying `Dilip + Nishika 💖`.
 * **Virtual Movie Ticket**: Tap to generate a romantic movie night cinema pass complete with custom barcode and seat numbers (`Row Love, Seat Forever`).
 
 ---
@@ -227,7 +232,7 @@ A dedicated roadmap of future adventures:
 
 ## 12. 🎟️ Love Coupons & Queen's Privilege Passes
 
-A set of redeemable romantic vouchers exclusively for Queen Komal:
+A set of redeemable romantic vouchers exclusively for Queen Nishika:
 
 | Coupon Name | Perk / Privilege | Claim Status |
 | :--- | :--- | :--- |
@@ -238,7 +243,7 @@ A set of redeemable romantic vouchers exclusively for Queen Komal:
 | **🕊️ Instant Win Argument Pass** | Instantly win any playful disagreement | Tap to Claim |
 | **🍽️ Custom Romantic Dinner** | Candlelit dining experience at her favorite spot | Tap to Claim |
 
-* **Redemption Mechanics**: When Komal clicks **Redeem Coupon**, the coupon receives a glowing "REDEEMED & SEALED" gold stamp and persists in local storage.
+* **Redemption Mechanics**: When Nishika clicks **Redeem Coupon**, the coupon receives a glowing "REDEEMED & SEALED" gold stamp and persists in local storage.
 
 ---
 
@@ -294,16 +299,83 @@ Send heartfelt birthday wishes that are instantly displayed on the page and save
 
 ---
 
-## 16. ✨ Pre-Launch Teaser & Queen's VIP Passcode Bypass
+## 16. 🔒 Pre-Launch Gatekeeper, Real Photo Uploader & Sticky Notes Wall
 
-Prior to the official launch on **September 20, 2026**:
-* **Public Coming Soon Page**: The site greets visitors with the live countdown clock, sneak-peek previews, and an early blessing submission form.
-* **Unlocking VIP Early Access**:
-  - Queen Komal or Dilip can tap the **`VIP Access`** button in the header.
-  - Enter the secret PIN: **`2912`** or tap the **Queen Komal 👑 Instant Access Key**.
-  - The celebration unlocks immediately with an arpeggio fanfare and opens the full celebration arena!
-* **Automatic Launch Handover**: On September 20 at 00:00 IST, the website automatically transitions to the full celebration arena for everyone worldwide.
+The **Pre-Launch Experience** (`coming-soon.html`) provides an interactive waiting room prior to **September 21, 2026 at 23:00 IST**:
+
+```
+┌──────────────────────────────────────────────────────────┐
+│             👑 QUEEN NISHIKA'S CELEBRATION IS COMING       │
+│             [ Days ] : [ Hours ] : [ Mins ] : [ Secs ]   │
+│                                                          │
+│  [ 🎵 Music ]                          [ 👑 VIP Access ] │
+└──────────────────────────────────────────────────────────┘
+```
+
+### Pre-Launch Interactive Modules:
+1. **⏳ Precision Countdown Clock**: Real-time ticker counting down to September 21, 2026, at 23:00 IST. Automatically transitions to the main celebration when the target timestamp arrives.
+2. **📌 Interactive Sticky Wall & Notes Persistence**:
+   - Write warm wishes or love thoughts and select a vibrant pastel sticky color (Yellow, Rose Pink, Ocean Blue, Emerald Mint, Lavender Purple).
+   - Enter your name to have it strictly recorded in Column B of Google Sheets.
+   - Pinned notes immediately appear on the interactive sticky grid and persist locally and in the cloud.
+3. **📸 Real Couple Photo Uploader & Gallery**:
+   - Tap **`📸 Add Our Photo`** to upload cherished romantic photos from your device.
+   - Automatic HTML5 Canvas compression optimizes image memory without sacrificing clarity.
+   - Rendered instantly as dynamic Polaroid cards with timeless milestone badges (`✨ Cherished Milestone`, `🌟 Forever & Always`).
+   - Click any Polaroid card to view in full-screen Cinema Lightbox with interactive heart counters.
+4. **👑 VIP Access Authentication**:
+   - Tap **👑 VIP Access** in the top navigation.
+   - Enter secret 4-digit PIN `2912` or click the Hint button (which gives a romantic anniversary hint without exposing the plaintext PIN).
+   - Instant unlock bypasses the countdown and navigates directly to the full celebration arena (`index.html?vip=true`) with persistent session authentication across page refreshes.
 
 ---
 
-*Handcrafted with infinite love, devotion, and celestial magic for Queen Komal on her Birthday. Forever and always.* 👑💖
+## 17. 🎡 Couple's Date Night Fortune Roulette
+
+Never struggle with choosing your next romantic adventure:
+1. **Spin the Royal Wheel**: Tap the golden center hub, the **`Spin Royal Wheel!`** button, or press <kbd>R</kbd>.
+2. **Physics Deceleration**: Watch the wheel spin with authentic deceleration and audible ticking on each sector needle pass.
+3. **Claim as Love Coupon**: Tap **`Claim as Love Coupon 🎟️`** to convert the chosen date into a permanent redeemable love voucher.
+4. **Add Custom Date Ideas**: Tap **`Add Custom Date Idea`** to input personalized adventures, dates, and restaurant spots into the wheel!
+
+---
+
+## 18. 🌌 Cosmic Ambient Soundscape Sanctuary
+
+An intimate multi-track relaxing soundscape powered by pure Web Audio API oscillators:
+1. **Master Control**: Tap **`Play Soundscape`** or press <kbd>S</kbd> to activate the ambient sanctuary.
+2. **6 Polyphonic Audio Channels**:
+   - 🌧️ *Rain on Glass* (Pink noise bandpass filter)
+   - 🔥 *Fireplace Crackle* (Stochastic brown noise spark bursts)
+   - 🌊 *Gentle Ocean Waves* (LFO modulated low-pass ocean swells)
+   - 🌙 *Starlight Chimes* (High sine overtone chimes)
+   - 🎹 *Dreamy Lo-Fi Piano* (Smooth polyphonic chord pads)
+   - ☕ *Parisian Café* (Warm acoustic hum)
+3. **Mood Presets**: One-tap ambiance switching between *Starry Midnight*, *Rainy Cuddle Date*, *Fireside Romance*, *Ocean Moonlight*, *Parisian Café*, and *Royal Sanctuary*.
+4. **Sleep Timer**: Set a 15, 30, 45, or 60-minute automatic relaxation sleep timer.
+
+---
+
+## 19. ⏳ Future Love Time Capsule Vault
+
+Time-locked digital envelopes and milestone letters:
+1. **Explore Locked Capsules**: View upcoming milestone capsules (Next Birthday Sept 20, 2027, 1st Anniversary Dec 29, 2026, Valentine's Day Special Feb 14, 2027, New Year Midnight Toast).
+2. **Live Hologram Padlock Countdown**: Real-time countdown tracking days, hours, minutes, and seconds until the capsule opens.
+3. **VIP Heart Key Bypass**: Queen Nishika can peek into any capsule early using her VIP Heart Key.
+4. **Seal A New Capsule**: Compose and encrypt custom future anniversary promises that stay sealed until their designated date.
+
+---
+
+## 20. 🗺️ Our Cosmic Journey & Romance Milestones Map
+
+Trace the celestial path of your love story through time and space:
+1. **Live Celestial Romance Metrics**:
+   - 💫 *Astronomical Distance Traveled Around the Sun* (Earth orbital calculation ~940 Million km).
+   - 💓 *Heartbeats Shared In Love* (Live counter ~2.6M+ beats).
+   - 🌟 *Consecrated Milestones*: Interactive chronological roadmap.
+2. **Interactive Milestone Nodes**: Click on any milestone node to view the memory, special location, date, and story.
+3. **Add Milestone Pins**: Add new cherished memories, trips, and future dreams to the cosmic map.
+
+---
+
+*Handcrafted with infinite love, devotion, and celestial magic for Queen Nishika on her Birthday. Forever and always.* 👑💖

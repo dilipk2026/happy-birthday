@@ -95,7 +95,7 @@ Dispatched when a visitor or Dilip submits a public birthday wish on the Wish Wa
 {
   "type": "wish",
   "name": "Dilip 💖",
-  "message": "Happy Birthday to my eternal Queen Komal! May your year be as radiant as your smile.",
+  "message": "Happy Birthday to my eternal Queen Nishika! May your year be as radiant as your smile.",
   "color": "ruby",
   "timestamp": "2026-09-05T00:00:00.000Z"
 }
@@ -158,7 +158,7 @@ Dispatched when a visitor or guest leaves an early birthday blessing on the **Co
 
 ### 4.3 Secret Vault Wish Payload (`type: "secret_wish"`)
 
-Dispatched when Queen Komal locks her sacred birthday wish inside the Secret Vault.
+Dispatched when Queen Nishika locks her sacred birthday wish inside the Secret Vault.
 
 #### Request JSON
 ```json
@@ -251,7 +251,7 @@ When `Code.gs` executes, it automatically checks the active spreadsheet. If shee
 ## 6. 📁 Google Drive Auto-Organization Pipeline
 
 When a photo payload is received:
-1. `Code.gs` checks for a folder named **`Eternal Love Memories (Komal)`**.
+1. `Code.gs` checks for a folder named **`Eternal Love Memories (Nishika)`**.
 2. If it does not exist, it creates the folder in the user's root Google Drive.
 3. The Base64 string is stripped of its MIME prefix (`data:image/...;base64,`).
 4. Decoded bytes are converted into a `Utilities.newBlob(bytes, mimeType, filename)`.

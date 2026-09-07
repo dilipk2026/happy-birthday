@@ -4,18 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Eternal Love ✨ Happy Birthday, My Queen</title>
-  <!-- DYNAMIC LAUNCH ROUTER: coming-soon.html is primary until Sept 20, 2026; index.html becomes primary afterwards -->
+  <!-- DYNAMIC LAUNCH ROUTER: coming-soon.html is primary until Sept 21, 2026 23:00 IST; index.html goes live after that, otherwise VIP session required -->
   <script>
     (function() {
-      const LAUNCH_DATE = new Date('2026-09-20T00:00:00+05:30').getTime();
+      const LAUNCH_DATE = new Date('2026-09-21T23:00:00+05:30').getTime();
       const urlParams = new URLSearchParams(window.location.search);
-      const isPreview = urlParams.get('preview') === 'true' || 
-                        urlParams.get('vip') === 'true' || 
-                        urlParams.get('access') === 'queen' ||
-                        sessionStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
-                        localStorage.getItem('eternal_love_vip_unlocked') === 'true';
+      const passedVip = urlParams.get('vip') || urlParams.get('preview');
+      const passedPasscode = urlParams.get('passcode') || urlParams.get('pwd');
 
-      if (Date.now() < LAUNCH_DATE && !isPreview) {
+      if (passedVip === 'true' || passedVip === '2912' || passedVip === '22092000') {
+        try {
+          sessionStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
+          localStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
+        } catch(e) {}
+      }
+
+      if (passedPasscode === '22092000') {
+        try {
+          sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+          localStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+        } catch(e) {}
+      }
+
+      let isVip = false;
+      try {
+        isVip = sessionStorage.getItem('eternal_love_vip_session') === 'authenticated_2912' ||
+                localStorage.getItem('eternal_love_vip_session') === 'authenticated_2912' ||
+                sessionStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
+                localStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000';
+      } catch(e) {
+        isVip = false;
+      }
+
+      if (Date.now() < LAUNCH_DATE && !isVip) {
         window.location.replace('coming-soon.html');
       }
     })();
@@ -23,6 +44,8 @@
 
   <meta name="description" content="Eternal Love — An ultra-luxurious, animated, and deeply romantic birthday celebration experience handcrafted with love. Featuring 3D interactive cake, wax-sealed love letter, love story timeline, magic love jar, and romantic piano harmonies." />
   <meta name="theme-color" content="#090514" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="alternate icon" href="favicon.svg" />
   
   <!-- OpenGraph / Social Sharing Meta -->
   <meta property="og:title" content="Eternal Love ✨ Happy Birthday, My Queen" />
@@ -49,6 +72,90 @@
   <div class="ambient-glow orb-1"></div>
   <div class="ambient-glow orb-2"></div>
   <div class="ambient-glow orb-3"></div>
+
+  <!-- ROYAL BIRTHDAY PASSCODE LOCK SCREEN OVERLAY (Password: 22092000) -->
+  <div id="pagePasscodeOverlay" class="page-passcode-overlay" role="dialog" aria-modal="true" aria-labelledby="pagePasscodeTitle">
+    <div class="page-passcode-card glass-card animate-scale-up">
+      <div class="passcode-header">
+        <div class="passcode-crown-badge">
+          <i class="fa-solid fa-crown"></i>
+          <span>Queen Nishika's Royal Birthday 🎂</span>
+        </div>
+        <h1 class="passcode-card-title" id="pagePasscodeTitle">Open Birthday Surprise 🎁</h1>
+        <p class="passcode-card-subtitle">This private celebration is consecrated exclusively for Queen Nishika. Enter the secret 8-digit birthday password to open your surprise! ✨</p>
+      </div>
+
+      <!-- Status Feedback message -->
+      <div id="pagePasscodeFeedback" class="passcode-feedback" role="alert"></div>
+
+      <!-- Passcode Input with Eye Toggle -->
+      <div class="passcode-input-container">
+        <div class="passcode-input-wrap">
+          <i class="fa-solid fa-lock passcode-lock-icon"></i>
+          <input 
+            type="password" 
+            id="pagePasscodeInput" 
+            class="passcode-field" 
+            maxlength="8" 
+            placeholder="••••••••" 
+            autocomplete="off" 
+            inputmode="numeric"
+            aria-label="Enter 8-digit Birthday Passcode"
+          />
+          <button type="button" id="togglePasscodeVisibilityBtn" class="passcode-eye-btn" aria-label="Toggle password visibility" title="Show/Hide Passcode">
+            <i class="fa-solid fa-eye" id="passcodeEyeIcon"></i>
+          </button>
+        </div>
+
+        <!-- 8-Digit Slot Indicators -->
+        <div class="passcode-slots-row" id="passcodeSlotsRow">
+          <span class="passcode-dot" id="pDot0">•</span>
+          <span class="passcode-dot" id="pDot1">•</span>
+          <span class="passcode-dot" id="pDot2">•</span>
+          <span class="passcode-dot" id="pDot3">•</span>
+          <span class="passcode-dot" id="pDot4">•</span>
+          <span class="passcode-dot" id="pDot5">•</span>
+          <span class="passcode-dot" id="pDot6">•</span>
+          <span class="passcode-dot" id="pDot7">•</span>
+        </div>
+      </div>
+
+      <!-- Interactive Glass Keypad (0-9, C, Backspace) -->
+      <div class="passcode-keypad" id="pagePasscodeKeypad">
+        <button type="button" class="pk-btn" data-key="1">1</button>
+        <button type="button" class="pk-btn" data-key="2">2</button>
+        <button type="button" class="pk-btn" data-key="3">3</button>
+        <button type="button" class="pk-btn" data-key="4">4</button>
+        <button type="button" class="pk-btn" data-key="5">5</button>
+        <button type="button" class="pk-btn" data-key="6">6</button>
+        <button type="button" class="pk-btn" data-key="7">7</button>
+        <button type="button" class="pk-btn" data-key="8">8</button>
+        <button type="button" class="pk-btn" data-key="9">9</button>
+        <button type="button" class="pk-btn pk-clear" data-key="C" title="Clear">C</button>
+        <button type="button" class="pk-btn" data-key="0">0</button>
+        <button type="button" class="pk-btn pk-back" data-key="BACK" title="Backspace"><i class="fa-solid fa-delete-left"></i></button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="passcode-actions">
+        <button type="button" id="pagePasscodeSubmitBtn" class="btn-primary passcode-submit-btn">
+          <i class="fa-solid fa-gift"></i>
+          <span>Open Birthday Surprise ✨</span>
+        </button>
+      </div>
+
+      <!-- Romantic Passcode Hint -->
+      <div class="passcode-hint-wrapper">
+        <button type="button" id="pagePasscodeHintToggleBtn" class="passcode-hint-btn">
+          <i class="fa-solid fa-lightbulb"></i>
+          <span>Need a Birthday Hint?</span>
+        </button>
+        <div id="pagePasscodeHintBox" class="passcode-hint-box">
+          🎂 <strong>Birthday Hint:</strong> Enter Queen Nishika's Date of Birth in DDMMYYYY format (her special day in September 2000) 💕
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- STAGE 1: The Surprise Gift Unboxing Intro Overlay -->
   <div id="introOverlay" class="intro-overlay">
@@ -118,6 +225,10 @@
         <a href="#clawSec" class="nav-link"><i class="fa-solid fa-hand-holding-heart"></i> Love Claw</a>
         <a href="#projectorSec" class="nav-link"><i class="fa-solid fa-film"></i> Cinema</a>
         <a href="#mirrorSec" class="nav-link"><i class="fa-solid fa-wand-magic-sparkles"></i> Mirror</a>
+        <a href="#rouletteSec" class="nav-link"><i class="fa-solid fa-dice"></i> Roulette</a>
+        <a href="#soundscapeSec" class="nav-link"><i class="fa-solid fa-cloud-moon-rain"></i> Soundscape</a>
+        <a href="#capsuleSec" class="nav-link"><i class="fa-solid fa-hourglass-half"></i> Time Capsule</a>
+        <a href="#journeySec" class="nav-link"><i class="fa-solid fa-compass"></i> Journey</a>
       </nav>
 
       <div class="header-actions">
@@ -160,9 +271,9 @@
         </button>
 
         <!-- Launch Countdown Teaser Page Link -->
-        <a href="coming-soon.html" class="pill-btn launch-teaser-btn" title="View Grand Launch Countdown (September 20)" style="text-decoration: none; color: #ffd700; border-color: rgba(255,215,0,0.4);">
+        <a href="coming-soon.html" class="pill-btn launch-teaser-btn" title="View Grand Launch Countdown (September 21 • 11:00 PM)" style="text-decoration: none; color: #ffd700; border-color: rgba(255,215,0,0.4);">
           <i class="fa-solid fa-hourglass-start"></i>
-          <span>Launch Sept 20</span>
+          <span>Launch Sept 21</span>
         </a>
 
         <!-- Personalize / Edit Button -->
@@ -184,7 +295,7 @@
 
         <h1 class="hero-title animate-pop-in">
           Happy Birthday, <br />
-          <span class="name-gradient recipient-name-display" id="recipientName">Komal</span>
+          <span class="name-gradient recipient-name-display" id="recipientName">Nishika</span>
           <span class="crown-icon">👑</span>
         </h1>
 
@@ -260,7 +371,7 @@
                 <span class="letter-heart-watermark">💖</span>
               </div>
               <div class="letter-body">
-                <h3 class="letter-salutation">My Dearest <span class="recipient-name-display">Komal</span>,</h3>
+                <h3 class="letter-salutation">My Dearest <span class="recipient-name-display">Nishika</span>,</h3>
                 <div class="typewriter-container" id="typewriterText">
                   <!-- Generated dynamically character by character -->
                 </div>
@@ -296,7 +407,7 @@
         <div class="section-heading-center">
           <span class="badge-tag"><i class="fa-solid fa-envelope-circle-check"></i> Time-Locked Devotion</span>
           <h2 class="section-title">"Open When..." Love Envelopes 💌</h2>
-          <p class="section-desc">Six intimate letters sealed with love for Queen Komal. Break the wax seal whenever your heart needs these words.</p>
+          <p class="section-desc">Six intimate letters sealed with love for Queen Nishika. Break the wax seal whenever your heart needs these words.</p>
         </div>
 
         <div class="open-when-grid">
@@ -627,7 +738,7 @@
                 <span class="v-spark sp-3">✨</span>
                 <span class="v-spark sp-4">💖</span>
               </div>
-              <div class="video-watermark-tag">👑 Queen Komal's Cake Cutting Ceremony 🍰</div>
+              <div class="video-watermark-tag">👑 Queen Nishika's Cake Cutting Ceremony 🍰</div>
             </div>
 
             <!-- 3D Interactive Slicing Stage -->
@@ -694,7 +805,7 @@
               <div class="golden-knife-3d" id="goldenKnife3D">
                 <div class="knife-handle">
                   <div class="handle-bolster"></div>
-                  <span class="knife-engraving">Dilip & Komal 💖</span>
+                  <span class="knife-engraving">Dilip & Nishika 💖</span>
                   <div class="handle-pommel"></div>
                 </div>
                 <div class="knife-blade">
@@ -732,7 +843,7 @@
                 <!-- Feeding Celebration Speech Bubble -->
                 <div class="feeding-love-bubble" id="feedingLoveBubble">
                   <span class="bubble-heart">💖</span>
-                  <p class="bubble-quote">"Here is the first sweet bite for my Queen Komal! Happy Birthday, my love!" 🍓🎂</p>
+                  <p class="bubble-quote">"Here is the first sweet bite for my Queen Nishika! Happy Birthday, my love!" 🍓🎂</p>
                 </div>
               </div>
             </div>
@@ -762,7 +873,7 @@
 
                 <div class="cut-action-chip">
                   <button class="btn-primary btn-sm pulse-btn" id="feedSliceBtn" style="display: none;">
-                    <i class="fa-solid fa-heart"></i> Feed to Komal 🍓💖
+                    <i class="fa-solid fa-heart"></i> Feed to Nishika 🍓💖
                   </button>
                 </div>
               </div>
@@ -777,7 +888,7 @@
           <div class="section-heading-center">
             <span class="badge-tag"><i class="fa-solid fa-film"></i> 3D Romantic Cinema</span>
             <h2 class="section-title">Cozy Starlit Cuddle Haven 🛋️✨</h2>
-            <p class="section-desc">A cinematic 3D animated love story where Dilip and Komal cuddle together under a moonlit skylight and warm fireside glow.</p>
+            <p class="section-desc">A cinematic 3D animated love story where Dilip and Nishika cuddle together under a moonlit skylight and warm fireside glow.</p>
           </div>
 
           <div class="cuddle-cinema-player" id="cuddleCinemaPlayer">
@@ -825,7 +936,7 @@
                 <!-- Floating Love Whispers injected dynamically & with starter note -->
                 <div class="floating-love-note note-1">
                   <span class="note-icon">💖</span>
-                  <span class="note-text">"In your arms is where my soul belongs... Happy Birthday, Komal."</span>
+                  <span class="note-text">"In your arms is where my soul belongs... Happy Birthday, Nishika."</span>
                 </div>
                 <div class="floating-love-note note-2">
                   <span class="note-icon">✨</span>
@@ -867,14 +978,14 @@
                           <stop offset="50%" stop-color="#0f172a"/>
                           <stop offset="100%" stop-color="#020617"/>
                         </linearGradient>
-                        <!-- Komal Cashmere Wrap Gradient -->
-                        <linearGradient id="komalWrap" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <!-- Nishika Cashmere Wrap Gradient -->
+                        <linearGradient id="nishikaWrap" x1="0%" y1="0%" x2="100%" y2="100%">
                           <stop offset="0%" stop-color="#fda4af"/>
                           <stop offset="40%" stop-color="#f43f5e"/>
                           <stop offset="100%" stop-color="#9f1239"/>
                         </linearGradient>
                         <!-- Silky Brunette Hair Gradient -->
-                        <linearGradient id="komalHair" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id="nishikaHair" x1="0%" y1="0%" x2="100%" y2="100%">
                           <stop offset="0%" stop-color="#451a03"/>
                           <stop offset="60%" stop-color="#271106"/>
                           <stop offset="100%" stop-color="#170701"/>
@@ -895,7 +1006,7 @@
                       <path d="M70 240 C65 190 85 145 125 125 C145 115 175 118 190 130 C170 160 160 210 160 240 Z" fill="url(#dilipSweater)"/>
                       <!-- Dilip Collar & Neck -->
                       <path d="M125 125 C132 110 148 108 158 118 C145 124 135 125 125 125 Z" fill="#334155"/>
-                      <!-- Dilip Head (Profile leaning gently towards Komal) -->
+                      <!-- Dilip Head (Profile leaning gently towards Nishika) -->
                       <ellipse cx="138" cy="92" rx="24" ry="28" fill="#fcd34d"/>
                       <!-- Dilip Hair (Modern Styled Textured Waves) -->
                       <path d="M116 88 C116 68 132 60 152 64 C162 66 166 74 165 84 C158 76 146 75 138 78 C128 82 122 86 116 88 Z" fill="#1c0a00"/>
@@ -903,40 +1014,40 @@
                       <path d="M142 95 Q147 98 152 95" stroke="#451a03" stroke-width="2" stroke-linecap="round" fill="none"/>
                       <path d="M145 106 Q150 110 155 106" stroke="#78350f" stroke-width="1.8" stroke-linecap="round" fill="none"/>
 
-                      <!-- Dilip Embracing Arm & Hand around Komal -->
+                      <!-- Dilip Embracing Arm & Hand around Nishika -->
                       <path d="M100 165 C115 155 150 155 185 168 C205 175 220 185 228 200 C215 208 195 198 178 190 C155 180 120 185 95 195 Z" fill="url(#dilipSweater)"/>
-                      <!-- Dilip's gentle resting hand on Komal's shoulder -->
+                      <!-- Dilip's gentle resting hand on Nishika's shoulder -->
                       <ellipse cx="226" cy="198" rx="12" ry="9" transform="rotate(-15 226 198)" fill="#fcd34d"/>
 
-                      <!-- Komal Hair Back Flowing Waves -->
-                      <path d="M165 105 C185 95 215 110 225 135 C235 160 230 195 225 225 C215 220 210 190 205 165 C200 145 185 130 170 125 Z" fill="url(#komalHair)"/>
+                      <!-- Nishika Hair Back Flowing Waves -->
+                      <path d="M165 105 C185 95 215 110 225 135 C235 160 230 195 225 225 C215 220 210 190 205 165 C200 145 185 130 170 125 Z" fill="url(#nishikaHair)"/>
 
-                      <!-- Komal Body & Slender Torso nestled into Dilip's chest -->
-                      <path d="M160 160 C175 145 205 155 215 185 C222 205 225 225 225 245 C195 248 175 240 160 240 Z" fill="url(#komalWrap)"/>
+                      <!-- Nishika Body & Slender Torso nestled into Dilip's chest -->
+                      <path d="M160 160 C175 145 205 155 215 185 C222 205 225 225 225 245 C195 248 175 240 160 240 Z" fill="url(#nishikaWrap)"/>
 
-                      <!-- Komal Head (Resting tenderly on Dilip's shoulder) -->
+                      <!-- Nishika Head (Resting tenderly on Dilip's shoulder) -->
                       <ellipse cx="184" cy="120" rx="20" ry="23" transform="rotate(18 184 120)" fill="#fde68a"/>
 
-                      <!-- Komal Gorgeous Flowing Wavy Brunette Hair Front -->
-                      <path d="M168 112 C168 98 180 92 196 95 C208 98 212 108 210 122 C204 114 194 110 184 112 C176 114 172 120 168 126 Z" fill="url(#komalHair)"/>
-                      <path d="M204 118 C212 135 214 158 208 180 C202 170 200 148 198 132 Z" fill="url(#komalHair)"/>
+                      <!-- Nishika Gorgeous Flowing Wavy Brunette Hair Front -->
+                      <path d="M168 112 C168 98 180 92 196 95 C208 98 212 108 210 122 C204 114 194 110 184 112 C176 114 172 120 168 126 Z" fill="url(#nishikaHair)"/>
+                      <path d="M204 118 C212 135 214 158 208 180 C202 170 200 148 198 132 Z" fill="url(#nishikaHair)"/>
 
-                      <!-- Komal Tiara Crown with Ruby Jewel -->
+                      <!-- Nishika Tiara Crown with Ruby Jewel -->
                       <path d="M182 92 L186 82 L192 90 L198 80 L204 90 L208 84 L210 94 Z" fill="url(#goldCrown)"/>
                       <circle cx="198" cy="85" r="2.5" fill="#f43f5e"/>
                       <circle cx="186" cy="86" r="1.8" fill="#ffffff"/>
                       <circle cx="208" cy="87" r="1.8" fill="#ffffff"/>
 
-                      <!-- Komal Serene Fluttering Eyelashes, Rosy Blush & Sweet Lips -->
+                      <!-- Nishika Serene Fluttering Eyelashes, Rosy Blush & Sweet Lips -->
                       <path d="M180 124 Q176 128 172 126" stroke="#3f1807" stroke-width="2.2" stroke-linecap="round" fill="none"/>
                       <ellipse cx="174" cy="132" rx="6" ry="3.5" fill="#f43f5e" opacity="0.6"/>
                       <path d="M172 137 Q175 140 178 138" stroke="#be123c" stroke-width="2" stroke-linecap="round" fill="none"/>
 
-                      <!-- Komal Golden Earring -->
+                      <!-- Nishika Golden Earring -->
                       <circle cx="196" cy="130" r="2.8" stroke="#facc15" stroke-width="1.5" fill="none"/>
 
-                      <!-- Komal Arm & Delicate Hand Resting on Dilip with Love Ring -->
-                      <path d="M185 185 C175 185 160 190 145 200 C138 205 132 212 128 220 C136 222 145 216 155 210 C168 202 182 200 190 198 Z" fill="url(#komalWrap)"/>
+                      <!-- Nishika Arm & Delicate Hand Resting on Dilip with Love Ring -->
+                      <path d="M185 185 C175 185 160 190 145 200 C138 205 132 212 128 220 C136 222 145 216 155 210 C168 202 182 200 190 198 Z" fill="url(#nishikaWrap)"/>
                       <!-- Hand holding Dilip's hand -->
                       <ellipse cx="132" cy="216" rx="9" ry="7" transform="rotate(-15 132 216)" fill="#fde68a"/>
                       <!-- Sparkling Golden Love Ring on finger -->
@@ -948,7 +1059,7 @@
                       <div class="blanket-stitch-rim"></div>
                       <div class="blanket-fold fold-1"></div>
                       <div class="blanket-fold fold-2"></div>
-                      <div class="blanket-monogram">Dilip + Komal 💖</div>
+                      <div class="blanket-monogram">Dilip + Nishika 💖</div>
                     </div>
 
                     <!-- Glowing Heartbeat Aura & Steaming Mugs -->
@@ -964,7 +1075,7 @@
 
               <!-- Subtitle Caption Bar -->
               <div class="cuddle-subtitles-bar" id="cuddleSubtitlesBar">
-                <span class="subtitle-quote" id="cuddleSubtitleText">"In your arms is where I always want to be... Happy Birthday, my Queen Komal." 💖</span>
+                <span class="subtitle-quote" id="cuddleSubtitleText">"In your arms is where I always want to be... Happy Birthday, my Queen Nishika." 💖</span>
               </div>
             </div>
 
@@ -1024,7 +1135,7 @@
           <button class="jar-cat-btn" data-jar-cat="💖 Pure Romance">Pure Romance</button>
           <button class="jar-cat-btn" data-jar-cat="🥰 Cute Habits">Cute Habits</button>
           <button class="jar-cat-btn" data-jar-cat="🏡 Safe Haven">Safe Haven</button>
-          <button class="jar-cat-btn" data-jar-cat="👑 Radiant Queen">Queen Komal</button>
+          <button class="jar-cat-btn" data-jar-cat="👑 Radiant Queen">Queen Nishika</button>
           <button class="jar-cat-btn" data-jar-cat="☕ Daily Moments">Little Things</button>
           <button class="jar-cat-btn" data-jar-cat="💫 Forever Love">Forever</button>
         </div>
@@ -1207,7 +1318,7 @@
         <div class="section-heading-center">
           <span class="badge-tag"><i class="fa-solid fa-heart-circle-check"></i> Dreams & Adventures</span>
           <h2 class="section-title">Our Romantic Bucket List 🗺️✨</h2>
-          <p class="section-desc">Every dream we share is a promise waiting to happen. Tap to mark our completed milestones or add new wishes for Dilip & Komal!</p>
+          <p class="section-desc">Every dream we share is a promise waiting to happen. Tap to mark our completed milestones or add new wishes for Dilip & Nishika!</p>
         </div>
 
         <div class="bucket-container glass-card">
@@ -1238,7 +1349,7 @@
                 <i class="fa-solid fa-check"></i>
               </div>
               <div class="bucket-item-content">
-                <h4 class="bucket-item-title">Celebrate Queen Komal's special birthday with infinite love 🎂👑</h4>
+                <h4 class="bucket-item-title">Celebrate Queen Nishika's special birthday with infinite love 🎂👑</h4>
                 <p class="bucket-item-desc">A digital kingdom handcrafted with devotion just for her today!</p>
               </div>
               <span class="bucket-stamp">CHERISHED ✨</span>
@@ -1327,7 +1438,7 @@
               </div>
               <div class="bucket-item-content">
                 <h4 class="bucket-item-title">Spend an entire anniversary weekend with zero phones and 100% cuddles 📵🛋️</h4>
-                <p class="bucket-item-desc">Just Dilip and Komal, lost in our own paradise of peace and romance.</p>
+                <p class="bucket-item-desc">Just Dilip and Nishika, lost in our own paradise of peace and romance.</p>
               </div>
               <span class="bucket-stamp hidden">CHERISHED ✨</span>
             </div>
@@ -1732,7 +1843,7 @@
                   <!-- Hanging Gold Foil Dedication Tag with Twine -->
                   <div class="bouquet-greeting-tag">
                     <div class="tag-eyelet"></div>
-                    <span id="bouquetTagText">To Queen Komal 👑 Forever In Bloom</span>
+                    <span id="bouquetTagText">To Queen Nishika 👑 Forever In Bloom</span>
                   </div>
                 </div>
               </div>
@@ -1911,7 +2022,7 @@
         <div class="wish-board-wrapper glass-card">
           <div class="wish-board-header">
             <div>
-              <h3><i class="fa-solid fa-envelope-open-text"></i> Leave a Sweet Note for <span class="recipient-name-display">Komal</span></h3>
+              <h3><i class="fa-solid fa-envelope-open-text"></i> Leave a Sweet Note for <span class="recipient-name-display">Nishika</span></h3>
               <p class="sub-text">Write a warm birthday message to pin it permanently onto her celebration board!</p>
             </div>
             <span class="cloud-sync-chip" id="wishSyncChip" title="Synced to Google Sheets">
@@ -2005,19 +2116,20 @@
         </div>
       </section>
 
-      <!-- SECTION: CONSTELLATION OF LOVE & STAR REGISTRY FOR KOMAL -->
+      <!-- SECTION: CONSTELLATION OF LOVE & STAR REGISTRY FOR NISHIKA -->
       <section class="constellation-section reveal-on-scroll" id="constellationSec" data-reveal="fade-up">
         <div class="glass-card constellation-card">
           <div class="section-heading-center">
             <span class="badge-tag"><i class="fa-solid fa-star"></i> Celestial Dedication</span>
             <h2 class="section-title">Constellation of Eternal Love 🌌✨</h2>
-            <p class="section-desc">Interactive starmap dedicated to Komal. Connect the luminous stars to trace our love constellations across the cosmos!</p>
+            <p class="section-desc">Interactive starmap dedicated to Nishika. Connect the luminous stars to trace our love constellations across the cosmos!</p>
           </div>
 
           <div class="constellation-sky-arena" id="constellationSky">
             <canvas id="constellationCanvas" width="800" height="380"></canvas>
+            <span class="canvas-touch-hint mobile-touch-hint"><i class="fa-solid fa-sparkles"></i> ✨ Tap sky to spawn stars & connect</span>
             <div class="constellation-info-dock">
-              <span class="star-coord-badge">⭐ Star: Komal-Centauri-01 • RA 14h 39m / Dec -60° 50′</span>
+              <span class="star-coord-badge">⭐ Star: Nishika-Centauri-01 • RA 14h 39m / Dec -60° 50′</span>
               <button class="btn-primary btn-sm" id="openStarRegistryBtn">
                 <i class="fa-solid fa-certificate"></i> View Star Registry Certificate
               </button>
@@ -2025,9 +2137,9 @@
           </div>
 
           <div class="constellation-selector-chips">
-            <button class="constellation-chip active" data-constellation="crown">👑 Komal's Royal Crown</button>
+            <button class="constellation-chip active" data-constellation="crown">👑 Nishika's Royal Crown</button>
             <button class="constellation-chip" data-constellation="heart">💖 The Eternal Heart</button>
-            <button class="constellation-chip" data-constellation="infinity">♾️ Dilip & Komal Infinity</button>
+            <button class="constellation-chip" data-constellation="infinity">♾️ Dilip & Nishika Infinity</button>
           </div>
         </div>
       </section>
@@ -2042,12 +2154,13 @@
           </div>
 
           <div class="lantern-release-stage">
-            <canvas id="lanternCanvas" width="800" height="350"></canvas>
+            <canvas id="lanternCanvas" width="800" height="380"></canvas>
+            <span class="canvas-touch-hint mobile-touch-hint"><i class="fa-solid fa-hand-pointer"></i> 🏮 Tap sky to release glowing lantern</span>
             
             <div class="lantern-composer-dock">
-              <input type="text" id="lanternWishInput" placeholder="Write a wish for Komal (e.g. Boundless Joy & Sweet Smiles)..." class="app-input" />
+              <input type="text" id="lanternWishInput" placeholder="Write a wish for Nishika (e.g. Boundless Joy & Sweet Smiles)..." class="app-input" />
               <button class="btn-primary pulse-btn" id="releaseLanternBtn">
-                <i class="fa-solid fa-paper-plane"></i> Release Lantern to the Sky 🏮
+                <i class="fa-solid fa-paper-plane"></i> Release Lantern 🏮
               </button>
             </div>
           </div>
@@ -2147,7 +2260,7 @@
                   </div>
                   <div class="frame-content">
                     <span class="scene-tag"><i class="fa-solid fa-video"></i> Scene I • The Beginning</span>
-                    <h3 class="scene-title">The Day The Universe Blessed Me With Komal ✨</h3>
+                    <h3 class="scene-title">The Day The Universe Blessed Me With Nishika ✨</h3>
                     <p class="scene-desc">The moment your eyes met mine, every piece of the puzzle fell into place. My life found its true color.</p>
                   </div>
                 </div>
@@ -2216,7 +2329,7 @@
                   </div>
                   <div class="frame-content">
                     <span class="scene-tag"><i class="fa-solid fa-video"></i> Scene IV • Today</span>
-                    <h3 class="scene-title">Happy Birthday To My Forever Queen, Komal 👑</h3>
+                    <h3 class="scene-title">Happy Birthday To My Forever Queen, Nishika 👑</h3>
                     <p class="scene-desc">May this year bring you all the grand blessings, boundless success, and infinite love you deserve!</p>
                   </div>
                 </div>
@@ -2243,7 +2356,7 @@
           <div class="section-heading-center">
             <span class="badge-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> Royal Reflections</span>
             <h2 class="section-title">The Enchanted Mirror of Affirmations 🔮✨</h2>
-            <p class="section-desc">Tap the golden royal mirror to reflect true affirmations celebrating Komal's beauty, mind, and soul.</p>
+            <p class="section-desc">Tap the golden royal mirror to reflect true affirmations celebrating Nishika's beauty, mind, and soul.</p>
           </div>
 
           <div class="mirror-presentation-stage">
@@ -2253,7 +2366,7 @@
                 <div class="mirror-shimmer"></div>
                 <div class="mirror-reflection-content" id="mirrorContent">
                   <span class="mirror-sparkle-icon">✨</span>
-                  <h3 class="mirror-affirmation-text" id="mirrorAffirmationText">"Komal, you illuminate every room with your natural grace, kindness, and radiant beauty."</h3>
+                  <h3 class="mirror-affirmation-text" id="mirrorAffirmationText">"Nishika, you illuminate every room with your natural grace, kindness, and radiant beauty."</h3>
                   <span class="mirror-author-tag">— Reflected With Devotion by Dilip 💖</span>
                 </div>
               </div>
@@ -2263,6 +2376,362 @@
               <button class="btn-primary pulse-btn" id="nextAffirmationBtn">
                 <i class="fa-solid fa-wand-magic-sparkles"></i> Tap Mirror For New Affirmation ✨
               </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: COUPLE'S DATE NIGHT FORTUNE ROULETTE -->
+      <section class="roulette-section reveal-on-scroll" id="rouletteSec" data-reveal="fade-up">
+        <div class="glass-card roulette-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-dice"></i> Spontaneous Adventures</span>
+            <h2 class="section-title">Couple's Date Night Fortune Roulette 🎡💕</h2>
+            <p class="section-desc">Can't decide on tonight's romantic adventure? Spin the royal golden wheel to let fate choose our next unforgettable date!</p>
+          </div>
+
+          <div class="roulette-stage-wrapper">
+            <!-- Left: 3D Roulette Wheel Container -->
+            <div class="roulette-wheel-container">
+              <div class="roulette-ticker" id="rouletteTicker">
+                <i class="fa-solid fa-location-pin-lock ticker-arrow"></i>
+              </div>
+              <div class="roulette-outer-rim">
+                <div class="roulette-led-ring" id="rouletteLedRing"></div>
+                <canvas id="rouletteCanvas" width="460" height="460" class="roulette-canvas"></canvas>
+                <div class="roulette-center-hub" id="rouletteCenterHub">
+                  <div class="hub-crown">👑</div>
+                  <span class="hub-text">SPIN</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Interactive Control & Result Deck -->
+            <div class="roulette-deck">
+              <div class="roulette-status-panel">
+                <div class="deck-badge"><i class="fa-solid fa-sparkles"></i> Destiny Generator</div>
+                <h3 class="current-date-title" id="rouletteResultTitle">Ready For Your Next Date?</h3>
+                <p class="current-date-desc" id="rouletteResultDesc">Tap the golden spin button or press <kbd class="nav-kbd-hint">R</kbd> to spin the royal wheel of romance!</p>
+                
+                <div class="roulette-meta-chips" id="rouletteResultMeta">
+                  <span class="meta-chip"><i class="fa-solid fa-clock"></i> <span id="rouletteTimeTag">Tonight</span></span>
+                  <span class="meta-chip"><i class="fa-solid fa-heart"></i> <span id="rouletteVibeTag">Pure Romance</span></span>
+                </div>
+              </div>
+
+              <!-- Action Controls -->
+              <div class="roulette-action-buttons">
+                <button type="button" class="btn-primary pulse-btn spin-main-btn" id="spinRouletteBtn">
+                  <i class="fa-solid fa-dice"></i> <span>Spin Royal Wheel!</span>
+                </button>
+                <button type="button" class="btn-secondary" id="claimDateCouponBtn" disabled>
+                  <i class="fa-solid fa-ticket"></i> <span>Claim as Love Coupon 🎟️</span>
+                </button>
+                <button type="button" class="btn-accent" id="openAddDateModalBtn">
+                  <i class="fa-solid fa-plus"></i> <span>Add Custom Date Idea</span>
+                </button>
+              </div>
+
+              <!-- Available Date Ideas Quick Chips -->
+              <div class="roulette-ideas-preview">
+                <span class="ideas-label"><i class="fa-solid fa-list-ul"></i> Loaded Date Ideas (<span id="rouletteIdeaCount">8</span>):</span>
+                <div class="ideas-chip-cloud" id="rouletteIdeasCloud">
+                  <!-- Generated dynamically in script.js -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: COSMIC AMBIENT SOUNDSCAPE SANCTUARY -->
+      <section class="soundscape-section reveal-on-scroll" id="soundscapeSec" data-reveal="fade-up">
+        <div class="glass-card soundscape-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-cloud-moon-rain"></i> Intimate Ambiance</span>
+            <h2 class="section-title">Cosmic Ambient Soundscape Sanctuary 🌌🌧️</h2>
+            <p class="section-desc">Immerse yourselves in a multi-layered, polyphonic ambiance handcrafted with pure Web Audio synthesis. Mix gentle rain, cozy fireplace crackles, ocean tides, and starlight chimes.</p>
+          </div>
+
+          <!-- Soundscape Master Toolbar -->
+          <div class="soundscape-master-bar">
+            <div class="master-control-group">
+              <button type="button" class="btn-primary pulse-btn" id="soundscapeMasterToggle">
+                <i class="fa-solid fa-play" id="soundscapePlayIcon"></i>
+                <span id="soundscapeMasterLabel">Play Soundscape</span>
+              </button>
+              <div class="master-vol-wrapper">
+                <i class="fa-solid fa-volume-high"></i>
+                <input type="range" id="soundscapeMasterVol" min="0" max="100" value="80" class="soundscape-slider master-slider" title="Master Volume" />
+                <span class="vol-percent" id="soundscapeMasterPercent">80%</span>
+              </div>
+            </div>
+
+            <!-- Sleep / Rest Timer -->
+            <div class="soundscape-timer-group">
+              <label for="soundscapeTimerSelect"><i class="fa-solid fa-hourglass-end"></i> Sleep Timer:</label>
+              <select id="soundscapeTimerSelect" class="soundscape-select">
+                <option value="0">Off (Continuous)</option>
+                <option value="15">15 Minutes</option>
+                <option value="30">30 Minutes</option>
+                <option value="45">45 Minutes</option>
+                <option value="60">60 Minutes</option>
+              </select>
+              <span class="timer-countdown-badge hidden" id="soundscapeTimerBadge"><i class="fa-solid fa-moon"></i> <span id="soundscapeTimerCountdown">30:00</span></span>
+            </div>
+          </div>
+
+          <!-- Mood Presets Bar -->
+          <div class="soundscape-presets-bar">
+            <span class="presets-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Mood Presets:</span>
+            <div class="preset-buttons-group">
+              <button type="button" class="preset-btn active" data-preset="midnight"><i class="fa-solid fa-star"></i> Starry Midnight</button>
+              <button type="button" class="preset-btn" data-preset="rainy"><i class="fa-solid fa-cloud-showers-heavy"></i> Rainy Cuddle Date</button>
+              <button type="button" class="preset-btn" data-preset="fireside"><i class="fa-solid fa-fire"></i> Fireside Romance</button>
+              <button type="button" class="preset-btn" data-preset="ocean"><i class="fa-solid fa-water"></i> Ocean Moonlight</button>
+              <button type="button" class="preset-btn" data-preset="cafe"><i class="fa-solid fa-mug-hot"></i> Parisian Café</button>
+              <button type="button" class="preset-btn" data-preset="zen"><i class="fa-solid fa-spa"></i> Royal Sanctuary</button>
+            </div>
+          </div>
+
+          <!-- Multi-Track Audio Fader Grid -->
+          <div class="soundscape-tracks-grid">
+            <!-- Track 1: Rain on Glass -->
+            <div class="soundscape-track-card" data-track="rain">
+              <div class="track-header">
+                <div class="track-icon-badge rain-icon"><i class="fa-solid fa-cloud-rain"></i></div>
+                <div class="track-info">
+                  <h4>Rain on Glass</h4>
+                  <span class="track-sub">Synthesized Pink Noise</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="rain" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterRain"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volRain" min="0" max="100" value="70" />
+                <span class="track-vol-label" id="labelVolRain">70%</span>
+              </div>
+            </div>
+
+            <!-- Track 2: Cozy Fireplace -->
+            <div class="soundscape-track-card" data-track="fire">
+              <div class="track-header">
+                <div class="track-icon-badge fire-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                <div class="track-info">
+                  <h4>Fireplace Crackle</h4>
+                  <span class="track-sub">Stochastic Embers</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="fire" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterFire"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volFire" min="0" max="100" value="45" />
+                <span class="track-vol-label" id="labelVolFire">45%</span>
+              </div>
+            </div>
+
+            <!-- Track 3: Ocean Waves -->
+            <div class="soundscape-track-card" data-track="ocean">
+              <div class="track-header">
+                <div class="track-icon-badge ocean-icon"><i class="fa-solid fa-water"></i></div>
+                <div class="track-info">
+                  <h4>Gentle Ocean Tides</h4>
+                  <span class="track-sub">LFO Lowpass Swell</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="ocean" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterOcean"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volOcean" min="0" max="100" value="0" />
+                <span class="track-vol-label" id="labelVolOcean">0%</span>
+              </div>
+            </div>
+
+            <!-- Track 4: Starlight Chimes & Crickets -->
+            <div class="soundscape-track-card" data-track="chimes">
+              <div class="track-header">
+                <div class="track-icon-badge chimes-icon"><i class="fa-solid fa-bell"></i></div>
+                <div class="track-info">
+                  <h4>Starlight Chimes</h4>
+                  <span class="track-sub">High Sine Overtones</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="chimes" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterChimes"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volChimes" min="0" max="100" value="60" />
+                <span class="track-vol-label" id="labelVolChimes">60%</span>
+              </div>
+            </div>
+
+            <!-- Track 5: Dreamy Lo-Fi Piano -->
+            <div class="soundscape-track-card" data-track="piano">
+              <div class="track-header">
+                <div class="track-icon-badge piano-icon"><i class="fa-solid fa-music"></i></div>
+                <div class="track-info">
+                  <h4>Lo-Fi Piano Pad</h4>
+                  <span class="track-sub">Warm Polyphonic Chords</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="piano" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterPiano"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volPiano" min="0" max="100" value="50" />
+                <span class="track-vol-label" id="labelVolPiano">50%</span>
+              </div>
+            </div>
+
+            <!-- Track 6: Parisian Café -->
+            <div class="soundscape-track-card" data-track="cafe">
+              <div class="track-header">
+                <div class="track-icon-badge cafe-icon"><i class="fa-solid fa-mug-hot"></i></div>
+                <div class="track-info">
+                  <h4>Parisian Café</h4>
+                  <span class="track-sub">Warm Acoustic Hum</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="cafe" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterCafe"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volCafe" min="0" max="100" value="0" />
+                <span class="track-vol-label" id="labelVolCafe">0%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: FUTURE LOVE TIME CAPSULE VAULT -->
+      <section class="capsule-section reveal-on-scroll" id="capsuleSec" data-reveal="fade-up">
+        <div class="glass-card capsule-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-hourglass-half"></i> Sealed Forever</span>
+            <h2 class="section-title">Future Love Time Capsule Vault ⏳💌</h2>
+            <p class="section-desc">Letters, promises, and memories encrypted and sealed until future milestones in our love story. Each capsule unlocks precisely on its designated anniversary or birthday!</p>
+          </div>
+
+          <!-- Highlight Next Unlocking Capsule Banner -->
+          <div class="capsule-spotlight-card" id="capsuleSpotlight">
+            <div class="spotlight-badge"><i class="fa-solid fa-lock"></i> Next Capsule Opening Soon</div>
+            <div class="spotlight-content">
+              <div class="spotlight-left">
+                <div class="hologram-padlock-box">
+                  <div class="padlock-shackle"></div>
+                  <div class="padlock-body">
+                    <i class="fa-solid fa-lock padlock-icon" id="spotlightLockIcon"></i>
+                  </div>
+                  <div class="padlock-aura"></div>
+                </div>
+              </div>
+              <div class="spotlight-middle">
+                <span class="capsule-tag-badge" id="spotlightTag">👑 Next Royal Birthday</span>
+                <h3 class="spotlight-title" id="spotlightTitle">A Letter to Queen Nishika on September 20, 2027</h3>
+                <p class="spotlight-desc" id="spotlightDesc">"Reflecting on one full year of magic since your royal coronation day. Sealed with eternal promises."</p>
+                <div class="capsule-countdown-grid" id="capsuleCountdownGrid">
+                  <div class="capsule-time-box"><span class="c-num" id="capDays">00</span><span class="c-label">Days</span></div>
+                  <div class="capsule-time-box"><span class="c-num" id="capHours">00</span><span class="c-label">Hours</span></div>
+                  <div class="capsule-time-box"><span class="c-num" id="capMins">00</span><span class="c-label">Mins</span></div>
+                  <div class="capsule-time-box highlight"><span class="c-num" id="capSecs">00</span><span class="c-label">Secs</span></div>
+                </div>
+              </div>
+              <div class="spotlight-right">
+                <button type="button" class="btn-primary" id="openSpotlightCapsuleBtn">
+                  <i class="fa-solid fa-key"></i> <span>View Capsule</span>
+                </button>
+                <button type="button" class="btn-secondary vip-bypass-btn" id="vipCapsuleBypassBtn" title="Queen Nishika Heart Key Unlock">
+                  <i class="fa-solid fa-heart-circle-bolt"></i> <span>Queen VIP Key</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Capsule Action Row -->
+          <div class="capsules-action-bar">
+            <button type="button" class="btn-accent pulse-btn" id="openCreateCapsuleBtn">
+              <i class="fa-solid fa-feather-pointed"></i> <span>Seal A New Future Time Capsule</span>
+            </button>
+            <div class="capsule-filter-group">
+              <button type="button" class="filter-chip active" data-capsule-filter="all">All Capsules (<span id="capsuleCountTotal">4</span>)</button>
+              <button type="button" class="filter-chip" data-capsule-filter="locked">🔒 Locked</button>
+              <button type="button" class="filter-chip" data-capsule-filter="unlocked">🔓 Unlocked</button>
+            </div>
+          </div>
+
+          <!-- Capsule Grid -->
+          <div class="capsules-grid" id="capsulesGrid">
+            <!-- Dynamic capsule cards injected via script.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: OUR COSMIC JOURNEY & MILESTONES MAP -->
+      <section class="journey-section reveal-on-scroll" id="journeySec" data-reveal="fade-up">
+        <div class="glass-card journey-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-compass"></i> Our Celestial Story</span>
+            <h2 class="section-title">Our Cosmic Journey & Milestones Map 🗺️✨</h2>
+            <p class="section-desc">Trace the celestial path of our love story through space, time, and milestones across the universe.</p>
+          </div>
+
+          <!-- Live Celestial Statistics Ribbon -->
+          <div class="cosmic-stats-ribbon">
+            <div class="cosmic-stat-card">
+              <div class="stat-icon-gold"><i class="fa-solid fa-earth-americas"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="cosmicDistanceVal">940,000,000+</span>
+                <span class="stat-unit">km</span>
+                <span class="stat-label">Traveled Together Around Sun</span>
+              </div>
+            </div>
+            <div class="cosmic-stat-card">
+              <div class="stat-icon-gold"><i class="fa-solid fa-heart-pulse"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="cosmicHeartbeatsVal">2,654,000+</span>
+                <span class="stat-unit">beats</span>
+                <span class="stat-label">Shared Together In Love</span>
+              </div>
+            </div>
+            <div class="cosmic-stat-card">
+              <div class="stat-icon-gold"><i class="fa-solid fa-star-and-crescent"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="cosmicMilestonesCount">8</span>
+                <span class="stat-unit">Chapters</span>
+                <span class="stat-label">Celestial Milestones Consecrated</span>
+              </div>
+            </div>
+            <div class="cosmic-stat-card">
+              <div class="stat-icon-gold"><i class="fa-solid fa-infinity"></i></div>
+              <div class="stat-body">
+                <span class="stat-number">∞</span >
+                <span class="stat-unit">Forever</span>
+                <span class="stat-label">Love & Devotion Strength</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Constellation Journey Nodes -->
+          <div class="journey-constellation-container">
+            <div class="journey-constellation-svg-wrapper">
+              <svg class="journey-line-svg" id="journeyLineSvg" viewBox="0 0 1000 600" preserveAspectRatio="none">
+                <!-- Connected constellation path generated by script.js -->
+              </svg>
+            </div>
+            <div class="journey-nodes-grid" id="journeyNodesGrid">
+              <!-- Nodes dynamically generated in script.js -->
+            </div>
+          </div>
+
+          <!-- Journey Action Deck -->
+          <div class="journey-action-bar">
+            <button type="button" class="btn-primary pulse-btn" id="openAddJourneyPinBtn">
+              <i class="fa-solid fa-map-location-dot"></i> <span>Add New Cosmic Milestone Pin</span>
+            </button>
+            <div class="journey-legend">
+              <span class="legend-item"><span class="legend-dot origin"></span> Genesis</span>
+              <span class="legend-item"><span class="legend-dot date"></span> Romance</span>
+              <span class="legend-item"><span class="legend-dot trip"></span> Adventure</span>
+              <span class="legend-item"><span class="legend-dot bday"></span> Royal Celebration</span>
+              <span class="legend-item"><span class="legend-dot future"></span> Future Horizon</span>
             </div>
           </div>
         </div>
@@ -2400,7 +2869,7 @@
             
             <div class="keepsake-content">
               <p class="keepsake-certifies">This certificate proudly certifies that</p>
-              <h1 class="keepsake-recipient recipient-name-display">Komal</h1>
+              <h1 class="keepsake-recipient recipient-name-display">Nishika</h1>
               <p class="keepsake-statement">
                 Is officially crowned the most wonderful, breathtaking, and cherished woman in my universe. May this birthday bring you infinite joy, radiant health, and sweet moments!
               </p>
@@ -2427,7 +2896,7 @@
     </div>
   </div>
 
-  <!-- MODAL 4: STAR REGISTRY CERTIFICATE MODAL FOR KOMAL -->
+  <!-- MODAL 4: STAR REGISTRY CERTIFICATE MODAL FOR NISHIKA -->
   <div class="modal-backdrop" id="starModal">
     <div class="modal-dialog glass-card animate-scale-up star-registry-dialog">
       <div class="modal-sparkle-header">
@@ -2451,9 +2920,9 @@
                 <span class="magnitude-label">Magnitude: 0.85 (Radiant Gold Class)</span>
               </div>
               <p class="cert-named-text">Is permanently and officially named:</p>
-              <h1 class="star-name-headline">"Komal — The Queen Star" 👑✨</h1>
+              <h1 class="star-name-headline">"Nishika — The Queen Star" 👑✨</h1>
               <p class="star-dedication-msg">
-                "Named with all my heart for Komal, whose radiant presence illuminates my entire life brighter than every star in the universe."
+                "Named with all my heart for Nishika, whose radiant presence illuminates my entire life brighter than every star in the universe."
               </p>
             </div>
 
@@ -2490,11 +2959,11 @@
         <div class="ow-modal-header">
           <span class="badge-tag" id="owModalCategory">Open When...</span>
           <h2 id="owModalTitle">You Miss Me & Need A Hug</h2>
-          <span class="ow-modal-date">Sealed with Endless Love for Komal</span>
+          <span class="ow-modal-date">Sealed with Endless Love for Nishika</span>
         </div>
 
         <div class="ow-modal-body">
-          <p class="ow-modal-salutation">My Dearest <span class="recipient-name-display">Komal</span>,</p>
+          <p class="ow-modal-salutation">My Dearest <span class="recipient-name-display">Nishika</span>,</p>
           <div class="ow-modal-letter-content" id="owModalContent">
             <!-- Dynamically populated letter text -->
           </div>
@@ -2525,7 +2994,7 @@
         <span class="badge-tag"><i class="fa-solid fa-shield-heart"></i> Celestial Time Vault</span>
         <h2>The Secret Birthday Wish Vault 🌠</h2>
         <p class="modal-body-text">
-          The confidential wish made by <span class="recipient-name-display highlight">Komal</span> during the birthday candle ceremony is locked within this celestial sphere.
+          The confidential wish made by <span class="recipient-name-display highlight">Nishika</span> during the birthday candle ceremony is locked within this celestial sphere.
         </p>
 
         <!-- Unlocked View -->
@@ -2536,7 +3005,7 @@
             </div>
           </div>
           <div class="revealed-wish-card">
-            <span class="wish-card-tag">Queen Komal's Secret Birthday Wish:</span>
+            <span class="wish-card-tag">Queen Nishika's Secret Birthday Wish:</span>
             <p class="revealed-wish-text" id="vaultWishDisplay">
               "No secret wish has been sealed yet! Blow out the candles on the cake to lock in your secret wish."
             </p>
@@ -2548,7 +3017,7 @@
         <!-- Lock Control (Passcode / Instant Heart Key) -->
         <div class="vault-unlock-controls" id="vaultUnlockControls">
           <div class="passcode-input-row">
-            <input type="password" id="vaultPasscodeInput" class="app-input" maxlength="4" placeholder="Anniversary PIN (e.g. 2912)" />
+            <input type="password" id="vaultPasscodeInput" class="app-input" maxlength="8" placeholder="Enter Birthday Passcode (DDMMYYYY)" />
             <button type="button" class="btn-secondary" id="submitPasscodeBtn">
               <i class="fa-solid fa-key"></i> Unlock
             </button>
@@ -2601,7 +3070,7 @@
                 <div class="h-tail-r"></div>
               </div>
               <div class="hero-tag-hanging">
-                <span id="heroTagDedication">To Queen Komal 👑 Forever In Bloom</span>
+                <span id="heroTagDedication">To Queen Nishika 👑 Forever In Bloom</span>
               </div>
             </div>
           </div>
@@ -2613,7 +3082,7 @@
               <div class="giver-arm arm-l"></div>
               <div class="giver-arm arm-r"></div>
             </div>
-            <div class="receiver-komal-silhouette" id="receiverKomal">
+            <div class="receiver-nishika-silhouette" id="receiverNishika">
               <span class="receiver-crown">👑</span>
               <span class="receiver-smile">✨</span>
             </div>
@@ -2630,7 +3099,7 @@
           <div class="royal-card-header">
             <span class="royal-crown-badge">👑</span>
             <span class="royal-card-tag">A Royal Bouquet for the Birthday Queen</span>
-            <h2 class="royal-card-title">"For My Queen <span class="recipient-name-display">Komal</span>, My Entire World" 🌸</h2>
+            <h2 class="royal-card-title">"For My Queen <span class="recipient-name-display">Nishika</span>, My Entire World" 🌸</h2>
           </div>
 
           <p class="royal-card-body">
@@ -2678,7 +3147,7 @@
           </div>
 
           <div class="gifting-status-caption" id="giftingStatusCaption">
-            🎬 Scene 1: Handcrafting and tying the eternal silk ribbon for Queen Komal... 🎀
+            🎬 Scene 1: Handcrafting and tying the eternal silk ribbon for Queen Nishika... 🎀
           </div>
         </div>
       </div>
@@ -2736,6 +3205,22 @@
               <li>
                 <div class="key-combo"><kbd class="kbd-key">K</kbd></div>
                 <span class="key-desc">Cycle Enchanted Mirror Affirmation 🪞</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">R</kbd></div>
+                <span class="key-desc">Spin Date Night Roulette Wheel 🎡</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">S</kbd></div>
+                <span class="key-desc">Toggle Ambient Soundscape Sanctuary 🌌</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">O</kbd></div>
+                <span class="key-desc">Open Future Time Capsule Vault ⏳</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">J</kbd></div>
+                <span class="key-desc">View Cosmic Journey & Milestones Map 🗺️</span>
               </li>
               <li>
                 <div class="key-combo"><kbd class="kbd-key">T</kbd></div>
@@ -2815,6 +3300,209 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL 9: CUSTOM DATE NIGHT IDEA CREATOR MODAL -->
+  <div class="modal-backdrop" id="newDateIdeaModal">
+    <div class="modal-dialog glass-card animate-scale-up">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">🎡</span>
+        <button class="modal-close-btn" id="closeNewDateIdeaModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      <h2>Add Romantic Date Idea</h2>
+      <p class="modal-body-text">Add your own customized date night fantasy or adventure to the royal roulette wheel!</p>
+
+      <form id="newDateIdeaForm" class="date-idea-form">
+        <div class="form-group">
+          <label for="dateIdeaTitleInput"><i class="fa-solid fa-heart"></i> Date Adventure Title</label>
+          <input type="text" id="dateIdeaTitleInput" class="app-input" placeholder="e.g., Midnight Rooftop Stargazing & Wine" required maxlength="60" />
+        </div>
+
+        <div class="form-group">
+          <label for="dateIdeaDescInput"><i class="fa-solid fa-align-left"></i> Adventure Details & Vibe</label>
+          <textarea id="dateIdeaDescInput" class="app-input" rows="2" placeholder="e.g., Bring warm blankets, hot chocolate, and our favorite playlist..." required maxlength="200"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="dateIdeaCategorySelect"><i class="fa-solid fa-tag"></i> Category Vibe</label>
+          <select id="dateIdeaCategorySelect" class="app-input">
+            <option value="Intimate Romance">🌹 Intimate Romance</option>
+            <option value="Cozy Stay-In">🛋️ Cozy Stay-In</option>
+            <option value="Spontaneous Trip">🚗 Spontaneous Trip</option>
+            <option value="Royal Pampering">👑 Royal Pampering</option>
+            <option value="Sweet Fun">🎡 Sweet Fun</option>
+          </select>
+        </div>
+
+        <div class="modal-action-bar">
+          <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-plus"></i> Add To Royal Roulette
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 10: CREATE FUTURE TIME CAPSULE MODAL -->
+  <div class="modal-backdrop" id="createCapsuleModal">
+    <div class="modal-dialog glass-card animate-scale-up">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">⏳</span>
+        <button class="modal-close-btn" id="closeCreateCapsuleModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      <h2>Seal A Future Time Capsule</h2>
+      <p class="modal-body-text">Write a romantic letter or secret promise to be locked in the cosmic vault until a future anniversary or milestone!</p>
+
+      <form id="createCapsuleForm" class="create-capsule-form">
+        <div class="form-group">
+          <label for="capsuleTitleInput"><i class="fa-solid fa-heading"></i> Capsule Title</label>
+          <input type="text" id="capsuleTitleInput" class="app-input" placeholder="e.g., 2nd Anniversary Letter, Our Dream Honeymoon Promise" required maxlength="80" />
+        </div>
+
+        <div class="form-group">
+          <label for="capsuleUnlockDateInput"><i class="fa-solid fa-calendar-check"></i> Unlock Date & Time</label>
+          <input type="datetime-local" id="capsuleUnlockDateInput" class="app-input" required />
+        </div>
+
+        <div class="form-group">
+          <label for="capsuleTagSelect"><i class="fa-solid fa-crown"></i> Milestone Occasion</label>
+          <select id="capsuleTagSelect" class="app-input">
+            <option value="👑 Next Royal Birthday">👑 Next Royal Birthday</option>
+            <option value="💖 Anniversary Celebration">💖 Anniversary Celebration</option>
+            <option value="🌹 Valentine's Day Special">🌹 Valentine's Day Special</option>
+            <option value="✨ New Year Milestone">✨ New Year Milestone</option>
+            <option value="💌 Eternal Love Secret">💌 Eternal Love Secret</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="capsuleMessageInput"><i class="fa-solid fa-envelope-open-text"></i> Intimate Letter / Secret Message</label>
+          <textarea id="capsuleMessageInput" class="app-input" rows="4" placeholder="Write your heartfelt letter, promises, and love message here... (will remain encrypted until unlock date)" required></textarea>
+        </div>
+
+        <div class="modal-action-bar">
+          <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-lock"></i> Encrypt & Seal in Cosmic Vault
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 11: VIEW / UNLOCK TIME CAPSULE MODAL -->
+  <div class="modal-backdrop" id="viewCapsuleModal">
+    <div class="modal-dialog glass-card animate-scale-up capsule-view-dialog">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji" id="viewCapsuleEmoji">💌</span>
+        <button class="modal-close-btn" id="closeViewCapsuleModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="capsule-view-header">
+        <span class="capsule-tag-badge" id="viewCapsuleTag">👑 Next Royal Birthday</span>
+        <h2 id="viewCapsuleTitle">Capsule Title</h2>
+        <span class="capsule-unlock-status" id="viewCapsuleStatus"><i class="fa-solid fa-lock"></i> Locked until Sept 20, 2027</span>
+      </div>
+
+      <div class="capsule-parchment-body" id="viewCapsuleBody">
+        <div class="capsule-lock-curtain" id="viewCapsuleCurtain">
+          <i class="fa-solid fa-lock-keyhole giant-curtain-lock"></i>
+          <p>This capsule is sealed until its unlock date.</p>
+          <button type="button" class="btn-secondary vip-bypass-btn" id="viewCapsuleVipBypassBtn">
+            <i class="fa-solid fa-heart-circle-bolt"></i> Queen VIP Heart Key Unlock
+          </button>
+        </div>
+        <div class="capsule-unsealed-letter hidden" id="viewCapsuleLetterContent">
+          <p id="viewCapsuleMessageText"></p>
+          <div class="capsule-sign-footer">
+            <span class="capsule-signature" id="viewCapsuleSignature">Forever Dilip 💖</span>
+            <span class="capsule-date-stamped" id="viewCapsuleTimestamp">Sealed with Eternal Love</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-action-bar">
+        <button type="button" class="btn-primary" id="closeViewCapsuleBtn">
+          <i class="fa-solid fa-check"></i> Close Capsule
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: STAR REGISTRY CERTIFICATE -->
+  <div class="modal-backdrop" id="starModal">
+    <div class="modal-dialog glass-card star-registry-dialog animate-scale-up">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">🌟</span>
+        <button class="modal-close-btn" id="closeStarModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="star-cert-inner">
+        <span class="cert-crest">👑 CELESTIAL REGISTRY OF ETERNAL LOVE 👑</span>
+        <h2 class="star-name-headline">Star: Nishika-Centauri-01</h2>
+        <div class="star-cert-details">
+          <p class="star-coords"><strong>Coordinates:</strong> RA 14h 39m 36.5s | Dec -60° 50′ 02″ | Magnitude 1.0 (Brightest Star in Dilip's Universe)</p>
+          <p class="star-dedication-msg">"Officially consecrated in the heavens forever as a symbol of Dilip's timeless, unyielding love for Queen Nishika on her Birthday."</p>
+          <div class="cert-footer">
+            <span>✨ Consecrated: September 5th</span>
+            <span>💖 Registered by: Dilip</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-action-bar">
+        <button type="button" class="btn-primary" id="printStarCertBtn">
+          <i class="fa-solid fa-print"></i> Print / Save Certificate
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 12: ADD COSMIC JOURNEY MEMORY PIN MODAL -->
+  <div class="modal-backdrop" id="addJourneyPinModal">
+    <div class="modal-dialog glass-card animate-scale-up">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">🗺️</span>
+        <button class="modal-close-btn" id="closeAddJourneyPinModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      <h2>Add Cosmic Milestone Pin</h2>
+      <p class="modal-body-text">Mark a cherished memory, trip, or milestone on our celestial journey map!</p>
+
+      <form id="addJourneyPinForm" class="journey-pin-form">
+        <div class="form-group">
+          <label for="pinTitleInput"><i class="fa-solid fa-bookmark"></i> Milestone Name</label>
+          <input type="text" id="pinTitleInput" class="app-input" placeholder="e.g., First Stargazing Date, Weekend Beach Getaway" required maxlength="60" />
+        </div>
+
+        <div class="form-group">
+          <label for="pinDateInput"><i class="fa-solid fa-calendar"></i> Date of Memory</label>
+          <input type="date" id="pinDateInput" class="app-input" required />
+        </div>
+
+        <div class="form-group">
+          <label for="pinCategorySelect"><i class="fa-solid fa-icons"></i> Milestone Type</label>
+          <select id="pinCategorySelect" class="app-input">
+            <option value="genesis">🌱 Genesis / First Spark</option>
+            <option value="romance">💖 Romantic Milestone</option>
+            <option value="adventure">✈️ Trip / Adventure</option>
+            <option value="celebration">👑 Royal Birthday</option>
+            <option value="future">🌟 Future Dream</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="pinLocationInput"><i class="fa-solid fa-location-dot"></i> Special Place / Coordinates</label>
+          <input type="text" id="pinLocationInput" class="app-input" placeholder="e.g., Our Secret Garden Spot, Jaipur, Moonlit Lake" required maxlength="80" />
+        </div>
+
+        <div class="form-group">
+          <label for="pinDescInput"><i class="fa-solid fa-feather"></i> Memory Story & Reflection</label>
+          <textarea id="pinDescInput" class="app-input" rows="3" placeholder="Describe what made this milestone so unforgettable..." required maxlength="300"></textarea>
+        </div>
+
+        <div class="modal-action-bar">
+          <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-map-pin"></i> Consecrate Milestone Pin ✨
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
