@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Eternal Love ✨ Coming Soon — Launching September 20</title>
+  <meta name="description" content="Eternal Love — An ultra-luxurious, magical romantic celebration experience crafted for Queen Komal. Official grand reveal launching on September 20." />
+  <meta name="theme-color" content="#0d0614" />
+
+  <!-- OpenGraph / Social Sharing -->
+  <meta property="og:title" content="Eternal Love ✨ Grand Reveal Coming Soon" />
+  <meta property="og:description" content="A celestial, animated romantic birthday celebration made for Queen Komal. Launching September 20." />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Dancing+Script:wght@700&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    /* ==========================================================================
+       ETERNAL LOVE — COMING SOON LUXURY DESIGN SYSTEM
+       ========================================================================== */
+    :root {
+      --bg-dark-1: #090312;
+      --bg-dark-2: #180928;
+      --bg-dark-3: #2a0845;
+      --primary-pink: #ff4081;
+      --primary-glow: rgba(255, 64, 129, 0.5);
+      --accent-gold: #ffd700;
+      --gold-glow: rgba(255, 215, 0, 0.45);
+      --royal-purple: #9d4edd;
+      --text-main: #ffffff;
+      --text-muted: #e2d9f3;
+      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.14);
+      --glass-hover: rgba(255, 255, 255, 0.12);
+      --glass-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.45);
+      --font-display: 'Cinzel', 'Playfair Display', serif;
+      --font-body: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+      --font-script: 'Dancing Script', 'Caveat', cursive;
+      --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Theme Overrides */
+    body.theme-midnight-rose {
+      --bg-dark-1: #120308;
+      --bg-dark-2: #280915;
+      --primary-pink: #ff1493;
+      --accent-gold: #ffb6c1;
+    }
+    body.theme-sunset-gold {
+      --bg-dark-1: #140a02;
+      --bg-dark-2: #281708;
+      --primary-pink: #ff7b00;
+      --accent-gold: #ffd000;
+    }
+    body.theme-starlight-silver {
+      --bg-dark-1: #030a14;
+      --bg-dark-2: #08182b;
+      --primary-pink: #00f2fe;
+      --accent-gold: #4facfe;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: radial-gradient(circle at 50% 20%, var(--bg-dark-3) 0%, var(--bg-dark-2) 45%, var(--bg-dark-1) 100%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+    }
+
+    /* Background Canvas */
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Ambient Glow Orbs */
+    .ambient-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+      animation: floatGlow 12s infinite alternate ease-in-out;
+    }
+    .orb-1 {
+      top: -10%;
+      left: 15%;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, var(--royal-purple), transparent 70%);
+    }
+    .orb-2 {
+      bottom: -10%;
+      right: 10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--primary-pink), transparent 70%);
+      animation-delay: -6s;
+    }
+    .orb-3 {
+      top: 40%;
+      left: -10%;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, var(--accent-gold), transparent 70%);
+      animation-delay: -3s;
+    }
+
+    @keyframes floatGlow {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 30px) scale(1.15); }
+    }
+
+    /* Page Container */
+    .page-wrapper {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      justify-content: space-between;
+    }
+
+    /* Header Nav Bar */
+    .header-nav {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 9999px;
+      box-shadow: var(--glass-shadow);
+      margin-bottom: 30px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent-gold);
+      text-shadow: 0 0 12px var(--gold-glow);
+    }
+    .brand-logo i {
+      color: var(--primary-pink);
+      animation: heartbeat 2s infinite ease-in-out;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: var(--accent-gold);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px var(--gold-glow);
+    }
+    .nav-btn.vip-badge {
+      background: linear-gradient(135deg, #ff4081, #9d4edd);
+      border-color: rgba(255, 215, 0, 0.5);
+      color: #fff;
+    }
+    .nav-btn.vip-badge:hover {
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    /* Main Hero Teaser */
+    .hero-section {
+      text-align: center;
+      max-width: 880px;
+      margin: 0 auto 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .regal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.15), rgba(255, 64, 129, 0.2));
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      color: var(--accent-gold);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+      font-weight: 900;
+      letter-spacing: 1px;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #ffffff 30%, #ffc6e5 70%, #ffd700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.2vw, 1.35rem);
+      color: var(--text-muted);
+      max-width: 700px;
+      margin-bottom: 30px;
+      font-weight: 400;
+    }
+
+    .hero-subtitle .queen-name {
+      color: var(--accent-gold);
+      font-weight: 700;
+      text-shadow: 0 0 10px var(--gold-glow);
+    }
+
+    .hero-subtitle .dedication {
+      font-family: var(--font-script);
+      font-size: 1.4rem;
+      color: #ff80ab;
+      display: inline-block;
+      margin-left: 4px;
+    }
+
+    /* Launch Date Ribbon */
+    .launch-ribbon {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 24px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px dashed var(--accent-gold);
+      border-radius: 16px;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 35px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+    .launch-ribbon i {
+      color: var(--accent-gold);
+      font-size: 1.2rem;
+    }
+
+    /* COUNTDOWN CLOCK */
+    .countdown-container {
+      width: 100%;
+      max-width: 780px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
+      padding: 30px 24px;
+      box-shadow: var(--glass-shadow);
+      margin-bottom: 45px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .countdown-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold), var(--primary-pink), transparent);
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .countdown-card {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 18px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: var(--transition);
+    }
+    .countdown-card:hover {
+      border-color: var(--accent-gold);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(255, 215, 0, 0.2);
+    }
+
+    .card-digit {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 6px;
+      background: linear-gradient(180deg, #ffffff 40%, var(--accent-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    .card-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #d1c4e9;
+    }
+
+    /* Launch Progress Bar */
+    .progress-wrapper {
+      margin-top: 24px;
+      width: 100%;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 82%;
+      background: linear-gradient(90deg, var(--royal-purple), var(--primary-pink), var(--accent-gold));
+      border-radius: 9999px;
+      position: relative;
+      transition: width 1s ease-in-out;
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    /* SNEAK PEEK FEATURE CARDS */
+    .sneak-peek-section {
+      width: 100%;
+      margin-bottom: 50px;
+    }
+
+    .section-title-wrap {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title i {
+      color: var(--accent-gold);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .feature-box {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 22px 18px;
+      text-align: left;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-box:hover {
+      transform: translateY(-5px);
+      background: var(--glass-hover);
+      border-color: rgba(255, 215, 0, 0.4);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    .feature-icon-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.2), rgba(157, 78, 221, 0.3));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--accent-gold);
+      margin-bottom: 14px;
+    }
+
+    .feature-box h4 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .feature-box p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* PRE-LAUNCH BLESSING / NOTIFY BOX */
+    .blessing-container {
+      width: 100%;
+      max-width: 680px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 30px 24px;
+      text-align: center;
+      box-shadow: var(--glass-shadow);
+      margin-bottom: 40px;
+    }
+
+    .blessing-container h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .blessing-container p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .blessing-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+    }
+    @media (max-width: 600px) {
+      .input-row { flex-direction: column; }
+    }
+
+    .luxury-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: var(--transition);
+      outline: none;
+    }
+    .luxury-input:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.25);
+    }
+    .luxury-input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .send-blessing-btn {
+      background: linear-gradient(135deg, #ff4081, #9d4edd);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: var(--transition);
+      box-shadow: 0 6px 20px var(--primary-glow);
+    }
+    .send-blessing-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 64, 129, 0.7);
+      background: linear-gradient(135deg, #ff5c97, #b062f2);
+    }
+
+    .blessing-feedback {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      display: none;
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    /* VIP PASSCODE MODAL */
+    .vip-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(9, 3, 18, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .vip-modal-overlay.active {
+      display: flex;
+    }
+
+    .vip-modal-box {
+      width: 100%;
+      max-width: 420px;
+      background: linear-gradient(135deg, #180928, #090312);
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      border-radius: 28px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.2);
+      position: relative;
+      animation: modalPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .modal-close-btn:hover {
+      background: rgba(255, 64, 129, 0.4);
+    }
+
+    .vip-crown-icon {
+      font-size: 2.5rem;
+      color: var(--accent-gold);
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 15px var(--gold-glow));
+    }
+
+    .vip-modal-box h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .vip-modal-box p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .pin-display {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .pin-digit-slot {
+      width: 48px;
+      height: 56px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent-gold);
+      font-family: var(--font-display);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+    }
+    .pin-digit-slot.active {
+      border-color: var(--primary-pink);
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .keypad-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 12px 0;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .keypad-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: var(--accent-gold);
+    }
+    .keypad-btn:active {
+      transform: scale(0.95);
+    }
+
+    .bypass-pass-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #ffd700, #ff80ab);
+      border: none;
+      color: #000;
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    }
+    .bypass-pass-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.7);
+    }
+
+    /* FOOTER */
+    .coming-footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      width: 100%;
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-dedication {
+      color: #ff80ab;
+      font-weight: 600;
+      font-family: var(--font-script);
+      font-size: 1.2rem;
+    }
+
+    /* RESPONSIVE MEDIA QUERIES */
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 16px 14px 40px; }
+      .header-nav { padding: 10px 14px; }
+      .brand-logo span { display: none; }
+      .countdown-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .countdown-container { padding: 20px 16px; border-radius: 20px; }
+      .card-digit { font-size: 2.2rem; }
+      .hero-title { font-size: 2.1rem; }
+    }
+  </style>
+</head>
+<body class="theme-magical">
+  <!-- HTML5 Particle Canvas -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Ambient Glow Orbs -->
+  <div class="ambient-glow orb-1"></div>
+  <div class="ambient-glow orb-2"></div>
+  <div class="ambient-glow orb-3"></div>
+
+  <!-- Main Page Shell -->
+  <div class="page-wrapper">
+    
+    <!-- Top Navigation -->
+    <header class="header-nav">
+      <div class="brand-logo">
+        <i class="fa-solid fa-crown"></i>
+        <span>Eternal Love</span>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Audio Synth Toggle -->
+        <button id="soundToggleBtn" class="nav-btn" title="Toggle Ambient Melodies">
+          <i class="fa-solid fa-music"></i>
+          <span id="soundBtnText">Music</span>
+        </button>
+
+        <!-- VIP Access Button -->
+        <button id="vipUnlockTrigger" class="nav-btn vip-badge">
+          <i class="fa-solid fa-key"></i>
+          <span>VIP Access</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Hero Teaser Section -->
+    <main class="hero-section">
+      <div class="regal-badge">
+        <i class="fa-solid fa-sparkles"></i>
+        <span>Official Grand Reveal</span>
+      </div>
+
+      <h1 class="hero-title">Something Truly Celestial Is In The Stars</h1>
+
+      <p class="hero-subtitle">
+        An ultra-luxurious, magical romantic celebration handcrafted exclusively for 
+        <span class="queen-name">Queen Komal 👑</span>
+        <span class="dedication">— with infinite love by Dilip 💖</span>
+      </p>
+
+      <!-- Launch Date Badge -->
+      <div class="launch-ribbon">
+        <i class="fa-solid fa-calendar-star"></i>
+        <span>Official Launch Date: <strong>September 20, 2026</strong></span>
+      </div>
+
+      <!-- COUNTDOWN TIMER -->
+      <div class="countdown-container">
+        <div class="countdown-grid">
+          <div class="countdown-card">
+            <span class="card-digit" id="daysVal">00</span>
+            <span class="card-label">Days</span>
+          </div>
+          <div class="countdown-card">
+            <span class="card-digit" id="hoursVal">00</span>
+            <span class="card-label">Hours</span>
+          </div>
+          <div class="countdown-card">
+            <span class="card-digit" id="minutesVal">00</span>
+            <span class="card-label">Minutes</span>
+          </div>
+          <div class="countdown-card">
+            <span class="card-digit" id="secondsVal">00</span>
+            <span class="card-label">Seconds</span>
+          </div>
+        </div>
+
+        <!-- Launch Progress Bar -->
+        <div class="progress-wrapper">
+          <div class="progress-header">
+            <span>Countdown Progress</span>
+            <span id="progressPercent">Syncing...</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SNEAK PEEK FEATURES -->
+      <section class="sneak-peek-section">
+        <div class="section-title-wrap">
+          <h3 class="section-title">
+            <i class="fa-solid fa-stars"></i>
+            <span>Sneak Peek Inside The Experience</span>
+          </h3>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-box">
+            <div class="feature-icon-badge"><i class="fa-solid fa-cake-candles"></i></div>
+            <h4>3D Cake Cutting</h4>
+            <p>Blow out real flickering candles, grab the engraved golden knife, and trigger full-screen confetti fanfares.</p>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-icon-badge"><i class="fa-solid fa-jar"></i></div>
+            <h4>100+ Reasons Love Jar</h4>
+            <p>An interactive glass jar with 100+ categorized heartfelt reasons why Queen Komal is cherished forever.</p>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-icon-badge"><i class="fa-solid fa-vault"></i></div>
+            <h4>Queen's Secret Vault</h4>
+            <p>Passcode-protected sealed love capsule containing private audio, secret promises, and video memories.</p>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-icon-badge"><i class="fa-solid fa-couch"></i></div>
+            <h4>Cuddle Haven Cinema</h4>
+            <p>Cozy virtual fireplace crackling with ambient soundscapes, monogrammed blankets, and romantic cinema tickets.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRE-LAUNCH BLESSING / WISH BOX -->
+      <section class="blessing-container">
+        <h3>💌 Send an Early Birthday Blessing</h3>
+        <p>Leave a warm pre-launch wish for Queen Komal. It will be saved directly into her Royal Google Sheets Guestbook!</p>
+
+        <form id="preLaunchWishForm" class="blessing-form">
+          <div class="input-row">
+            <input type="text" id="guestName" class="luxury-input" placeholder="Your Name (e.g. Dilip, Bestie)" required />
+            <input type="text" id="guestWish" class="luxury-input" placeholder="Your Sweet Birthday Wish..." required />
+          </div>
+          <button type="submit" class="send-blessing-btn" id="submitWishBtn">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Send Early Blessing</span>
+          </button>
+        </form>
+        <div id="blessingFeedback" class="blessing-feedback">
+          ✨ Blessing received with love and saved to the Royal Ledger! 💖
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Page Footer -->
+    <footer class="coming-footer">
+      <p class="footer-dedication">Handcrafted with Infinite Devotion for Queen Komal 👑</p>
+      <p>© 2026 Eternal Love. All rights reserved. Launching Worldwide September 20.</p>
+    </footer>
+
+  </div>
+
+  <!-- VIP PASSCODE MODAL DIALOG -->
+  <div class="vip-modal-overlay" id="vipModal">
+    <div class="vip-modal-box">
+      <button class="modal-close-btn" id="closeVipModal" title="Close"><i class="fa-solid fa-xmark"></i></button>
+      
+      <i class="fa-solid fa-crown vip-crown-icon"></i>
+      <h3>Queen's VIP Early Access</h3>
+      <p>Enter the 4-digit anniversary passcode or use Queen Komal's Heart Pass to preview the full celebration now!</p>
+
+      <!-- Digit slots -->
+      <div class="pin-display">
+        <div class="pin-digit-slot" id="slot0">•</div>
+        <div class="pin-digit-slot" id="slot1">•</div>
+        <div class="pin-digit-slot" id="slot2">•</div>
+        <div class="pin-digit-slot" id="slot3">•</div>
+      </div>
+
+      <!-- Numeric Keypad -->
+      <div class="keypad-grid">
+        <button class="keypad-btn" data-key="1">1</button>
+        <button class="keypad-btn" data-key="2">2</button>
+        <button class="keypad-btn" data-key="3">3</button>
+        <button class="keypad-btn" data-key="4">4</button>
+        <button class="keypad-btn" data-key="5">5</button>
+        <button class="keypad-btn" data-key="6">6</button>
+        <button class="keypad-btn" data-key="7">7</button>
+        <button class="keypad-btn" data-key="8">8</button>
+        <button class="keypad-btn" data-key="9">9</button>
+        <button class="keypad-btn" data-key="C" style="color:#ff80ab;">C</button>
+        <button class="keypad-btn" data-key="0">0</button>
+        <button class="keypad-btn" data-key="BACK" style="color:#ffd700;"><i class="fa-solid fa-delete-left"></i></button>
+      </div>
+
+      <!-- Queen's Bypass Button -->
+      <button class="bypass-pass-btn" id="queenHeartBypassBtn">
+        <i class="fa-solid fa-heart"></i>
+        <span>Queen Komal 👑 Instant Access Key</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC ENGINE -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. LAUNCH TARGET DATE: SEPTEMBER 20, 2026 00:00:00 IST
+      const LAUNCH_DATE = new Date('2026-09-20T00:00:00+05:30').getTime();
+      const START_DATE = new Date('2026-09-01T00:00:00+05:30').getTime();
+      const TOTAL_DURATION = LAUNCH_DATE - START_DATE;
+      const urlParams = new URLSearchParams(window.location.search);
+
+      const daysEl = document.getElementById('daysVal');
+      const hoursEl = document.getElementById('hoursVal');
+      const minutesEl = document.getElementById('minutesVal');
+      const secondsEl = document.getElementById('secondsVal');
+      const progressFill = document.getElementById('progressBarFill');
+      const progressText = document.getElementById('progressPercent');
+
+      let hasAutoRedirected = false;
+
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const difference = LAUNCH_DATE - now;
+
+        if (difference <= 0) {
+          daysEl.textContent = '00';
+          hoursEl.textContent = '00';
+          minutesEl.textContent = '00';
+          secondsEl.textContent = '00';
+          progressFill.style.width = '100%';
+          progressText.textContent = '🎉 100% — Grand Celebration is LIVE!';
+
+          // On or after Sept 20, make index.html primary and auto-redirect if not explicitly staying
+          if (!hasAutoRedirected && urlParams.get('stay') !== 'true') {
+            hasAutoRedirected = true;
+            setTimeout(() => {
+              window.location.href = 'index.html';
+            }, 2500);
+          }
+          return;
+        }
+
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        daysEl.textContent = String(days).padStart(2, '0');
+        hoursEl.textContent = String(hours).padStart(2, '0');
+        minutesEl.textContent = String(minutes).padStart(2, '0');
+        secondsEl.textContent = String(seconds).padStart(2, '0');
+
+        // Calculate progress %
+        const elapsed = now - START_DATE;
+        let percent = Math.min(100, Math.max(0, (elapsed / TOTAL_DURATION) * 100));
+        progressFill.style.width = percent.toFixed(1) + '%';
+        progressText.textContent = percent.toFixed(0) + '% Completed';
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
+      // 2. CELESTIAL CANVAS PARTICLES & SHOOTING STARS
+      const canvas = document.getElementById('particleCanvas');
+      const ctx = canvas.getContext('2d');
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const stars = [];
+      const hearts = [];
+      const starCount = Math.min(100, Math.floor(width / 14));
+
+      for (let i = 0; i < starCount; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: Math.random() * 2 + 0.5,
+          alpha: Math.random() * 0.8 + 0.2,
+          speed: Math.random() * 0.02 + 0.005
+        });
+      }
+
+      function spawnHeart() {
+        if (hearts.length < 25) {
+          hearts.push({
+            x: Math.random() * width,
+            y: height + 20,
+            size: Math.random() * 14 + 10,
+            speedY: Math.random() * 1.2 + 0.6,
+            speedX: (Math.random() - 0.5) * 0.8,
+            alpha: Math.random() * 0.5 + 0.3,
+            hue: Math.random() > 0.5 ? 330 : 45
+          });
+        }
+      }
+      setInterval(spawnHeart, 800);
+
+      function drawHeartShape(cx, cy, size, color, alpha) {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        const topCurveHeight = size * 0.3;
+        ctx.moveTo(cx, cy + topCurveHeight);
+        ctx.bezierCurveTo(cx, cy, cx - size / 2, cy, cx - size / 2, cy + topCurveHeight);
+        ctx.bezierCurveTo(cx - size / 2, cy + (size + topCurveHeight) / 2, cx, cy + size, cx, cy + size);
+        ctx.bezierCurveTo(cx, cy + size, cx + size / 2, cy + (size + topCurveHeight) / 2, cx + size / 2, cy + topCurveHeight);
+        ctx.bezierCurveTo(cx + size / 2, cy, cx, cy, cx, cy + topCurveHeight);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function renderCanvas() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Draw Twinkling Stars
+        stars.forEach(s => {
+          s.alpha += Math.sin(Date.now() * s.speed) * 0.01;
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.1, Math.min(1, s.alpha))})`;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Draw Floating Hearts
+        for (let i = hearts.length - 1; i >= 0; i--) {
+          const h = hearts[i];
+          h.y -= h.speedY;
+          h.x += h.speedX;
+          const color = h.hue === 330 ? '#ff4081' : '#ffd700';
+          drawHeartShape(h.x, h.y, h.size, color, h.alpha);
+
+          if (h.y < -30) {
+            hearts.splice(i, 1);
+          }
+        }
+
+        requestAnimationFrame(renderCanvas);
+      }
+      renderCanvas();
+
+      // 3. POLYPHONIC WEB AUDIO SYNTHESIZER
+      let audioCtx = null;
+      let isAudioPlaying = false;
+      let synthInterval = null;
+
+      function initAudio() {
+        if (!audioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      }
+
+      const MELODY = [
+        { f: 261.63, d: 0.5 }, // C4
+        { f: 329.63, d: 0.5 }, // E4
+        { f: 392.00, d: 0.5 }, // G4
+        { f: 523.25, d: 0.8 }, // C5
+        { f: 493.88, d: 0.5 }, // B4
+        { f: 392.00, d: 0.5 }, // G4
+        { f: 440.00, d: 0.8 }, // A4
+        { f: 392.00, d: 1.0 }  // G4
+      ];
+
+      function playChime(freq, duration) {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      }
+
+      const soundBtn = document.getElementById('soundToggleBtn');
+      const soundText = document.getElementById('soundBtnText');
+
+      function toggleSound() {
+        initAudio();
+        isAudioPlaying = !isAudioPlaying;
+
+        if (isAudioPlaying) {
+          soundText.textContent = 'Pause';
+          soundBtn.style.borderColor = 'var(--accent-gold)';
+          let noteIdx = 0;
+          synthInterval = setInterval(() => {
+            const note = MELODY[noteIdx % MELODY.length];
+            playChime(note.f, note.d);
+            noteIdx++;
+          }, 600);
+        } else {
+          soundText.textContent = 'Music';
+          soundBtn.style.borderColor = 'var(--glass-border)';
+          clearInterval(synthInterval);
+        }
+      }
+
+      soundBtn.addEventListener('click', toggleSound);
+
+      // 4. VIP PASSCODE MODAL & UNLOCK TO FULL WEBSITE
+      const vipModal = document.getElementById('vipModal');
+      const openVipBtn = document.getElementById('vipUnlockTrigger');
+      const closeVipBtn = document.getElementById('closeVipModal');
+      const queenBypassBtn = document.getElementById('queenHeartBypassBtn');
+
+      let enteredPin = '';
+      const TARGET_PIN = '2912';
+
+      function updatePinDisplay() {
+        for (let i = 0; i < 4; i++) {
+          const slot = document.getElementById('slot' + i);
+          if (i < enteredPin.length) {
+            slot.textContent = enteredPin[i];
+            slot.classList.add('active');
+          } else {
+            slot.textContent = '•';
+            slot.classList.remove('active');
+          }
+        }
+      }
+
+      function checkPin() {
+        if (enteredPin === TARGET_PIN) {
+          initAudio();
+          playChime(523.25, 0.4);
+          setTimeout(() => playChime(659.25, 0.6), 150);
+          setTimeout(() => playChime(783.99, 1.0), 300);
+
+          // Success alert & redirect to index.html with VIP bypass
+          vipModal.querySelector('h3').textContent = '🎉 Access Granted, Queen Komal!';
+          sessionStorage.setItem('eternal_love_vip_unlocked', 'true');
+          localStorage.setItem('eternal_love_vip_unlocked', 'true');
+          setTimeout(() => {
+            window.location.href = 'index.html?preview=true';
+          }, 700);
+        } else if (enteredPin.length === 4) {
+          // Error shake
+          const slots = document.querySelectorAll('.pin-digit-slot');
+          slots.forEach(s => s.style.borderColor = '#ff1744');
+          setTimeout(() => {
+            enteredPin = '';
+            updatePinDisplay();
+            slots.forEach(s => s.style.borderColor = 'rgba(255, 215, 0, 0.3)');
+          }, 500);
+        }
+      }
+
+      openVipBtn.addEventListener('click', () => {
+        vipModal.classList.add('active');
+        enteredPin = '';
+        updatePinDisplay();
+      });
+
+      closeVipBtn.addEventListener('click', () => {
+        vipModal.classList.remove('active');
+      });
+
+      queenBypassBtn.addEventListener('click', () => {
+        initAudio();
+        playChime(659.25, 0.8);
+        sessionStorage.setItem('eternal_love_vip_unlocked', 'true');
+        localStorage.setItem('eternal_love_vip_unlocked', 'true');
+        window.location.href = 'index.html?preview=true';
+      });
+
+      document.querySelectorAll('.keypad-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          initAudio();
+          const key = btn.getAttribute('data-key');
+          if (key === 'C') {
+            enteredPin = '';
+          } else if (key === 'BACK') {
+            enteredPin = enteredPin.slice(0, -1);
+          } else if (enteredPin.length < 4) {
+            enteredPin += key;
+            playChime(440 + enteredPin.length * 50, 0.15);
+          }
+          updatePinDisplay();
+          if (enteredPin.length === 4) {
+            checkPin();
+          }
+        });
+      });
+
+      // 5. PRE-LAUNCH BLESSING SUBMIT (Sync to Google Cloud)
+      const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec';
+      const wishForm = document.getElementById('preLaunchWishForm');
+      const feedback = document.getElementById('blessingFeedback');
+
+      wishForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        initAudio();
+        playChime(587.33, 0.5);
+
+        const nameInput = document.getElementById('guestName');
+        const wishInput = document.getElementById('guestWish');
+
+        const payload = {
+          type: 'wish',
+          name: nameInput.value.trim() + ' (Pre-Launch Blessing)',
+          message: wishInput.value.trim(),
+          color: 'gold',
+          timestamp: new Date().toISOString()
+        };
+
+        try {
+          fetch(GOOGLE_SHEET_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+        } catch (err) {
+          console.warn('Cached offline', err);
+        }
+
+        wishForm.reset();
+        feedback.style.display = 'block';
+        setTimeout(() => {
+          feedback.style.display = 'none';
+        }, 5000);
+      });
+
+    });
+  </script>
+</body>
+</html>
