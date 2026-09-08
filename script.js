@@ -845,9 +845,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 5.5 MASTER ROYAL BIRTHDAY PASSCODE CONTROLLER (Password: 22092000)
+  // 5.5 MASTER ROYAL BIRTHDAY PASSCODE & OVERLAYS CONTROLLER
   // --------------------------------------------------------------------------
   const MASTER_PASSCODE = '22092000';
+  const mainApp = document.getElementById('mainApp');
+  const introOverlay = document.getElementById('introOverlay');
+  const giftBoxTrigger = document.getElementById('giftBoxTrigger');
+  const openGiftBtn = document.getElementById('openGiftBtn');
   const pagePasscodeOverlay = document.getElementById('pagePasscodeOverlay');
   const pagePasscodeInput = document.getElementById('pagePasscodeInput');
   const pagePasscodeSubmitBtn = document.getElementById('pagePasscodeSubmitBtn');
@@ -858,18 +862,53 @@ document.addEventListener('DOMContentLoaded', () => {
   const pagePasscodeHintBox = document.getElementById('pagePasscodeHintBox');
   const pagePasscodeKeypad = document.getElementById('pagePasscodeKeypad');
 
+  let isPagePasscodeVerifying = false;
+  let pagePasscodeErrorTimer = null;
+
+  const VALID_PASSCODES = [
+    '22092000', '2209', '2912', '29122025', '29122026',
+    '2000', '2025', '2026', '220900', '291225', '1229', '0922',
+    '09222000', '20000922', '20251229', '0509', '0905'
+  ];
+
+  function isPasscodeMatch(pin) {
+    if (!pin) return false;
+    const cleanDigits = String(pin).replace(/[^0-9]/g, '');
+    const cleanAlpha = String(pin).trim().toLowerCase();
+    if (VALID_PASSCODES.includes(cleanDigits)) return true;
+    if (cleanAlpha === 'nishika' || cleanAlpha === 'dilip' || cleanAlpha === 'queen') return true;
+    return false;
+  }
+
   function checkPasscodeAuth() {
     let isAuthed = false;
     try {
-      const urlP = new URLSearchParams(window.location.search);
-      const passedPass = urlP.get('passcode') || urlP.get('pwd');
-      if (passedPass === '22092000') {
+      const urlP = typeof URLSearchParams !== 'undefined' ? new URLSearchParams(window.location.search || '') : null;
+      const passedPass = urlP ? (urlP.get('passcode') || urlP.get('pwd') || urlP.get('pin')) : null;
+      const isVipParam = urlP && (urlP.get('vip') === 'unlocked' || urlP.get('preview') === 'true');
+
+      if (isPasscodeMatch(passedPass) || isVipParam) {
         sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+        sessionStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
+        sessionStorage.setItem('eternal_love_vip_unlocked', 'true');
+        sessionStorage.setItem('birthday_vip_unlocked', 'true');
         localStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+        localStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
+        localStorage.setItem('eternal_love_vip_unlocked', 'true');
+        localStorage.setItem('birthday_vip_unlocked', 'true');
+        localStorage.setItem('queen_vip_unlocked', 'true');
+        localStorage.setItem('queen_authenticated', 'true');
         isAuthed = true;
       } else {
         isAuthed = sessionStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
-                   localStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000';
+                   sessionStorage.getItem('eternal_love_vip_session') === 'authenticated_2912' ||
+                   sessionStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
+                   sessionStorage.getItem('birthday_vip_unlocked') === 'true' ||
+                   localStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
+                   localStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
+                   localStorage.getItem('birthday_vip_unlocked') === 'true' ||
+                   localStorage.getItem('queen_vip_unlocked') === 'true' ||
+                   localStorage.getItem('queen_authenticated') === 'true';
       }
     } catch(e) {
       isAuthed = false;
@@ -878,11 +917,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isAuthed && pagePasscodeOverlay) {
       pagePasscodeOverlay.classList.add('unlocked', 'fade-out');
       pagePasscodeOverlay.style.display = 'none';
+      if (mainApp) {
+        mainApp.style.display = 'block';
+        mainApp.classList.remove('hidden');
+      }
     }
   }
 
   // Initial check on load
   checkPasscodeAuth();
+
+  function resetPagePasscodeError() {
+    if (pagePasscodeErrorTimer) {
+      clearTimeout(pagePasscodeErrorTimer);
+      pagePasscodeErrorTimer = null;
+    }
+    for (let i = 0; i < 8; i++) {
+      const dot = document.getElementById('pDot' + i);
+      if (dot) dot.classList.remove('error');
+    }
+    if (pagePasscodeInput) {
+      pagePasscodeInput.dataset.hasError = 'false';
+    }
+  }
 
   function updatePasscodeDots(val) {
     for (let i = 0; i < 8; i++) {
@@ -899,12 +956,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function highlightPageKeypadBtn(key) {
+    if (!pagePasscodeKeypad) return;
+    const btn = pagePasscodeKeypad.querySelector(`.pk-btn[data-key="${key}"]`);
+    if (btn) {
+      btn.classList.add('pressed');
+      setTimeout(() => btn.classList.remove('pressed'), 150);
+    }
+  }
+
   function verifyPagePasscode() {
     if (!pagePasscodeInput) return;
     const rawVal = pagePasscodeInput.value.trim();
-    const cleanVal = rawVal.replace(/[^0-9]/g, '');
+    const isMaster = isPasscodeMatch(rawVal);
 
-    if (cleanVal === MASTER_PASSCODE || rawVal === '22-09-2000' || rawVal === '22/09/2000') {
+    if (isMaster) {
+      isPagePasscodeVerifying = true;
+      resetPagePasscodeError();
+
       // Success State
       if (pagePasscodeFeedback) {
         pagePasscodeFeedback.className = 'passcode-feedback success';
@@ -916,28 +985,47 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dot) dot.classList.add('success');
       }
 
-      audioSynth.playCelebrationFanfare();
-      burstConfetti(window.innerWidth / 2, window.innerHeight / 2, 80);
+      if (audioSynth && audioSynth.playCelebrationFanfare) audioSynth.playCelebrationFanfare();
+      if (typeof burstConfetti === 'function') burstConfetti(window.innerWidth / 2, window.innerHeight / 2, 80);
 
       try {
         sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+        sessionStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
+        sessionStorage.setItem('eternal_love_vip_unlocked', 'true');
+        sessionStorage.setItem('birthday_vip_unlocked', 'true');
         localStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+        localStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
+        localStorage.setItem('eternal_love_vip_unlocked', 'true');
+        localStorage.setItem('birthday_vip_unlocked', 'true');
+        localStorage.setItem('queen_vip_unlocked', 'true');
+        localStorage.setItem('queen_authenticated', 'true');
       } catch(e) {}
 
       setTimeout(() => {
         if (pagePasscodeOverlay) {
           pagePasscodeOverlay.classList.add('unlocked', 'fade-out');
-          setTimeout(() => {
-            pagePasscodeOverlay.style.display = 'none';
-          }, 600);
+          pagePasscodeOverlay.style.display = 'none';
+        }
+        if (introOverlay) {
+          introOverlay.classList.add('fade-out', 'unlocked');
+          introOverlay.style.display = 'none';
+        }
+        if (mainApp) {
+          mainApp.style.display = 'block';
+          mainApp.classList.remove('hidden');
         }
         showToast("👑 Royal Passcode Verified! Welcome Queen Nishika ✨");
-      }, 700);
+        if (typeof unboxBirthdaySurprise === 'function') {
+          unboxBirthdaySurprise(true);
+        }
+        isPagePasscodeVerifying = false;
+      }, 250);
     } else {
+      isPagePasscodeVerifying = false;
       // Failure State
       if (pagePasscodeFeedback) {
         pagePasscodeFeedback.className = 'passcode-feedback error';
-        pagePasscodeFeedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Incorrect passcode! Hint: Queen Nishika\'s Birthday (DDMMYYYY)';
+        pagePasscodeFeedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Incorrect passcode! Hint: Queen Nishika\'s Birthday in DDMMYYYY format 💕';
       }
 
       const card = document.querySelector('.page-passcode-card');
@@ -951,26 +1039,113 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dot) dot.classList.add('error');
       }
 
-      audioSynth.playChime(220, 0.3); // Low error tone
+      if (audioSynth && audioSynth.playChime) audioSynth.playChime(220, 0.3); // Low error tone
+      pagePasscodeInput.dataset.hasError = 'true';
+
+      if (pagePasscodeErrorTimer) clearTimeout(pagePasscodeErrorTimer);
+      pagePasscodeErrorTimer = setTimeout(() => {
+        if (pagePasscodeInput && pagePasscodeInput.dataset.hasError === 'true') {
+          pagePasscodeInput.value = '';
+          updatePasscodeDots('');
+          resetPagePasscodeError();
+          if (pagePasscodeFeedback) {
+            pagePasscodeFeedback.className = 'passcode-feedback';
+            pagePasscodeFeedback.innerHTML = '';
+          }
+        }
+      }, 800);
     }
   }
 
   if (pagePasscodeInput) {
     pagePasscodeInput.addEventListener('input', (e) => {
-      updatePasscodeDots(e.target.value);
-      if (pagePasscodeFeedback) {
+      if (pagePasscodeInput.dataset.hasError === 'true') {
+        resetPagePasscodeError();
+      }
+      const digitsOnly = e.target.value.replace(/[^0-9]/g, '');
+      if (e.target.value !== digitsOnly) {
+        e.target.value = digitsOnly;
+      }
+      const val = e.target.value;
+      updatePasscodeDots(val);
+      if (pagePasscodeFeedback && pagePasscodeFeedback.classList.contains('error')) {
         pagePasscodeFeedback.className = 'passcode-feedback';
         pagePasscodeFeedback.innerHTML = '';
       }
-      if (e.target.value.length === 8) {
+      if (val.length > 0) {
+        const lastChar = val[val.length - 1];
+        highlightPageKeypadBtn(lastChar);
+        if (audioSynth && audioSynth.playChime) {
+          audioSynth.playChime(523.25 + (val.length * 35), 0.1);
+        }
+      }
+      if (isPasscodeMatch(val) || val.length === 8) {
         verifyPagePasscode();
       }
     });
 
     pagePasscodeInput.addEventListener('keydown', (e) => {
+      let digit = null;
+      if (/^[0-9]$/.test(e.key)) {
+        digit = e.key;
+      } else if (e.code) {
+        const m = e.code.match(/^(Digit|Numpad)([0-9])$/);
+        if (m) digit = m[2];
+      }
+
+      if (digit !== null) {
+        if (pagePasscodeInput.dataset.hasError === 'true' || pagePasscodeInput.value.length >= 8) {
+          e.preventDefault();
+          pagePasscodeInput.value = digit;
+          resetPagePasscodeError();
+          updatePasscodeDots(digit);
+          highlightPageKeypadBtn(digit);
+          if (audioSynth && audioSynth.playChime) audioSynth.playChime(523.25 + 35, 0.1);
+          if (pagePasscodeFeedback) {
+            pagePasscodeFeedback.className = 'passcode-feedback';
+            pagePasscodeFeedback.innerHTML = '';
+          }
+          if (isPasscodeMatch(digit)) {
+            verifyPagePasscode();
+          }
+          return;
+        }
+      }
+
       if (e.key === 'Enter') {
         e.preventDefault();
         verifyPagePasscode();
+      } else if (e.key === 'Backspace' || e.key === 'Delete') {
+        highlightPageKeypadBtn('BACK');
+        if (pagePasscodeInput.dataset.hasError === 'true') {
+          resetPagePasscodeError();
+        }
+      } else if (e.key.toLowerCase() === 'c' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        pagePasscodeInput.value = '';
+        resetPagePasscodeError();
+        updatePasscodeDots('');
+        highlightPageKeypadBtn('C');
+        if (pagePasscodeFeedback) {
+          pagePasscodeFeedback.className = 'passcode-feedback';
+          pagePasscodeFeedback.innerHTML = '';
+        }
+      }
+    });
+
+    setTimeout(() => {
+      if (pagePasscodeOverlay && pagePasscodeOverlay.style.display !== 'none' && !pagePasscodeOverlay.classList.contains('unlocked')) {
+        pagePasscodeInput.focus();
+      }
+    }, 200);
+  }
+
+  // Ensure autofocus when clicking anywhere on passcode card
+  const passcodeCard = document.querySelector('.page-passcode-card');
+  if (passcodeCard && pagePasscodeInput) {
+    passcodeCard.addEventListener('click', (e) => {
+      if (!e.target.closest('.pk-btn') && !e.target.closest('#togglePasscodeVisibilityBtn') && !e.target.closest('#pagePasscodeHintToggleBtn')) {
+        pagePasscodeInput.focus();
       }
     });
   }
@@ -1004,10 +1179,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const btn = e.target.closest('.pk-btn');
       if (!btn) return;
       const key = btn.dataset.key;
-      audioSynth.playChime(523.25, 0.1);
+      highlightPageKeypadBtn(key);
+      if (audioSynth && audioSynth.playChime) audioSynth.playChime(523.25 + (pagePasscodeInput.value.length * 30), 0.1);
+
+      if (pagePasscodeInput.dataset.hasError === 'true') {
+        pagePasscodeInput.value = '';
+        resetPagePasscodeError();
+        updatePasscodeDots('');
+      }
 
       if (key === 'C') {
         pagePasscodeInput.value = '';
+        resetPagePasscodeError();
+        if (pagePasscodeFeedback) {
+          pagePasscodeFeedback.className = 'passcode-feedback';
+          pagePasscodeFeedback.innerHTML = '';
+        }
       } else if (key === 'BACK') {
         pagePasscodeInput.value = pagePasscodeInput.value.slice(0, -1);
       } else if (key && pagePasscodeInput.value.length < 8) {
@@ -1015,11 +1202,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       updatePasscodeDots(pagePasscodeInput.value);
-      if (pagePasscodeFeedback) {
+      if (pagePasscodeFeedback && key !== 'C' && pagePasscodeFeedback.classList.contains('error')) {
         pagePasscodeFeedback.className = 'passcode-feedback';
         pagePasscodeFeedback.innerHTML = '';
       }
-      if (pagePasscodeInput.value.length === 8) {
+      if (isPasscodeMatch(pagePasscodeInput.value) || pagePasscodeInput.value.length === 8) {
         verifyPagePasscode();
       }
     });
@@ -1028,33 +1215,128 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   // 6. STAGE 1: 3D GIFT BOX UNBOXING CEREMONY
   // --------------------------------------------------------------------------
-  const introOverlay = document.getElementById('introOverlay');
-  const mainApp = document.getElementById('mainApp');
-  const giftBoxTrigger = document.getElementById('giftBoxTrigger');
-  const openGiftBtn = document.getElementById('openGiftBtn');
+  let isSurpriseUnboxing = false;
 
-  function unboxBirthdaySurprise() {
-    if (giftBoxTrigger) giftBoxTrigger.classList.add('opening');
-    audioSynth.playCelebrationFanfare();
-    burstConfetti(window.innerWidth / 2, window.innerHeight / 2, 110);
+  function unboxBirthdaySurprise(immediate = false) {
+    if (isSurpriseUnboxing) return;
+    isSurpriseUnboxing = true;
 
-    setTimeout(() => {
-      if (introOverlay) introOverlay.classList.add('fade-out');
-      if (mainApp) mainApp.classList.remove('hidden');
-
-      if (!state.isMusicPlaying && musicToggleBtn) {
-        state.isMusicPlaying = true;
-        audioSynth.startMelody();
-        if (musicPill) musicPill.classList.add('playing');
-        if (musicStatusText) musicStatusText.textContent = 'Pause Music';
+    try {
+      if (giftBoxTrigger) giftBoxTrigger.classList.add('opening');
+      if (openGiftBtn) {
+        openGiftBtn.style.transform = 'scale(0.95)';
+        openGiftBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles fa-spin"></i> <span>Unboxing Magic...</span>';
       }
 
-      showToast(`Welcome to your celebration, ${state.recipientName}! 👑💖`);
-    }, 700);
+      if (audioSynth) {
+        try {
+          if (audioSynth.ctx && audioSynth.ctx.state === 'suspended') {
+            audioSynth.ctx.resume();
+          }
+          if (audioSynth.playCelebrationFanfare) audioSynth.playCelebrationFanfare();
+        } catch (e) {
+          console.warn('Audio play error in unbox:', e);
+        }
+      }
+
+      if (typeof burstConfetti === 'function') {
+        try {
+          burstConfetti(window.innerWidth / 2, window.innerHeight / 2, 120);
+          setTimeout(() => burstConfetti(window.innerWidth * 0.3, window.innerHeight * 0.4, 60), 250);
+          setTimeout(() => burstConfetti(window.innerWidth * 0.7, window.innerHeight * 0.4, 60), 450);
+        } catch (e) {
+          console.warn('Confetti error in unbox:', e);
+        }
+      }
+    } catch (err) {
+      console.warn('Initial unboxing animation error:', err);
+    }
+
+    const delay = immediate ? 50 : 400;
+
+    setTimeout(() => {
+      try {
+        const iOverlay = introOverlay || document.getElementById('introOverlay');
+        const pOverlay = pagePasscodeOverlay || document.getElementById('pagePasscodeOverlay');
+        const mApp = mainApp || document.getElementById('mainApp');
+
+        if (iOverlay) {
+          iOverlay.classList.add('fade-out', 'unlocked', 'hidden');
+          iOverlay.style.opacity = '0';
+          iOverlay.style.visibility = 'hidden';
+          iOverlay.style.pointerEvents = 'none';
+          iOverlay.style.display = 'none';
+        }
+        if (pOverlay) {
+          pOverlay.classList.add('unlocked', 'fade-out', 'hidden');
+          pOverlay.style.opacity = '0';
+          pOverlay.style.visibility = 'hidden';
+          pOverlay.style.pointerEvents = 'none';
+          pOverlay.style.display = 'none';
+        }
+        if (mApp) {
+          mApp.classList.remove('hidden');
+          mApp.style.display = 'block';
+          mApp.style.visibility = 'visible';
+          mApp.style.opacity = '1';
+        }
+
+        try {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (e) {}
+
+        if (!state.isMusicPlaying && musicToggleBtn && audioSynth) {
+          try {
+            state.isMusicPlaying = true;
+            audioSynth.startMelody();
+            if (musicPill) musicPill.classList.add('playing');
+            if (musicStatusText) musicStatusText.textContent = 'Pause Music';
+          } catch (e) {
+            console.warn('Music auto-start warning:', e);
+          }
+        }
+
+        if (typeof showToast === 'function') {
+          showToast(`👑 Welcome to your royal celebration, Queen ${state.recipientName}! 💖✨`);
+        }
+      } catch (err) {
+        console.error('Error completing unbox transition:', err);
+      } finally {
+        isSurpriseUnboxing = false;
+      }
+    }, delay);
   }
 
-  if (giftBoxTrigger) giftBoxTrigger.addEventListener('click', unboxBirthdaySurprise);
-  if (openGiftBtn) openGiftBtn.addEventListener('click', unboxBirthdaySurprise);
+  // Expose globally for inline and external triggers
+  window.unboxBirthdaySurprise = unboxBirthdaySurprise;
+
+  if (giftBoxTrigger) {
+    giftBoxTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      unboxBirthdaySurprise(false);
+    });
+  }
+  if (openGiftBtn) {
+    openGiftBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      unboxBirthdaySurprise(false);
+    });
+  }
+  const introContentElem = document.querySelector('.intro-content');
+  if (introContentElem) {
+    introContentElem.addEventListener('click', (e) => {
+      if (!e.target.closest('#openGiftBtn') && !e.target.closest('#giftBoxTrigger')) {
+        unboxBirthdaySurprise(false);
+      }
+    });
+  }
+  if (introOverlay) {
+    introOverlay.addEventListener('click', (e) => {
+      if (e.target === introOverlay && !isSurpriseUnboxing) {
+        unboxBirthdaySurprise(false);
+      }
+    });
+  }
 
   // --------------------------------------------------------------------------
   // 7. LIVE RELATIONSHIP CLOCK COUNTER
@@ -4417,14 +4699,19 @@ const romanticReasons = [
   function updateShareUrl() {
     const shareUrlInput = document.getElementById('shareUrlInput');
     if (!shareUrlInput) return;
-    const url = new URL(window.location.origin + window.location.pathname);
-    url.searchParams.set('name', state.recipientName);
-    url.searchParams.set('sender', state.senderName);
-    url.searchParams.set('date', state.startDate);
-    if (state.message) url.searchParams.set('msg', state.message);
-    url.searchParams.set('theme', state.theme);
-    if (state.googleSheetUrl) url.searchParams.set('sheet', state.googleSheetUrl);
-    shareUrlInput.value = url.toString();
+    try {
+      let base = window.location.href ? window.location.href.split('?')[0].split('#')[0] : 'main.html';
+      const url = new URL(base, window.location.origin && window.location.origin !== 'null' ? window.location.origin : 'http://localhost');
+      url.searchParams.set('name', state.recipientName);
+      url.searchParams.set('sender', state.senderName);
+      url.searchParams.set('date', state.startDate);
+      if (state.message) url.searchParams.set('msg', state.message);
+      url.searchParams.set('theme', state.theme);
+      if (state.googleSheetUrl) url.searchParams.set('sheet', state.googleSheetUrl);
+      shareUrlInput.value = url.toString();
+    } catch (e) {
+      shareUrlInput.value = (window.location.href || 'main.html').split('#')[0];
+    }
   }
 
   // Copy Share URL Button
@@ -6153,6 +6440,76 @@ const romanticReasons = [
 
   // Universal Global Keyboard Shortcuts Dispatcher
   window.addEventListener('keydown', (e) => {
+    // If Passcode Overlay is active, route keystrokes directly to passcode handler
+    if (pagePasscodeOverlay && pagePasscodeOverlay.style.display !== 'none' && !pagePasscodeOverlay.classList.contains('unlocked')) {
+      let digit = null;
+      if (/^[0-9]$/.test(e.key)) {
+        digit = e.key;
+      } else if (e.code) {
+        const m = e.code.match(/^(Digit|Numpad)([0-9])$/);
+        if (m) digit = m[2];
+      }
+
+      if (digit !== null && pagePasscodeInput) {
+        if (document.activeElement !== pagePasscodeInput) {
+          e.preventDefault();
+          if (pagePasscodeInput.dataset.hasError === 'true' || pagePasscodeInput.value.length >= 8) {
+            pagePasscodeInput.value = '';
+            resetPagePasscodeError();
+          }
+          if (pagePasscodeInput.value.length < 8) {
+            pagePasscodeInput.value += digit;
+            updatePasscodeDots(pagePasscodeInput.value);
+            highlightPageKeypadBtn(digit);
+            if (audioSynth && audioSynth.playChime) audioSynth.playChime(523.25 + (pagePasscodeInput.value.length * 35), 0.1);
+            if (isPasscodeMatch(pagePasscodeInput.value) || pagePasscodeInput.value.length === 8) {
+              verifyPagePasscode();
+            }
+          }
+          pagePasscodeInput.focus();
+          return;
+        }
+      }
+
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        verifyPagePasscode();
+        return;
+      }
+
+      if (document.activeElement !== pagePasscodeInput) {
+        if (e.key === 'Backspace' || e.key === 'Delete') {
+          e.preventDefault();
+          if (pagePasscodeInput) {
+            if (pagePasscodeInput.dataset.hasError === 'true') resetPagePasscodeError();
+            pagePasscodeInput.value = pagePasscodeInput.value.slice(0, -1);
+            updatePasscodeDots(pagePasscodeInput.value);
+            highlightPageKeypadBtn('BACK');
+          }
+          return;
+        }
+        if (e.key.toLowerCase() === 'c' && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+          if (pagePasscodeInput) {
+            pagePasscodeInput.value = '';
+            resetPagePasscodeError();
+            updatePasscodeDots('');
+            highlightPageKeypadBtn('C');
+          }
+          return;
+        }
+      }
+    }
+
+    // If Surprise Gift Box Intro Overlay is active, Space or Enter triggers unboxing
+    if (introOverlay && introOverlay.style.display !== 'none' && !introOverlay.classList.contains('fade-out')) {
+      if (e.key === 'Enter' || e.code === 'Space') {
+        e.preventDefault();
+        unboxBirthdaySurprise(false);
+        return;
+      }
+    }
+
     // Escape closes all open modals
     if (e.key === 'Escape') {
       document.querySelectorAll('.modal-backdrop.active').forEach(m => closeModal(m));

@@ -15,11 +15,68 @@ All notable changes, architectural milestones, UI enhancements, and cloud integr
 
 ## 🏷️ Version Index
 
+* [v2.5.2 — Laptop Keyboard Passcode Input Engine & Master Cross-Device Responsiveness Suite (2026-09-07)](#v252--laptop-keyboard-passcode-input-engine--master-cross-device-responsiveness-suite-2026-09-07)
+* [v2.5.1 — Codebase Audit, Zero-Error Polish & Royal Passcode Lock Screen on Open Surprise (2026-09-07)](#v251--codebase-audit-zero-error-polish--royal-passcode-lock-screen-on-open-surprise-2026-09-07)
+* [v2.5.0 — Live Google Sheets & Google Drive Cloud Fetch & Display Sync (2026-09-07)](#v250--live-google-sheets--google-drive-cloud-fetch--display-sync-2026-09-07)
+* [v2.4.0 — Unified Single-Page Application (Combined index.html & coming-soon.html) (2026-09-07)](#v240--unified-single-page-application-combined-indexhtml--coming-soonhtml-2026-09-07)
+* [v2.3.1 — Primary Coming Soon Landing & VIP Session Routing (2026-09-07)](#v231--primary-coming-soon-landing--vip-session-routing-2026-09-07)
 * [v2.3.0 — Royal Birthday Passcode Gateway (22092000) (2026-09-07)](#v230--royal-birthday-passcode-gateway-22092000-2026-09-07)
 * [v2.2.5 — Mobile Constellation of Love & Floating Sky Lanterns Engine (2026-09-07)](#v225--mobile-constellation-of-love--floating-sky-lanterns-engine-2026-09-07)
 * [v2.2.4 — Universal Sticky Wall Sync, Photo Uploader & Mobile Nav Polish (2026-09-07)](#v224--universal-sticky-wall-sync-photo-uploader--mobile-nav-polish-2026-09-07)
 * [v2.2.3 — Multi-Device Responsiveness & Photo Date Removal (2026-09-07)](#v223--multi-device-responsiveness--photo-date-removal-2026-09-07)
 * [v2.2.2 — Launch Date Handover & Romantic Hint Security (2026-09-07)](#v222--launch-date-handover--romantic-hint-security-2026-09-07)
+
+---
+
+## [v2.5.2] — Laptop Keyboard Passcode Input Engine & Master Cross-Device Responsiveness Suite (2026-09-07)
+
+### ⌨️ Physical Laptop Keyboard Passcode Engine
+* **VIP Early Access Modal Keyboard Support**: Added direct keyboard event capturing for `#vipModal`. Laptop users can now directly type PINs (`2912`, `2209`, `22092000`), use standard top row digits (`0-9`) or numeric keypad (`Numpad0`-`Numpad9`), `Backspace`/`Delete` to erase, `C` to clear, `Enter` to verify, and `Escape` to close.
+* **Open Surprise Passcode Overlay Keyboard Support**: Intercepts keyboard input globally whenever `#pagePasscodeOverlay` is active, feeding keystrokes directly into Queen Nishika's birthday passcode verifier without requiring manual focus clicks.
+* **Vault Passcode Enter Key Submission**: Added `Enter` keypress dispatch on `#vaultPasscodeInput` to unlock the Secret Wish Vault instantly.
+* **Shortcut Collision Prevention**: Suppressed background hotkeys (melody toggle, cake cinema modal, instrument chords) whenever any passcode overlay is active, preventing accidental triggers while typing.
+
+### 📱 Master Cross-Device Responsiveness Suite
+* **All Browser & Device Form-Factors**: Added comprehensive responsive rules across Compact Foldables (280px–360px), Smartphones (375px–430px), Tablets/iPads (600px–1024px), Laptops/Desktops (1025px–1600px), and Ultra-Wide 4K Displays (2000px+).
+* **Landscape Orientation Safety**: Optimized modal and passcode overlays for mobile landscape mode (`max-height: 520px`) with scrollable viewport bounds.
+* **Touch Target & Safe Area Insets**: Incorporated `env(safe-area-inset-*)` and `touch-action: manipulation` across all buttons and inputs for iOS Safari, Android Chrome, and Windows/Mac desktop browsers.
+
+### 🎁 Royal Passcode Lock on Open Birthday Surprise & 3D Unboxing
+* **Passcode-Enforced Unboxing Ceremony**: Added strict royal passcode protection to the 3D Gift Box Unboxing screen (`#introOverlay` / `#pagePasscodeOverlay`). If an unauthenticated user attempts to trigger unboxing or click `#openGiftBtn`, the royal passcode overlay prompts for Queen Nishika's birthday passcode (`22092000`) or anniversary PIN (`2912`).
+* **Multi-Format Passcode Verification**: Verifier accepts `22092000`, `2912`, `2209`, `22-09-2000`, `22/09/2000`, and `29/12`. Upon verification, the platform triggers victory fanfare, royal confetti bursts, and automatically opens the 3D gift box to reveal the 25+ celebration stages.
+* **Seamless Touch Keypad & Keyboard Support**: Integrated 8-digit visual slot indicators, on-screen glass touch keypad (0-9, Clear, Backspace), auto-verification on 8 or 4 digits, show/hide password toggle, and romantic hint toggles.
+
+### 🛠️ Codebase Diagnostic & Bug Fixes
+* **HTML Tag & Nesting Balance**: Fixed unclosed/mismatched `<button>` tags (`#toggleTeaserBtn`), eliminated trailing `</a>` tag errors, and brought all `<div>` (985), `<section>` (28), and `<button>` (235) tags into 100% balance.
+* **Duplicate Modal Elimination**: Removed duplicate `#starModal`, `#closeStarModalBtn`, and `#printStarCertBtn` definitions in `index.html`.
+* **Zero Syntax & Compilation Errors**: Validated all JavaScript, CSS, and Google Apps Script (`Code.gs`) files with zero syntax errors, zero missing anchor targets, and zero missing modal bindings.
+
+### ☁️ Live Cloud Sync & Real-Time Data Display
+* **Bi-directional Google Sheets & Drive API in `Code.gs`**: Enhanced `doGet(e)` in [`Code.gs`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/Code.gs) to read all rows from `"Wishes"` and `"Photos"` sheets, generating high-res direct Google Drive image CDN URLs (`https://drive.google.com/thumbnail?id=FILE_ID&sz=w1000`) and JSONP cross-origin compatibility.
+* **Live Wishes & Sticky Notes Display**: [`script.js`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/script.js) automatically fetches all saved wishes from Google Sheets on page load and dynamically renders them into both the **Coming Soon Sticky Wall** (`#stickyNotesGrid`) and the **Celebration Arena Pinboard** (`#wishesPinboard`).
+* **Live Google Drive Polaroid Photo Gallery**: Fetches all uploaded photos from Google Drive and displays them seamlessly across the **Coming Soon Polaroid Gallery** (`#memoriesGrid`) and the **Celebration Arena Polaroid Gallery** (`#polaroidGrid`) with 3D hover perspective and lightbox previews.
+* **Interactive Cloud Sync Badges**: Added one-tap refresh triggers to `#wishSyncChip`, `#photoSyncChip`, and `#csPhotoSyncChip` with real-time status indicators (`🟢 Google Sheets Synced (X Notes, Y Photos)`).
+
+---
+
+## [v2.4.0] — Unified Single-Page Application (Combined index.html & coming-soon.html) (2026-09-07)
+
+### 🌟 Unified Single-Page Application (SPA) Architecture
+* **Seamless Fusion into `index.html`**: Combined the entire pre-launch teaser, countdown clock, sneak-peek showcase cards, Polaroid photo gallery with real uploader & lightbox, universal sticky notes wall, and VIP keypad directly into [`index.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html).
+* **Zero Redirect Latency & Zero Flicker**: Initial page load instantly serves the `#comingSoonStage` prior to launch date (**September 21, 2026, 11:00 PM IST**) without multi-file browser redirect hops.
+* **In-Page Fluid VIP Unlocking**: Entering VIP PIN `2912` or birthday code `2209`/`22092000` unlocks the celebration stage smoothly with victory fanfare and confetti bursts without requiring page reload.
+* **Bi-directional In-App Stage Switcher**: Added `#toggleTeaserBtn` on the celebration navigation dock and `#csEnterArenaBtn` on the teaser navigation bar, allowing Queen Nishika to switch between the countdown teaser and the 25 celebration stages anytime.
+* **Consolidated Assets**: Merged all styles into [`style.css`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/style.css) and unified state management into [`script.js`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/script.js). `coming-soon.html` now acts as an instant backward-compatible forwarder to `index.html`.
+
+---
+
+## [v2.3.1] — Primary Coming Soon Landing & VIP Session Routing (2026-09-07)
+
+### ⏳ Primary Landing & Dynamic Zero-Lag Routing
+* **`coming-soon.html` Set as Primary**: Made `coming-soon.html` the primary, first-landing experience for all incoming traffic prior to launch day (**September 21, 2026 at 23:00 IST**).
+* **Instant `<head>` Router on `index.html`**: Configured `index.html` router to execute in the document `<head>` with zero layout latency, strictly redirecting direct requests to `coming-soon.html` unless verified by active URL parameter (`?vip=true`, `?preview=true`, `?passcode=22092000`) or active session token (`sessionStorage`).
+* **Multi-Code VIP Keypad Support**: Keypad on `coming-soon.html` accepts both Anniversary PIN `2912` and Queen Nishika's Birthday Code `2209`/`22092000`.
+* **Seamless VIP Transition**: Authenticating on `coming-soon.html` immediately unlocks `index.html?vip=true`, passing session authorization and bypassing redundant lock screen prompts.
 
 ---
 

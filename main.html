@@ -1,0 +1,3563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Eternal Love ✨ Happy Birthday, My Queen</title>
+  <!-- PRE-LAUNCH PRIMARY ROUTER (index.html is primary until 21 Sep 2026 23:00 IST) -->
+  <script>
+    (function() {
+      const TARGET_LAUNCH_DATE = new Date('2026-09-21T23:00:00+05:30').getTime();
+      const now = Date.now();
+      window.__APP_LAUNCH_CONFIG__ = {
+        launchDate: '2026-09-21T23:00:00+05:30',
+        anniversaryPin: '2912',
+        birthdayPin: '22092000',
+        isPreLaunch: now < TARGET_LAUNCH_DATE
+      };
+
+      // If current time is before launch date (Sept 21, 2026 23:00 IST):
+      if (now < TARGET_LAUNCH_DATE) {
+        try {
+          const urlP = new URLSearchParams(window.location.search || '');
+          const isVipParam = urlP.get('vip') === 'unlocked' || 
+                             urlP.get('preview') === 'true' || 
+                             urlP.get('passcode') === '22092000' || 
+                             urlP.get('pin') === '2912';
+
+          let isStoredAuth = false;
+          try {
+            isStoredAuth = sessionStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
+                           sessionStorage.getItem('eternal_love_vip_session') === 'authenticated_2912' ||
+                           sessionStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
+                           sessionStorage.getItem('birthday_vip_unlocked') === 'true' ||
+                           localStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
+                           localStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
+                           localStorage.getItem('birthday_vip_unlocked') === 'true' ||
+                           localStorage.getItem('queen_vip_unlocked') === 'true' ||
+                           localStorage.getItem('queen_authenticated') === 'true';
+          } catch (e) {
+            isStoredAuth = false;
+          }
+
+          // If user visits or refreshes main.html directly without VIP unlock param or stored auth,
+          // route to index.html as the primary landing page!
+          if (!isVipParam && !isStoredAuth) {
+            window.location.replace('index.html');
+          }
+        } catch (err) {
+          window.location.replace('index.html');
+        }
+      }
+    })();
+
+    // Early Unboxing Bridge (ensures instantaneous response on click/tap)
+    window.unboxBirthdaySurprise = window.unboxBirthdaySurprise || function(immediate) {
+      try {
+        var intro = document.getElementById('introOverlay');
+        var passcode = document.getElementById('pagePasscodeOverlay');
+        var main = document.getElementById('mainApp');
+        if (intro) {
+          intro.classList.add('fade-out', 'unlocked', 'hidden');
+          intro.style.opacity = '0';
+          intro.style.visibility = 'hidden';
+          intro.style.pointerEvents = 'none';
+          intro.style.display = 'none';
+        }
+        if (passcode) {
+          passcode.classList.add('unlocked', 'fade-out', 'hidden');
+          passcode.style.opacity = '0';
+          passcode.style.visibility = 'hidden';
+          passcode.style.pointerEvents = 'none';
+          passcode.style.display = 'none';
+        }
+        if (main) {
+          main.classList.remove('hidden');
+          main.style.display = 'block';
+          main.style.visibility = 'visible';
+          main.style.opacity = '1';
+        }
+        sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+        sessionStorage.setItem('eternal_love_vip_unlocked', 'true');
+        localStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
+        localStorage.setItem('eternal_love_vip_unlocked', 'true');
+      } catch(e) {}
+    };
+  </script>
+
+  <meta name="description" content="Eternal Love — An ultra-luxurious, animated, and deeply romantic birthday celebration experience handcrafted with love. Featuring 3D interactive cake, wax-sealed love letter, love story timeline, magic love jar, and romantic piano harmonies." />
+  <meta name="theme-color" content="#090514" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="alternate icon" href="favicon.svg" />
+  
+  <!-- OpenGraph / Social Sharing Meta -->
+  <meta property="og:title" content="Eternal Love ✨ Happy Birthday, My Queen" />
+  <meta property="og:description" content="A magical, animated romantic birthday celebration made especially for the queen of my heart." />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts for Luxury & Romantic Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Dancing+Script:wght@700&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  
+  <!-- FontAwesome for Celebration & Romantic Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="theme-magical">
+  <!-- Interactive Background Canvas (Fireworks, Stars, Confetti & Shooting Stars) -->
+  <canvas id="particleCanvas"></canvas>
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Ambient Floating Bokeh / Glow Orbs -->
+  <div class="ambient-glow orb-1"></div>
+  <div class="ambient-glow orb-2"></div>
+  <div class="ambient-glow orb-3"></div>
+
+  <!-- ROYAL BIRTHDAY PASSCODE LOCK SCREEN OVERLAY -->
+  <div id="pagePasscodeOverlay" class="page-passcode-overlay" role="dialog" aria-modal="true" aria-labelledby="pagePasscodeTitle">
+    <div class="page-passcode-card glass-card animate-scale-up">
+      <div class="passcode-header">
+        <div class="passcode-crown-badge">
+          <i class="fa-solid fa-crown"></i>
+          <span>Queen Nishika's Royal Birthday 🎂</span>
+        </div>
+        <h1 class="passcode-card-title" id="pagePasscodeTitle">Open Birthday Surprise 🎁</h1>
+        <p class="passcode-card-subtitle">This private celebration is consecrated exclusively for Queen Nishika. Enter the secret 8-digit birthday password to open your surprise! ✨</p>
+      </div>
+
+      <!-- Status Feedback message -->
+      <div id="pagePasscodeFeedback" class="passcode-feedback" role="alert"></div>
+
+      <!-- Passcode Input with Eye Toggle -->
+      <div class="passcode-input-container">
+        <div class="passcode-input-wrap">
+          <i class="fa-solid fa-lock passcode-lock-icon"></i>
+          <input 
+            type="password" 
+            id="pagePasscodeInput" 
+            class="passcode-field" 
+            maxlength="8" 
+            placeholder="••••••••" 
+            autocomplete="off" 
+            inputmode="numeric"
+            aria-label="Enter 8-digit Birthday Passcode"
+          />
+          <button type="button" id="togglePasscodeVisibilityBtn" class="passcode-eye-btn" aria-label="Toggle password visibility" title="Show/Hide Passcode">
+            <i class="fa-solid fa-eye" id="passcodeEyeIcon"></i>
+          </button>
+        </div>
+
+        <!-- 8-Digit Slot Indicators -->
+        <div class="passcode-slots-row" id="passcodeSlotsRow">
+          <span class="passcode-dot" id="pDot0">•</span>
+          <span class="passcode-dot" id="pDot1">•</span>
+          <span class="passcode-dot" id="pDot2">•</span>
+          <span class="passcode-dot" id="pDot3">•</span>
+          <span class="passcode-dot" id="pDot4">•</span>
+          <span class="passcode-dot" id="pDot5">•</span>
+          <span class="passcode-dot" id="pDot6">•</span>
+          <span class="passcode-dot" id="pDot7">•</span>
+        </div>
+      </div>
+
+      <!-- Interactive Glass Keypad (0-9, C, Backspace) -->
+      <div class="passcode-keypad" id="pagePasscodeKeypad">
+        <button type="button" class="pk-btn" data-key="1">1</button>
+        <button type="button" class="pk-btn" data-key="2">2</button>
+        <button type="button" class="pk-btn" data-key="3">3</button>
+        <button type="button" class="pk-btn" data-key="4">4</button>
+        <button type="button" class="pk-btn" data-key="5">5</button>
+        <button type="button" class="pk-btn" data-key="6">6</button>
+        <button type="button" class="pk-btn" data-key="7">7</button>
+        <button type="button" class="pk-btn" data-key="8">8</button>
+        <button type="button" class="pk-btn" data-key="9">9</button>
+        <button type="button" class="pk-btn pk-clear" data-key="C" title="Clear">C</button>
+        <button type="button" class="pk-btn" data-key="0">0</button>
+        <button type="button" class="pk-btn pk-back" data-key="BACK" title="Backspace"><i class="fa-solid fa-delete-left"></i></button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="passcode-actions">
+        <button type="button" id="pagePasscodeSubmitBtn" class="btn-primary passcode-submit-btn">
+          <i class="fa-solid fa-gift"></i>
+          <span>Open Birthday Surprise ✨</span>
+        </button>
+      </div>
+
+      <!-- Romantic Passcode Hint -->
+      <div class="passcode-hint-wrapper">
+        <button type="button" id="pagePasscodeHintToggleBtn" class="passcode-hint-btn">
+          <i class="fa-solid fa-lightbulb"></i>
+          <span>Need a Birthday Hint?</span>
+        </button>
+        <div id="pagePasscodeHintBox" class="passcode-hint-box">
+          🎂 <strong>Birthday Hint:</strong> Enter Queen Nishika's Date of Birth in DDMMYYYY format (her special day in September 2000) 💕
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 1: The Surprise Gift Unboxing Intro Overlay -->
+  <div id="introOverlay" class="intro-overlay">
+    <div class="intro-content">
+      <div class="floating-badge animate-pulse">
+        <i class="fa-solid fa-heart pulse-heart"></i>
+        <span>Eternal Love • Special Delivery</span>
+      </div>
+      
+      <div class="gift-box-wrapper" id="giftBoxTrigger" onclick="if(typeof unboxBirthdaySurprise==='function')unboxBirthdaySurprise(false)" title="Click or Tap to Open Your Birthday Surprise!">
+        <div class="gift-box">
+          <div class="gift-ribbon-vertical"></div>
+          <div class="gift-ribbon-horizontal"></div>
+          <div class="gift-bow">
+            <div class="bow-loop bow-left"></div>
+            <div class="bow-loop bow-right"></div>
+            <div class="bow-center"></div>
+          </div>
+          <div class="gift-lid">
+            <div class="lid-ribbon"></div>
+          </div>
+          <div class="gift-body">
+            <div class="gift-tag-badge">For My Queen 👑</div>
+          </div>
+          <div class="gift-glow-ring"></div>
+        </div>
+      </div>
+
+      <h1 class="intro-title" onclick="if(typeof unboxBirthdaySurprise==='function')unboxBirthdaySurprise(false)">Tap To Unbox Your Surprise</h1>
+      <p class="intro-subtitle">A celestial celebration handcrafted with all my heart and love 💕</p>
+      
+      <button class="btn-primary pulse-btn" id="openGiftBtn" onclick="if(typeof unboxBirthdaySurprise==='function')unboxBirthdaySurprise(false)" aria-label="Open Birthday Surprise">
+        <i class="fa-solid fa-gift"></i>
+        <span>Open My Birthday Surprise</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- STAGE 2: Main Celebration Arena -->
+  <div id="mainApp" class="main-wrapper hidden">
+    <!-- Top Navigation / Luxury Controls Bar -->
+    <header class="app-header">
+      <div class="brand-logo">
+        <span class="logo-icon">👑</span>
+        <span class="logo-text">Eternal<span class="highlight">Love</span></span>
+      </div>
+
+      <!-- Quick Nav Links (Organized in True Page Flow) -->
+      <nav class="quick-nav-links" aria-label="Quick Navigation">
+        <a href="#heroSec" class="nav-link"><i class="fa-solid fa-wand-magic-sparkles"></i> Wish</a>
+        <a href="#letterSec" class="nav-link"><i class="fa-solid fa-envelope-open-text"></i> Letter</a>
+        <a href="#openWhenSec" class="nav-link"><i class="fa-solid fa-heart-envelope"></i> Open When</a>
+        <a href="#timelineSec" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> Story</a>
+        <a href="#cakeSec" class="nav-link"><i class="fa-solid fa-cake-candles"></i> Cake</a>
+        <a href="#cuddleSec" class="nav-link"><i class="fa-solid fa-couch"></i> Cuddle</a>
+        <a href="#jarSec" class="nav-link"><i class="fa-solid fa-jar"></i> Love Jar</a>
+        <a href="#couponsSec" class="nav-link"><i class="fa-solid fa-ticket"></i> Coupons</a>
+        <a href="#bucketSec" class="nav-link"><i class="fa-solid fa-list-check"></i> Bucket List</a>
+        <a href="#musicSec" class="nav-link"><i class="fa-solid fa-music"></i> Music</a>
+        <a href="#bouquetSec" class="nav-link"><i class="fa-solid fa-seedling"></i> Bouquet</a>
+        <a href="#quizSec" class="nav-link"><i class="fa-solid fa-heart-circle-bolt"></i> Quiz</a>
+        <a href="#gameSec" class="nav-link"><i class="fa-solid fa-gamepad"></i> Game</a>
+        <a href="#memoriesSec" class="nav-link"><i class="fa-solid fa-camera-retro"></i> Polaroids</a>
+        <a href="#fortuneSec" class="nav-link"><i class="fa-solid fa-gift"></i> Perks</a>
+        <a href="#constellationSec" class="nav-link"><i class="fa-solid fa-star"></i> Star Sky</a>
+        <a href="#lanternSec" class="nav-link"><i class="fa-solid fa-fire"></i> Lanterns</a>
+        <a href="#clawSec" class="nav-link"><i class="fa-solid fa-hand-holding-heart"></i> Love Claw</a>
+        <a href="#projectorSec" class="nav-link"><i class="fa-solid fa-film"></i> Cinema</a>
+        <a href="#mirrorSec" class="nav-link"><i class="fa-solid fa-wand-magic-sparkles"></i> Mirror</a>
+        <a href="#rouletteSec" class="nav-link"><i class="fa-solid fa-dice"></i> Roulette</a>
+        <a href="#soundscapeSec" class="nav-link"><i class="fa-solid fa-cloud-moon-rain"></i> Soundscape</a>
+        <a href="#capsuleSec" class="nav-link"><i class="fa-solid fa-hourglass-half"></i> Time Capsule</a>
+        <a href="#journeySec" class="nav-link"><i class="fa-solid fa-compass"></i> Journey</a>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Dual-Mode Music Player (Birthday Synth / Romantic Piano) -->
+        <div class="music-player-pill" id="musicPill" title="Toggle Music Synthesizer">
+          <button id="musicToggleBtn" class="pill-btn" aria-label="Toggle Music Playback">
+            <i class="fa-solid fa-music music-note-icon"></i>
+            <span id="musicStatusText">Play Melody</span>
+          </button>
+          
+          <div class="audio-waves" id="audioVisualizer">
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+          </div>
+
+          <!-- Melody Mode Switcher -->
+          <button id="musicModeBtn" class="music-mode-toggle" title="Switch Melody (Romantic Piano / Birthday Tune)">
+            <span id="musicModeLabel">🎹 Piano</span>
+          </button>
+        </div>
+
+        <!-- Candlelight Intimate Ambiance Toggle Button -->
+        <button id="candlelightToggleBtn" class="pill-btn candlelight-btn" title="Toggle Soft Candlelight Intimate Ambiance">
+          <i class="fa-solid fa-fire-flame-curved"></i>
+          <span>Candlelight</span>
+        </button>
+
+        <!-- Confetti Cannon Blast Button -->
+        <button id="confettiCannonBtn" class="pill-btn cannon-btn" title="Blast Confetti!">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Blast Confetti</span>
+        </button>
+
+        <!-- Keyboard Shortcuts Modal Trigger -->
+        <button id="shortcutsBtn" class="pill-btn shortcuts-btn" title="Keyboard Shortcuts Cheat Sheet (Press ?)">
+          <i class="fa-solid fa-keyboard"></i>
+          <span>Hotkeys <kbd class="nav-kbd-hint">?</kbd></span>
+        </button>
+
+        <!-- Launch Countdown Teaser Page Link -->
+        <button type="button" id="toggleTeaserBtn" class="pill-btn nav-btn-stage-switch launch-teaser-btn" title="View Countdown & Teaser Wall (Launch Sept 21 • 11:00 PM)" style="color: #ffd700; border-color: rgba(255,215,0,0.4);">
+          <i class="fa-solid fa-hourglass-start"></i>
+          <span>Launch Sept 21</span>
+        </button>
+
+        <!-- Personalize / Edit Button -->
+        <button id="customizeBtn" class="pill-btn customize-btn" title="Personalize details, nickname & dates">
+          <i class="fa-solid fa-heart-circle-bolt"></i>
+          <span>Personalize</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="content-container">
+      <!-- HERO CELEBRATION SECTION -->
+      <section class="hero-section reveal-on-scroll" id="heroSec" data-reveal="fade-up">
+        <div class="celebration-pill animate-fade-down">
+          <span class="confetti-emoji">✨</span>
+          <span class="pill-badge">September 5th • Today The Universe Celebrates You</span>
+          <span class="confetti-emoji">👑</span>
+        </div>
+
+        <h1 class="hero-title animate-pop-in">
+          Happy Birthday, <br />
+          <span class="name-gradient recipient-name-display" id="recipientName">Nishika</span>
+          <span class="crown-icon">👑</span>
+        </h1>
+
+        <p class="hero-message" id="heroMessage">
+          To the most incredible, beautiful, and radiant woman in my life: May your day be filled with infinite joy, sweet surprises, and all the happiness you bring into my world! 💖
+        </p>
+
+        <!-- LIVE TIME TOGETHER COUNTER -->
+        <div class="love-timer-card glass-card reveal-on-scroll" data-reveal="scale-up">
+          <div class="love-timer-header">
+            <span class="timer-badge"><i class="fa-solid fa-clock-rotate-left"></i> Together In Love</span>
+            <h3>Time We've Cherished Hand In Hand</h3>
+          </div>
+          <div class="love-timer-grid" id="loveTimerGrid">
+            <div class="time-unit-box">
+              <span class="time-num" id="timerYears">0</span>
+              <span class="time-label">Years</span>
+            </div>
+            <div class="time-unit-box">
+              <span class="time-num" id="timerMonths">0</span>
+              <span class="time-label">Months</span>
+            </div>
+            <div class="time-unit-box">
+              <span class="time-num" id="timerDays">0</span>
+              <span class="time-label">Days</span>
+            </div>
+            <div class="time-unit-box">
+              <span class="time-num" id="timerHours">00</span>
+              <span class="time-label">Hours</span>
+            </div>
+            <div class="time-unit-box">
+              <span class="time-num" id="timerMins" data-timer="minutes">00</span>
+              <span class="time-label">Mins</span>
+            </div>
+            <div class="time-unit-box highlight-unit">
+              <span class="time-num" id="timerSecs" data-timer="seconds">00</span>
+              <span class="time-label">Secs</span>
+            </div>
+          </div>
+          <p class="love-timer-footer">...and falling more in love with you with every passing second 💕</p>
+        </div>
+
+        <!-- Quick Interaction Bar -->
+        <div class="quick-action-chips">
+          <span class="action-chip" id="cheerBtn" title="Send Cheerful Clinks">
+            <i class="fa-solid fa-champagne-glasses"></i> Send Cheers (<span id="cheerCount">128</span>)
+          </span>
+          <span class="action-chip heart-action-chip" id="loveBtn" title="Send Infinite Floating Hearts">
+            <i class="fa-solid fa-heart pulse-heart"></i> Send Infinite Love (<span id="loveCount">256</span>)
+          </span>
+          <span class="action-chip" id="fireworkTriggerBtn" title="Launch Rockets to the Sky">
+            <i class="fa-solid fa-fire-flame-curved"></i> Launch Fireworks
+          </span>
+        </div>
+      </section>
+
+      <!-- SECTION 1: WAX-SEALED ROMANTIC LOVE LETTER -->
+      <section class="love-letter-section reveal-on-scroll" id="letterSec" data-reveal="fade-up">
+        <div class="section-heading-center">
+          <span class="badge-tag"><i class="fa-solid fa-envelope-open-text"></i> Intimate & Handwritten</span>
+          <h2 class="section-title">A Private Love Letter For You 💌</h2>
+          <p class="section-desc">Tap the glowing wax seal below to break the seal and unfold my handwritten birthday letter for you.</p>
+        </div>
+
+        <div class="envelope-container" id="envelopeWrapper">
+          <div class="envelope-card" id="envelopeCard">
+            <div class="envelope-back"></div>
+            
+            <!-- Letter Sheet (Slides up and unfolds) -->
+            <div class="letter-sheet" id="letterSheet">
+              <div class="letter-header">
+                <span class="letter-date" id="letterDateDisplay">September 5th • For Today & Forever</span>
+                <span class="letter-heart-watermark">💖</span>
+              </div>
+              <div class="letter-body">
+                <h3 class="letter-salutation">My Dearest <span class="recipient-name-display">Nishika</span>,</h3>
+                <div class="typewriter-container" id="typewriterText">
+                  <!-- Generated dynamically character by character -->
+                </div>
+                <div class="letter-signature">
+                  <p>Forever and always yours,</p>
+                  <span class="signature-name" id="letterSenderSignature">Dilip 💖</span>
+                </div>
+              </div>
+              <div class="letter-actions">
+                <button class="btn-secondary btn-sm" id="replayLetterBtn">
+                  <i class="fa-solid fa-rotate-left"></i> Read Again
+                </button>
+              </div>
+            </div>
+
+            <div class="envelope-front"></div>
+            
+            <!-- Flap with Wax Seal -->
+            <div class="envelope-flap" id="envelopeFlap">
+              <div class="wax-seal-btn" id="waxSealBtn" title="Click to break the wax seal!">
+                <div class="wax-seal-inner">
+                  <i class="fa-solid fa-heart"></i>
+                  <span class="wax-text">OPEN</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 1B: "OPEN WHEN..." ROMANTIC LETTERS VAULT -->
+      <section class="open-when-section reveal-on-scroll" id="openWhenSec" data-reveal="fade-up">
+        <div class="section-heading-center">
+          <span class="badge-tag"><i class="fa-solid fa-envelope-circle-check"></i> Time-Locked Devotion</span>
+          <h2 class="section-title">"Open When..." Love Envelopes 💌</h2>
+          <p class="section-desc">Six intimate letters sealed with love for Queen Nishika. Break the wax seal whenever your heart needs these words.</p>
+        </div>
+
+        <div class="open-when-grid">
+          <!-- Envelope 1: Miss Me -->
+          <div class="open-when-card glass-card" data-letter-id="miss-me">
+            <div class="ow-envelope">
+              <div class="ow-flap">
+                <button class="ow-wax-seal" data-seal="miss-me" title="Open Letter">
+                  <i class="fa-solid fa-heart"></i>
+                </button>
+              </div>
+              <div class="ow-body">
+                <span class="ow-tag">Open When...</span>
+                <h4 class="ow-title">You Miss Me & Need A Hug</h4>
+                <p class="ow-preview">"Whenever you feel a little lonely, remember my arms are wrapped tight around you..."</p>
+                <button class="btn-sm btn-secondary ow-read-btn" data-letter="miss-me">Read Letter 💌</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Envelope 2: Stressful Day -->
+          <div class="open-when-card glass-card" data-letter-id="stressful-day">
+            <div class="ow-envelope">
+              <div class="ow-flap">
+                <button class="ow-wax-seal" data-seal="stressful-day" title="Open Letter">
+                  <i class="fa-solid fa-cloud-sun"></i>
+                </button>
+              </div>
+              <div class="ow-body">
+                <span class="ow-tag">Open When...</span>
+                <h4 class="ow-title">You've Had A Stressful Day</h4>
+                <p class="ow-preview">"Exhale, my Queen. You work so hard and tonight the world can pause for you..."</p>
+                <button class="btn-sm btn-secondary ow-read-btn" data-letter="stressful-day">Read Letter 💌</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Envelope 3: Can't Sleep -->
+          <div class="open-when-card glass-card" data-letter-id="cant-sleep">
+            <div class="ow-envelope">
+              <div class="ow-flap">
+                <button class="ow-wax-seal" data-seal="cant-sleep" title="Open Letter">
+                  <i class="fa-solid fa-moon"></i>
+                </button>
+              </div>
+              <div class="ow-body">
+                <span class="ow-tag">Open When...</span>
+                <h4 class="ow-title">You Can't Sleep At Night</h4>
+                <p class="ow-preview">"Count our memories instead of sheep. Think of our late-night laughter..."</p>
+                <button class="btn-sm btn-secondary ow-read-btn" data-letter="cant-sleep">Read Letter 💌</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Envelope 4: Need A Smile -->
+          <div class="open-when-card glass-card" data-letter-id="need-smile">
+            <div class="ow-envelope">
+              <div class="ow-flap">
+                <button class="ow-wax-seal" data-seal="need-smile" title="Open Letter">
+                  <i class="fa-solid fa-face-smile-beam"></i>
+                </button>
+              </div>
+              <div class="ow-body">
+                <span class="ow-tag">Open When...</span>
+                <h4 class="ow-title">You Need A Gentle Smile</h4>
+                <p class="ow-preview">"Did you know seeing your smile triggers instant fireworks in my heart?..."</p>
+                <button class="btn-sm btn-secondary ow-read-btn" data-letter="need-smile">Read Letter 💌</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Envelope 5: Remember How Stunning You Are -->
+          <div class="open-when-card glass-card" data-letter-id="how-stunning">
+            <div class="ow-envelope">
+              <div class="ow-flap">
+                <button class="ow-wax-seal" data-seal="how-stunning" title="Open Letter">
+                  <i class="fa-solid fa-crown"></i>
+                </button>
+              </div>
+              <div class="ow-body">
+                <span class="ow-tag">Open When...</span>
+                <h4 class="ow-title">You Need A Reminder You're Stunning</h4>
+                <p class="ow-preview">"If you could see yourself through my eyes for 10 seconds, you'd know true perfection..."</p>
+                <button class="btn-sm btn-secondary ow-read-btn" data-letter="how-stunning">Read Letter 💌</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Envelope 6: Dream About Future -->
+          <div class="open-when-card glass-card" data-letter-id="our-future">
+            <div class="ow-envelope">
+              <div class="ow-flap">
+                <button class="ow-wax-seal" data-seal="our-future" title="Open Letter">
+                  <i class="fa-solid fa-infinity"></i>
+                </button>
+              </div>
+              <div class="ow-body">
+                <span class="ow-tag">Open When...</span>
+                <h4 class="ow-title">You Want To Dream Of Forever</h4>
+                <p class="ow-preview">"One day we'll wake up on a cozy Sunday morning with coffee brewing and nowhere else to be..."</p>
+                <button class="btn-sm btn-secondary ow-read-btn" data-letter="our-future">Read Letter 💌</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: "OUR LOVE STORY" MILESTONE TIMELINE -->
+      <section class="story-timeline-section reveal-on-scroll" id="timelineSec" data-reveal="fade-up">
+        <div class="section-heading-center">
+          <span class="badge-tag"><i class="fa-solid fa-infinity"></i> Our Journey Together</span>
+          <h2 class="section-title">Chapters of Our Love Story ✨</h2>
+          <p class="section-desc">A few of the countless unforgettable milestones we've shared hand in hand.</p>
+        </div>
+
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+
+          <!-- Milestone 1: The Day We Met -->
+          <div class="timeline-node left reveal-on-scroll" data-reveal="slide-right">
+            <div class="timeline-icon">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <div class="timeline-content glass-card">
+              <span class="milestone-badge">Chapter 1 • The Spark</span>
+              <h3 class="milestone-title">The Day Our Worlds Collided</h3>
+              <p class="milestone-text">
+                The moment I first saw your smile, everything in the world seemed to make complete sense. It was the start of the greatest chapter of my life.
+              </p>
+              <span class="milestone-tag">💫 Where it all began</span>
+            </div>
+          </div>
+
+          <!-- Milestone 2: First Date -->
+          <div class="timeline-node right reveal-on-scroll" data-reveal="slide-left">
+            <div class="timeline-icon">
+              <i class="fa-solid fa-mug-hot"></i>
+            </div>
+            <div class="timeline-content glass-card">
+              <span class="milestone-badge">Chapter 2 • Butterflies</span>
+              <h3 class="milestone-title">Our Unforgettable First Date</h3>
+              <p class="milestone-text">
+                Hours flew by like minutes. Endless laughter, shy glances, and the realization that I never wanted the conversation to end.
+              </p>
+              <span class="milestone-tag">☕ Magic in the air</span>
+            </div>
+          </div>
+
+          <!-- Milestone 3: Favorite Trip / Adventure -->
+          <div class="timeline-node left reveal-on-scroll" data-reveal="slide-right">
+            <div class="timeline-icon">
+              <i class="fa-solid fa-plane-departure"></i>
+            </div>
+            <div class="timeline-content glass-card">
+              <span class="milestone-badge">Chapter 3 • Adventures</span>
+              <h3 class="milestone-title">Our Spontaneous Getaways</h3>
+              <p class="milestone-text">
+                Exploring new places, watching sunsets together, taking silly photos, and singing along to our favorite songs with you by my side.
+              </p>
+              <span class="milestone-tag">🌅 My favorite travel companion</span>
+            </div>
+          </div>
+
+          <!-- Milestone 4: Falling Deeper -->
+          <div class="timeline-node right reveal-on-scroll" data-reveal="slide-left">
+            <div class="timeline-icon">
+              <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+            <div class="timeline-content glass-card">
+              <span class="milestone-badge">Chapter 4 • Comfort & Home</span>
+              <h3 class="milestone-title">Finding Home In You</h3>
+              <p class="milestone-text">
+                In your hugs, in our late-night talks, in quiet comforting moments when no words are needed — you became my safe haven and favorite person.
+              </p>
+              <span class="milestone-tag">🏡 Home is wherever you are</span>
+            </div>
+          </div>
+
+          <!-- Milestone 5: Today -->
+          <div class="timeline-node left highlight-node reveal-on-scroll" data-reveal="scale-up">
+            <div class="timeline-icon pulse-icon">
+              <i class="fa-solid fa-crown"></i>
+            </div>
+            <div class="timeline-content glass-card milestone-highlight">
+              <span class="milestone-badge milestone-gold-badge">Chapter 5 • September 5th 🎂</span>
+              <h3 class="milestone-title">Celebrating The Queen of My Heart</h3>
+              <p class="milestone-text">
+                Today is your birthday, and I want you to know that you are cherished, adored, and loved beyond anything words can capture. Here's to forever!
+              </p>
+              <span class="milestone-tag">🎂 September 5th — Happy Birthday, My Queen!</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: 3D INTERACTIVE CAKE & CANDLE CEREMONY -->
+      <section class="cake-showcase-section reveal-on-scroll" id="cakeSec" data-reveal="fade-up">
+        <div class="section-heading-center">
+          <span class="badge-tag"><i class="fa-solid fa-cake-candles"></i> Sweetest Milestone</span>
+          <h2 class="section-title">Make A Wish & Cut The 3D Cake 🎂</h2>
+          <p class="section-desc">Blow out the flickering candles to seal your secret birthday wish into the celestial vault, then celebrate with our 3D cake cutting ceremony!</p>
+        </div>
+
+        <div class="glass-card cake-card">
+          <div class="card-header-badge">
+            <i class="fa-solid fa-cake-candles"></i> Virtual Candle Ceremony & Wish Lock
+          </div>
+
+          <div class="cake-stage-container">
+            <!-- 3D Cake Assembly -->
+            <div class="cake-3d" id="birthdayCake">
+              <!-- Candles Container -->
+              <div class="candles-wrapper" id="candlesWrapper">
+                <div class="candle c-1 active">
+                  <div class="flame" id="flame1"></div>
+                  <div class="wick"></div>
+                  <div class="candle-stick"></div>
+                </div>
+                <div class="candle c-2 active">
+                  <div class="flame" id="flame2"></div>
+                  <div class="wick"></div>
+                  <div class="candle-stick"></div>
+                </div>
+                <div class="candle c-3 active">
+                  <div class="flame" id="flame3"></div>
+                  <div class="wick"></div>
+                  <div class="candle-stick"></div>
+                </div>
+                <div class="candle c-4 active">
+                  <div class="flame" id="flame4"></div>
+                  <div class="wick"></div>
+                  <div class="candle-stick"></div>
+                </div>
+                <div class="candle c-5 active">
+                  <div class="flame" id="flame5"></div>
+                  <div class="wick"></div>
+                  <div class="candle-stick"></div>
+                </div>
+              </div>
+
+              <!-- Top Tier -->
+              <div class="cake-tier tier-top">
+                <div class="frosting-layer">
+                  <div class="drip drip-1"></div>
+                  <div class="drip drip-2"></div>
+                  <div class="drip drip-3"></div>
+                  <div class="drip drip-4"></div>
+                </div>
+                <div class="sprinkles-scatter"></div>
+                <div class="strawberry s-1">🍓</div>
+                <div class="strawberry s-2">🍒</div>
+                <div class="strawberry s-3">🍓</div>
+              </div>
+
+              <!-- Middle Tier -->
+              <div class="cake-tier tier-middle">
+                <div class="frosting-layer">
+                  <div class="drip drip-1"></div>
+                  <div class="drip drip-2"></div>
+                  <div class="drip drip-3"></div>
+                  <div class="drip drip-4"></div>
+                  <div class="drip drip-5"></div>
+                </div>
+                <div class="cake-ribbon"></div>
+              </div>
+
+              <!-- Bottom Tier -->
+              <div class="cake-tier tier-bottom">
+                <div class="frosting-layer">
+                  <div class="drip drip-1"></div>
+                  <div class="drip drip-2"></div>
+                  <div class="drip drip-3"></div>
+                  <div class="drip drip-4"></div>
+                </div>
+                <div class="pearls-row"></div>
+              </div>
+
+              <!-- Cake Plate Stand -->
+              <div class="cake-plate"></div>
+              <div class="cake-pedestal"></div>
+            </div>
+          </div>
+
+          <div class="cake-controls">
+            <p class="cake-status-text" id="cakeStatusText">
+              ✨ Close your eyes, make a secret wish, and blow out the candles! ✨
+            </p>
+            <div class="cake-btn-group">
+              <button class="btn-primary glow-btn" id="blowCandlesBtn">
+                <i class="fa-solid fa-wind"></i> Blow Out Candles
+              </button>
+              <button class="btn-secondary" id="relightCandlesBtn" style="display: none;">
+                <i class="fa-solid fa-fire-flame-curved"></i> Relight Candles
+              </button>
+              <button class="btn-secondary glow-btn" id="openWishVaultBtn" title="View or unlock your secret birthday wish capsule">
+                <i class="fa-solid fa-key"></i> Secret Wish Vault 🌠
+              </button>
+              <button class="btn-accent glow-btn" id="openCakeCutVideoBtn">
+                <i class="fa-solid fa-cake-candles"></i> 3D Cake Cutting Video 🍰
+              </button>
+            </div>
+          </div>
+
+          <!-- 3D CAKE CUTTING VIDEO CINEMA PLAYER -->
+          <div class="cake-cutting-cinema" id="cakeCuttingCinema" style="display: none;">
+            <div class="cinema-header-bar">
+              <div class="cinema-header-left">
+                <span class="badge-tag"><i class="fa-solid fa-cake-candles"></i> Cake Cutting Video</span>
+                <div class="cinema-mode-pills" role="tablist">
+                  <button type="button" class="cinema-mode-btn active" id="cakeRealVideoModeBtn" title="Watch Realistic Royal Video">
+                    <i class="fa-solid fa-film"></i> Real HD Video
+                  </button>
+                  <button type="button" class="cinema-mode-btn" id="cake3DAnimationModeBtn" title="Switch to 3D Slicing Animation">
+                    <i class="fa-solid fa-cube"></i> 3D Slicing
+                  </button>
+                </div>
+              </div>
+              <button class="cinema-close-mini" id="closeCakeCutVideoBtn" aria-label="Close Cake Video">&times;</button>
+            </div>
+
+            <!-- Real HD Birthday Cake Cutting Video Container -->
+            <div class="cake-real-video-wrapper" id="cakeRealVideoContainer">
+              <canvas id="cakeRealCanvas" class="cake-real-canvas" width="960" height="540"></canvas>
+              <div class="video-overlay-glow"></div>
+              <div class="video-ambient-sparkles">
+                <span class="v-spark sp-1">✨</span>
+                <span class="v-spark sp-2">⭐</span>
+                <span class="v-spark sp-3">✨</span>
+                <span class="v-spark sp-4">💖</span>
+              </div>
+              <div class="video-watermark-tag">👑 Queen Nishika's Cake Cutting Ceremony 🍰</div>
+            </div>
+
+            <!-- 3D Interactive Slicing Stage -->
+            <div class="cake-cut-stage-3d" id="cakeCutStage3D" style="display: none;">
+              <!-- Ambient Celebration Sparkles -->
+              <div class="cut-sparklers-halo" id="cutSparklersHalo">
+                <span class="sparkler sp-1">✨</span>
+                <span class="sparkler sp-2">⭐</span>
+                <span class="sparkler sp-3">✨</span>
+                <span class="sparkler sp-4">🎉</span>
+              </div>
+
+              <!-- 3D Cake with Removable Slicing Architecture -->
+              <div class="cut-cake-assembly" id="cutCakeAssembly">
+                <!-- Top Tier with Separable 3D Slice -->
+                <div class="cut-tier-top">
+                  <div class="cut-frosting-top">
+                    <div class="cut-strawberries">🍓 🍒 🍓</div>
+                  </div>
+                  <!-- 3D Detachable Cake Slice -->
+                  <div class="cake-slice-3d" id="cakeSlice3D">
+                    <div class="slice-side slice-left">
+                      <div class="sponge-grain layer-sponge-top"></div>
+                      <div class="cream-fill cream-strawberry"></div>
+                      <div class="sponge-grain layer-sponge-mid"></div>
+                      <div class="cream-fill cream-vanilla"></div>
+                      <div class="sponge-grain layer-sponge-bot"></div>
+                    </div>
+                    <div class="slice-side slice-right">
+                      <div class="sponge-grain layer-sponge-top"></div>
+                      <div class="cream-fill cream-strawberry"></div>
+                      <div class="sponge-grain layer-sponge-mid"></div>
+                      <div class="cream-fill cream-vanilla"></div>
+                      <div class="sponge-grain layer-sponge-bot"></div>
+                    </div>
+                    <div class="slice-crust-back"></div>
+                    <div class="slice-frosting-cap">
+                      <span class="slice-berry">🍓</span>
+                      <span class="gold-leaf-flake">✨</span>
+                    </div>
+                    <!-- Realistic Cake Crumbs -->
+                    <div class="cake-crumbs-cluster">
+                      <span class="crumb c-1">.</span>
+                      <span class="crumb c-2">.</span>
+                      <span class="crumb c-3">.</span>
+                    </div>
+                  </div>
+                  <!-- Cutout wedge gap left on cake body -->
+                  <div class="cake-cut-wedge-gap" id="cakeCutWedgeGap"></div>
+                  <div class="cut-tier-body"></div>
+                </div>
+
+                <!-- Lower Tiers -->
+                <div class="cut-tier-middle">
+                  <div class="pearl-frosting-trim"></div>
+                </div>
+                <div class="cut-tier-bottom">
+                  <div class="gold-lace-border"></div>
+                </div>
+                <div class="cut-gold-platter"></div>
+              </div>
+
+              <!-- 3D Golden Engraved Damascus Knife -->
+              <div class="golden-knife-3d" id="goldenKnife3D">
+                <div class="knife-handle">
+                  <div class="handle-bolster"></div>
+                  <span class="knife-engraving">Dilip & Nishika 💖</span>
+                  <div class="handle-pommel"></div>
+                </div>
+                <div class="knife-blade">
+                  <div class="blade-damascus-pattern"></div>
+                  <div class="blade-edge-shine"></div>
+                  <div class="blade-tip-bevel"></div>
+                </div>
+              </div>
+
+              <!-- Plated Dessert Dish Landing -->
+              <div class="plated-slice-station" id="platedSliceStation">
+                <div class="porcelain-plate" id="porcelainPlate">
+                  <div class="plate-gold-rim"></div>
+                  <div class="strawberry-drizzle"></div>
+                  <div class="mint-garnish">🍃</div>
+
+                  <!-- The Realistically Plated Cake Slice Directly on the Dish -->
+                  <div class="plated-cake-slice" id="platedCakeSlice">
+                    <div class="plated-slice-layers">
+                      <div class="p-layer p-sponge-top"></div>
+                      <div class="p-layer p-cream-straw"></div>
+                      <div class="p-layer p-sponge-mid"></div>
+                      <div class="p-layer p-cream-van"></div>
+                      <div class="p-layer p-sponge-bot"></div>
+                    </div>
+                    <div class="plated-slice-toppings">
+                      <span class="p-berry">🍓</span>
+                      <span class="p-gold">✨</span>
+                    </div>
+                    <div class="plated-dessert-fork">🍴</div>
+                  </div>
+                </div>
+                <div class="plate-sparkler-candle" id="plateSparkler">✨</div>
+
+                <!-- Feeding Celebration Speech Bubble -->
+                <div class="feeding-love-bubble" id="feedingLoveBubble">
+                  <span class="bubble-heart">💖</span>
+                  <p class="bubble-quote">"Here is the first sweet bite for my Queen Nishika! Happy Birthday, my love!" 🍓🎂</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Video Player HUD & Controls -->
+            <div class="cut-video-hud">
+              <div class="cut-timeline-container">
+                <div class="cut-progress-bar" id="cutProgressBar">
+                  <div class="cut-progress-fill" id="cutProgressFill" style="width: 0%;"></div>
+                </div>
+                <div class="cut-time-readout" id="cutTimeReadout">0:00 / 0:10</div>
+              </div>
+
+              <div class="cut-hud-controls">
+                <div class="cut-playback-btns">
+                  <button class="hud-ctrl-btn" id="playCakeCutBtn" title="Play / Pause Video">
+                    <i class="fa-solid fa-play" id="playCakeCutIcon"></i>
+                  </button>
+                  <button class="hud-ctrl-btn" id="replayCakeCutBtn" title="Replay Cut">
+                    <i class="fa-solid fa-rotate-left"></i>
+                  </button>
+                </div>
+
+                <div class="cut-status-caption" id="cutStatusCaption">
+                  🎬 Press Play to watch the 3D royal cake cutting ceremony!
+                </div>
+
+                <div class="cut-action-chip">
+                  <button class="btn-primary btn-sm pulse-btn" id="feedSliceBtn" style="display: none;">
+                    <i class="fa-solid fa-heart"></i> Feed to Nishika 🍓💖
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: 3D ROMANTIC COUPLE CUDDLE CINEMA -->
+      <section class="cuddle-cinema-section reveal-on-scroll" id="cuddleSec" data-reveal="fade-up">
+        <div class="glass-card cuddle-theater-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-film"></i> 3D Romantic Cinema</span>
+            <h2 class="section-title">Cozy Starlit Cuddle Haven 🛋️✨</h2>
+            <p class="section-desc">A cinematic 3D animated love story where Dilip and Nishika cuddle together under a moonlit skylight and warm fireside glow.</p>
+          </div>
+
+          <div class="cuddle-cinema-player" id="cuddleCinemaPlayer">
+            <!-- 3D Interactive Video Frame & Viewport -->
+            <div class="cuddle-stage-3d" id="cuddleStage3D">
+              <!-- Moonlit Cosmic Window Backdrop -->
+              <div class="cuddle-window-backdrop">
+                <div class="cuddle-moon"></div>
+                <div class="cuddle-stars-cloud">
+                  <span class="star s-1">✨</span>
+                  <span class="star s-2">⭐</span>
+                  <span class="star s-3">✨</span>
+                  <span class="star s-4">💫</span>
+                </div>
+                <div class="cuddle-window-frame">
+                  <div class="pane-div-h"></div>
+                  <div class="pane-div-v"></div>
+                </div>
+              </div>
+
+              <!-- Warm Fireplace / Hearth Glow (Ambient Realistic Fire) -->
+              <div class="hearth-glow-ambient">
+                <div class="fire-fireplace-box">
+                  <div class="fire-logs"></div>
+                  <div class="fire-flame-flicker"></div>
+                  <div class="fire-embers">
+                    <span class="ember eb-1">•</span>
+                    <span class="ember eb-2">•</span>
+                    <span class="ember eb-3">•</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ambient Starlit Dust Motes & Cosmic Shooting Stars -->
+              <div class="starlit-dust-beam">
+                <span class="mote m-1">✦</span>
+                <span class="mote m-2">·</span>
+                <span class="mote m-3">✧</span>
+                <span class="mote m-4">·</span>
+                <div class="shooting-star"></div>
+              </div>
+
+              <!-- Floating Romantic Love Messages Arena (Over the Stage) -->
+              <div class="floating-love-messages-arena" id="cuddleFloatingArena">
+                <!-- Floating Love Whispers injected dynamically & with starter note -->
+                <div class="floating-love-note note-1">
+                  <span class="note-icon">💖</span>
+                  <span class="note-text">"In your arms is where my soul belongs... Happy Birthday, Nishika."</span>
+                </div>
+                <div class="floating-love-note note-2">
+                  <span class="note-icon">✨</span>
+                  <span class="note-text">"Under every star, my heart chooses you in every lifetime. 🌌👑"</span>
+                </div>
+              </div>
+
+              <!-- 3D Cozy Room Scene with High-Art Romantic Couple -->
+              <div class="cuddle-room-scene" id="cuddleRoomScene">
+                <!-- Plush Luxury Velvet Bay Settee -->
+                <div class="cuddle-sofa">
+                  <div class="sofa-back-rest"></div>
+                  <div class="sofa-cushion-seat"></div>
+                  <div class="sofa-pillow pillow-left"></div>
+                  <div class="sofa-pillow pillow-right"></div>
+                </div>
+
+                <!-- 3D Masterpiece Romantic Couple Figure Artwork -->
+                <div class="cuddle-couple-3d" id="cuddleCouple3D">
+                  <div class="cuddle-artwork-container">
+                    <!-- High-Resolution Romantic Couple Silhouette & Illumination Artwork -->
+                    <svg class="couple-romantic-svg" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <!-- Warm Firelight Rim Gradient -->
+                        <linearGradient id="firelightGlow" x1="0%" y1="100%" x2="50%" y2="0%">
+                          <stop offset="0%" stop-color="#f97316" stop-opacity="0.9"/>
+                          <stop offset="50%" stop-color="#fbbf24" stop-opacity="0.5"/>
+                          <stop offset="100%" stop-color="#fda4af" stop-opacity="0.1"/>
+                        </linearGradient>
+                        <!-- Starlight Moonlight Rim Gradient -->
+                        <linearGradient id="moonlightRim" x1="100%" y1="0%" x2="30%" y2="80%">
+                          <stop offset="0%" stop-color="#e0f2fe" stop-opacity="0.85"/>
+                          <stop offset="40%" stop-color="#93c5fd" stop-opacity="0.5"/>
+                          <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0"/>
+                        </linearGradient>
+                        <!-- Dilip Knit Sweater Gradient -->
+                        <linearGradient id="dilipSweater" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#1e293b"/>
+                          <stop offset="50%" stop-color="#0f172a"/>
+                          <stop offset="100%" stop-color="#020617"/>
+                        </linearGradient>
+                        <!-- Nishika Cashmere Wrap Gradient -->
+                        <linearGradient id="nishikaWrap" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#fda4af"/>
+                          <stop offset="40%" stop-color="#f43f5e"/>
+                          <stop offset="100%" stop-color="#9f1239"/>
+                        </linearGradient>
+                        <!-- Silky Brunette Hair Gradient -->
+                        <linearGradient id="nishikaHair" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#451a03"/>
+                          <stop offset="60%" stop-color="#271106"/>
+                          <stop offset="100%" stop-color="#170701"/>
+                        </linearGradient>
+                        <!-- Gold Crown Shimmer -->
+                        <linearGradient id="goldCrown" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#fef08a"/>
+                          <stop offset="50%" stop-color="#facc15"/>
+                          <stop offset="100%" stop-color="#ca8a04"/>
+                        </linearGradient>
+                      </defs>
+
+                      <!-- Couple Soft Aura Glow -->
+                      <ellipse cx="155" cy="140" rx="95" ry="90" fill="url(#firelightGlow)" opacity="0.35"/>
+                      <ellipse cx="170" cy="120" rx="75" ry="70" fill="url(#moonlightRim)" opacity="0.25"/>
+
+                      <!-- Dilip Torso & Shoulder -->
+                      <path d="M70 240 C65 190 85 145 125 125 C145 115 175 118 190 130 C170 160 160 210 160 240 Z" fill="url(#dilipSweater)"/>
+                      <!-- Dilip Collar & Neck -->
+                      <path d="M125 125 C132 110 148 108 158 118 C145 124 135 125 125 125 Z" fill="#334155"/>
+                      <!-- Dilip Head (Profile leaning gently towards Nishika) -->
+                      <ellipse cx="138" cy="92" rx="24" ry="28" fill="#fcd34d"/>
+                      <!-- Dilip Hair (Modern Styled Textured Waves) -->
+                      <path d="M116 88 C116 68 132 60 152 64 C162 66 166 74 165 84 C158 76 146 75 138 78 C128 82 122 86 116 88 Z" fill="#1c0a00"/>
+                      <!-- Dilip Peaceful Closed Eye & Smile -->
+                      <path d="M142 95 Q147 98 152 95" stroke="#451a03" stroke-width="2" stroke-linecap="round" fill="none"/>
+                      <path d="M145 106 Q150 110 155 106" stroke="#78350f" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+
+                      <!-- Dilip Embracing Arm & Hand around Nishika -->
+                      <path d="M100 165 C115 155 150 155 185 168 C205 175 220 185 228 200 C215 208 195 198 178 190 C155 180 120 185 95 195 Z" fill="url(#dilipSweater)"/>
+                      <!-- Dilip's gentle resting hand on Nishika's shoulder -->
+                      <ellipse cx="226" cy="198" rx="12" ry="9" transform="rotate(-15 226 198)" fill="#fcd34d"/>
+
+                      <!-- Nishika Hair Back Flowing Waves -->
+                      <path d="M165 105 C185 95 215 110 225 135 C235 160 230 195 225 225 C215 220 210 190 205 165 C200 145 185 130 170 125 Z" fill="url(#nishikaHair)"/>
+
+                      <!-- Nishika Body & Slender Torso nestled into Dilip's chest -->
+                      <path d="M160 160 C175 145 205 155 215 185 C222 205 225 225 225 245 C195 248 175 240 160 240 Z" fill="url(#nishikaWrap)"/>
+
+                      <!-- Nishika Head (Resting tenderly on Dilip's shoulder) -->
+                      <ellipse cx="184" cy="120" rx="20" ry="23" transform="rotate(18 184 120)" fill="#fde68a"/>
+
+                      <!-- Nishika Gorgeous Flowing Wavy Brunette Hair Front -->
+                      <path d="M168 112 C168 98 180 92 196 95 C208 98 212 108 210 122 C204 114 194 110 184 112 C176 114 172 120 168 126 Z" fill="url(#nishikaHair)"/>
+                      <path d="M204 118 C212 135 214 158 208 180 C202 170 200 148 198 132 Z" fill="url(#nishikaHair)"/>
+
+                      <!-- Nishika Tiara Crown with Ruby Jewel -->
+                      <path d="M182 92 L186 82 L192 90 L198 80 L204 90 L208 84 L210 94 Z" fill="url(#goldCrown)"/>
+                      <circle cx="198" cy="85" r="2.5" fill="#f43f5e"/>
+                      <circle cx="186" cy="86" r="1.8" fill="#ffffff"/>
+                      <circle cx="208" cy="87" r="1.8" fill="#ffffff"/>
+
+                      <!-- Nishika Serene Fluttering Eyelashes, Rosy Blush & Sweet Lips -->
+                      <path d="M180 124 Q176 128 172 126" stroke="#3f1807" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                      <ellipse cx="174" cy="132" rx="6" ry="3.5" fill="#f43f5e" opacity="0.6"/>
+                      <path d="M172 137 Q175 140 178 138" stroke="#be123c" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+                      <!-- Nishika Golden Earring -->
+                      <circle cx="196" cy="130" r="2.8" stroke="#facc15" stroke-width="1.5" fill="none"/>
+
+                      <!-- Nishika Arm & Delicate Hand Resting on Dilip with Love Ring -->
+                      <path d="M185 185 C175 185 160 190 145 200 C138 205 132 212 128 220 C136 222 145 216 155 210 C168 202 182 200 190 198 Z" fill="url(#nishikaWrap)"/>
+                      <!-- Hand holding Dilip's hand -->
+                      <ellipse cx="132" cy="216" rx="9" ry="7" transform="rotate(-15 132 216)" fill="#fde68a"/>
+                      <!-- Sparkling Golden Love Ring on finger -->
+                      <circle cx="134" cy="215" r="2.2" stroke="#facc15" stroke-width="1.2" fill="#ffffff"/>
+                    </svg>
+
+                    <!-- Draped Silk Fleece Quilted Blanket -->
+                    <div class="cuddle-blanket">
+                      <div class="blanket-stitch-rim"></div>
+                      <div class="blanket-fold fold-1"></div>
+                      <div class="blanket-fold fold-2"></div>
+                      <div class="blanket-monogram">Dilip + Nishika 💖</div>
+                    </div>
+
+                    <!-- Glowing Heartbeat Aura & Steaming Mugs -->
+                    <div class="cuddle-heartbeat-glow"></div>
+                    <div class="steaming-cup">
+                      <span class="steam s-1">~</span>
+                      <span class="steam s-2">~</span>
+                      <span class="cup-icon">☕☕</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Subtitle Caption Bar -->
+              <div class="cuddle-subtitles-bar" id="cuddleSubtitlesBar">
+                <span class="subtitle-quote" id="cuddleSubtitleText">"In your arms is where I always want to be... Happy Birthday, my Queen Nishika." 💖</span>
+              </div>
+            </div>
+
+            <!-- Video Player Controls Deck -->
+            <div class="cuddle-player-deck">
+              <div class="cuddle-timeline-container">
+                <div class="cuddle-progress-bar" id="cuddleProgressBar">
+                  <div class="cuddle-progress-fill" id="cuddleProgressFill" style="width: 20%;"></div>
+                </div>
+                <div class="cuddle-time-readout">
+                  <span id="cuddleCurrentTime">0:06</span> / <span id="cuddleTotalTime">0:30</span>
+                </div>
+              </div>
+
+              <div class="cuddle-controls-bar">
+                <div class="cuddle-ctrl-left">
+                  <button class="cuddle-btn-icon" id="cuddlePlayToggleBtn" title="Play / Pause Video">
+                    <i class="fa-solid fa-pause" id="cuddlePlayIcon"></i>
+                  </button>
+                  <button class="cuddle-btn-icon" id="cuddleReplayBtn" title="Replay Scene">
+                    <i class="fa-solid fa-rotate-left"></i>
+                  </button>
+                  <button class="cuddle-btn-icon" id="cuddleWhisperBtn" title="Float Romantic Love Whisper">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                    <span class="cuddle-btn-label">Whisper 💌</span>
+                  </button>
+                  <button class="cuddle-btn-icon" id="cuddleSoundscapeBtn" title="Toggle Lo-Fi Cuddle Soundscape">
+                    <i class="fa-solid fa-volume-high" id="cuddleSoundIcon"></i>
+                    <span class="cuddle-btn-label">Lo-Fi Soundscape</span>
+                  </button>
+                </div>
+
+                <!-- Camera Angle Presets -->
+                <div class="cuddle-camera-selector">
+                  <span class="camera-label"><i class="fa-solid fa-camera"></i> Camera:</span>
+                  <button class="cam-preset-btn active" data-cam="closeup">🛋️ Close-Up</button>
+                  <button class="cam-preset-btn" data-cam="panorama">🌌 Panorama</button>
+                  <button class="cam-preset-btn" data-cam="hearth">🔥 Fireside</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: "100 REASONS WHY I LOVE YOU" MAGIC JAR -->
+      <section class="love-jar-section reveal-on-scroll" id="jarSec" data-reveal="fade-up">
+        <div class="section-heading-center">
+          <span class="badge-tag"><i class="fa-solid fa-heart-circle-check"></i> Pure Love Confessions</span>
+          <h2 class="section-title">Reasons Why I Love You 🏺</h2>
+          <p class="section-desc">Tap the magic glowing jar to draw a folded origami heart with a sweet reason why you mean the world to me.</p>
+        </div>
+
+        <!-- Reason Category Filter Tabs -->
+        <div class="jar-category-pills">
+          <button class="jar-cat-btn active" data-jar-cat="all">All 100 💖</button>
+          <button class="jar-cat-btn" data-jar-cat="💖 Pure Romance">Pure Romance</button>
+          <button class="jar-cat-btn" data-jar-cat="🥰 Cute Habits">Cute Habits</button>
+          <button class="jar-cat-btn" data-jar-cat="🏡 Safe Haven">Safe Haven</button>
+          <button class="jar-cat-btn" data-jar-cat="👑 Radiant Queen">Queen Nishika</button>
+          <button class="jar-cat-btn" data-jar-cat="☕ Daily Moments">Little Things</button>
+          <button class="jar-cat-btn" data-jar-cat="💫 Forever Love">Forever</button>
+        </div>
+
+        <div class="jar-interactive-layout">
+          <!-- Glass Jar Visual with Ambient Fireflies -->
+          <div class="jar-wrapper" id="loveJarTrigger" title="Click the jar to pull a reason!">
+            <div class="glass-jar">
+              <div class="jar-lid"></div>
+              <div class="jar-neck"></div>
+              <div class="jar-body">
+                <div class="jar-hearts-layer">
+                  <span class="mini-floating-heart fh-1">💖</span>
+                  <span class="mini-floating-heart fh-2">💕</span>
+                  <span class="mini-floating-heart fh-3">✨</span>
+                  <span class="mini-floating-heart fh-4">🌸</span>
+                  <span class="mini-floating-heart fh-5">💗</span>
+                  <span class="mini-floating-heart fh-6">💝</span>
+                </div>
+                <div class="firefly ff-1"></div>
+                <div class="firefly ff-2"></div>
+                <div class="firefly ff-3"></div>
+              </div>
+              <div class="jar-tag-ribbon">
+                <span>100 Reasons</span>
+              </div>
+            </div>
+            <button class="btn-accent jar-draw-btn" id="drawReasonBtn">
+              <i class="fa-solid fa-wand-sparkles"></i> Draw A Reason
+            </button>
+          </div>
+
+          <!-- 3D Origami Folded Heart Paper Craft Stage -->
+          <div class="origami-stage-container">
+            <div class="origami-heart-craft unfolded" id="origamiHeartCraft" title="Click to fold / unfold the origami heart!">
+              <!-- Folded 3D Origami Heart Visual -->
+              <div class="origami-heart-model" id="origamiModel">
+                <div class="origami-wing wing-left">
+                  <div class="origami-facet facet-top-left"></div>
+                  <div class="origami-facet facet-mid-left"></div>
+                  <div class="origami-facet facet-bottom-left"></div>
+                </div>
+                <div class="origami-wing wing-right">
+                  <div class="origami-facet facet-top-right"></div>
+                  <div class="origami-facet facet-mid-right"></div>
+                  <div class="origami-facet facet-bottom-right"></div>
+                </div>
+                <div class="origami-crease-shadow"></div>
+                <div class="origami-gold-seal">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                  <span id="sealText">Unfold Note</span>
+                </div>
+              </div>
+
+              <!-- Unfolded Origami Love Note interior -->
+              <div class="origami-letter-interior glass-card" id="origamiInterior">
+                <div class="origami-letter-header">
+                  <span class="reason-index-badge" id="reasonIndexBadge">Reason #1 of 100</span>
+                  <span class="reason-category" id="reasonCategoryBadge">💖 Pure Romance</span>
+                </div>
+                <div class="origami-quote-body">
+                  <i class="fa-solid fa-quote-left quote-icon"></i>
+                  <p class="reason-text" id="reasonText">
+                    "The way your eyes sparkle with genuine warmth and happiness whenever you smile."
+                  </p>
+                  <i class="fa-solid fa-quote-right quote-icon quote-right"></i>
+                </div>
+                <div class="origami-letter-footer">
+                  <span class="reason-counter-text"><span id="drawnCount">1</span> reasons explored</span>
+                  <div class="origami-action-btns">
+                    <button class="btn-sm btn-secondary" id="foldToggleBtn">
+                      <i class="fa-solid fa-heart"></i> Fold
+                    </button>
+                    <button class="btn-sm btn-secondary" id="shuffleReasonBtn" title="Draw Random Reason">
+                      <i class="fa-solid fa-shuffle"></i> Random
+                    </button>
+                    <button class="btn-sm btn-secondary" id="favReasonBtn" title="Bookmark This Reason">
+                      <i class="fa-regular fa-bookmark" id="favReasonIcon"></i> Save
+                    </button>
+                    <button class="btn-sm btn-primary" id="nextReasonBtn">
+                      <i class="fa-solid fa-wand-magic-sparkles"></i> Next Heart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 5: REDEEMABLE COUPLE LOVE COUPONS -->
+      <section class="coupons-section reveal-on-scroll" id="couponsSec" data-reveal="fade-up">
+        <div class="section-heading-center">
+          <span class="badge-tag"><i class="fa-solid fa-ticket-simple"></i> Girlfriend VIP Perks</span>
+          <h2 class="section-title">Your Birthday Love Vouchers 🎟️</h2>
+          <p class="section-desc">These are official, non-expiring love coupons you can claim whenever you wish!</p>
+        </div>
+
+        <div class="coupons-grid" id="couponsGrid">
+          <!-- Coupon 1 -->
+          <div class="coupon-ticket" data-coupon-id="ice-cream">
+            <div class="coupon-left">
+              <span class="coupon-icon">🍦</span>
+              <span class="coupon-tag">Sweet Craving</span>
+            </div>
+            <div class="coupon-center">
+              <h4>Midnight Ice Cream Run</h4>
+              <p>Redeemable for your favorite ice cream or late-night dessert anytime, no questions asked!</p>
+              <div class="coupon-meta">Valid: Forever • Unlimited Smiles</div>
+            </div>
+            <div class="coupon-right">
+              <button class="btn-claim-coupon" data-target="ice-cream">
+                <i class="fa-solid fa-check"></i> Claim
+              </button>
+              <div class="claimed-stamp hidden">REDEEMED 💖</div>
+            </div>
+          </div>
+
+          <!-- Coupon 2 -->
+          <div class="coupon-ticket" data-coupon-id="cuddles">
+            <div class="coupon-left">
+              <span class="coupon-icon">🫂</span>
+              <span class="coupon-tag">Comfort</span>
+            </div>
+            <div class="coupon-center">
+              <h4>Unlimited Cuddles & Back Rub</h4>
+              <p>Guaranteed 1 hour of warm hugs, head scratches, and your favorite relaxing back rub.</p>
+              <div class="coupon-meta">Valid: Whenever You're Tired</div>
+            </div>
+            <div class="coupon-right">
+              <button class="btn-claim-coupon" data-target="cuddles">
+                <i class="fa-solid fa-check"></i> Claim
+              </button>
+              <div class="claimed-stamp hidden">REDEEMED 💖</div>
+            </div>
+          </div>
+
+          <!-- Coupon 3 -->
+          <div class="coupon-ticket" data-coupon-id="rooftop-date">
+            <div class="coupon-left">
+              <span class="coupon-icon">🍷</span>
+              <span class="coupon-tag">Romantic Date</span>
+            </div>
+            <div class="coupon-center">
+              <h4>Candlelight Rooftop Date Under The Stars</h4>
+              <p>A magical evening with breathtaking city views, delicious food, candlelight, and sweet moments.</p>
+              <div class="coupon-meta">Valid: Anytime You Want Magic</div>
+            </div>
+            <div class="coupon-right">
+              <button class="btn-claim-coupon" data-target="rooftop-date">
+                <i class="fa-solid fa-check"></i> Claim
+              </button>
+              <div class="claimed-stamp hidden">REDEEMED 💖</div>
+            </div>
+          </div>
+
+          <!-- Coupon 4 -->
+          <div class="coupon-ticket" data-coupon-id="movie-choice">
+            <div class="coupon-left">
+              <span class="coupon-icon">🍿</span>
+              <span class="coupon-tag">Movie Night</span>
+            </div>
+            <div class="coupon-center">
+              <h4>Movie Marathon — Your 100% Pick</h4>
+              <p>You get complete control over the TV remote, movie selection, and popcorn topping choices.</p>
+              <div class="coupon-meta">Valid: Cozy Movie Nights</div>
+            </div>
+            <div class="coupon-right">
+              <button class="btn-claim-coupon" data-target="movie-choice">
+                <i class="fa-solid fa-check"></i> Claim
+              </button>
+              <div class="claimed-stamp hidden">REDEEMED 💖</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: OUR COUPLE BUCKET LIST -->
+      <section class="bucket-list-section reveal-on-scroll" id="bucketSec" data-reveal="fade-up">
+        <div class="section-heading-center">
+          <span class="badge-tag"><i class="fa-solid fa-heart-circle-check"></i> Dreams & Adventures</span>
+          <h2 class="section-title">Our Romantic Bucket List 🗺️✨</h2>
+          <p class="section-desc">Every dream we share is a promise waiting to happen. Tap to mark our completed milestones or add new wishes for Dilip & Nishika!</p>
+        </div>
+
+        <div class="bucket-container glass-card">
+          <div class="bucket-header-stats">
+            <div class="bucket-progress-wrapper">
+              <div class="bucket-progress-bar">
+                <div class="bucket-progress-fill" id="bucketProgressFill" style="width: 20%;"></div>
+              </div>
+              <span class="bucket-stats-text" id="bucketStatsText">2 of 10 Dreams Cherished</span>
+            </div>
+          </div>
+
+          <div class="bucket-items-grid" id="bucketItemsGrid">
+            <!-- Preset items dynamically rendered or seeded in HTML -->
+            <div class="bucket-item completed" data-bucket-id="b1">
+              <div class="bucket-check-box">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <div class="bucket-item-content">
+                <h4 class="bucket-item-title">Fall in love and choose each other every single day 💖</h4>
+                <p class="bucket-item-desc">Where our magical journey began — holding hands and building our world.</p>
+              </div>
+              <span class="bucket-stamp">CHERISHED ✨</span>
+            </div>
+
+            <div class="bucket-item completed" data-bucket-id="b2">
+              <div class="bucket-check-box">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <div class="bucket-item-content">
+                <h4 class="bucket-item-title">Celebrate Queen Nishika's special birthday with infinite love 🎂👑</h4>
+                <p class="bucket-item-desc">A digital kingdom handcrafted with devotion just for her today!</p>
+              </div>
+              <span class="bucket-stamp">CHERISHED ✨</span>
+            </div>
+
+            <div class="bucket-item" data-bucket-id="b3">
+              <div class="bucket-check-box">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <div class="bucket-item-content">
+                <h4 class="bucket-item-title">Stargaze from a quiet rooftop wrapped in one warm blanket 🌌</h4>
+                <p class="bucket-item-desc">Looking up at the night sky while whispers turn into endless dreams.</p>
+              </div>
+              <span class="bucket-stamp hidden">CHERISHED ✨</span>
+            </div>
+
+            <div class="bucket-item" data-bucket-id="b4">
+              <div class="bucket-check-box">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <div class="bucket-item-content">
+                <h4 class="bucket-item-title">Take a spontaneous midnight road trip with no map 🚗💨</h4>
+                <p class="bucket-item-desc">Windows down, cool breeze, singing our favorite songs at the top of our lungs.</p>
+              </div>
+              <span class="bucket-stamp hidden">CHERISHED ✨</span>
+            </div>
+
+            <div class="bucket-item" data-bucket-id="b5">
+              <div class="bucket-check-box">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <div class="bucket-item-content">
+                <h4 class="bucket-item-title">Cook a messy, delicious 3-course dinner together from scratch 🍝🕯️</h4>
+                <p class="bucket-item-desc">Flour on our faces, laughter in the kitchen, and candlelight on the table.</p>
+              </div>
+              <span class="bucket-stamp hidden">CHERISHED ✨</span>
+            </div>
+
+            <div class="bucket-item" data-bucket-id="b6">
+              <div class="bucket-check-box">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <div class="bucket-item-content">
+                <h4 class="bucket-item-title">Visit a snow-covered mountain cabin with hot cocoa ☕❄️</h4>
+                <p class="bucket-item-desc">Cozy fireplace warmth, marshmallow mugs, and snowball fights.</p>
+              </div>
+              <span class="bucket-stamp hidden">CHERISHED ✨</span>
+            </div>
+
+            <div class="bucket-item" data-bucket-id="b7">
+              <div class="bucket-check-box">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <div class="bucket-item-content">
+                <h4 class="bucket-item-title">Build a giant living room blanket fort for an all-night movie marathon 🏰🍿</h4>
+                <p class="bucket-item-desc">Twinkle fairy lights, mountains of plush pillows, and her favorite films.</p>
+              </div>
+              <span class="bucket-stamp hidden">CHERISHED ✨</span>
+            </div>
+
+            <div class="bucket-item" data-bucket-id="b8">
+              <div class="bucket-check-box">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <div class="bucket-item-content">
+                <h4 class="bucket-item-title">Watch a breathtaking sunrise over the ocean hand in hand 🌅🌊</h4>
+                <p class="bucket-item-desc">Golden morning light reflecting off the waves as we greet a brand new day.</p>
+              </div>
+              <span class="bucket-stamp hidden">CHERISHED ✨</span>
+            </div>
+
+            <div class="bucket-item" data-bucket-id="b9">
+              <div class="bucket-check-box">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <div class="bucket-item-content">
+                <h4 class="bucket-item-title">Take 100 silly and romantic photobooth pictures across the city 📸✨</h4>
+                <p class="bucket-item-desc">Goofy faces, sweet kisses, and pockets full of vintage photo strips.</p>
+              </div>
+              <span class="bucket-stamp hidden">CHERISHED ✨</span>
+            </div>
+
+            <div class="bucket-item" data-bucket-id="b10">
+              <div class="bucket-check-box">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <div class="bucket-item-content">
+                <h4 class="bucket-item-title">Spend an entire anniversary weekend with zero phones and 100% cuddles 📵🛋️</h4>
+                <p class="bucket-item-desc">Just Dilip and Nishika, lost in our own paradise of peace and romance.</p>
+              </div>
+              <span class="bucket-stamp hidden">CHERISHED ✨</span>
+            </div>
+          </div>
+
+          <!-- Quick Add Dream Inline Form -->
+          <form id="addBucketForm" class="bucket-add-form">
+            <input type="text" id="newBucketTitleInput" class="app-input flex-grow" placeholder="Add our next dream wish together (e.g., Visit Switzerland, Learn salsa)..." required />
+            <button type="submit" class="btn-primary">
+              <i class="fa-solid fa-plus"></i> Add Dream
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- SECTION: ROMANTIC MUSIC LOUNGE (GRAND PIANO & ACOUSTIC GUITAR) -->
+      <section class="music-lounge-section reveal-on-scroll" id="musicSec" data-reveal="fade-up">
+        <div class="glass-card music-lounge-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-music"></i> Romantic Serenade Lounge</span>
+            <h2 class="section-title">Play & Serenade For My Queen 🎹🎸</h2>
+            <p class="section-desc">Interactive musical instruments handcrafted to play sweet romantic tunes, gentle acoustic chords, and heartfelt melodies.</p>
+          </div>
+
+          <!-- Instrument Tabs -->
+          <div class="instrument-tab-bar">
+            <button class="instrument-tab-btn active" id="tabPianoBtn" data-target="piano">
+              <i class="fa-solid fa-keyboard"></i> 🎹 Grand Piano
+            </button>
+            <button class="instrument-tab-btn" id="tabGuitarBtn" data-target="guitar">
+              <i class="fa-solid fa-guitar"></i> 🎸 Acoustic Guitar
+            </button>
+            <button class="instrument-tab-btn" id="tabTapeBtn" data-target="tape">
+              <i class="fa-solid fa-tape"></i> 📼 Vintage Mixtape
+            </button>
+          </div>
+
+          <!-- 1. GRAND PIANO VIEW -->
+          <div class="instrument-view-container active" id="pianoView">
+            <div class="instrument-controls-bar">
+              <div class="song-player-group">
+                <span class="ctrl-label"><i class="fa-solid fa-play"></i> Auto-Play Romantic & Birthday Songs:</span>
+                <button class="btn-song-chip" data-piano-song="bday-song">🎂 Happy Birthday Melody</button>
+                <button class="btn-song-chip" data-piano-song="thousand-years">💍 A Thousand Years</button>
+                <button class="btn-song-chip" data-piano-song="all-of-me">💖 All of Me (John Legend)</button>
+                <button class="btn-song-chip" data-piano-song="golden-hour">🌅 Golden Hour (JVKE)</button>
+                <button class="btn-song-chip" data-piano-song="river-flows">🌊 River Flows In You</button>
+                <button class="btn-song-chip" data-piano-song="fur-elise">🎵 Für Elise (Romance)</button>
+                <button class="btn-song-chip btn-stop-song hidden" id="stopPianoSongBtn">⏹️ Stop</button>
+              </div>
+              <span class="piano-hint-text">💡 Tap keys or use keyboard (1-8 or Q-U) to play notes!</span>
+            </div>
+
+            <!-- Interactive Piano Keyboard -->
+            <div class="piano-keyboard-wrapper">
+              <div class="piano-keyboard" id="pianoKeyboard">
+                <!-- White & Black Keys -->
+                <div class="piano-key white-key" data-note="C4" data-freq="261.63" data-key="1">
+                  <span class="key-name">C4</span>
+                  <span class="key-bind">1 / Q</span>
+                </div>
+                <div class="piano-key black-key" data-note="C#4" data-freq="277.18" data-key="!">
+                  <span class="key-name">C#4</span>
+                </div>
+                <div class="piano-key white-key" data-note="D4" data-freq="293.66" data-key="2">
+                  <span class="key-name">D4</span>
+                  <span class="key-bind">2 / W</span>
+                </div>
+                <div class="piano-key black-key" data-note="D#4" data-freq="311.13" data-key="@">
+                  <span class="key-name">D#4</span>
+                </div>
+                <div class="piano-key white-key" data-note="E4" data-freq="329.63" data-key="3">
+                  <span class="key-name">E4</span>
+                  <span class="key-bind">3 / E</span>
+                </div>
+                <div class="piano-key white-key" data-note="F4" data-freq="349.23" data-key="4">
+                  <span class="key-name">F4</span>
+                  <span class="key-bind">4 / R</span>
+                </div>
+                <div class="piano-key black-key" data-note="F#4" data-freq="369.99" data-key="$">
+                  <span class="key-name">F#4</span>
+                </div>
+                <div class="piano-key white-key" data-note="G4" data-freq="392.00" data-key="5">
+                  <span class="key-name">G4</span>
+                  <span class="key-bind">5 / T</span>
+                </div>
+                <div class="piano-key black-key" data-note="G#4" data-freq="415.30" data-key="%">
+                  <span class="key-name">G#4</span>
+                </div>
+                <div class="piano-key white-key" data-note="A4" data-freq="440.00" data-key="6">
+                  <span class="key-name">A4</span>
+                  <span class="key-bind">6 / Y</span>
+                </div>
+                <div class="piano-key black-key" data-note="A#4" data-freq="466.16" data-key="^">
+                  <span class="key-name">A#4</span>
+                </div>
+                <div class="piano-key white-key" data-note="B4" data-freq="493.88" data-key="7">
+                  <span class="key-name">B4</span>
+                  <span class="key-bind">7 / U</span>
+                </div>
+                <div class="piano-key white-key" data-note="C5" data-freq="523.25" data-key="8">
+                  <span class="key-name">C5</span>
+                  <span class="key-bind">8 / I</span>
+                </div>
+                <div class="piano-key black-key" data-note="C#5" data-freq="554.37">
+                  <span class="key-name">C#5</span>
+                </div>
+                <div class="piano-key white-key" data-note="D5" data-freq="587.33">
+                  <span class="key-name">D5</span>
+                </div>
+                <div class="piano-key black-key" data-note="D#5" data-freq="622.25">
+                  <span class="key-name">D#5</span>
+                </div>
+                <div class="piano-key white-key" data-note="E5" data-freq="659.25">
+                  <span class="key-name">E5</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. ACOUSTIC GUITAR VIEW -->
+          <div class="instrument-view-container" id="guitarView">
+            <div class="instrument-controls-bar">
+              <div class="song-player-group">
+                <span class="ctrl-label"><i class="fa-solid fa-guitar"></i> Romantic & Birthday Guitar Serenades:</span>
+                <button class="btn-song-chip" data-guitar-song="perfect">🎶 "Perfect" (Ed Sheeran)</button>
+                <button class="btn-song-chip" data-guitar-song="until-i-found-you">✨ "Until I Found You"</button>
+                <button class="btn-song-chip" data-guitar-song="cant-help">🌹 "Can't Help Falling in Love"</button>
+                <button class="btn-song-chip" data-guitar-song="love-story">💖 "Love Story" (Taylor Swift)</button>
+                <button class="btn-song-chip" data-guitar-song="photograph">📷 "Photograph"</button>
+                <button class="btn-song-chip" data-guitar-song="just-the-way">👑 "Just the Way You Are"</button>
+                <button class="btn-song-chip btn-stop-song hidden" id="stopGuitarSongBtn">⏹️ Stop</button>
+              </div>
+              <span class="piano-hint-text">🎸 <strong>Keyboard Ready:</strong> Pluck strings with <kbd class="kbd-pill">1-6</kbd> / <kbd class="kbd-pill">Q-Y</kbd> or strum chords with <kbd class="kbd-pill">A-H</kbd> / <kbd class="kbd-pill">Z-N</kbd>!</span>
+            </div>
+
+            <!-- Quick Guitar Chord Buttons with Keyboard Hints -->
+            <div class="guitar-chords-dock">
+              <span class="chords-title">Instant Chords:</span>
+              <button class="chord-btn" data-chord="C" data-chord-key="A" title="Press 'A' or 'Z' on your keyboard">
+                <div class="chord-info">
+                  <span class="chord-name">C Major</span>
+                  <span class="chord-vibe">Sweet</span>
+                </div>
+                <kbd class="chord-kbd-badge">A</kbd>
+              </button>
+              <button class="chord-btn" data-chord="G" data-chord-key="S" title="Press 'S' or 'X' on your keyboard">
+                <div class="chord-info">
+                  <span class="chord-name">G Major</span>
+                  <span class="chord-vibe">Bright</span>
+                </div>
+                <kbd class="chord-kbd-badge">S</kbd>
+              </button>
+              <button class="chord-btn" data-chord="Am" data-chord-key="D" title="Press 'D' or 'C' on your keyboard">
+                <div class="chord-info">
+                  <span class="chord-name">A Minor</span>
+                  <span class="chord-vibe">Gentle</span>
+                </div>
+                <kbd class="chord-kbd-badge">D</kbd>
+              </button>
+              <button class="chord-btn" data-chord="F" data-chord-key="F" title="Press 'F' or 'V' on your keyboard">
+                <div class="chord-info">
+                  <span class="chord-name">F Major</span>
+                  <span class="chord-vibe">Dreamy</span>
+                </div>
+                <kbd class="chord-kbd-badge">F</kbd>
+              </button>
+              <button class="chord-btn" data-chord="Em" data-chord-key="G" title="Press 'G' or 'B' on your keyboard">
+                <div class="chord-info">
+                  <span class="chord-name">E Minor</span>
+                  <span class="chord-vibe">Cozy</span>
+                </div>
+                <kbd class="chord-kbd-badge">G</kbd>
+              </button>
+              <button class="chord-btn" data-chord="D" data-chord-key="H" title="Press 'H' or 'N' on your keyboard">
+                <div class="chord-info">
+                  <span class="chord-name">D Major</span>
+                  <span class="chord-vibe">Sparkling</span>
+                </div>
+                <kbd class="chord-kbd-badge">H</kbd>
+              </button>
+            </div>
+
+            <!-- Interactive Guitar Strings Fretboard -->
+            <div class="guitar-fretboard-card">
+              <div class="guitar-soundhole">
+                <div class="soundhole-ring">
+                  <span class="guitar-rosette">👑 💖 👑</span>
+                </div>
+              </div>
+
+              <div class="guitar-strings-arena" id="guitarStringsArena">
+                <!-- 6 Acoustic Guitar Strings with Hotkeys -->
+                <div class="guitar-string-row" data-string-idx="0" data-note="E4" data-key="1" data-alt-key="q" data-freq="329.63">
+                  <div class="string-label-group">
+                    <kbd class="string-kbd-tag">1 / Q</kbd>
+                    <span class="string-label">1st (E4 • High)</span>
+                  </div>
+                  <div class="guitar-wire wire-1"></div>
+                  <button class="pluck-pill-btn">Pluck</button>
+                </div>
+                <div class="guitar-string-row" data-string-idx="1" data-note="B3" data-key="2" data-alt-key="w" data-freq="246.94">
+                  <div class="string-label-group">
+                    <kbd class="string-kbd-tag">2 / W</kbd>
+                    <span class="string-label">2nd (B3)</span>
+                  </div>
+                  <div class="guitar-wire wire-2"></div>
+                  <button class="pluck-pill-btn">Pluck</button>
+                </div>
+                <div class="guitar-string-row" data-string-idx="2" data-note="G3" data-key="3" data-alt-key="e" data-freq="196.00">
+                  <div class="string-label-group">
+                    <kbd class="string-kbd-tag">3 / E</kbd>
+                    <span class="string-label">3rd (G3)</span>
+                  </div>
+                  <div class="guitar-wire wire-3"></div>
+                  <button class="pluck-pill-btn">Pluck</button>
+                </div>
+                <div class="guitar-string-row" data-string-idx="3" data-note="D3" data-key="4" data-alt-key="r" data-freq="146.83">
+                  <div class="string-label-group">
+                    <kbd class="string-kbd-tag">4 / R</kbd>
+                    <span class="string-label">4th (D3)</span>
+                  </div>
+                  <div class="guitar-wire wire-4"></div>
+                  <button class="pluck-pill-btn">Pluck</button>
+                </div>
+                <div class="guitar-string-row" data-string-idx="4" data-note="A2" data-key="5" data-alt-key="t" data-freq="110.00">
+                  <div class="string-label-group">
+                    <kbd class="string-kbd-tag">5 / T</kbd>
+                    <span class="string-label">5th (A2)</span>
+                  </div>
+                  <div class="guitar-wire wire-5"></div>
+                  <button class="pluck-pill-btn">Pluck</button>
+                </div>
+                <div class="guitar-string-row" data-string-idx="5" data-note="E2" data-key="6" data-alt-key="y" data-freq="82.41">
+                  <div class="string-label-group">
+                    <kbd class="string-kbd-tag">6 / Y</kbd>
+                    <span class="string-label">6th (E2 • Bass)</span>
+                  </div>
+                  <div class="guitar-wire wire-6"></div>
+                  <button class="pluck-pill-btn">Pluck</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. VINTAGE MIXTAPE CASSETTE VIEW -->
+          <div class="instrument-view-container" id="tapeView">
+            <div class="cassette-deck-card">
+              <div class="cassette-tape" id="cassetteTape">
+                <div class="tape-header">
+                  <span class="tape-label">FOR MY QUEEN • VOL. 1</span>
+                  <span class="tape-type">SIDE A • HI-FI STEREO</span>
+                </div>
+                <div class="tape-window">
+                  <div class="tape-spool spool-left" id="spoolLeft">
+                    <div class="spool-teeth"></div>
+                  </div>
+                  <div class="tape-center-bridge">
+                    <span class="tape-timer" id="tapeTimerDisplay">00:00</span>
+                    <div class="tape-vu-meter">
+                      <span class="vu-bar"></span>
+                      <span class="vu-bar"></span>
+                      <span class="vu-bar"></span>
+                    </div>
+                  </div>
+                  <div class="tape-spool spool-right" id="spoolRight">
+                    <div class="spool-teeth"></div>
+                  </div>
+                </div>
+                <div class="tape-title-label">
+                  <span id="tapeTrackTitle">Track 1: A Thousand Years (Sweet Romance)</span>
+                </div>
+              </div>
+
+              <!-- Cassette Controls -->
+              <div class="tape-controls-bar">
+                <button class="tape-btn" id="tapePrevBtn" title="Previous Track"><i class="fa-solid fa-backward-step"></i></button>
+                <button class="tape-btn tape-play-btn" id="tapePlayBtn" title="Play / Pause Mixtape"><i class="fa-solid fa-play" id="tapePlayIcon"></i></button>
+                <button class="tape-btn" id="tapeNextBtn" title="Next Track"><i class="fa-solid fa-forward-step"></i></button>
+                <button class="tape-btn" id="tapeCrackleBtn" title="Toggle Vinyl Warmth Crackle"><i class="fa-solid fa-record-vinyl"></i> <span id="crackleStatus">Crackle: Off</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: VIRTUAL FOREVER FLOWER BOUQUET STUDIO -->
+      <section class="bouquet-studio-section reveal-on-scroll" id="bouquetSec" data-reveal="fade-up">
+        <div class="glass-card bouquet-studio-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-seedling"></i> Interactive 3D Floral Studio</span>
+            <h2 class="section-title">Design Your Forever Flower Bouquet 🌸💐</h2>
+            <p class="section-desc">Pick and arrange fresh blooming flowers in realistic 3D space to craft a custom eternal birthday bouquet for my Queen.</p>
+          </div>
+
+          <div class="bouquet-studio-layout">
+            <!-- Flower Selection Palette -->
+            <div class="flower-picker-dock">
+              <span class="picker-heading">Select Blooms to Sprout:</span>
+              <div class="flower-chips-grid">
+                <button class="flower-chip" data-flower="rose" data-name="Red Velvet Rose" data-emoji="🌹">
+                  <span class="flower-chip-emoji">🌹</span>
+                  <span class="flower-chip-name">Red Rose</span>
+                  <span class="flower-chip-tag">Infinite Devotion</span>
+                </button>
+                <button class="flower-chip" data-flower="peony" data-name="Pink Peony" data-emoji="🌸">
+                  <span class="flower-chip-emoji">🌸</span>
+                  <span class="flower-chip-name">Pink Peony</span>
+                  <span class="flower-chip-tag">Sweet Grace</span>
+                </button>
+                <button class="flower-chip" data-flower="sunflower" data-name="Radiant Sunflower" data-emoji="🌻">
+                  <span class="flower-chip-emoji">🌻</span>
+                  <span class="flower-chip-name">Sunflower</span>
+                  <span class="flower-chip-tag">Pure Sunshine</span>
+                </button>
+                <button class="flower-chip" data-flower="lavender" data-name="French Lavender" data-emoji="🪻">
+                  <span class="flower-chip-emoji">🪻</span>
+                  <span class="flower-chip-name">Lavender</span>
+                  <span class="flower-chip-tag">Peace & Serenity</span>
+                </button>
+                <button class="flower-chip" data-flower="lily" data-name="Royal White Lily" data-emoji="🤍">
+                  <span class="flower-chip-emoji">🤍</span>
+                  <span class="flower-chip-name">White Lily</span>
+                  <span class="flower-chip-tag">Majestic Purity</span>
+                </button>
+                <button class="flower-chip" data-flower="orchid" data-name="Golden Royal Orchid" data-emoji="🏵️">
+                  <span class="flower-chip-emoji">🏵️</span>
+                  <span class="flower-chip-name">Golden Orchid</span>
+                  <span class="flower-chip-tag">Queen's Elegance</span>
+                </button>
+                <button class="flower-chip" data-flower="tulip" data-name="Romantic Tulip" data-emoji="🌷">
+                  <span class="flower-chip-emoji">🌷</span>
+                  <span class="flower-chip-name">Pink Tulip</span>
+                  <span class="flower-chip-tag">True Romance</span>
+                </button>
+                <button class="flower-chip" data-flower="sparkle" data-name="Baby's Breath" data-emoji="✨">
+                  <span class="flower-chip-emoji">✨</span>
+                  <span class="flower-chip-name">Baby's Breath</span>
+                  <span class="flower-chip-tag">Everlasting Star</span>
+                </button>
+              </div>
+
+              <!-- Satin Ribbon Picker -->
+              <div class="ribbon-selector-group">
+                <span class="picker-heading">Silk Satin Ribbon:</span>
+                <div class="ribbon-swatches">
+                  <button class="ribbon-swatch active" data-ribbon="rose-gold" style="background: linear-gradient(135deg, #fda4af, #f43f5e);" title="Rose Gold Silk"></button>
+                  <button class="ribbon-swatch" data-ribbon="ruby" style="background: linear-gradient(135deg, #f43f5e, #9f1239);" title="Ruby Crimson"></button>
+                  <button class="ribbon-swatch" data-ribbon="gold" style="background: linear-gradient(135deg, #fde047, #d97706);" title="24K Golden Amber"></button>
+                  <button class="ribbon-swatch" data-ribbon="emerald" style="background: linear-gradient(135deg, #10b981, #065f46);" title="Royal Emerald"></button>
+                  <button class="ribbon-swatch" data-ribbon="sapphire" style="background: linear-gradient(135deg, #38bdf8, #1e3a8a);" title="Sapphire Indigo"></button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3D Realistic Bouquet Stage with Volumetric Layers -->
+            <div class="bouquet-display-stage" id="bouquetStage" title="Move cursor or swipe to tilt bouquet in 3D!">
+              <div class="stage-3d-hint"><i class="fa-solid fa-arrows-up-down-left-right"></i> 3D Perspective Tilt Active</div>
+              <div class="bouquet-presentation-wrapper" id="bouquetWrapper">
+                <!-- Back Luxury Wrapping Folds -->
+                <div class="wrap-layer wrap-back-kraft"></div>
+                <div class="wrap-layer wrap-back-vellum"></div>
+
+                <!-- Greenery & Foliage Layer -->
+                <div class="bouquet-foliage-arena">
+                  <span class="foliage-leaf f-1">🌿</span>
+                  <span class="foliage-leaf f-2">🍃</span>
+                  <span class="foliage-leaf f-3">🌿</span>
+                  <span class="foliage-leaf f-4">🍃</span>
+                  <span class="foliage-leaf f-5">🌱</span>
+                </div>
+
+                <!-- 3D Interactive Blooms Arena -->
+                <div class="bouquet-blooms-arena" id="bouquetBloomsArena">
+                  <!-- Default Starter Flowers with Stems -->
+                  <div class="bloom-stem stem-1" data-emoji="🌹"><div class="stem-line"></div><span class="bloom-petal">🌹</span><span class="dewdrop"></span></div>
+                  <div class="bloom-stem stem-2" data-emoji="🌸"><div class="stem-line"></div><span class="bloom-petal">🌸</span><span class="dewdrop"></span></div>
+                  <div class="bloom-stem stem-3" data-emoji="🌻"><div class="stem-line"></div><span class="bloom-petal">🌻</span></div>
+                  <div class="bloom-stem stem-4" data-emoji="🌷"><div class="stem-line"></div><span class="bloom-petal">🌷</span></div>
+                  <div class="bloom-stem stem-5" data-emoji="✨"><div class="stem-line"></div><span class="bloom-petal">✨</span></div>
+                </div>
+
+                <!-- Front Frosted Korean Wrapping Cone with Gold Trimming -->
+                <div class="bouquet-wrap-cone" id="bouquetWrapCone">
+                  <div class="wrap-layer wrap-front-vellum"></div>
+                  <div class="wrap-layer wrap-front-kraft">
+                    <div class="gold-foil-trim"></div>
+                    <div class="craft-crease-shadow"></div>
+                  </div>
+
+                  <!-- 3D Satin Ribbon Bow with Dynamic Tails -->
+                  <div class="satin-ribbon-bow" id="satinRibbonBow">
+                    <div class="ribbon-loop-left"></div>
+                    <div class="ribbon-loop-right"></div>
+                    <div class="ribbon-center">
+                      <div class="pearl-center-jewel"></div>
+                    </div>
+                    <div class="ribbon-tail ribbon-tail-left"></div>
+                    <div class="ribbon-tail ribbon-tail-right"></div>
+                  </div>
+
+                  <!-- Hanging Gold Foil Dedication Tag with Twine -->
+                  <div class="bouquet-greeting-tag">
+                    <div class="tag-eyelet"></div>
+                    <span id="bouquetTagText">To Queen Nishika 👑 Forever In Bloom</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bouquet Action Bar -->
+              <div class="bouquet-actions-bar">
+                <button class="btn-primary pulse-btn" id="giftBouquetBtn">
+                  <i class="fa-solid fa-gift"></i> Gift Bouquet to Her 💐
+                </button>
+                <button class="btn-secondary btn-sm" id="clearBouquetBtn">
+                  <i class="fa-solid fa-rotate-left"></i> Re-arrange
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: ROMANTIC COUPLE TRIVIA QUIZ -->
+      <section class="quiz-section reveal-on-scroll" id="quizSec" data-reveal="fade-up">
+        <div class="glass-card quiz-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-heart-pulse"></i> Playful Romance</span>
+            <h2 class="section-title">The "How Well Do You Know Us?" Quiz 💖🎮</h2>
+            <p class="section-desc">A fun, affectionate couple's quiz to test our sweet memories and unlock a special love surprise!</p>
+          </div>
+
+          <div class="quiz-container" id="quizContainer">
+            <!-- Progress Bar -->
+            <div class="quiz-progress-bar">
+              <div class="quiz-progress-fill" id="quizProgressFill" style="width: 25%;"></div>
+            </div>
+            <div class="quiz-step-indicator" id="quizStepIndicator">Question 1 of 4</div>
+
+            <!-- Question Card -->
+            <div class="quiz-question-box" id="quizQuestionBox">
+              <h3 class="quiz-question-title" id="quizQuestionTitle">Who said "I Love You" first?</h3>
+              <div class="quiz-options-grid" id="quizOptionsGrid">
+                <!-- Options injected via JS -->
+              </div>
+            </div>
+
+            <!-- Quiz Result Banner -->
+            <div class="quiz-result-banner hidden" id="quizResultBanner">
+              <div class="result-score-badge">👑 100% PERFECT SOULMATES! 💖</div>
+              <h3 class="result-title">Certified In Love Forever</h3>
+              <p class="result-desc">You know my heart better than anyone else in this world. There is nobody else I would rather share this life with.</p>
+              <button class="btn-primary" id="restartQuizBtn"><i class="fa-solid fa-rotate-right"></i> Play Again</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 6: BALLOON POPPING MINI-GAME -->
+      <section class="minigame-section reveal-on-scroll" id="gameSec" data-reveal="fade-up">
+        <div class="glass-card game-card">
+          <div class="game-header">
+            <div>
+              <span class="badge-tag"><i class="fa-solid fa-gamepad"></i> Birthday Fun</span>
+              <h2 class="section-title">Pop The Floating Balloons! 🎈</h2>
+              <p class="section-desc">Floating balloons contain secret sweet compliments & blessings. Tap to pop them!</p>
+            </div>
+            <div class="game-score-card">
+              <span class="score-label">Balloons Popped</span>
+              <span class="score-number" id="poppedScore">0</span>
+            </div>
+          </div>
+
+          <div class="balloon-arena" id="balloonArena">
+            <div class="arena-placeholder-msg" id="arenaMsg">
+              <span>Floating balloons will fly through here! Tap anywhere to spawn more!</span>
+            </div>
+          </div>
+
+          <div class="arena-actions">
+            <button class="btn-accent" id="spawnMoreBalloonsBtn">
+              <i class="fa-solid fa-plus"></i> Release 5 Balloons
+            </button>
+            <button class="btn-secondary" id="clearBalloonsBtn">
+              <i class="fa-solid fa-rotate-left"></i> Reset Arena
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 7: MEMORY POLAROID GALLERY & WISH WALL -->
+      <section class="memories-section reveal-on-scroll" id="memoriesSec" data-reveal="fade-up">
+        <div class="section-heading-center">
+          <span class="badge-tag"><i class="fa-solid fa-camera-retro"></i> Sweet Moments & Wishes</span>
+          <h2 class="section-title">Our Polaroid Gallery of Smiles 📸</h2>
+          <p class="section-desc">Hover and tilt to explore our sweet polaroid cards, upload your favorite real couple photos with romantic filters, or pin a wish note!</p>
+        </div>
+
+        <!-- Photo Upload & Filter Control Bar -->
+        <div class="photo-upload-bar">
+          <input type="file" id="photoUploadInput" accept="image/*" class="hidden" />
+          <button class="btn-primary btn-sm" id="uploadPhotoBtn">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Our Real Photo
+          </button>
+          <span class="cloud-sync-chip" id="photoSyncChip" title="Synced to Google Drive">
+            <i class="fa-solid fa-cloud-arrow-up"></i> <span id="photoSyncText">Google Drive Ready</span>
+          </span>
+          <div class="photo-filter-chips">
+            <span class="filter-label">Romantic Filter:</span>
+            <button class="filter-chip active" data-filter="none">Normal</button>
+            <button class="filter-chip" data-filter="filter-rose">🌸 Rose Glow</button>
+            <button class="filter-chip" data-filter="filter-golden">☀️ Golden Hour</button>
+            <button class="filter-chip" data-filter="filter-vintage">🎞️ Vintage Film</button>
+            <button class="filter-chip" data-filter="filter-bw">🖤 Classic B&W</button>
+          </div>
+        </div>
+
+        <div class="polaroid-grid" id="polaroidGrid">
+          <!-- Card 1: Sweet Smile -->
+          <div class="polaroid-card tilt-element">
+            <div class="polaroid-inner">
+              <div class="polaroid-front">
+                <div class="polaroid-photo photo-sweet">
+                  <div class="photo-art-illustration">
+                    <span class="art-emoji">👑</span>
+                    <span class="art-subtext">The Birthday Queen</span>
+                  </div>
+                  <div class="photo-overlay-tag">Radiant Glow</div>
+                  <div class="sparkle-badge">✨</div>
+                </div>
+                <div class="polaroid-caption">
+                  <p class="caption-text">"Your smile is my absolute favorite thing in the universe. Keep shining, beautiful!"</p>
+                  <span class="caption-date">🎂 Sweetest Soul</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Celebration Vibe -->
+          <div class="polaroid-card tilt-element">
+            <div class="polaroid-inner">
+              <div class="polaroid-front">
+                <div class="polaroid-photo photo-love">
+                  <div class="photo-art-illustration">
+                    <span class="art-emoji">💖</span>
+                    <span class="art-subtext">Pure Happiness</span>
+                  </div>
+                  <div class="photo-overlay-tag">Our Bond</div>
+                  <div class="sparkle-badge">🥂</div>
+                </div>
+                <div class="polaroid-caption">
+                  <p class="caption-text">"Every adventure is ten times sweeter and more exciting with you holding my hand."</p>
+                  <span class="caption-date">🌟 Endless Joy</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Forever Bond -->
+          <div class="polaroid-card tilt-element">
+            <div class="polaroid-inner">
+              <div class="polaroid-front">
+                <div class="polaroid-photo photo-magic">
+                  <div class="photo-art-illustration">
+                    <span class="art-emoji">🎁</span>
+                    <span class="art-subtext">You Are The Gift</span>
+                  </div>
+                  <div class="photo-overlay-tag">Special Day</div>
+                  <div class="sparkle-badge">🌸</div>
+                </div>
+                <div class="polaroid-caption">
+                  <p class="caption-text">"You make every single ordinary day feel like an extraordinary celebration. I love you!"</p>
+                  <span class="caption-date">💕 Infinite Love</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Wish Sticky Notes Board -->
+        <div class="wish-board-wrapper glass-card">
+          <div class="wish-board-header">
+            <div>
+              <h3><i class="fa-solid fa-envelope-open-text"></i> Leave a Sweet Note for <span class="recipient-name-display">Nishika</span></h3>
+              <p class="sub-text">Write a warm birthday message to pin it permanently onto her celebration board!</p>
+            </div>
+            <span class="cloud-sync-chip" id="wishSyncChip" title="Synced to Google Sheets">
+              <i class="fa-solid fa-cloud-check"></i> <span id="wishSyncText">Google Sheets Ready</span>
+            </span>
+          </div>
+
+          <form id="wishForm" class="wish-input-form">
+            <div class="form-row">
+              <input type="text" id="wishAuthorInput" placeholder="Your Name (e.g. Dilip 💕)" required class="app-input" />
+              <input type="text" id="wishTextInput" placeholder="Write your heartfelt note..." required class="app-input flex-grow" />
+              <button type="submit" class="btn-primary">
+                <i class="fa-solid fa-paper-plane"></i> Pin Note
+              </button>
+            </div>
+          </form>
+
+          <div class="wishes-pinboard" id="wishesPinboard">
+            <div class="wish-sticky sticky-gold">
+              <span class="pin">📌</span>
+              <p class="sticky-msg">"Happy Birthday to the most beautiful, intelligent, and lovely girl! You make my life complete!"</p>
+              <span class="sticky-author">— With all my love, Dilip 💖</span>
+            </div>
+            <div class="wish-sticky sticky-pink">
+              <span class="pin">📌</span>
+              <p class="sticky-msg">"Wishing you a year filled with grand dreams coming true, cute laughs, and zero worries!"</p>
+              <span class="sticky-author">— Forever Yours</span>
+            </div>
+            <div class="wish-sticky sticky-cyan">
+              <span class="pin">📌</span>
+              <p class="sticky-msg">"You are my favorite notification, my favorite thought, and my favorite person. Cheers to your best year yet!"</p>
+              <span class="sticky-author">— Your Biggest Admirer</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 8: MYSTERY BIRTHDAY FORTUNE CARDS -->
+      <section class="mystery-perks-section reveal-on-scroll" id="fortuneSec" data-reveal="fade-up">
+        <div class="section-heading-center">
+          <span class="badge-tag"><i class="fa-solid fa-dice"></i> Birthday Magic</span>
+          <h2 class="section-title">Unlock Your Birthday Superpowers 💎</h2>
+          <p class="section-desc">Pick any mystery card below to reveal your romantic birthday fortune!</p>
+        </div>
+
+        <div class="mystery-cards-grid">
+          <div class="mystery-box-card" data-revealed="false">
+            <div class="mystery-card-inner">
+              <div class="mystery-front">
+                <span class="mystery-icon">🎁</span>
+                <span class="mystery-title">Mystery Box 1</span>
+                <span class="mystery-hint">Click to Open</span>
+              </div>
+              <div class="mystery-back">
+                <span class="reward-icon">🚀</span>
+                <h4>Limitless Joy & Radiance</h4>
+                <p>100% good luck, stunning achievements, and pure radiant energy all year!</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mystery-box-card" data-revealed="false">
+            <div class="mystery-card-inner">
+              <div class="mystery-front">
+                <span class="mystery-icon">💎</span>
+                <span class="mystery-title">Mystery Box 2</span>
+                <span class="mystery-hint">Click to Open</span>
+              </div>
+              <div class="mystery-back">
+                <span class="reward-icon">🍰</span>
+                <h4>Zero-Guilt Treats</h4>
+                <p>Official pass to enjoy all cakes, chocolates, and treats with zero guilt!</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mystery-box-card" data-revealed="false">
+            <div class="mystery-card-inner">
+              <div class="mystery-front">
+                <span class="mystery-icon">👑</span>
+                <span class="mystery-title">Mystery Box 3</span>
+                <span class="mystery-hint">Click to Open</span>
+              </div>
+              <div class="mystery-back">
+                <span class="reward-icon">🌈</span>
+                <h4>VIP Universe Pass</h4>
+                <p>All birthday wishes made today receive priority cosmic fulfillment!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: CONSTELLATION OF LOVE & STAR REGISTRY FOR NISHIKA -->
+      <section class="constellation-section reveal-on-scroll" id="constellationSec" data-reveal="fade-up">
+        <div class="glass-card constellation-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-star"></i> Celestial Dedication</span>
+            <h2 class="section-title">Constellation of Eternal Love 🌌✨</h2>
+            <p class="section-desc">Interactive starmap dedicated to Nishika. Connect the luminous stars to trace our love constellations across the cosmos!</p>
+          </div>
+
+          <div class="constellation-sky-arena" id="constellationSky">
+            <canvas id="constellationCanvas" width="800" height="380"></canvas>
+            <span class="canvas-touch-hint mobile-touch-hint"><i class="fa-solid fa-sparkles"></i> ✨ Tap sky to spawn stars & connect</span>
+            <div class="constellation-info-dock">
+              <span class="star-coord-badge">⭐ Star: Nishika-Centauri-01 • RA 14h 39m / Dec -60° 50′</span>
+              <button class="btn-primary btn-sm" id="openStarRegistryBtn">
+                <i class="fa-solid fa-certificate"></i> View Star Registry Certificate
+              </button>
+            </div>
+          </div>
+
+          <div class="constellation-selector-chips">
+            <button class="constellation-chip active" data-constellation="crown">👑 Nishika's Royal Crown</button>
+            <button class="constellation-chip" data-constellation="heart">💖 The Eternal Heart</button>
+            <button class="constellation-chip" data-constellation="infinity">♾️ Dilip & Nishika Infinity</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: FLOATING SKY LANTERNS RELEASE CEREMONY -->
+      <section class="lantern-section reveal-on-scroll" id="lanternSec" data-reveal="fade-up">
+        <div class="glass-card lantern-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-fire"></i> Twilight Ceremony</span>
+            <h2 class="section-title">Floating Sky Lanterns Festival 🏮🌙</h2>
+            <p class="section-desc">Write your sweetest birthday wish on a traditional glowing paper lantern and release it into the twilight sky!</p>
+          </div>
+
+          <div class="lantern-release-stage">
+            <canvas id="lanternCanvas" width="800" height="380"></canvas>
+            <span class="canvas-touch-hint mobile-touch-hint"><i class="fa-solid fa-hand-pointer"></i> 🏮 Tap sky to release glowing lantern</span>
+            
+            <div class="lantern-composer-dock">
+              <input type="text" id="lanternWishInput" placeholder="Write a wish for Nishika (e.g. Boundless Joy & Sweet Smiles)..." class="app-input" />
+              <button class="btn-primary pulse-btn" id="releaseLanternBtn">
+                <i class="fa-solid fa-paper-plane"></i> Release Lantern 🏮
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: VIRTUAL "LOVE CLAW" BIRTHDAY ARCADE -->
+      <section class="arcade-claw-section reveal-on-scroll" id="clawSec" data-reveal="fade-up">
+        <div class="glass-card claw-arcade-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-gamepad"></i> Birthday Arcade</span>
+            <h2 class="section-title">The "Love Claw" Surprise Grabber 🧸🕹️</h2>
+            <p class="section-desc">Move the mechanical claw and drop it to grab surprise golden eggs with exclusive romantic vouchers!</p>
+          </div>
+
+          <div class="claw-machine-cabinet">
+            <div class="claw-glass-chamber" id="clawChamber">
+              <div class="claw-crane-rail">
+                <div class="claw-assembly" id="clawAssembly">
+                  <div class="claw-rope" id="clawRope"></div>
+                  <div class="claw-head" id="clawHead">
+                    <div class="claw-finger finger-left"></div>
+                    <div class="claw-finger finger-right"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Prizes on Floor -->
+              <div class="claw-prizes-floor" id="clawPrizesFloor">
+                <div class="prize-item prize-egg egg-1" data-prize="Unlimited Warm Cuddles & Back Rubs 🧸💖"><span>🥚</span></div>
+                <div class="prize-item prize-plushie plush-1" data-prize="Midnight Ice Cream Date (Her Choice) 🍦🌙"><span>🧸</span></div>
+                <div class="prize-item prize-egg egg-2" data-prize="Candlelight Rooftop Date Under The Stars 🍷✨"><span>🌟</span></div>
+                <div class="prize-item prize-plushie plush-2" data-prize="Movie Marathon with 100% Her Picks 🍿🧸"><span>💖</span></div>
+                <div class="prize-item prize-egg egg-3" data-prize="100 Sweet Forehead Kisses & Hugs 💋👑"><span>🎁</span></div>
+              </div>
+
+              <!-- Prize Reveal Toast In Cabinet -->
+              <div class="claw-reveal-banner hidden" id="clawRevealBanner">
+                <span class="prize-badge">🎉 YOU WON!</span>
+                <h4 id="clawPrizeText">Candlelight Rooftop Date Under The Stars</h4>
+              </div>
+            </div>
+
+            <!-- Arcade Controls -->
+            <div class="claw-controls-panel">
+              <button class="claw-ctrl-btn" id="clawLeftBtn" title="Move Left"><i class="fa-solid fa-arrow-left"></i> Left</button>
+              <button class="claw-drop-btn pulse-btn" id="clawDropBtn"><i class="fa-solid fa-hand-holding-heart"></i> DROP CLAW!</button>
+              <button class="claw-ctrl-btn" id="clawRightBtn" title="Move Right">Right <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: 3D VINTAGE CINEMATIC PROJECTOR & FILM REEL -->
+      <section class="cinema-projector-section reveal-on-scroll" id="projectorSec" data-reveal="fade-up">
+        <div class="glass-card cinema-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-film"></i> Nostalgic Cinema</span>
+            <h2 class="section-title">Our Vintage Cinematic Story Projector 🎬🎞️</h2>
+            <p class="section-desc">Watch our romantic story unfold frame by frame through a vintage 8mm golden movie projector.</p>
+          </div>
+
+          <div class="cinema-projector-layout">
+            <!-- Projector Machine Illustration -->
+            <div class="projector-machine-card" id="projectorMachine">
+              <div class="projector-spool-top spinning" id="projSpoolTop"><div class="spool-core"></div></div>
+              <div class="projector-body">
+                <div class="projector-lens"><div class="lens-glow"></div></div>
+                <div class="projector-light-beam" id="projectorLightBeam"></div>
+              </div>
+              <div class="projector-spool-bottom spinning" id="projSpoolBottom"><div class="spool-core"></div></div>
+            </div>
+
+            <!-- Film Projection Screen -->
+            <div class="cinema-projection-screen">
+              <div class="film-grain-overlay"></div>
+              <div class="film-sprockets-row top">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+
+              <div class="film-strip-slider" id="filmStripSlider">
+                <!-- Scene 1: The Beginning -->
+                <div class="film-frame active" data-scene="1">
+                  <div class="film-cinemagraph-reel reel-stars">
+                    <div class="reel-motion-bg">
+                      <div class="celestial-silhouette-couple">
+                        <span class="lamp-post">🏮</span>
+                        <span class="couple-shadow">👫</span>
+                      </div>
+                      <div class="film-dust-particles">
+                        <span class="fp fp-1">✨</span>
+                        <span class="fp fp-2">✧</span>
+                        <span class="fp fp-3">★</span>
+                        <span class="fp fp-4">💫</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="frame-content">
+                    <span class="scene-tag"><i class="fa-solid fa-video"></i> Scene I • The Beginning</span>
+                    <h3 class="scene-title">The Day The Universe Blessed Me With Nishika ✨</h3>
+                    <p class="scene-desc">The moment your eyes met mine, every piece of the puzzle fell into place. My life found its true color.</p>
+                  </div>
+                </div>
+
+                <!-- Scene 2: Pure Magic -->
+                <div class="film-frame" data-scene="2">
+                  <div class="film-cinemagraph-reel reel-sparkler">
+                    <div class="reel-motion-bg">
+                      <div class="cinematic-sparkler-core">
+                        <span class="sparkler-wand">🪄</span>
+                        <span class="spark-flare sf-1">✨</span>
+                        <span class="spark-flare sf-2">💥</span>
+                        <span class="spark-flare sf-3">🌟</span>
+                      </div>
+                      <div class="drifting-rose-petals">
+                        <span class="rp rp-1">🌸</span>
+                        <span class="rp rp-2">🌹</span>
+                        <span class="rp rp-3">🌸</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="frame-content">
+                    <span class="scene-tag"><i class="fa-solid fa-video"></i> Scene II • Pure Magic</span>
+                    <h3 class="scene-title">Her Radiant Smile That Stole My Heart 💖</h3>
+                    <p class="scene-desc">Your laughter became my favorite symphony, and your warm embrace became my home.</p>
+                  </div>
+                </div>
+
+                <!-- Scene 3: Late Night Talks -->
+                <div class="film-frame" data-scene="3">
+                  <div class="film-cinemagraph-reel reel-midnight">
+                    <div class="reel-motion-bg">
+                      <div class="cinematic-highway-car">
+                        <span class="moon-crescent">🌙</span>
+                        <span class="cruising-car">🚗💨</span>
+                        <span class="warm-coffee-mugs">☕☕</span>
+                      </div>
+                      <div class="drifting-night-clouds">
+                        <span class="nc nc-1">☁️</span>
+                        <span class="nc nc-2">☁️</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="frame-content">
+                    <span class="scene-tag"><i class="fa-solid fa-video"></i> Scene III • Adventures</span>
+                    <h3 class="scene-title">Late Night Talks & Spontaneous Getaways 🌙</h3>
+                    <p class="scene-desc">Every road trip, late-night tea, and shared secret made our bond unbreakable.</p>
+                  </div>
+                </div>
+
+                <!-- Scene 4: Royal Birthday Today -->
+                <div class="film-frame" data-scene="4">
+                  <div class="film-cinemagraph-reel reel-birthday">
+                    <div class="reel-motion-bg">
+                      <div class="cinematic-birthday-throne">
+                        <span class="cake-icon">🎂</span>
+                        <span class="throne-crown">👑</span>
+                        <span class="birthday-firework">🎆</span>
+                      </div>
+                      <div class="confetti-streamers">
+                        <span class="cs cs-1">🎉</span>
+                        <span class="cs cs-2">✨</span>
+                        <span class="cs cs-3">💖</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="frame-content">
+                    <span class="scene-tag"><i class="fa-solid fa-video"></i> Scene IV • Today</span>
+                    <h3 class="scene-title">Happy Birthday To My Forever Queen, Nishika 👑</h3>
+                    <p class="scene-desc">May this year bring you all the grand blessings, boundless success, and infinite love you deserve!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="film-sprockets-row bottom">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+
+              <!-- Cinema Navigation Controls -->
+              <div class="cinema-controls-bar">
+                <button class="cinema-btn" id="prevCinemaFrameBtn"><i class="fa-solid fa-backward-step"></i> Prev Scene</button>
+                <span class="cinema-counter" id="cinemaSceneIndicator">Scene 1 / 4</span>
+                <button class="cinema-btn" id="nextCinemaFrameBtn">Next Scene <i class="fa-solid fa-forward-step"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: THE ENCHANTED ROYAL MIRROR OF AFFIRMATIONS -->
+      <section class="enchanted-mirror-section reveal-on-scroll" id="mirrorSec" data-reveal="fade-up">
+        <div class="glass-card mirror-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> Royal Reflections</span>
+            <h2 class="section-title">The Enchanted Mirror of Affirmations 🔮✨</h2>
+            <p class="section-desc">Tap the golden royal mirror to reflect true affirmations celebrating Nishika's beauty, mind, and soul.</p>
+          </div>
+
+          <div class="mirror-presentation-stage">
+            <div class="enchanted-mirror-frame" id="enchantedMirrorTrigger" title="Tap Mirror to Reveal Affirmations!">
+              <div class="mirror-baroque-crest">👑</div>
+              <div class="mirror-glass-surface" id="mirrorGlass">
+                <div class="mirror-shimmer"></div>
+                <div class="mirror-reflection-content" id="mirrorContent">
+                  <span class="mirror-sparkle-icon">✨</span>
+                  <h3 class="mirror-affirmation-text" id="mirrorAffirmationText">"Nishika, you illuminate every room with your natural grace, kindness, and radiant beauty."</h3>
+                  <span class="mirror-author-tag">— Reflected With Devotion by Dilip 💖</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mirror-action-dock">
+              <button class="btn-primary pulse-btn" id="nextAffirmationBtn">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Tap Mirror For New Affirmation ✨
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: COUPLE'S DATE NIGHT FORTUNE ROULETTE -->
+      <section class="roulette-section reveal-on-scroll" id="rouletteSec" data-reveal="fade-up">
+        <div class="glass-card roulette-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-dice"></i> Spontaneous Adventures</span>
+            <h2 class="section-title">Couple's Date Night Fortune Roulette 🎡💕</h2>
+            <p class="section-desc">Can't decide on tonight's romantic adventure? Spin the royal golden wheel to let fate choose our next unforgettable date!</p>
+          </div>
+
+          <div class="roulette-stage-wrapper">
+            <!-- Left: 3D Roulette Wheel Container -->
+            <div class="roulette-wheel-container">
+              <div class="roulette-ticker" id="rouletteTicker">
+                <i class="fa-solid fa-location-pin-lock ticker-arrow"></i>
+              </div>
+              <div class="roulette-outer-rim">
+                <div class="roulette-led-ring" id="rouletteLedRing"></div>
+                <canvas id="rouletteCanvas" width="460" height="460" class="roulette-canvas"></canvas>
+                <div class="roulette-center-hub" id="rouletteCenterHub">
+                  <div class="hub-crown">👑</div>
+                  <span class="hub-text">SPIN</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Interactive Control & Result Deck -->
+            <div class="roulette-deck">
+              <div class="roulette-status-panel">
+                <div class="deck-badge"><i class="fa-solid fa-sparkles"></i> Destiny Generator</div>
+                <h3 class="current-date-title" id="rouletteResultTitle">Ready For Your Next Date?</h3>
+                <p class="current-date-desc" id="rouletteResultDesc">Tap the golden spin button or press <kbd class="nav-kbd-hint">R</kbd> to spin the royal wheel of romance!</p>
+                
+                <div class="roulette-meta-chips" id="rouletteResultMeta">
+                  <span class="meta-chip"><i class="fa-solid fa-clock"></i> <span id="rouletteTimeTag">Tonight</span></span>
+                  <span class="meta-chip"><i class="fa-solid fa-heart"></i> <span id="rouletteVibeTag">Pure Romance</span></span>
+                </div>
+              </div>
+
+              <!-- Action Controls -->
+              <div class="roulette-action-buttons">
+                <button type="button" class="btn-primary pulse-btn spin-main-btn" id="spinRouletteBtn">
+                  <i class="fa-solid fa-dice"></i> <span>Spin Royal Wheel!</span>
+                </button>
+                <button type="button" class="btn-secondary" id="claimDateCouponBtn" disabled>
+                  <i class="fa-solid fa-ticket"></i> <span>Claim as Love Coupon 🎟️</span>
+                </button>
+                <button type="button" class="btn-accent" id="openAddDateModalBtn">
+                  <i class="fa-solid fa-plus"></i> <span>Add Custom Date Idea</span>
+                </button>
+              </div>
+
+              <!-- Available Date Ideas Quick Chips -->
+              <div class="roulette-ideas-preview">
+                <span class="ideas-label"><i class="fa-solid fa-list-ul"></i> Loaded Date Ideas (<span id="rouletteIdeaCount">8</span>):</span>
+                <div class="ideas-chip-cloud" id="rouletteIdeasCloud">
+                  <!-- Generated dynamically in script.js -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: COSMIC AMBIENT SOUNDSCAPE SANCTUARY -->
+      <section class="soundscape-section reveal-on-scroll" id="soundscapeSec" data-reveal="fade-up">
+        <div class="glass-card soundscape-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-cloud-moon-rain"></i> Intimate Ambiance</span>
+            <h2 class="section-title">Cosmic Ambient Soundscape Sanctuary 🌌🌧️</h2>
+            <p class="section-desc">Immerse yourselves in a multi-layered, polyphonic ambiance handcrafted with pure Web Audio synthesis. Mix gentle rain, cozy fireplace crackles, ocean tides, and starlight chimes.</p>
+          </div>
+
+          <!-- Soundscape Master Toolbar -->
+          <div class="soundscape-master-bar">
+            <div class="master-control-group">
+              <button type="button" class="btn-primary pulse-btn" id="soundscapeMasterToggle">
+                <i class="fa-solid fa-play" id="soundscapePlayIcon"></i>
+                <span id="soundscapeMasterLabel">Play Soundscape</span>
+              </button>
+              <div class="master-vol-wrapper">
+                <i class="fa-solid fa-volume-high"></i>
+                <input type="range" id="soundscapeMasterVol" min="0" max="100" value="80" class="soundscape-slider master-slider" title="Master Volume" />
+                <span class="vol-percent" id="soundscapeMasterPercent">80%</span>
+              </div>
+            </div>
+
+            <!-- Sleep / Rest Timer -->
+            <div class="soundscape-timer-group">
+              <label for="soundscapeTimerSelect"><i class="fa-solid fa-hourglass-end"></i> Sleep Timer:</label>
+              <select id="soundscapeTimerSelect" class="soundscape-select">
+                <option value="0">Off (Continuous)</option>
+                <option value="15">15 Minutes</option>
+                <option value="30">30 Minutes</option>
+                <option value="45">45 Minutes</option>
+                <option value="60">60 Minutes</option>
+              </select>
+              <span class="timer-countdown-badge hidden" id="soundscapeTimerBadge"><i class="fa-solid fa-moon"></i> <span id="soundscapeTimerCountdown">30:00</span></span>
+            </div>
+          </div>
+
+          <!-- Mood Presets Bar -->
+          <div class="soundscape-presets-bar">
+            <span class="presets-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Mood Presets:</span>
+            <div class="preset-buttons-group">
+              <button type="button" class="preset-btn active" data-preset="midnight"><i class="fa-solid fa-star"></i> Starry Midnight</button>
+              <button type="button" class="preset-btn" data-preset="rainy"><i class="fa-solid fa-cloud-showers-heavy"></i> Rainy Cuddle Date</button>
+              <button type="button" class="preset-btn" data-preset="fireside"><i class="fa-solid fa-fire"></i> Fireside Romance</button>
+              <button type="button" class="preset-btn" data-preset="ocean"><i class="fa-solid fa-water"></i> Ocean Moonlight</button>
+              <button type="button" class="preset-btn" data-preset="cafe"><i class="fa-solid fa-mug-hot"></i> Parisian Café</button>
+              <button type="button" class="preset-btn" data-preset="zen"><i class="fa-solid fa-spa"></i> Royal Sanctuary</button>
+            </div>
+          </div>
+
+          <!-- Multi-Track Audio Fader Grid -->
+          <div class="soundscape-tracks-grid">
+            <!-- Track 1: Rain on Glass -->
+            <div class="soundscape-track-card" data-track="rain">
+              <div class="track-header">
+                <div class="track-icon-badge rain-icon"><i class="fa-solid fa-cloud-rain"></i></div>
+                <div class="track-info">
+                  <h4>Rain on Glass</h4>
+                  <span class="track-sub">Synthesized Pink Noise</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="rain" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterRain"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volRain" min="0" max="100" value="70" />
+                <span class="track-vol-label" id="labelVolRain">70%</span>
+              </div>
+            </div>
+
+            <!-- Track 2: Cozy Fireplace -->
+            <div class="soundscape-track-card" data-track="fire">
+              <div class="track-header">
+                <div class="track-icon-badge fire-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                <div class="track-info">
+                  <h4>Fireplace Crackle</h4>
+                  <span class="track-sub">Stochastic Embers</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="fire" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterFire"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volFire" min="0" max="100" value="45" />
+                <span class="track-vol-label" id="labelVolFire">45%</span>
+              </div>
+            </div>
+
+            <!-- Track 3: Ocean Waves -->
+            <div class="soundscape-track-card" data-track="ocean">
+              <div class="track-header">
+                <div class="track-icon-badge ocean-icon"><i class="fa-solid fa-water"></i></div>
+                <div class="track-info">
+                  <h4>Gentle Ocean Tides</h4>
+                  <span class="track-sub">LFO Lowpass Swell</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="ocean" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterOcean"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volOcean" min="0" max="100" value="0" />
+                <span class="track-vol-label" id="labelVolOcean">0%</span>
+              </div>
+            </div>
+
+            <!-- Track 4: Starlight Chimes & Crickets -->
+            <div class="soundscape-track-card" data-track="chimes">
+              <div class="track-header">
+                <div class="track-icon-badge chimes-icon"><i class="fa-solid fa-bell"></i></div>
+                <div class="track-info">
+                  <h4>Starlight Chimes</h4>
+                  <span class="track-sub">High Sine Overtones</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="chimes" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterChimes"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volChimes" min="0" max="100" value="60" />
+                <span class="track-vol-label" id="labelVolChimes">60%</span>
+              </div>
+            </div>
+
+            <!-- Track 5: Dreamy Lo-Fi Piano -->
+            <div class="soundscape-track-card" data-track="piano">
+              <div class="track-header">
+                <div class="track-icon-badge piano-icon"><i class="fa-solid fa-music"></i></div>
+                <div class="track-info">
+                  <h4>Lo-Fi Piano Pad</h4>
+                  <span class="track-sub">Warm Polyphonic Chords</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="piano" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterPiano"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volPiano" min="0" max="100" value="50" />
+                <span class="track-vol-label" id="labelVolPiano">50%</span>
+              </div>
+            </div>
+
+            <!-- Track 6: Parisian Café -->
+            <div class="soundscape-track-card" data-track="cafe">
+              <div class="track-header">
+                <div class="track-icon-badge cafe-icon"><i class="fa-solid fa-mug-hot"></i></div>
+                <div class="track-info">
+                  <h4>Parisian Café</h4>
+                  <span class="track-sub">Warm Acoustic Hum</span>
+                </div>
+                <button type="button" class="track-mute-btn" data-track="cafe" title="Mute Track"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
+              <div class="track-visualizer-bar"><div class="track-meter" id="meterCafe"></div></div>
+              <div class="track-slider-box">
+                <input type="range" class="soundscape-slider track-slider" id="volCafe" min="0" max="100" value="0" />
+                <span class="track-vol-label" id="labelVolCafe">0%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: FUTURE LOVE TIME CAPSULE VAULT -->
+      <section class="capsule-section reveal-on-scroll" id="capsuleSec" data-reveal="fade-up">
+        <div class="glass-card capsule-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-hourglass-half"></i> Sealed Forever</span>
+            <h2 class="section-title">Future Love Time Capsule Vault ⏳💌</h2>
+            <p class="section-desc">Letters, promises, and memories encrypted and sealed until future milestones in our love story. Each capsule unlocks precisely on its designated anniversary or birthday!</p>
+          </div>
+
+          <!-- Highlight Next Unlocking Capsule Banner -->
+          <div class="capsule-spotlight-card" id="capsuleSpotlight">
+            <div class="spotlight-badge"><i class="fa-solid fa-lock"></i> Next Capsule Opening Soon</div>
+            <div class="spotlight-content">
+              <div class="spotlight-left">
+                <div class="hologram-padlock-box">
+                  <div class="padlock-shackle"></div>
+                  <div class="padlock-body">
+                    <i class="fa-solid fa-lock padlock-icon" id="spotlightLockIcon"></i>
+                  </div>
+                  <div class="padlock-aura"></div>
+                </div>
+              </div>
+              <div class="spotlight-middle">
+                <span class="capsule-tag-badge" id="spotlightTag">👑 Next Royal Birthday</span>
+                <h3 class="spotlight-title" id="spotlightTitle">A Letter to Queen Nishika on September 20, 2027</h3>
+                <p class="spotlight-desc" id="spotlightDesc">"Reflecting on one full year of magic since your royal coronation day. Sealed with eternal promises."</p>
+                <div class="capsule-countdown-grid" id="capsuleCountdownGrid">
+                  <div class="capsule-time-box"><span class="c-num" id="capDays">00</span><span class="c-label">Days</span></div>
+                  <div class="capsule-time-box"><span class="c-num" id="capHours">00</span><span class="c-label">Hours</span></div>
+                  <div class="capsule-time-box"><span class="c-num" id="capMins">00</span><span class="c-label">Mins</span></div>
+                  <div class="capsule-time-box highlight"><span class="c-num" id="capSecs">00</span><span class="c-label">Secs</span></div>
+                </div>
+              </div>
+              <div class="spotlight-right">
+                <button type="button" class="btn-primary" id="openSpotlightCapsuleBtn">
+                  <i class="fa-solid fa-key"></i> <span>View Capsule</span>
+                </button>
+                <button type="button" class="btn-secondary vip-bypass-btn" id="vipCapsuleBypassBtn" title="Queen Nishika Heart Key Unlock">
+                  <i class="fa-solid fa-heart-circle-bolt"></i> <span>Queen VIP Key</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Capsule Action Row -->
+          <div class="capsules-action-bar">
+            <button type="button" class="btn-accent pulse-btn" id="openCreateCapsuleBtn">
+              <i class="fa-solid fa-feather-pointed"></i> <span>Seal A New Future Time Capsule</span>
+            </button>
+            <div class="capsule-filter-group">
+              <button type="button" class="filter-chip active" data-capsule-filter="all">All Capsules (<span id="capsuleCountTotal">4</span>)</button>
+              <button type="button" class="filter-chip" data-capsule-filter="locked">🔒 Locked</button>
+              <button type="button" class="filter-chip" data-capsule-filter="unlocked">🔓 Unlocked</button>
+            </div>
+          </div>
+
+          <!-- Capsule Grid -->
+          <div class="capsules-grid" id="capsulesGrid">
+            <!-- Dynamic capsule cards injected via script.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: OUR COSMIC JOURNEY & MILESTONES MAP -->
+      <section class="journey-section reveal-on-scroll" id="journeySec" data-reveal="fade-up">
+        <div class="glass-card journey-card">
+          <div class="section-heading-center">
+            <span class="badge-tag"><i class="fa-solid fa-compass"></i> Our Celestial Story</span>
+            <h2 class="section-title">Our Cosmic Journey & Milestones Map 🗺️✨</h2>
+            <p class="section-desc">Trace the celestial path of our love story through space, time, and milestones across the universe.</p>
+          </div>
+
+          <!-- Live Celestial Statistics Ribbon -->
+          <div class="cosmic-stats-ribbon">
+            <div class="cosmic-stat-card">
+              <div class="stat-icon-gold"><i class="fa-solid fa-earth-americas"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="cosmicDistanceVal">940,000,000+</span>
+                <span class="stat-unit">km</span>
+                <span class="stat-label">Traveled Together Around Sun</span>
+              </div>
+            </div>
+            <div class="cosmic-stat-card">
+              <div class="stat-icon-gold"><i class="fa-solid fa-heart-pulse"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="cosmicHeartbeatsVal">2,654,000+</span>
+                <span class="stat-unit">beats</span>
+                <span class="stat-label">Shared Together In Love</span>
+              </div>
+            </div>
+            <div class="cosmic-stat-card">
+              <div class="stat-icon-gold"><i class="fa-solid fa-star-and-crescent"></i></div>
+              <div class="stat-body">
+                <span class="stat-number" id="cosmicMilestonesCount">8</span>
+                <span class="stat-unit">Chapters</span>
+                <span class="stat-label">Celestial Milestones Consecrated</span>
+              </div>
+            </div>
+            <div class="cosmic-stat-card">
+              <div class="stat-icon-gold"><i class="fa-solid fa-infinity"></i></div>
+              <div class="stat-body">
+                <span class="stat-number">∞</span >
+                <span class="stat-unit">Forever</span>
+                <span class="stat-label">Love & Devotion Strength</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Constellation Journey Nodes -->
+          <div class="journey-constellation-container">
+            <div class="journey-constellation-svg-wrapper">
+              <svg class="journey-line-svg" id="journeyLineSvg" viewBox="0 0 1000 600" preserveAspectRatio="none">
+                <!-- Connected constellation path generated by script.js -->
+              </svg>
+            </div>
+            <div class="journey-nodes-grid" id="journeyNodesGrid">
+              <!-- Nodes dynamically generated in script.js -->
+            </div>
+          </div>
+
+          <!-- Journey Action Deck -->
+          <div class="journey-action-bar">
+            <button type="button" class="btn-primary pulse-btn" id="openAddJourneyPinBtn">
+              <i class="fa-solid fa-map-location-dot"></i> <span>Add New Cosmic Milestone Pin</span>
+            </button>
+            <div class="journey-legend">
+              <span class="legend-item"><span class="legend-dot origin"></span> Genesis</span>
+              <span class="legend-item"><span class="legend-dot date"></span> Romance</span>
+              <span class="legend-item"><span class="legend-dot trip"></span> Adventure</span>
+              <span class="legend-item"><span class="legend-dot bday"></span> Royal Celebration</span>
+              <span class="legend-item"><span class="legend-dot future"></span> Future Horizon</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="app-footer">
+        <div class="footer-content">
+          <div class="footer-cake-icon">💖</div>
+          <h3>Eternal Love • Handcrafted With Infinite Love</h3>
+          <p>Made especially to celebrate the most precious birthday of the year.</p>
+          <div class="footer-action-buttons">
+            <button class="btn-primary share-btn-footer" id="shareFooterBtn">
+              <i class="fa-solid fa-share-nodes"></i> Share Celebration Link
+            </button>
+            <button class="btn-secondary" id="openKeepsakeBtn">
+              <i class="fa-solid fa-certificate"></i> View Keepsake Card
+            </button>
+            <button class="btn-secondary" id="footerShortcutsBtn">
+              <i class="fa-solid fa-keyboard"></i> Hotkeys & Shortcuts <kbd class="nav-kbd-hint">?</kbd>
+            </button>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- MODAL 1: SECRET BIRTHDAY WISH TIME CAPSULE -->
+  <div class="modal-backdrop" id="wishModal">
+    <div class="modal-dialog glass-card animate-scale-up">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">🌟</span>
+        <button class="modal-close-btn" id="closeWishModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      <h2>Make Your Secret Birthday Wish ✨</h2>
+      <p class="modal-body-text">
+        Type your secret wish below, <span class="recipient-name-display highlight">Sweetheart</span>. It will be sealed in a starry time capsule and launched across the cosmos!
+      </p>
+
+      <form id="timeCapsuleForm" class="time-capsule-form">
+        <textarea id="secretWishInput" class="app-input" rows="3" placeholder="Type your heartfelt wish here... (locked safely just for you)"></textarea>
+        <div class="modal-action-bar">
+          <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-rocket"></i> Launch Wish to the Stars ✨
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: PERSONALIZATION & SETTINGS MODAL -->
+  <div class="modal-backdrop" id="customizeModal">
+    <div class="modal-dialog glass-card animate-scale-up">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">🎨</span>
+        <button class="modal-close-btn" id="closeCustomizeModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      <h2>Personalize This Celebration</h2>
+      <p class="modal-body-text">Customize names, your anniversary start date for the live love timer, and custom letter!</p>
+
+      <form id="customizeForm" class="customize-form">
+        <div class="form-group">
+          <label for="custNameInput"><i class="fa-solid fa-user"></i> Her Name / Nickname</label>
+          <input type="text" id="custNameInput" class="app-input" placeholder="e.g., Sweetheart, Sarah, Princess" required />
+        </div>
+
+        <div class="form-group">
+          <label for="custSenderInput"><i class="fa-solid fa-pen-nib"></i> Your Name (Sender)</label>
+          <input type="text" id="custSenderInput" class="app-input" placeholder="e.g., Dilip" />
+        </div>
+
+        <div class="form-group">
+          <label for="custStartDateInput"><i class="fa-solid fa-calendar-heart"></i> Relationship Start Date (For Timer)</label>
+          <input type="date" id="custStartDateInput" class="app-input" />
+        </div>
+
+        <div class="form-group">
+          <label for="custMsgInput"><i class="fa-solid fa-heart"></i> Custom Hero Birthday Message</label>
+          <textarea id="custMsgInput" class="app-input" rows="2" placeholder="Enter a heartfelt hero message..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-palette"></i> Color Atmosphere & UI Themes (9 Options)</label>
+          <div class="theme-picker-group">
+            <button type="button" class="theme-dot theme-magical-dot active" data-theme="theme-magical" title="Magical Violet Romance"></button>
+            <button type="button" class="theme-dot theme-aurora-dot" data-theme="theme-aurora" title="Aurora Teal & Emerald"></button>
+            <button type="button" class="theme-dot theme-sunset-dot" data-theme="theme-sunset" title="Golden Sunset & Rose"></button>
+            <button type="button" class="theme-dot theme-midnight-dot" data-theme="theme-midnight" title="Midnight Blue & Gold"></button>
+            <button type="button" class="theme-dot theme-versailles-dot" data-theme="theme-versailles" title="👑 Versailles Rococo & Imperial Gold"></button>
+            <button type="button" class="theme-dot theme-sakura-dot" data-theme="theme-sakura" title="🌸 Kyoto Moonlit Sakura & Pastel"></button>
+            <button type="button" class="theme-dot theme-paris-jazz-dot" data-theme="theme-paris-jazz" title="☕ Parisian Midnight Jazz & Amber"></button>
+            <button type="button" class="theme-dot theme-cyber-dot" data-theme="theme-cyber" title="🪐 Cyber-Starlight Hologram & Cyan"></button>
+            <button type="button" class="theme-dot theme-enchanted-forest-dot" data-theme="theme-enchanted-forest" title="🌿 Enchanted Fairy Forest & Emerald"></button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="custGoogleSheetUrl"><i class="fa-solid fa-table-cells"></i> Google Sheets Webhook URL (Wishes & Photos Sync)</label>
+          <input type="url" id="custGoogleSheetUrl" class="app-input" value="https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec" placeholder="https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec" />
+          <span class="field-hint">Paste your Google Apps Script Web App URL to save all wishes & photos automatically into your personal Google Sheet & Drive.</span>
+        </div>
+
+        <div class="share-link-box">
+          <input type="text" id="shareUrlInput" class="app-input readonly-input" readonly />
+          <button type="button" id="copyShareUrlBtn" class="btn-accent">
+            <i class="fa-solid fa-copy"></i> <span id="copyBtnText">Copy Link</span>
+          </button>
+        </div>
+
+        <div class="modal-action-bar">
+          <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-check"></i> Apply All Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: KEEPSAKE LOVE CERTIFICATE / CARD MODAL -->
+  <div class="modal-backdrop" id="keepsakeModal">
+    <div class="modal-dialog glass-card animate-scale-up keepsake-dialog">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">📜</span>
+        <button class="modal-close-btn" id="closeKeepsakeModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      
+      <div class="keepsake-card-preview" id="keepsakeCardPrint">
+        <div class="keepsake-border">
+          <div class="keepsake-inner">
+            <div class="keepsake-header">
+              <span class="keepsake-crown">👑</span>
+              <h2>Eternal Love Official Certificate</h2>
+              <p class="keepsake-subtitle">Conferred on September 5th with all my heart and devotion</p>
+            </div>
+            
+            <div class="keepsake-content">
+              <p class="keepsake-certifies">This certificate proudly certifies that</p>
+              <h1 class="keepsake-recipient recipient-name-display">Nishika</h1>
+              <p class="keepsake-statement">
+                Is officially crowned the most wonderful, breathtaking, and cherished woman in my universe. May this birthday bring you infinite joy, radiant health, and sweet moments!
+              </p>
+            </div>
+
+            <div class="keepsake-footer">
+              <div class="keepsake-signature-box">
+                <span class="keepsake-sign" id="keepsakeSignDisplay">Dilip 💖</span>
+                <span class="keepsake-sign-label">With Infinite Love</span>
+              </div>
+              <div class="keepsake-gold-seal">
+                <span>⭐ OFFICIAL ⭐<br />LOVE SEAL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-action-bar">
+        <button type="button" class="btn-primary" id="printCardBtn">
+          <i class="fa-solid fa-print"></i> Print / Save as PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: STAR REGISTRY CERTIFICATE MODAL FOR NISHIKA -->
+  <div class="modal-backdrop" id="starModal">
+    <div class="modal-dialog glass-card animate-scale-up star-registry-dialog">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">🌌</span>
+        <button class="modal-close-btn" id="closeStarModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      
+      <div class="star-certificate-preview" id="starCertPrint">
+        <div class="star-cert-border">
+          <div class="star-cert-inner">
+            <div class="star-cert-header">
+              <span class="star-icon-gold">⭐ 💫 ⭐</span>
+              <h2>International Celestial Star Registry</h2>
+              <p class="star-cert-subtitle">Official Deed of Dedication • Registered on September 5th</p>
+            </div>
+            
+            <div class="star-cert-body">
+              <p class="cert-deed">Know all across the cosmos that the celestial star located at:</p>
+              <div class="star-coordinates-box">
+                <span class="coord-label">Right Ascension: 14h 39m 36s | Declination: -60° 50′ 02″</span>
+                <span class="magnitude-label">Magnitude: 0.85 (Radiant Gold Class)</span>
+              </div>
+              <p class="cert-named-text">Is permanently and officially named:</p>
+              <h1 class="star-name-headline">"Nishika — The Queen Star" 👑✨</h1>
+              <p class="star-dedication-msg">
+                "Named with all my heart for Nishika, whose radiant presence illuminates my entire life brighter than every star in the universe."
+              </p>
+            </div>
+
+            <div class="star-cert-footer">
+              <div class="star-sign-box">
+                <span class="star-sign-name">Dilip 💖</span>
+                <span class="star-sign-title">Registered with Eternal Love</span>
+              </div>
+              <div class="star-gold-badge">
+                <span>🌟 CELESTIAL 🌟<br />DEED SEAL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-action-bar">
+        <button type="button" class="btn-primary" id="printStarCertBtn">
+          <i class="fa-solid fa-print"></i> Print Star Certificate
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: "OPEN WHEN..." LETTER READER MODAL -->
+  <div class="modal-backdrop" id="openWhenLetterModal">
+    <div class="modal-dialog glass-card animate-scale-up open-when-dialog">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">💌</span>
+        <button class="modal-close-btn" id="closeOpenWhenModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <div class="ow-modal-letter-sheet">
+        <div class="ow-modal-header">
+          <span class="badge-tag" id="owModalCategory">Open When...</span>
+          <h2 id="owModalTitle">You Miss Me & Need A Hug</h2>
+          <span class="ow-modal-date">Sealed with Endless Love for Nishika</span>
+        </div>
+
+        <div class="ow-modal-body">
+          <p class="ow-modal-salutation">My Dearest <span class="recipient-name-display">Nishika</span>,</p>
+          <div class="ow-modal-letter-content" id="owModalContent">
+            <!-- Dynamically populated letter text -->
+          </div>
+          <div class="ow-modal-signature">
+            <p>Forever by your side,</p>
+            <span class="signature-name" id="owModalSignature">Dilip 💖</span>
+          </div>
+        </div>
+
+        <div class="modal-action-bar">
+          <button type="button" class="btn-primary" id="closeOwLetterBtn">
+            <i class="fa-solid fa-heart"></i> Keep in My Heart 💖
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 6: SECRET WISH TIME CAPSULE VAULT MODAL -->
+  <div class="modal-backdrop" id="secretWishVaultModal">
+    <div class="modal-dialog glass-card animate-scale-up wish-vault-dialog">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">🔮</span>
+        <button class="modal-close-btn" id="closeWishVaultModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <div class="wish-vault-container">
+        <span class="badge-tag"><i class="fa-solid fa-shield-heart"></i> Celestial Time Vault</span>
+        <h2>The Secret Birthday Wish Vault 🌠</h2>
+        <p class="modal-body-text">
+          The confidential wish made by <span class="recipient-name-display highlight">Nishika</span> during the birthday candle ceremony is locked within this celestial sphere.
+        </p>
+
+        <!-- Unlocked View -->
+        <div class="vault-unlocked-state" id="vaultUnlockedState">
+          <div class="glowing-crystal-orb">
+            <div class="orb-core">
+              <span class="orb-star">⭐</span>
+            </div>
+          </div>
+          <div class="revealed-wish-card">
+            <span class="wish-card-tag">Queen Nishika's Secret Birthday Wish:</span>
+            <p class="revealed-wish-text" id="vaultWishDisplay">
+              "No secret wish has been sealed yet! Blow out the candles on the cake to lock in your secret wish."
+            </p>
+            <span class="wish-timestamp">⭐ Whispered to the Cosmos on September 5th ⭐</span>
+          </div>
+          <p class="vault-reassurance">"Every wish spoken from a golden heart like yours is already on its way to reality." 💕</p>
+        </div>
+
+        <!-- Lock Control (Passcode / Instant Heart Key) -->
+        <div class="vault-unlock-controls" id="vaultUnlockControls">
+          <div class="passcode-input-row">
+            <input type="password" id="vaultPasscodeInput" class="app-input" maxlength="8" placeholder="Enter Birthday Passcode (DDMMYYYY)" />
+            <button type="button" class="btn-secondary" id="submitPasscodeBtn">
+              <i class="fa-solid fa-key"></i> Unlock
+            </button>
+          </div>
+          <div class="instant-key-option">
+            <span class="or-text">or</span>
+            <button type="button" class="btn-accent" id="instantHeartKeyBtn">
+              <i class="fa-solid fa-heart"></i> Unlock with Queen's Heart Key
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-action-bar">
+          <button type="button" class="btn-primary" id="doneWishVaultBtn">
+            <i class="fa-solid fa-check"></i> Close Vault
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: FULLSCREEN REALISTIC 3D BOUQUET GIFTING CEREMONY VIDEO CINEMA -->
+  <div class="bouquet-gifting-overlay" id="bouquetGiftingOverlay" aria-hidden="true">
+    <div class="gifting-backdrop-blur"></div>
+    <div class="gifting-spotlight-beam"></div>
+    <div class="gifting-stardust-container" id="giftingStardustContainer"></div>
+
+    <div class="gifting-cinema-wrapper">
+      <div class="gifting-cinema-header">
+        <span class="badge-tag"><i class="fa-solid fa-video"></i> 3D Bouquet Gifting Ceremony Video</span>
+        <button class="gifting-close-btn" id="closeGiftingModalBtn" aria-label="Close Gifting Ceremony">&times;</button>
+      </div>
+
+      <div class="gifting-ceremony-stage" id="giftingCeremonyStage">
+        <!-- 3D Hero Bouquet Floating & Offering -->
+        <div class="hero-bouquet-3d-pedestal" id="heroBouquetPedestal">
+          <div class="hero-bouquet-3d" id="heroBouquet3D">
+            <div class="hero-wrap-back"></div>
+            <div class="hero-foliage-halo">
+              <span>🌿</span><span>🍃</span><span>🌿</span><span>🍃</span><span>🌱</span>
+            </div>
+            <!-- Cloned / Rendered 3D Blooms Dome -->
+            <div class="hero-blooms-dome" id="heroBloomsDome"></div>
+            <div class="hero-wrap-cone" id="heroWrapCone">
+              <div class="hero-bow" id="heroRibbonBow">
+                <div class="h-loop-l"></div>
+                <div class="h-loop-r"></div>
+                <div class="h-knot"></div>
+                <div class="h-tail-l"></div>
+                <div class="h-tail-r"></div>
+              </div>
+              <div class="hero-tag-hanging">
+                <span id="heroTagDedication">To Queen Nishika 👑 Forever In Bloom</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-bouquet-shadow"></div>
+
+          <!-- Giver & Receiver Character Silhouettes in Spotlight -->
+          <div class="gifting-figures-silhouette" id="giftingFigures">
+            <div class="giver-dilip-arms">
+              <div class="giver-arm arm-l"></div>
+              <div class="giver-arm arm-r"></div>
+            </div>
+            <div class="receiver-nishika-silhouette" id="receiverNishika">
+              <span class="receiver-crown">👑</span>
+              <span class="receiver-smile">✨</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Royal Proclamation Dedication Card -->
+        <div class="gifting-royal-card animate-scale-up" id="giftingRoyalCard">
+          <div class="royal-card-corner tl"></div>
+          <div class="royal-card-corner tr"></div>
+          <div class="royal-card-corner bl"></div>
+          <div class="royal-card-corner br"></div>
+
+          <div class="royal-card-header">
+            <span class="royal-crown-badge">👑</span>
+            <span class="royal-card-tag">A Royal Bouquet for the Birthday Queen</span>
+            <h2 class="royal-card-title">"For My Queen <span class="recipient-name-display">Nishika</span>, My Entire World" 🌸</h2>
+          </div>
+
+          <p class="royal-card-body">
+            Like these forever blooms that never fade or wither, my adoration, tender care, and infinite love for you grow deeper with every sunrise. Today on your birthday, I present this eternal garden to illuminate your royal path.
+          </p>
+
+          <div class="royal-card-footer">
+            <div class="royal-card-signature">
+              <span class="sign-text" id="giftingSenderName">Forever Dilip 💖</span>
+              <span class="sign-subtitle">Registered With Eternal Devotion</span>
+            </div>
+            <div class="royal-wax-heart-seal">
+              <span>ETERNAL<br/>LOVE</span>
+            </div>
+          </div>
+
+          <div class="royal-card-actions">
+            <button class="btn-primary pulse-btn" id="acceptBouquetBtn">
+              <i class="fa-solid fa-heart"></i> Accept with All My Heart 💖
+            </button>
+            <button class="btn-secondary" id="vaseBouquetBtn">
+              <i class="fa-solid fa-seedling"></i> Keep in Royal Vase 🌸
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Player HUD & Timeline Controls -->
+      <div class="gifting-video-hud">
+        <div class="gifting-timeline-box">
+          <div class="gifting-progress-bar" id="giftingProgressBar">
+            <div class="gifting-progress-fill" id="giftingProgressFill" style="width: 0%;"></div>
+          </div>
+          <div class="gifting-time-readout" id="giftingTimeReadout">0:00 / 0:10</div>
+        </div>
+
+        <div class="gifting-hud-controls">
+          <div class="gifting-ctrl-buttons">
+            <button class="hud-ctrl-btn" id="playGiftingVideoBtn" title="Play / Pause Gifting Video">
+              <i class="fa-solid fa-play" id="playGiftingIcon"></i>
+            </button>
+            <button class="hud-ctrl-btn" id="replayGiftingVideoBtn" title="Replay Gifting Ceremony">
+              <i class="fa-solid fa-rotate-left"></i>
+            </button>
+          </div>
+
+          <div class="gifting-status-caption" id="giftingStatusCaption">
+            🎬 Scene 1: Handcrafting and tying the eternal silk ribbon for Queen Nishika... 🎀
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 8: KEYBOARD SHORTCUTS CHEAT SHEET MODAL -->
+  <div class="modal-backdrop" id="shortcutsModal">
+    <div class="modal-dialog glass-card animate-scale-up shortcuts-dialog">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">⌨️</span>
+        <button class="modal-close-btn" id="closeShortcutsModalBtn" aria-label="Close Shortcuts Modal">&times;</button>
+      </div>
+
+      <div class="shortcuts-container">
+        <div class="section-heading-center">
+          <span class="badge-tag"><i class="fa-solid fa-bolt"></i> Interactive Hotkeys</span>
+          <h2>Keyboard Shortcuts & Controls ⌨️✨</h2>
+          <p class="modal-body-text">Control every romantic experience, play musical instruments, and trigger surprises using your keyboard!</p>
+        </div>
+
+        <div class="shortcuts-grid">
+          <!-- Column 1: Universal Navigation & Magic -->
+          <div class="shortcut-group-card">
+            <div class="group-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Universal & Media Hotkeys</div>
+            <ul class="shortcut-list">
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">Space</kbd></div>
+                <span class="key-desc">Play / Pause Background Melody or Active Video</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">M</kbd></div>
+                <span class="key-desc">Mute / Toggle Background Melody</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">C</kbd></div>
+                <span class="key-desc">Open 3D Cake Cutting Video & Cinema</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">B</kbd></div>
+                <span class="key-desc">Blow Out / Relight Birthday Candles 🕯️</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">V</kbd></div>
+                <span class="key-desc">Open Secret Wish Time Capsule Vault 🌠</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">L</kbd></div>
+                <span class="key-desc">Blast Love Confetti Shower 🎉</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">P</kbd></div>
+                <span class="key-desc">Jump to Vintage Polaroid Memories</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">K</kbd></div>
+                <span class="key-desc">Cycle Enchanted Mirror Affirmation 🪞</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">R</kbd></div>
+                <span class="key-desc">Spin Date Night Roulette Wheel 🎡</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">S</kbd></div>
+                <span class="key-desc">Toggle Ambient Soundscape Sanctuary 🌌</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">O</kbd></div>
+                <span class="key-desc">Open Future Time Capsule Vault ⏳</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">J</kbd></div>
+                <span class="key-desc">View Cosmic Journey & Milestones Map 🗺️</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">T</kbd></div>
+                <span class="key-desc">Toggle Candlelight Romantic Ambiance</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">?</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">H</kbd></div>
+                <span class="key-desc">Open / Close This Shortcuts Cheat Sheet</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">Esc</kbd></div>
+                <span class="key-desc">Close any Open Modal Dialog / Overlay</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 2: Acoustic Guitar & Instruments -->
+          <div class="shortcut-group-card">
+            <div class="group-title"><i class="fa-solid fa-guitar"></i> Acoustic Guitar Keyboard Playing</div>
+            <p class="group-hint">Switch to the Guitar tab in Music Lounge to play directly via keyboard!</p>
+            <ul class="shortcut-list">
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">1</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">Q</kbd></div>
+                <span class="key-desc">1st String (High E4 • 329.6 Hz)</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">2</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">W</kbd></div>
+                <span class="key-desc">2nd String (B3 • 246.9 Hz)</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">3</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">E</kbd></div>
+                <span class="key-desc">3rd String (G3 • 196.0 Hz)</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">4</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">R</kbd></div>
+                <span class="key-desc">4th String (D3 • 146.8 Hz)</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">5</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">T</kbd></div>
+                <span class="key-desc">5th String (A2 • 110.0 Hz)</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">6</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">Y</kbd></div>
+                <span class="key-desc">6th String (Bass E2 • 82.4 Hz)</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">A</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">Z</kbd></div>
+                <span class="key-desc">Strum <strong>C Major</strong> Chord ("Sweet")</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">S</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">X</kbd></div>
+                <span class="key-desc">Strum <strong>G Major</strong> Chord ("Bright")</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">D</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">C</kbd></div>
+                <span class="key-desc">Strum <strong>A Minor</strong> Chord ("Gentle")</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">F</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">V</kbd></div>
+                <span class="key-desc">Strum <strong>F Major</strong> Chord ("Dreamy")</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">G</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">B</kbd></div>
+                <span class="key-desc">Strum <strong>E Minor</strong> Chord ("Cozy")</span>
+              </li>
+              <li>
+                <div class="key-combo"><kbd class="kbd-key">H</kbd> <span class="or-sep">/</span> <kbd class="kbd-key">N</kbd></div>
+                <span class="key-desc">Strum <strong>D Major</strong> Chord ("Sparkling")</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="modal-action-bar">
+          <button type="button" class="btn-primary" id="doneShortcutsBtn">
+            <i class="fa-solid fa-check"></i> Got It! Let's Celebrate 💖
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 9: CUSTOM DATE NIGHT IDEA CREATOR MODAL -->
+  <div class="modal-backdrop" id="newDateIdeaModal">
+    <div class="modal-dialog glass-card animate-scale-up">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">🎡</span>
+        <button class="modal-close-btn" id="closeNewDateIdeaModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      <h2>Add Romantic Date Idea</h2>
+      <p class="modal-body-text">Add your own customized date night fantasy or adventure to the royal roulette wheel!</p>
+
+      <form id="newDateIdeaForm" class="date-idea-form">
+        <div class="form-group">
+          <label for="dateIdeaTitleInput"><i class="fa-solid fa-heart"></i> Date Adventure Title</label>
+          <input type="text" id="dateIdeaTitleInput" class="app-input" placeholder="e.g., Midnight Rooftop Stargazing & Wine" required maxlength="60" />
+        </div>
+
+        <div class="form-group">
+          <label for="dateIdeaDescInput"><i class="fa-solid fa-align-left"></i> Adventure Details & Vibe</label>
+          <textarea id="dateIdeaDescInput" class="app-input" rows="2" placeholder="e.g., Bring warm blankets, hot chocolate, and our favorite playlist..." required maxlength="200"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="dateIdeaCategorySelect"><i class="fa-solid fa-tag"></i> Category Vibe</label>
+          <select id="dateIdeaCategorySelect" class="app-input">
+            <option value="Intimate Romance">🌹 Intimate Romance</option>
+            <option value="Cozy Stay-In">🛋️ Cozy Stay-In</option>
+            <option value="Spontaneous Trip">🚗 Spontaneous Trip</option>
+            <option value="Royal Pampering">👑 Royal Pampering</option>
+            <option value="Sweet Fun">🎡 Sweet Fun</option>
+          </select>
+        </div>
+
+        <div class="modal-action-bar">
+          <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-plus"></i> Add To Royal Roulette
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 10: CREATE FUTURE TIME CAPSULE MODAL -->
+  <div class="modal-backdrop" id="createCapsuleModal">
+    <div class="modal-dialog glass-card animate-scale-up">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">⏳</span>
+        <button class="modal-close-btn" id="closeCreateCapsuleModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      <h2>Seal A Future Time Capsule</h2>
+      <p class="modal-body-text">Write a romantic letter or secret promise to be locked in the cosmic vault until a future anniversary or milestone!</p>
+
+      <form id="createCapsuleForm" class="create-capsule-form">
+        <div class="form-group">
+          <label for="capsuleTitleInput"><i class="fa-solid fa-heading"></i> Capsule Title</label>
+          <input type="text" id="capsuleTitleInput" class="app-input" placeholder="e.g., 2nd Anniversary Letter, Our Dream Honeymoon Promise" required maxlength="80" />
+        </div>
+
+        <div class="form-group">
+          <label for="capsuleUnlockDateInput"><i class="fa-solid fa-calendar-check"></i> Unlock Date & Time</label>
+          <input type="datetime-local" id="capsuleUnlockDateInput" class="app-input" required />
+        </div>
+
+        <div class="form-group">
+          <label for="capsuleTagSelect"><i class="fa-solid fa-crown"></i> Milestone Occasion</label>
+          <select id="capsuleTagSelect" class="app-input">
+            <option value="👑 Next Royal Birthday">👑 Next Royal Birthday</option>
+            <option value="💖 Anniversary Celebration">💖 Anniversary Celebration</option>
+            <option value="🌹 Valentine's Day Special">🌹 Valentine's Day Special</option>
+            <option value="✨ New Year Milestone">✨ New Year Milestone</option>
+            <option value="💌 Eternal Love Secret">💌 Eternal Love Secret</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="capsuleMessageInput"><i class="fa-solid fa-envelope-open-text"></i> Intimate Letter / Secret Message</label>
+          <textarea id="capsuleMessageInput" class="app-input" rows="4" placeholder="Write your heartfelt letter, promises, and love message here... (will remain encrypted until unlock date)" required></textarea>
+        </div>
+
+        <div class="modal-action-bar">
+          <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-lock"></i> Encrypt & Seal in Cosmic Vault
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 11: VIEW / UNLOCK TIME CAPSULE MODAL -->
+  <div class="modal-backdrop" id="viewCapsuleModal">
+    <div class="modal-dialog glass-card animate-scale-up capsule-view-dialog">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji" id="viewCapsuleEmoji">💌</span>
+        <button class="modal-close-btn" id="closeViewCapsuleModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="capsule-view-header">
+        <span class="capsule-tag-badge" id="viewCapsuleTag">👑 Next Royal Birthday</span>
+        <h2 id="viewCapsuleTitle">Capsule Title</h2>
+        <span class="capsule-unlock-status" id="viewCapsuleStatus"><i class="fa-solid fa-lock"></i> Locked until Sept 20, 2027</span>
+      </div>
+
+      <div class="capsule-parchment-body" id="viewCapsuleBody">
+        <div class="capsule-lock-curtain" id="viewCapsuleCurtain">
+          <i class="fa-solid fa-lock-keyhole giant-curtain-lock"></i>
+          <p>This capsule is sealed until its unlock date.</p>
+          <button type="button" class="btn-secondary vip-bypass-btn" id="viewCapsuleVipBypassBtn">
+            <i class="fa-solid fa-heart-circle-bolt"></i> Queen VIP Heart Key Unlock
+          </button>
+        </div>
+        <div class="capsule-unsealed-letter hidden" id="viewCapsuleLetterContent">
+          <p id="viewCapsuleMessageText"></p>
+          <div class="capsule-sign-footer">
+            <span class="capsule-signature" id="viewCapsuleSignature">Forever Dilip 💖</span>
+            <span class="capsule-date-stamped" id="viewCapsuleTimestamp">Sealed with Eternal Love</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-action-bar">
+        <button type="button" class="btn-primary" id="closeViewCapsuleBtn">
+          <i class="fa-solid fa-check"></i> Close Capsule
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- MODAL 12: ADD COSMIC JOURNEY MEMORY PIN MODAL -->
+  <div class="modal-backdrop" id="addJourneyPinModal">
+    <div class="modal-dialog glass-card animate-scale-up">
+      <div class="modal-sparkle-header">
+        <span class="giant-emoji">🗺️</span>
+        <button class="modal-close-btn" id="closeAddJourneyPinModalBtn" aria-label="Close Modal">&times;</button>
+      </div>
+      <h2>Add Cosmic Milestone Pin</h2>
+      <p class="modal-body-text">Mark a cherished memory, trip, or milestone on our celestial journey map!</p>
+
+      <form id="addJourneyPinForm" class="journey-pin-form">
+        <div class="form-group">
+          <label for="pinTitleInput"><i class="fa-solid fa-bookmark"></i> Milestone Name</label>
+          <input type="text" id="pinTitleInput" class="app-input" placeholder="e.g., First Stargazing Date, Weekend Beach Getaway" required maxlength="60" />
+        </div>
+
+        <div class="form-group">
+          <label for="pinDateInput"><i class="fa-solid fa-calendar"></i> Date of Memory</label>
+          <input type="date" id="pinDateInput" class="app-input" required />
+        </div>
+
+        <div class="form-group">
+          <label for="pinCategorySelect"><i class="fa-solid fa-icons"></i> Milestone Type</label>
+          <select id="pinCategorySelect" class="app-input">
+            <option value="genesis">🌱 Genesis / First Spark</option>
+            <option value="romance">💖 Romantic Milestone</option>
+            <option value="adventure">✈️ Trip / Adventure</option>
+            <option value="celebration">👑 Royal Birthday</option>
+            <option value="future">🌟 Future Dream</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="pinLocationInput"><i class="fa-solid fa-location-dot"></i> Special Place / Coordinates</label>
+          <input type="text" id="pinLocationInput" class="app-input" placeholder="e.g., Our Secret Garden Spot, Jaipur, Moonlit Lake" required maxlength="80" />
+        </div>
+
+        <div class="form-group">
+          <label for="pinDescInput"><i class="fa-solid fa-feather"></i> Memory Story & Reflection</label>
+          <textarea id="pinDescInput" class="app-input" rows="3" placeholder="Describe what made this milestone so unforgettable..." required maxlength="300"></textarea>
+        </div>
+
+        <div class="modal-action-bar">
+          <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-map-pin"></i> Consecrate Milestone Pin ✨
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FLOATING QUICK SHORTCUTS HUD LAUNCHER -->
+  <button class="floating-shortcuts-hud" id="floatingShortcutsBtn" title="Keyboard Shortcuts Cheat Sheet (Press ?)">
+    <i class="fa-solid fa-keyboard"></i>
+    <span class="hud-label">Hotkeys <kbd>?</kbd></span>
+  </button>
+
+  <!-- FLOATING TOAST NOTIFICATION -->
+  <div id="toastNotification" class="toast-notification" role="status" aria-live="polite">
+    <i class="fa-solid fa-circle-check toast-icon"></i>
+    <span id="toastMessage">Link copied to clipboard! 🎉</span>
+  </div>
+
+  <!-- UNIFIED COMING SOON MODALS -->
+  <!-- LIGHTBOX MODAL DIALOG -->
+  <div class="lightbox-modal-overlay" id="photoLightboxModal" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
+    <div class="lightbox-box">
+      <button type="button" class="modal-close-btn" id="closeLightboxBtn" title="Close" style="color:#000; background:rgba(0,0,0,0.08);"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="lightbox-art" id="lightboxArt">
+        <i class="fa-solid fa-crown" id="lightboxIcon"></i>
+      </div>
+      <h3 class="lightbox-title" id="lightboxTitle">Genesis — Where Destiny Began</h3>
+      <span class="photo-milestone-badge" id="lightboxBadge" style="position:static; display:inline-block; margin-bottom:12px; background:linear-gradient(135deg, rgba(255,64,129,0.25), rgba(157,78,221,0.3)); color:#ffd700; border:1px solid rgba(255,215,0,0.4); padding:4px 14px; border-radius:9999px; font-weight:700; font-size:0.82rem;">Genesis Moment ✨</span>
+      <p class="lightbox-desc" id="lightboxDesc">The magical winter evening when our worlds collided and destiny wrote our love story in the stars.</p>
+      
+      <div class="lightbox-actions">
+        <button type="button" class="send-blessing-btn" id="lightboxLoveBtn" style="padding:10px 20px; font-size:0.9rem;">
+          <i class="fa-solid fa-heart"></i>
+          <span id="lightboxLoveText">Love This Moment 💖 (<span id="lightboxLoveCount">12</span>)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
