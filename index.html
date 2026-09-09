@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>Eternal Love ✨ Coming Soon — Launching September 21</title>
+  <title>Eternal Love ✨ Queen Nishika — Launching September 21</title>
   <meta name="description" content="Eternal Love — An ultra-luxurious, magical romantic celebration handcrafted exclusively for Queen Nishika with infinite devotion by Dilip." />
   <meta name="theme-color" content="#0d0614" />
 
@@ -107,6 +107,8 @@
       border-radius: 50px;
       margin-bottom: 36px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .brand-logo {
@@ -127,8 +129,9 @@
 
     .nav-actions {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .nav-btn {
@@ -156,6 +159,19 @@
       transform: translateY(-1px);
     }
 
+    .nav-btn-media {
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.2), rgba(157, 78, 221, 0.25));
+      border: 1px solid rgba(255, 64, 129, 0.4);
+      color: #ff80ab;
+    }
+
+    .nav-btn-media:hover {
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.35), rgba(157, 78, 221, 0.4));
+      border-color: #ff4081;
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(255, 64, 129, 0.5);
+    }
+
     .nav-btn-vip {
       background: linear-gradient(135deg, rgba(255, 64, 129, 0.25), rgba(255, 215, 0, 0.25));
       border: 1px solid var(--accent-gold);
@@ -172,9 +188,10 @@
     /* Hero Teaser Section */
     .hero-section {
       text-align: center;
-      max-width: 860px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 10px 0 20px;
+      width: 100%;
     }
 
     .regal-badge {
@@ -202,22 +219,20 @@
 
     .hero-title {
       font-family: var(--font-display);
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
       font-weight: 800;
-      line-height: 1.18;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, #ffffff 0%, #ffd700 50%, #ff4081 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 4px 30px rgba(255, 215, 0, 0.25);
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 64, 129, 0.3);
     }
 
     .hero-subtitle {
-      font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
       color: var(--text-muted);
       line-height: 1.6;
-      max-width: 720px;
-      margin: 0 auto 30px;
+      margin-bottom: 28px;
+      font-weight: 400;
     }
 
     .hero-subtitle .queen-name {
@@ -230,50 +245,45 @@
       display: block;
       font-family: var(--font-script);
       font-size: 1.5rem;
-      color: var(--primary-pink);
+      color: #ff80ab;
       margin-top: 6px;
     }
 
-    /* Launch Date Ribbon */
     .launch-ribbon {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--glass-border);
-      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 215, 0, 0.3);
       padding: 10px 24px;
-      color: #ffffff;
+      border-radius: 50px;
+      color: var(--text-muted);
       font-size: 0.95rem;
-      margin-bottom: 40px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    .launch-ribbon i {
-      color: var(--primary-pink);
+      margin-bottom: 34px;
+      box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.1);
     }
 
     .launch-ribbon strong {
       color: var(--accent-gold);
     }
 
-    /* COUNTDOWN CONTAINER */
+    /* Countdown Grid */
     .countdown-container {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-      max-width: 760px;
-      margin: 0 auto 40px;
+      gap: 16px;
+      max-width: 650px;
+      margin: 0 auto 36px;
     }
 
     .countdown-card {
       background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--glass-border);
       border-radius: 20px;
-      padding: 24px 16px;
-      box-shadow: var(--glass-shadow);
+      padding: 20px 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       position: relative;
       overflow: hidden;
       transition: var(--transition);
@@ -285,46 +295,39 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
+      height: 2px;
       background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-      opacity: 0.6;
     }
 
     .countdown-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(255, 215, 0, 0.4);
-      box-shadow: 0 20px 45px rgba(255, 64, 129, 0.2);
+      transform: translateY(-4px);
+      border-color: var(--accent-gold);
+      box-shadow: 0 12px 35px rgba(255, 215, 0, 0.25);
     }
 
     .countdown-val {
       font-family: var(--font-display);
-      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
-      font-weight: 800;
+      font-size: clamp(2rem, 4.5vw, 2.8rem);
+      font-weight: 700;
+      color: var(--accent-gold);
       line-height: 1;
-      color: #ffffff;
-      margin-bottom: 8px;
-      text-shadow: 0 0 20px var(--primary-glow);
+      margin-bottom: 6px;
+      text-shadow: 0 0 15px var(--gold-glow);
     }
 
     .countdown-label {
       font-size: 0.8rem;
-      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--accent-gold);
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      font-weight: 600;
     }
 
-    /* Progress Ring Bar */
+    /* Timeline Progress */
     .timeline-progress-wrap {
-      max-width: 600px;
-      width: 100%;
-      margin: 0 auto 40px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 30px;
-      padding: 16px 24px;
-      backdrop-filter: blur(16px);
-      box-shadow: var(--glass-shadow);
+      max-width: 650px;
+      margin: 0 auto 36px;
+      text-align: left;
     }
 
     .progress-labels {
@@ -333,47 +336,48 @@
       font-size: 0.85rem;
       font-weight: 600;
       color: var(--text-muted);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .progress-bar-track {
       width: 100%;
-      height: 10px;
-      background: rgba(255, 255, 255, 0.1);
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 10px;
       overflow: hidden;
+      border: 1px solid var(--glass-border);
       position: relative;
     }
 
     .progress-bar-fill {
       height: 100%;
-      width: 88%;
+      width: 98%;
       background: linear-gradient(90deg, var(--royal-purple), var(--primary-pink), var(--accent-gold));
       border-radius: 10px;
-      box-shadow: 0 0 16px var(--primary-glow);
+      box-shadow: 0 0 14px var(--primary-glow);
       transition: width 1s ease;
     }
 
-    /* Interactive Teaser Actions */
+    /* Teaser Action Buttons */
     .teaser-actions {
       display: flex;
-      gap: 16px;
       justify-content: center;
+      gap: 14px;
       flex-wrap: wrap;
       margin-bottom: 48px;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #ff4081 0%, #ffd700 100%);
-      color: #1a0525;
+      background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-gold) 100%);
+      color: #160421;
       font-family: var(--font-body);
-      font-size: 1.05rem;
-      font-weight: 700;
-      padding: 16px 36px;
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 14px 30px;
       border-radius: 40px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 8px 30px rgba(255, 64, 129, 0.4);
+      box-shadow: 0 8px 25px rgba(255, 64, 129, 0.4);
       display: inline-flex;
       align-items: center;
       gap: 10px;
@@ -382,18 +386,20 @@
     }
 
     .btn-primary:hover {
-      box-shadow: 0 12px 40px rgba(255, 215, 0, 0.6);
+      box-shadow: 0 12px 35px rgba(255, 215, 0, 0.6);
       transform: translateY(-3px) scale(1.02);
+      color: #0d0114;
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
       border: 1px solid var(--glass-border);
-      color: #ffffff;
+      color: var(--text-main);
       font-family: var(--font-body);
-      font-size: 1.05rem;
-      font-weight: 600;
-      padding: 16px 32px;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 14px 28px;
       border-radius: 40px;
       cursor: pointer;
       display: inline-flex;
@@ -415,7 +421,7 @@
        ========================================================================== */
     .blessing-section {
       width: 100%;
-      max-width: 780px;
+      max-width: 820px;
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -500,15 +506,15 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.28);
       border: 1px dashed var(--glass-border);
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 18px;
+      padding: 18px;
     }
 
     .media-tabs {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
@@ -531,6 +537,7 @@
       background: linear-gradient(135deg, rgba(255, 64, 129, 0.25), rgba(255, 215, 0, 0.25));
       border-color: var(--accent-gold);
       color: var(--accent-gold);
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
     }
 
     .media-content-pane {
@@ -548,10 +555,10 @@
     }
 
     .file-dropzone {
-      border: 1.5px dashed rgba(255, 215, 0, 0.4);
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 12px;
-      padding: 16px;
+      border: 1.5px dashed rgba(255, 215, 0, 0.45);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 14px;
+      padding: 18px;
       text-align: center;
       cursor: pointer;
       transition: var(--transition);
@@ -559,8 +566,9 @@
     }
 
     .file-dropzone:hover {
-      background: rgba(255, 215, 0, 0.06);
+      background: rgba(255, 215, 0, 0.08);
       border-color: var(--accent-gold);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
     }
 
     .file-dropzone input[type="file"] {
@@ -574,31 +582,31 @@
     }
 
     .dropzone-text {
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
     }
 
     .dropzone-text i {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       color: var(--accent-gold);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       display: block;
     }
 
     .media-preview-box {
-      margin-top: 10px;
+      margin-top: 12px;
       position: relative;
       display: inline-block;
-      max-width: 220px;
-      border-radius: 12px;
+      max-width: 260px;
+      border-radius: 14px;
       overflow: hidden;
-      border: 1px solid var(--accent-gold);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      border: 1.5px solid var(--accent-gold);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     }
 
     .media-preview-box img, .media-preview-box video {
       width: 100%;
-      height: 140px;
+      height: 150px;
       object-fit: cover;
       display: block;
     }
@@ -607,23 +615,24 @@
       position: absolute;
       top: 6px;
       right: 6px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       color: #ff4081;
       border: 1px solid #ff4081;
       border-radius: 50%;
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       transition: var(--transition);
+      z-index: 3;
     }
 
     .remove-preview-btn:hover {
       background: #ff4081;
-      color: #fff;
+      color: #ffffff;
     }
 
     /* Sticky Note Theme Selector */
@@ -669,6 +678,142 @@
       display: none;
       text-align: center;
       animation: fadeIn 0.3s ease;
+    }
+
+    /* ==========================================================================
+       ROYAL POLAROID & VIDEO MEMORIES GALLERY SECTION
+       ========================================================================== */
+    .memories-section {
+      width: 100%;
+      max-width: 1120px;
+      margin-bottom: 60px;
+    }
+
+    .memories-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .memories-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+      color: var(--accent-gold);
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.35);
+    }
+
+    .memories-subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 18px;
+    }
+
+    .memories-action-bar {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .memories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      width: 100%;
+    }
+
+    /* Polaroid & Media Card */
+    .polaroid-card {
+      background: #ffffff;
+      color: #222222;
+      padding: 14px 14px 20px;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .polaroid-card:hover {
+      transform: translateY(-8px) scale(1.03) rotate(0deg) !important;
+      box-shadow: 0 20px 45px rgba(255, 215, 0, 0.35);
+      z-index: 10;
+    }
+
+    .polaroid-img-wrap {
+      width: 100%;
+      height: 220px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #111111;
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .polaroid-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .polaroid-card:hover .polaroid-img-wrap img {
+      transform: scale(1.08);
+    }
+
+    .polaroid-video-wrap {
+      width: 100%;
+      height: 220px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000000;
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .polaroid-video-wrap iframe, .polaroid-video-wrap video {
+      width: 100%;
+      height: 100%;
+      border: none;
+      object-fit: cover;
+      display: block;
+    }
+
+    .polaroid-caption {
+      font-family: var(--font-script);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #1a0826;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .polaroid-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: #777777;
+      font-family: var(--font-body);
+      font-weight: 600;
+      border-top: 1px solid #eeeeee;
+      padding-top: 8px;
+    }
+
+    .polaroid-tag {
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.15), rgba(255, 215, 0, 0.15));
+      color: #c2185b;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 700;
     }
 
     /* ==========================================================================
@@ -750,6 +895,13 @@
       border-radius: 12px;
       font-size: 0.75rem;
       color: #ffffff;
+    }
+
+    .sync-actions-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .sync-refresh-btn {
@@ -998,110 +1150,100 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      backdrop-filter: blur(8px);
+      gap: 5px;
+      backdrop-filter: blur(10px);
       transition: var(--transition);
     }
 
     .sticky-video-expand-btn:hover {
-      background: #ff4081;
-      border-color: #ff4081;
+      background: var(--primary-pink);
       color: #ffffff;
-      box-shadow: 0 0 12px rgba(255, 64, 129, 0.5);
+      border-color: #ff4081;
     }
 
-    /* Bottom Actions inside Sticky Note */
     .sticky-card-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding-top: 12px;
       margin-top: auto;
     }
 
     .sticky-like-btn {
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 64, 129, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       color: #ff80ab;
       padding: 5px 12px;
       border-radius: 20px;
       font-size: 0.82rem;
       font-weight: 700;
-      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      cursor: pointer;
       transition: var(--transition);
     }
 
     .sticky-like-btn:hover, .sticky-like-btn.liked {
-      background: rgba(255, 64, 129, 0.25);
+      background: rgba(255, 64, 129, 0.3);
       border-color: #ff4081;
-      color: #ff4081;
+      color: #ffffff;
       transform: scale(1.08);
-      box-shadow: 0 0 12px rgba(255, 64, 129, 0.4);
+      box-shadow: 0 0 12px rgba(255, 64, 129, 0.5);
     }
 
     .sticky-tag {
       font-size: 0.75rem;
-      color: rgba(255, 215, 0, 0.8);
-      font-weight: 600;
+      font-weight: 700;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
     }
 
-    /* Skeleton Loading State */
+    /* Skeleton Loading Cards */
     .sticky-skeleton-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
       padding: 24px 20px;
-      min-height: 220px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .sticky-skeleton-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -150%;
-      width: 150%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
-      animation: shimmer 1.5s infinite;
-    }
-
-    @keyframes shimmer {
-      100% { left: 150%; }
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .skeleton-line {
       height: 14px;
-      background: rgba(255, 255, 255, 0.08);
       border-radius: 8px;
-      margin-bottom: 12px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
     }
 
-    .skeleton-line.short { width: 40%; }
-    .skeleton-line.med { width: 75%; }
+    .skeleton-line.short { width: 40%; height: 20px; }
+    .skeleton-line.med { width: 70%; }
     .skeleton-line.full { width: 100%; }
 
-    /* Empty State */
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
     .sticky-empty-box {
       grid-column: 1 / -1;
       text-align: center;
-      padding: 48px 24px;
+      padding: 40px 20px;
       background: var(--glass-bg);
       border: 1px dashed var(--glass-border);
-      border-radius: 24px;
+      border-radius: 20px;
       color: var(--text-muted);
     }
 
     .sticky-empty-box i {
-      font-size: 3rem;
+      font-size: 2.2rem;
       color: var(--accent-gold);
-      margin-bottom: 14px;
-      display: block;
+      margin-bottom: 12px;
     }
 
     /* ==========================================================================
@@ -1113,110 +1255,194 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(7, 2, 15, 0.92);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      z-index: 100000;
-      display: flex;
+      background: rgba(5, 1, 10, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 99999;
+      display: none;
       align-items: center;
       justify-content: center;
-      padding: 24px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
+      padding: 20px;
+      animation: fadeIn 0.3s ease;
     }
 
     .media-lightbox-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
+      display: flex;
     }
 
     .media-lightbox-card {
-      background: rgba(25, 10, 40, 0.85);
+      background: #0d0614;
       border: 1px solid var(--accent-gold);
       border-radius: 24px;
-      max-width: 800px;
+      max-width: 820px;
       width: 100%;
-      max-height: 90vh;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.3);
       position: relative;
-      animation: scaleUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    @keyframes scaleUp {
+    @keyframes scaleIn {
       from { transform: scale(0.9); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
 
     .lightbox-close-btn {
       position: absolute;
-      top: 16px;
-      right: 16px;
-      background: rgba(0, 0, 0, 0.6);
+      top: 14px;
+      right: 14px;
+      background: rgba(0, 0, 0, 0.65);
       border: 1px solid var(--glass-border);
-      color: #fff;
+      color: #ffffff;
       width: 38px;
       height: 38px;
       border-radius: 50%;
+      font-size: 1.25rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1.1rem;
       z-index: 10;
       transition: var(--transition);
     }
 
     .lightbox-close-btn:hover {
       background: #ff4081;
-      color: #fff;
+      border-color: #ff4081;
       transform: rotate(90deg);
     }
 
     .lightbox-media-viewport {
       width: 100%;
-      max-height: 60vh;
-      background: #000;
+      background: #000000;
       display: flex;
       align-items: center;
       justify-content: center;
+      max-height: 65vh;
       overflow: hidden;
     }
 
     .lightbox-media-viewport img {
       max-width: 100%;
-      max-height: 60vh;
+      max-height: 65vh;
       object-fit: contain;
+      display: block;
     }
 
     .lightbox-media-viewport video, .lightbox-media-viewport iframe {
       width: 100%;
-      height: 50vh;
+      height: 55vh;
       border: none;
+      display: block;
     }
 
     .lightbox-info-pane {
       padding: 20px 24px;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(255, 255, 255, 0.04);
+      border-top: 1px solid var(--glass-border);
     }
 
     .lightbox-author {
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
       color: var(--accent-gold);
-      margin-bottom: 6px;
+      font-weight: 700;
       display: flex;
       align-items: center;
       gap: 8px;
+      margin-bottom: 6px;
     }
 
     .lightbox-caption {
       font-size: 0.95rem;
-      color: var(--text-muted);
+      color: #ffffff;
       line-height: 1.5;
+      font-style: italic;
+    }
+
+    /* ==========================================================================
+       QUICK MEDIA STUDIO MODAL (ADD IMAGE OR VIDEO)
+       ========================================================================== */
+    .quick-media-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(5, 1, 10, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 99998;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .quick-media-overlay.active {
+      display: flex;
+    }
+
+    .quick-media-box {
+      background: linear-gradient(160deg, #180928 0%, #090312 100%);
+      border: 1px solid var(--accent-gold);
+      border-radius: 26px;
+      max-width: 580px;
+      width: 100%;
+      padding: 32px 28px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.3);
+      position: relative;
+      animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .quick-media-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .quick-media-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--accent-gold);
+      margin-bottom: 6px;
+    }
+
+    .quick-media-header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .quick-media-mode-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .quick-mode-btn {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+
+    .quick-mode-btn.active {
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.3), rgba(255, 215, 0, 0.3));
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      box-shadow: 0 0 14px rgba(255, 215, 0, 0.3);
     }
 
     /* ==========================================================================
@@ -1228,71 +1454,63 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(9, 3, 18, 0.85);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      display: flex;
+      background: rgba(5, 1, 10, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 99999;
+      display: none;
       align-items: center;
       justify-content: center;
-      z-index: 99999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
       padding: 20px;
+      animation: fadeIn 0.3s ease;
     }
 
     .vip-modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
+      display: flex;
     }
 
     .vip-modal-box {
-      background: rgba(26, 8, 42, 0.92);
+      background: linear-gradient(160deg, #1e0930 0%, #0d0216 100%);
       border: 1px solid var(--accent-gold);
       border-radius: 28px;
-      padding: 36px 30px;
       max-width: 440px;
       width: 100%;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.25);
-      text-align: center;
+      padding: 36px 28px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 215, 0, 0.35);
       position: relative;
-      animation: scaleUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
+      animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .modal-close-btn {
       position: absolute;
-      top: 16px;
-      right: 16px;
-      background: rgba(255, 255, 255, 0.1);
+      top: 14px;
+      right: 14px;
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--glass-border);
-      color: var(--text-main);
-      width: 34px;
-      height: 34px;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
+      font-size: 1.1rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1rem;
       transition: var(--transition);
     }
 
     .modal-close-btn:hover {
       background: #ff4081;
-      color: #fff;
+      border-color: #ff4081;
+      transform: rotate(90deg);
     }
 
     .vip-crown-icon {
       font-size: 2.4rem;
       color: var(--accent-gold);
       margin-bottom: 12px;
-      filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.5));
-      animation: bounceCrown 2s ease-in-out infinite;
-    }
-
-    @keyframes bounceCrown {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
+      text-shadow: 0 0 20px var(--gold-glow);
     }
 
     .vip-modal-box h3 {
@@ -1312,43 +1530,46 @@
     .pin-display {
       display: flex;
       justify-content: center;
-      gap: 8px;
+      gap: 12px;
       margin-bottom: 22px;
     }
 
     .pin-digit-slot {
-      width: 36px;
-      height: 46px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1.5px solid var(--glass-border);
-      border-radius: 10px;
+      width: 52px;
+      height: 62px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 2px solid var(--glass-border);
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-display);
-      font-size: 1.3rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: #ffffff;
       transition: var(--transition);
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
     }
 
     .pin-digit-slot.active {
       border-color: var(--accent-gold);
       color: var(--accent-gold);
-      box-shadow: 0 0 12px var(--gold-glow);
+      box-shadow: 0 0 16px var(--gold-glow), inset 0 2px 5px rgba(0, 0, 0, 0.4);
+      transform: translateY(-2px);
     }
 
     .pin-digit-slot.error {
       border-color: #ff4081;
       color: #ff4081;
-      box-shadow: 0 0 12px rgba(255, 64, 129, 0.6);
+      box-shadow: 0 0 16px rgba(255, 64, 129, 0.6);
       animation: shake 0.4s ease;
     }
 
     .pin-digit-slot.success {
       border-color: #4caf50;
       color: #a5d6a7;
-      box-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
+      box-shadow: 0 0 18px rgba(76, 175, 80, 0.7);
+      transform: scale(1.05);
     }
 
     @keyframes shake {
@@ -1483,8 +1704,6 @@
     /* ==========================================================================
        MULTI-DEVICE RESPONSIVE BREAKPOINTS (320px to 4K)
        ========================================================================== */
-
-    /* 1. Tablet & iPad Viewports (769px - 1024px) */
     @media (max-width: 1024px) {
       .page-wrapper {
         padding: 16px 18px 40px;
@@ -1493,7 +1712,7 @@
         padding: 12px 20px;
         margin-bottom: 28px;
       }
-      .sticky-notes-grid {
+      .sticky-notes-grid, .memories-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 18px;
       }
@@ -1502,7 +1721,6 @@
       }
     }
 
-    /* 2. Standard Mobile & Tablet Portrait Viewports (481px - 768px) */
     @media (max-width: 768px) {
       .page-wrapper {
         padding: 12px 14px 36px;
@@ -1548,45 +1766,24 @@
         padding: 26px 18px;
         border-radius: 22px;
       }
-      .form-row-2col {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-      .sticky-notes-grid {
+      .sticky-notes-grid, .memories-grid {
         grid-template-columns: 1fr;
         gap: 16px;
       }
-      .wish-filter-bar {
-        gap: 6px;
-      }
-      .filter-pill {
-        padding: 5px 12px;
-        font-size: 0.8rem;
-      }
-      .media-lightbox-card {
-        border-radius: 18px;
-      }
-      .lightbox-media-viewport {
-        max-height: 48vh;
-      }
-      .lightbox-info-pane {
-        padding: 14px 18px;
-      }
-      .vip-modal-box {
+      .vip-modal-box, .quick-media-box {
         padding: 28px 20px;
         border-radius: 22px;
       }
       .pin-digit-slot {
-        width: 32px;
-        height: 42px;
-        font-size: 1.15rem;
+        width: 48px;
+        height: 56px;
+        font-size: 1.45rem;
       }
       .pin-display {
-        gap: 6px;
+        gap: 10px;
       }
     }
 
-    /* 3. Small Mobile Devices (361px - 480px) */
     @media (max-width: 480px) {
       .page-wrapper {
         padding: 8px 10px 30px;
@@ -1600,41 +1797,14 @@
         font-size: 0.98rem;
         gap: 6px;
       }
-      .brand-logo span {
-        white-space: nowrap;
-      }
-      .nav-actions {
-        gap: 6px;
-      }
       .nav-btn {
         padding: 6px 10px;
         font-size: 0.78rem;
         gap: 5px;
       }
-      .regal-badge {
-        padding: 4px 14px;
-        font-size: 0.76rem;
-        letter-spacing: 1.5px;
-        margin-bottom: 16px;
-      }
       .hero-title {
         font-size: clamp(1.75rem, 7.5vw, 2.3rem);
         margin-bottom: 14px;
-      }
-      .hero-subtitle {
-        font-size: 0.92rem;
-        margin-bottom: 20px;
-      }
-      .hero-subtitle .dedication {
-        font-size: 1.25rem;
-      }
-      .launch-ribbon {
-        padding: 8px 16px;
-        font-size: 0.85rem;
-        margin-bottom: 26px;
-        flex-wrap: wrap;
-        justify-content: center;
-        text-align: center;
       }
       .countdown-container {
         gap: 6px;
@@ -1649,141 +1819,36 @@
       }
       .countdown-label {
         font-size: 0.68rem;
-        letter-spacing: 0.5px;
       }
       .blessing-section {
         padding: 20px 14px;
         border-radius: 18px;
-        margin-bottom: 30px;
-      }
-      .blessing-title {
-        font-size: 1.4rem;
-      }
-      .blessing-subtitle {
-        font-size: 0.86rem;
-        margin-bottom: 18px;
-      }
-      .form-group label {
-        font-size: 0.84rem;
-      }
-      .form-input, .form-textarea {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-      }
-      .sticky-color-swatches {
-        gap: 6px;
-      }
-      .color-swatch-btn {
-        width: 32px;
-        height: 32px;
-      }
-      .media-tabs {
-        gap: 6px;
-      }
-      .media-tab-btn {
-        padding: 6px 12px;
-        font-size: 0.78rem;
-      }
-      .btn-submit-wish {
-        padding: 12px 18px;
-        font-size: 0.95rem;
-      }
-      .sticky-note {
-        padding: 16px 14px;
-        border-radius: 16px;
-      }
-      .sticky-message {
-        font-size: 0.9rem;
-      }
-      .vip-modal-box {
-        padding: 24px 14px;
-        border-radius: 18px;
-        max-width: 100%;
-        box-sizing: border-box;
-      }
-      .vip-crown-icon {
-        font-size: 2rem;
-      }
-      .vip-modal-box h3 {
-        font-size: 1.25rem;
-      }
-      .vip-modal-box p {
-        font-size: 0.82rem;
-        margin-bottom: 16px;
-      }
-      .pin-display {
-        gap: 4px;
-        margin-bottom: 18px;
       }
       .pin-digit-slot {
-        width: clamp(24px, 7vw, 32px);
-        height: clamp(34px, 9vw, 42px);
-        font-size: clamp(0.95rem, 3.2vw, 1.15rem);
-        border-radius: 8px;
-      }
-      .keypad-grid {
-        gap: 8px;
-        margin-bottom: 16px;
+        width: 44px;
+        height: 52px;
+        font-size: 1.35rem;
       }
       .keypad-btn {
         padding: 10px 0;
         font-size: 1.15rem;
-        border-radius: 10px;
-      }
-      .vip-submit-btn {
-        padding: 12px 16px;
-        font-size: 0.92rem;
-        border-radius: 24px;
-      }
-      .media-lightbox-overlay {
-        padding: 12px;
-      }
-      .media-lightbox-card {
-        border-radius: 16px;
-      }
-      .lightbox-media-viewport {
-        max-height: 42vh;
-      }
-      .lightbox-media-viewport video, .lightbox-media-viewport iframe {
-        height: 38vh;
       }
     }
 
-    /* 4. Ultra-Compact Mobile Devices (<= 360px like iPhone SE, small Androids) */
     @media (max-width: 360px) {
       .header-nav {
         padding: 6px 10px;
-      }
-      .brand-logo {
-        font-size: 0.9rem;
-      }
-      .nav-btn {
-        padding: 5px 8px;
-        font-size: 0.74rem;
       }
       .countdown-container {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
       }
-      .countdown-card {
-        padding: 14px 6px;
-      }
-      .countdown-val {
-        font-size: 1.5rem;
-      }
-      .pin-display {
-        gap: 3px;
-      }
       .pin-digit-slot {
-        width: 25px;
-        height: 35px;
-        font-size: 0.95rem;
+        width: 38px;
+        height: 46px;
+        font-size: 1.15rem;
       }
-      .keypad-btn {
-        padding: 8px 0;
-        font-size: 1.05rem;
-      }
-      .vip-modal-box {
+      .vip-modal-box, .quick-media-box {
         padding: 20px 10px;
       }
     }
@@ -1803,6 +1868,10 @@
       </div>
 
       <div class="nav-actions">
+        <button type="button" class="nav-btn nav-btn-media" id="navAddMediaBtn" title="Add Image or Video to Celebration">
+          <i class="fa-solid fa-camera-retro"></i>
+          <span>Add Image / Video</span>
+        </button>
         <button type="button" class="nav-btn" id="soundToggleBtn" title="Toggle Magical Soundscape">
           <i class="fa-solid fa-music"></i>
           <span id="soundBtnText">Music</span>
@@ -1865,7 +1934,11 @@
 
       <!-- Interactive Teaser Actions -->
       <div class="teaser-actions">
-        <button type="button" class="btn-primary" id="heroPreviewBtn">
+        <button type="button" class="btn-primary" id="heroAddMediaBtn">
+          <i class="fa-solid fa-photo-film"></i>
+          <span>Add Photo / Video 📸</span>
+        </button>
+        <button type="button" class="btn-primary" id="heroPreviewBtn" style="background: linear-gradient(135deg, #9d4edd 0%, #ff4081 100%);">
           <i class="fa-solid fa-crown"></i>
           <span>Queen's VIP Early Access</span>
         </button>
@@ -1877,8 +1950,8 @@
 
       <!-- Pre-Launch Blessing & Media Form Section -->
       <section class="blessing-section" id="blessingSection">
-        <h3 class="blessing-title">✨ Send an Early Birthday Blessing</h3>
-        <p class="blessing-subtitle">Leave a personal heartfelt message, photo, or video sealed for Queen Nishika. Your wish will be consecrated on the live Sticky Wish Wall below! 💌</p>
+        <h3 class="blessing-title">✨ Send an Early Birthday Blessing (With Photos & Videos)</h3>
+        <p class="blessing-subtitle">Leave a personal heartfelt message, high-res photo, or video clip sealed for Queen Nishika. Your dedication is consecrated on the live Sticky Wall below! 💌</p>
         
         <form id="preLaunchWishForm" class="blessing-form">
           <div>
@@ -1894,11 +1967,11 @@
           <!-- Media Attachment Bar -->
           <div class="media-attach-bar">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-              <span class="form-group-label" style="margin:0;"><i class="fa-solid fa-paperclip"></i> Add Media Attachment (Optional)</span>
+              <span class="form-group-label" style="margin:0;"><i class="fa-solid fa-photo-film"></i> Attach Photo or Video (Choose an Option)</span>
               <div class="media-tabs">
                 <button type="button" class="media-tab-btn active" data-tab="tabNone"><i class="fa-solid fa-font"></i> Text Only</button>
-                <button type="button" class="media-tab-btn" data-tab="tabPhoto"><i class="fa-solid fa-camera"></i> Photo</button>
-                <button type="button" class="media-tab-btn" data-tab="tabVideo"><i class="fa-solid fa-video"></i> Video</button>
+                <button type="button" class="media-tab-btn" data-tab="tabPhoto"><i class="fa-solid fa-camera"></i> 📸 Add Image</button>
+                <button type="button" class="media-tab-btn" data-tab="tabVideo"><i class="fa-solid fa-video"></i> 🎬 Add Video</button>
               </div>
             </div>
 
@@ -1909,11 +1982,11 @@
                   <input type="file" id="wishPhotoInput" accept="image/*" />
                   <div class="dropzone-text">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <span>Click or drag photo here to upload (JPG, PNG, GIF, WEBP)</span>
+                    <span><strong>Click or drag image file here</strong> (JPEG, PNG, WebP, GIF • Auto-Compressed)</span>
                   </div>
                 </div>
                 <div style="text-align:center; font-size:0.78rem; color:var(--text-muted); letter-spacing:1px;">— OR PASTE IMAGE LINK —</div>
-                <input type="url" id="wishPhotoUrl" class="input-field" placeholder="Paste direct image URL from Google Photos, Drive, Unsplash, Imgur..." />
+                <input type="url" id="wishPhotoUrl" class="input-field" placeholder="Paste direct image URL from Google Drive, Google Photos, Imgur, Unsplash..." />
               </div>
               <div class="media-preview-box" id="photoPreviewBox" style="display:none;">
                 <img id="photoPreviewImg" src="" alt="Photo Preview" />
@@ -1924,13 +1997,13 @@
             <!-- Video Upload/Link Pane -->
             <div class="media-content-pane" id="tabVideo">
               <div style="display:flex; flex-direction:column; gap:10px;">
-                <input type="url" id="wishVideoUrl" class="input-field" placeholder="Paste YouTube, YouTube Shorts, Vimeo, or MP4 Video Link..." />
-                <div style="text-align:center; font-size:0.78rem; color:var(--text-muted); letter-spacing:1px;">— OR SELECT VIDEO FILE —</div>
+                <input type="url" id="wishVideoUrl" class="input-field" placeholder="Paste YouTube, YouTube Shorts, Vimeo, Google Drive, or MP4 Video Link..." />
+                <div style="text-align:center; font-size:0.78rem; color:var(--text-muted); letter-spacing:1px;">— OR SELECT VIDEO FILE FROM DEVICE —</div>
                 <div class="file-dropzone" id="videoDropzone">
                   <input type="file" id="wishVideoInput" accept="video/mp4,video/webm,video/ogg,video/quicktime" />
                   <div class="dropzone-text">
                     <i class="fa-solid fa-file-video"></i>
-                    <span>Select video file from your device (MP4, WebM)</span>
+                    <span><strong>Select video file from device</strong> (MP4, WebM, MOV)</span>
                   </div>
                 </div>
               </div>
@@ -1966,6 +2039,39 @@
         </div>
       </section>
 
+      <!-- ROYAL POLAROID & VIDEO MEMORIES GALLERY SECTION -->
+      <section class="memories-section" id="memoriesGallerySection">
+        <div class="memories-header">
+          <h2 class="memories-title">📸 Royal Polaroid & Video Memories 🎬</h2>
+          <p class="memories-subtitle">Unforgettable memories, photographs & romantic video reels dedicated to Queen Nishika. Click to view in full-screen cinema mode!</p>
+          <div class="memories-action-bar">
+            <button type="button" class="btn-primary" id="addMemoryPhotoBtn" style="padding: 10px 22px; font-size: 0.9rem;">
+              <i class="fa-solid fa-camera"></i>
+              <span>+ Add Image / Photo</span>
+            </button>
+            <button type="button" class="btn-secondary" id="addMemoryVideoBtn" style="padding: 10px 22px; font-size: 0.9rem;">
+              <i class="fa-solid fa-video"></i>
+              <span>+ Add Video Reel</span>
+            </button>
+          </div>
+          <div class="filter-pills" id="memoriesFilterBar" style="justify-content: center; margin-top: 15px;">
+            <button type="button" class="filter-pill active" data-memory-filter="all">
+              <i class="fa-solid fa-layer-group"></i> All Memories <span class="filter-count" id="countMemoriesAll">0</span>
+            </button>
+            <button type="button" class="filter-pill" data-memory-filter="photo">
+              <i class="fa-solid fa-camera"></i> 📸 Photos <span class="filter-count" id="countMemoriesPhotos">0</span>
+            </button>
+            <button type="button" class="filter-pill" data-memory-filter="video">
+              <i class="fa-solid fa-video"></i> 🎬 Videos <span class="filter-count" id="countMemoriesVideos">0</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="memories-grid" id="memoriesGrid">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
       <!-- STICKY WISH WALL SECTION -->
       <section class="sticky-wall-section" id="stickyWishWallSection">
         <div class="sticky-wall-header">
@@ -1990,15 +2096,25 @@
             </button>
           </div>
 
-          <button type="button" class="sync-refresh-btn" id="syncWishesBtn" title="Sync live wishes from Google Cloud">
-            <i class="fa-solid fa-rotate"></i>
-            <span>Sync Live</span>
-          </button>
+          <div class="sync-actions-group">
+            <button type="button" class="sync-refresh-btn" id="quickAddPhotoBtn" title="Add Image to Wall">
+              <i class="fa-solid fa-camera"></i>
+              <span>+ Add Image</span>
+            </button>
+            <button type="button" class="sync-refresh-btn" id="quickAddVideoBtn" title="Add Video to Wall">
+              <i class="fa-solid fa-video"></i>
+              <span>+ Add Video</span>
+            </button>
+            <button type="button" class="sync-refresh-btn" id="syncWishesBtn" title="Sync live wishes from Google Cloud">
+              <i class="fa-solid fa-rotate"></i>
+              <span>Sync Live</span>
+            </button>
+          </div>
         </div>
 
         <!-- Sticky Notes Grid -->
         <div class="sticky-notes-grid" id="stickyNotesGrid">
-          <!-- Skeleton Loading placeholder -->
+          <!-- Skeleton Loading placeholders -->
           <div class="sticky-skeleton-card">
             <div class="skeleton-line short"></div>
             <div class="skeleton-line full"></div>
@@ -2025,6 +2141,73 @@
     </footer>
   </div>
 
+  <!-- QUICK MEDIA STUDIO MODAL (ADD IMAGE OR VIDEO POPUP) -->
+  <div class="quick-media-overlay" id="quickMediaModal" role="dialog" aria-modal="true" aria-labelledby="quickMediaTitle">
+    <div class="quick-media-box">
+      <button type="button" class="modal-close-btn" id="closeQuickMediaModal" title="Close"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="quick-media-header">
+        <i class="fa-solid fa-photo-film" style="font-size: 2rem; color: var(--accent-gold); margin-bottom: 8px;"></i>
+        <h3 id="quickMediaTitle">📸 Add Image or Video</h3>
+        <p>Upload a cherished photo or paste a video link to immortalize on Queen Nishika's wall & memories gallery!</p>
+      </div>
+
+      <div class="quick-media-mode-tabs">
+        <button type="button" class="quick-mode-btn active" id="quickModePhotoBtn"><i class="fa-solid fa-camera"></i> 📸 Add Image</button>
+        <button type="button" class="quick-mode-btn" id="quickModeVideoBtn"><i class="fa-solid fa-video"></i> 🎬 Add Video</button>
+      </div>
+
+      <form id="quickMediaForm" style="display:flex; flex-direction:column; gap:14px; text-align:left;">
+        <div>
+          <label for="quickSenderName" class="form-group-label"><i class="fa-solid fa-user"></i> Your Name / Dedication</label>
+          <input type="text" id="quickSenderName" class="input-field" placeholder="e.g. Dilip 💖" required maxlength="50" />
+        </div>
+
+        <div>
+          <label for="quickCaption" class="form-group-label"><i class="fa-solid fa-pen-nib"></i> Memory Caption / Message</label>
+          <input type="text" id="quickCaption" class="input-field" placeholder="e.g. Our unforgettable starlit evening ✨" required maxlength="250" />
+        </div>
+
+        <!-- Image Mode Inputs -->
+        <div id="quickImageInputs">
+          <label class="form-group-label"><i class="fa-solid fa-image"></i> Select Image File</label>
+          <div class="file-dropzone" style="margin-bottom:10px;">
+            <input type="file" id="modalPhotoFileInput" accept="image/*" />
+            <div class="dropzone-text">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span>Click or drag image file here (Auto-Compressed)</span>
+            </div>
+          </div>
+          <input type="url" id="modalPhotoUrlInput" class="input-field" placeholder="Or paste image URL (Google Drive, Imgur, Photos)..." />
+          <div id="modalPhotoPreview" style="display:none; margin-top:10px; text-align:center;">
+            <img id="modalPhotoPreviewImg" src="" alt="Preview" style="max-height:160px; border-radius:12px; border:1px solid var(--accent-gold); max-width:100%;" />
+          </div>
+        </div>
+
+        <!-- Video Mode Inputs -->
+        <div id="quickVideoInputs" style="display:none;">
+          <label class="form-group-label"><i class="fa-solid fa-film"></i> Video URL or File</label>
+          <input type="url" id="modalVideoUrlInput" class="input-field" placeholder="Paste YouTube, Shorts, Vimeo, Google Drive, or MP4 link..." style="margin-bottom:10px;" />
+          <div class="file-dropzone">
+            <input type="file" id="modalVideoFileInput" accept="video/mp4,video/webm,video/ogg,video/quicktime" />
+            <div class="dropzone-text">
+              <i class="fa-solid fa-file-video"></i>
+              <span>Or choose video file from device (MP4, WebM)</span>
+            </div>
+          </div>
+          <div id="modalVideoPreview" style="display:none; margin-top:10px; text-align:center;">
+            <video id="modalVideoPreviewPlayer" controls style="max-height:160px; border-radius:12px; width:100%; background:#000;"></video>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="publishQuickMediaBtn" style="width:100%; justify-content:center; margin-top:8px;">
+          <i class="fa-solid fa-sparkles"></i>
+          <span>Publish to Celebration 👑</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- MEDIA LIGHTBOX MODAL -->
   <div class="media-lightbox-overlay" id="mediaLightboxModal" role="dialog" aria-modal="true" aria-labelledby="lightboxAuthorName">
     <div class="media-lightbox-card">
@@ -2048,21 +2231,17 @@
       
       <i class="fa-solid fa-crown vip-crown-icon"></i>
       <h3 id="vipModalTitle">Queen's VIP Early Access</h3>
-      <p>Enter the sacred 4-digit VIP Anniversary PIN or Royal Birthday Passcode to unlock early celebration access before public release.</p>
+      <p>Enter the sacred 4-digit VIP PIN (the day we first met) to unlock early celebration access before public premiere.</p>
 
       <!-- Status Feedback message -->
       <div id="pinFeedbackMsg" class="pin-feedback-msg"></div>
 
-      <!-- Digit slots (Adaptive 8 Digits) -->
+      <!-- Digit slots (4-Digit VIP PIN) -->
       <div class="pin-display" id="pinDisplayContainer">
         <div class="pin-digit-slot" id="slot0">•</div>
         <div class="pin-digit-slot" id="slot1">•</div>
         <div class="pin-digit-slot" id="slot2">•</div>
         <div class="pin-digit-slot" id="slot3">•</div>
-        <div class="pin-digit-slot" id="slot4">•</div>
-        <div class="pin-digit-slot" id="slot5">•</div>
-        <div class="pin-digit-slot" id="slot6">•</div>
-        <div class="pin-digit-slot" id="slot7">•</div>
       </div>
 
       <!-- Numeric Keypad -->
@@ -2094,7 +2273,7 @@
           <span>Need a Passcode Hint?</span>
         </button>
         <div id="vipHintText" class="vip-hint-text">
-          💖 <strong>VIP Hint:</strong> Enter the special 4-digit anniversary day & month (29th Dec) or Queen Nishika's birthday date. ✨
+          💖 <strong>VIP Hint:</strong> Enter the special 4-digit date of the day we first met in DDMM format ✨
         </div>
       </div>
     </div>
@@ -2280,7 +2459,7 @@
       }
       if (soundBtn) soundBtn.addEventListener('click', toggleSound);
 
-      // 4. VIP PASSCODE MODAL & PHYSICAL KEYBOARD ENGINE
+      // 4. VIP PASSCODE MODAL & PHYSICAL KEYBOARD ENGINE (PIN: 2912 / 22092000)
       const vipModal = document.getElementById('vipModal');
       const openVipBtn = document.getElementById('vipUnlockTrigger');
       const heroPreviewBtn = document.getElementById('heroPreviewBtn');
@@ -2294,16 +2473,12 @@
       let enteredPin = '';
       let isCheckingPin = false;
       let pinErrorTimer = null;
-
-      const VALID_PASSCODES = [
-        '2912', '22092000', '2209', '2000', '2025', '2026',
-        '29122025', '29122026', '220900', '291225', '1229', '0922',
-        'nishika', 'dilip', 'queen'
-      ];
+      const PIN_LENGTH = 4;
 
       function isPasscodeMatch(pin) {
-        const clean = (pin || '').trim().toLowerCase().replace(/\s+/g, '');
-        return VALID_PASSCODES.includes(clean);
+        if (!pin) return false;
+        const clean = String(pin).trim().replace(/\D/g, '');
+        return clean === '2912' || clean === '22092000';
       }
 
       function highlightKeypadBtn(key) {
@@ -2316,7 +2491,7 @@
       }
 
       function updatePinDisplay() {
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < PIN_LENGTH; i++) {
           const slot = document.getElementById('slot' + i);
           if (!slot) continue;
           if (i < enteredPin.length) {
@@ -2359,15 +2534,13 @@
 
           if (pinFeedbackMsg) {
             pinFeedbackMsg.className = 'pin-feedback-msg success';
-            pinFeedbackMsg.innerHTML = '<i class="fa-solid fa-crown"></i> VIP Passcode Verified! Opening Celebration Arena 👑';
+            pinFeedbackMsg.innerHTML = '<i class="fa-solid fa-crown"></i> VIP PIN Verified! Opening Celebration Arena 👑';
           }
 
           try {
-            sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
             sessionStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
             sessionStorage.setItem('eternal_love_vip_unlocked', 'true');
             sessionStorage.setItem('birthday_vip_unlocked', 'true');
-            localStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
             localStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
             localStorage.setItem('eternal_love_vip_unlocked', 'true');
             localStorage.setItem('birthday_vip_unlocked', 'true');
@@ -2399,7 +2572,7 @@
 
           if (pinFeedbackMsg) {
             pinFeedbackMsg.className = 'pin-feedback-msg error';
-            pinFeedbackMsg.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Incorrect VIP code. Check hint for anniversary or birthday digits 💕';
+            pinFeedbackMsg.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Incorrect VIP PIN. Check hint for the day we first met clue 💕';
           }
 
           if (pinErrorTimer) clearTimeout(pinErrorTimer);
@@ -2477,15 +2650,15 @@
             updatePinDisplay();
             playChime(440, 0.08);
           } else if (key) {
-            if (enteredPin.length >= 8) {
+            if (enteredPin.length >= PIN_LENGTH) {
               enteredPin = '';
               updatePinDisplay();
             }
-            if (enteredPin.length < 8) {
+            if (enteredPin.length < PIN_LENGTH) {
               enteredPin += key;
-              playChime(523.25 + enteredPin.length * 35, 0.12);
+              playChime(523.25 + enteredPin.length * 40, 0.12);
               updatePinDisplay();
-              if (isPasscodeMatch(enteredPin) || enteredPin.length === 8) {
+              if (isPasscodeMatch(enteredPin) || enteredPin.length === PIN_LENGTH) {
                 checkPin();
               }
             }
@@ -2498,7 +2671,7 @@
           if (enteredPin.length > 0) checkPin();
           else if (pinFeedbackMsg) {
             pinFeedbackMsg.className = 'pin-feedback-msg error';
-            pinFeedbackMsg.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Enter VIP passcode or PIN first! 💕';
+            pinFeedbackMsg.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Enter 4-digit VIP PIN first! 💕';
           }
         });
       }
@@ -2520,18 +2693,18 @@
           if (!vipModal.classList.contains('active')) openVipModal();
 
           initAudio();
-          if (pinErrorTimer || isCheckingPin || enteredPin.length >= 8) {
+          if (pinErrorTimer || isCheckingPin || enteredPin.length >= PIN_LENGTH) {
             resetPinError();
             enteredPin = '';
             updatePinDisplay();
           }
 
-          if (enteredPin.length < 8) {
+          if (enteredPin.length < PIN_LENGTH) {
             enteredPin += digit;
             highlightKeypadBtn(digit);
-            playChime(523.25 + enteredPin.length * 35, 0.12);
+            playChime(523.25 + enteredPin.length * 40, 0.12);
             updatePinDisplay();
-            if (isPasscodeMatch(enteredPin) || enteredPin.length === 8) {
+            if (isPasscodeMatch(enteredPin) || enteredPin.length === PIN_LENGTH) {
               checkPin();
             }
           }
@@ -2600,33 +2773,64 @@
 
       function normalizeImageUrl(url) {
         if (!url) return '';
-        const trimmed = url.trim();
-        // Handle Google Drive image links
-        if (trimmed.includes('drive.google.com')) {
-          if (trimmed.includes('id=')) {
-            const id = trimmed.split('id=')[1].split('&')[0].split('/')[0];
-            return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
-          } else if (trimmed.includes('/d/')) {
-            const id2 = trimmed.split('/d/')[1].split('/')[0];
-            return `https://drive.google.com/thumbnail?id=${id2}&sz=w1000`;
+        const trimmed = url.toString().trim();
+        if (trimmed.startsWith('data:image')) return trimmed;
+        if (trimmed.includes('drive.google.com') || trimmed.includes('docs.google.com') || trimmed.includes('googleusercontent.com')) {
+          const idMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/) ||
+                          trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                          trimmed.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
+                          trimmed.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+          if (idMatch && idMatch[1]) {
+            return `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w1000`;
           }
         }
         return trimmed;
       }
 
+      function processImageFile(file, callback) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          const rawData = evt.target.result;
+          const img = new Image();
+          img.onload = () => {
+            const maxDim = 1200;
+            let w = img.width;
+            let h = img.height;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) {
+                h = Math.round((h * maxDim) / w);
+                w = maxDim;
+              } else {
+                w = Math.round((w * maxDim) / h);
+                h = maxDim;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            const compressed = canvas.toDataURL('image/jpeg', 0.85);
+            callback(compressed);
+          };
+          img.onerror = () => callback(rawData);
+          img.src = rawData;
+        };
+        reader.readAsDataURL(file);
+      }
+
       if (wishPhotoInput) {
         wishPhotoInput.addEventListener('change', (e) => {
-          const file = e.target.files[0];
+          const file = e.target.files && e.target.files[0];
           if (file) {
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-              selectedMediaData = evt.target.result;
+            processImageFile(file, (dataUrl) => {
+              selectedMediaData = dataUrl;
               selectedMediaType = 'photo';
-              if (photoPreviewImg) photoPreviewImg.src = selectedMediaData;
+              if (photoPreviewImg) photoPreviewImg.src = dataUrl;
               if (photoPreviewBox) photoPreviewBox.style.display = 'inline-block';
               if (wishPhotoUrl) wishPhotoUrl.value = '';
-            };
-            reader.readAsDataURL(file);
+            });
           }
         });
       }
@@ -2660,69 +2864,86 @@
       const wishVideoUrl = document.getElementById('wishVideoUrl');
       const videoPreviewBox = document.getElementById('videoPreviewBox');
       const videoPreviewContainer = document.getElementById('videoPreviewContainer');
-      const videoPreviewPlayer = document.getElementById('videoPreviewPlayer');
       const removeVideoBtn = document.getElementById('removeVideoBtn');
 
       function parseVideoEmbed(url, inLightbox = false) {
         if (!url) return '';
-        const clean = url.trim();
+        const clean = url.toString().trim();
 
         // 1. YouTube standard watch or youtu.be
         if (clean.includes('youtube.com/watch') || clean.includes('youtu.be/')) {
           let videoId = '';
           if (clean.includes('v=')) videoId = clean.split('v=')[1].split('&')[0];
-          else if (clean.includes('youtu.be/')) videoId = clean.split('youtu.be/')[1].split('?')[0];
+          else if (clean.includes('youtu.be/')) videoId = clean.split('youtu.be/')[1].split('?')[0].split('&')[0];
           if (videoId) {
-            return `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+            return `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
           }
         }
 
         // 2. YouTube Shorts
         if (clean.includes('youtube.com/shorts/')) {
-          const sId = clean.split('youtube.com/shorts/')[1].split('?')[0].split('/')[0];
+          const sId = clean.split('youtube.com/shorts/')[1].split('?')[0].split('/')[0].split('&')[0];
           if (sId) {
-            return `<iframe src="https://www.youtube.com/embed/${sId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+            return `<iframe src="https://www.youtube.com/embed/${sId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
           }
         }
 
         // 3. Vimeo
         if (clean.includes('vimeo.com/')) {
-          const vId = clean.split('vimeo.com/')[1].split('?')[0].split('/')[0];
+          const vId = clean.split('vimeo.com/')[1].split('?')[0].split('/')[0].split('&')[0];
           if (vId) {
-            return `<iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+            return `<iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
           }
         }
 
-        // 4. Google Drive Video link
-        if (clean.includes('drive.google.com/file/d/')) {
-          const gId = clean.split('/file/d/')[1].split('/')[0];
-          return `<iframe src="https://drive.google.com/file/d/${gId}/preview" allow="autoplay" allowfullscreen loading="lazy"></iframe>`;
+        // 4. Google Drive Video Link (file/d/, open?id=, uc?id=, thumbnail?id=, preview)
+        if (clean.includes('drive.google.com') || clean.includes('docs.google.com')) {
+          let gId = '';
+          const m1 = clean.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+          const m2 = clean.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+          const m3 = clean.match(/\/d\/([a-zA-Z0-9_-]+)/);
+          const m4 = clean.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+          if (m1 && m1[1]) gId = m1[1];
+          else if (m2 && m2[1]) gId = m2[1];
+          else if (m3 && m3[1]) gId = m3[1];
+          else if (m4 && m4[1]) gId = m4[1];
+
+          if (gId) {
+            return `<iframe src="https://drive.google.com/file/d/${gId}/preview" allow="autoplay; encrypted-media" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
+          }
         }
 
-        // 5. Direct MP4 / WebM / Blob Video
-        return `<video src="${clean}" controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="width:100%; height:100%; object-fit:cover; border-radius:10px;"></video>`;
+        // 5. Direct MP4 / WebM / Blob Video / Base64 Data URL
+        return `<video src="${clean}" controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="width:100%; height:100%; max-height:400px; object-fit:contain; border-radius:10px; background:#000;"></video>`;
       }
 
       function updateVideoPreview(val) {
         if (!videoPreviewBox || !videoPreviewContainer) return;
         selectedMediaData = val;
         selectedMediaType = 'video';
-
-        if (val.includes('youtube.com') || val.includes('youtu.be') || val.includes('vimeo.com') || val.includes('drive.google.com')) {
-          videoPreviewContainer.innerHTML = `<div style="height:140px; border-radius:10px; overflow:hidden;">${parseVideoEmbed(val)}</div>`;
-        } else {
-          videoPreviewContainer.innerHTML = `<video src="${val}" controls style="width:100%; height:140px; object-fit:cover; border-radius:10px;"></video>`;
-        }
+        videoPreviewContainer.innerHTML = `<div style="height:150px; border-radius:10px; overflow:hidden;">${parseVideoEmbed(val)}</div>`;
         videoPreviewBox.style.display = 'inline-block';
       }
 
       if (wishVideoInput) {
         wishVideoInput.addEventListener('change', (e) => {
-          const file = e.target.files[0];
+          const file = e.target.files && e.target.files[0];
           if (file) {
-            const videoUrl = URL.createObjectURL(file);
-            updateVideoPreview(videoUrl);
-            if (wishVideoUrl) wishVideoUrl.value = '';
+            if (file.size > 25 * 1024 * 1024) {
+              alert('Video file is larger than 25MB. Please choose a smaller video clip or paste a YouTube / Google Drive link.');
+              return;
+            }
+            // Instant local blob preview
+            const blobUrl = URL.createObjectURL(file);
+            updateVideoPreview(blobUrl);
+
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              selectedMediaData = evt.target.result;
+              selectedMediaType = 'video';
+              if (wishVideoUrl) wishVideoUrl.value = '';
+            };
+            reader.readAsDataURL(file);
           }
         });
       }
@@ -2758,9 +2979,251 @@
         });
       });
 
-      // 6. GOOGLE SHEETS CLOUD INTEGRATION & STICKY WISH WALL ENGINE
+      // 6. QUICK MEDIA MODAL STUDIO (ADD IMAGE / VIDEO FROM ANYWHERE)
+      const quickMediaModal = document.getElementById('quickMediaModal');
+      const navAddMediaBtn = document.getElementById('navAddMediaBtn');
+      const heroAddMediaBtn = document.getElementById('heroAddMediaBtn');
+      const addMemoryPhotoBtn = document.getElementById('addMemoryPhotoBtn');
+      const addMemoryVideoBtn = document.getElementById('addMemoryVideoBtn');
+      const quickAddPhotoBtn = document.getElementById('quickAddPhotoBtn');
+      const quickAddVideoBtn = document.getElementById('quickAddVideoBtn');
+      const closeQuickMediaModal = document.getElementById('closeQuickMediaModal');
+
+      const quickModePhotoBtn = document.getElementById('quickModePhotoBtn');
+      const quickModeVideoBtn = document.getElementById('quickModeVideoBtn');
+      const quickImageInputs = document.getElementById('quickImageInputs');
+      const quickVideoInputs = document.getElementById('quickVideoInputs');
+      const quickMediaForm = document.getElementById('quickMediaForm');
+
+      const modalPhotoFileInput = document.getElementById('modalPhotoFileInput');
+      const modalPhotoUrlInput = document.getElementById('modalPhotoUrlInput');
+      const modalPhotoPreview = document.getElementById('modalPhotoPreview');
+      const modalPhotoPreviewImg = document.getElementById('modalPhotoPreviewImg');
+
+      const modalVideoFileInput = document.getElementById('modalVideoFileInput');
+      const modalVideoUrlInput = document.getElementById('modalVideoUrlInput');
+      const modalVideoPreview = document.getElementById('modalVideoPreview');
+      const modalVideoPreviewPlayer = document.getElementById('modalVideoPreviewPlayer');
+
+      let modalMediaType = 'photo';
+      let modalMediaData = '';
+
+      function openQuickMedia(mode = 'photo') {
+        if (!quickMediaModal) return;
+        setQuickMediaMode(mode);
+        quickMediaModal.classList.add('active');
+        initAudio();
+        playChime(523.25, 0.2);
+      }
+
+      function closeQuickMedia() {
+        if (!quickMediaModal) return;
+        quickMediaModal.classList.remove('active');
+        if (quickMediaForm) quickMediaForm.reset();
+        modalMediaData = '';
+        if (modalPhotoPreview) modalPhotoPreview.style.display = 'none';
+        if (modalVideoPreview) modalVideoPreview.style.display = 'none';
+      }
+
+      function setQuickMediaMode(mode) {
+        modalMediaType = mode;
+        if (mode === 'photo') {
+          if (quickModePhotoBtn) quickModePhotoBtn.classList.add('active');
+          if (quickModeVideoBtn) quickModeVideoBtn.classList.remove('active');
+          if (quickImageInputs) quickImageInputs.style.display = 'block';
+          if (quickVideoInputs) quickVideoInputs.style.display = 'none';
+        } else {
+          if (quickModePhotoBtn) quickModePhotoBtn.classList.remove('active');
+          if (quickModeVideoBtn) quickModeVideoBtn.classList.add('active');
+          if (quickImageInputs) quickImageInputs.style.display = 'none';
+          if (quickVideoInputs) quickVideoInputs.style.display = 'block';
+        }
+      }
+
+      if (navAddMediaBtn) navAddMediaBtn.addEventListener('click', () => openQuickMedia('photo'));
+      if (heroAddMediaBtn) heroAddMediaBtn.addEventListener('click', () => openQuickMedia('photo'));
+      if (addMemoryPhotoBtn) addMemoryPhotoBtn.addEventListener('click', () => openQuickMedia('photo'));
+      if (addMemoryVideoBtn) addMemoryVideoBtn.addEventListener('click', () => openQuickMedia('video'));
+      if (quickAddPhotoBtn) quickAddPhotoBtn.addEventListener('click', () => openQuickMedia('photo'));
+      if (quickAddVideoBtn) quickAddVideoBtn.addEventListener('click', () => openQuickMedia('video'));
+      if (closeQuickMediaModal) closeQuickMediaModal.addEventListener('click', closeQuickMedia);
+
+      if (quickMediaModal) {
+        quickMediaModal.addEventListener('click', (e) => {
+          if (e.target === quickMediaModal) closeQuickMedia();
+        });
+      }
+
+      if (quickModePhotoBtn) quickModePhotoBtn.addEventListener('click', () => setQuickMediaMode('photo'));
+      if (quickModeVideoBtn) quickModeVideoBtn.addEventListener('click', () => setQuickMediaMode('video'));
+
+      if (modalPhotoFileInput) {
+        modalPhotoFileInput.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (file) {
+            processImageFile(file, (dataUrl) => {
+              modalMediaData = dataUrl;
+              if (modalPhotoPreviewImg) modalPhotoPreviewImg.src = dataUrl;
+              if (modalPhotoPreview) modalPhotoPreview.style.display = 'block';
+              if (modalPhotoUrlInput) modalPhotoUrlInput.value = '';
+            });
+          }
+        });
+      }
+
+      if (modalPhotoUrlInput) {
+        modalPhotoUrlInput.addEventListener('input', (e) => {
+          const val = normalizeImageUrl(e.target.value);
+          if (val) {
+            modalMediaData = val;
+            if (modalPhotoPreviewImg) modalPhotoPreviewImg.src = val;
+            if (modalPhotoPreview) modalPhotoPreview.style.display = 'block';
+            if (modalPhotoFileInput) modalPhotoFileInput.value = '';
+          }
+        });
+      }
+
+      if (modalVideoFileInput) {
+        modalVideoFileInput.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (file) {
+            if (file.size > 25 * 1024 * 1024) {
+              alert('Video file is larger than 25MB. Please choose a smaller video clip or paste a YouTube / Google Drive link.');
+              return;
+            }
+            const blobUrl = URL.createObjectURL(file);
+            if (modalVideoPreview) {
+              modalVideoPreview.innerHTML = `<video src="${blobUrl}" controls style="max-height:160px; border-radius:12px; width:100%; background:#000;"></video>`;
+              modalVideoPreview.style.display = 'block';
+            }
+
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              modalMediaData = evt.target.result;
+              if (modalVideoUrlInput) modalVideoUrlInput.value = '';
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+
+      if (modalVideoUrlInput) {
+        modalVideoUrlInput.addEventListener('input', (e) => {
+          const val = e.target.value.trim();
+          if (val) {
+            modalMediaData = val;
+            if (modalVideoPreview) {
+              modalVideoPreview.innerHTML = `<div style="height:150px; border-radius:10px; overflow:hidden;">${parseVideoEmbed(val)}</div>`;
+              modalVideoPreview.style.display = 'block';
+            }
+            if (modalVideoFileInput) modalVideoFileInput.value = '';
+          }
+        });
+      }
+
+      // Quick Media Form Submit
+      if (quickMediaForm) {
+        quickMediaForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          initAudio();
+          playChime(659.25, 0.4);
+
+          const sender = document.getElementById('quickSenderName')?.value.trim() || 'Loving Well-wisher';
+          const caption = document.getElementById('quickCaption')?.value.trim() || 'Our unforgettable memory 💖';
+          const mediaUrl = modalMediaData;
+
+          if (!mediaUrl) {
+            alert('Please select a photo/video file or paste a media link.');
+            return;
+          }
+
+          const publishBtn = document.getElementById('publishQuickMediaBtn');
+          if (publishBtn) {
+            publishBtn.disabled = true;
+            publishBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Publishing Media...</span>';
+          }
+
+          const newMediaItem = {
+            id: 'media_' + Date.now(),
+            name: sender,
+            author: sender,
+            message: caption,
+            text: caption,
+            color: 'gold',
+            mediaType: modalMediaType,
+            mediaUrl: mediaUrl,
+            mediaData: mediaUrl,
+            likes: 1,
+            isRoyal: sender.toLowerCase().includes('dilip'),
+            localTime: 'Just Now',
+            timestamp: new Date().toISOString()
+          };
+
+          // Save to local collection and update UI
+          allWishes.unshift(newMediaItem);
+          saveWishesToLocal(allWishes);
+
+          renderStickyNotes();
+          renderMemoriesGrid();
+          closeQuickMedia();
+
+          if (publishBtn) {
+            publishBtn.disabled = false;
+            publishBtn.innerHTML = '<i class="fa-solid fa-sparkles"></i> <span>Publish to Celebration 👑</span>';
+          }
+
+          // Dispatches to Google Sheets & Drive asynchronously
+          try {
+            fetch(GOOGLE_SHEET_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({
+                type: modalMediaType === 'video' ? 'video' : 'photo',
+                mediaType: modalMediaType,
+                name: sender,
+                author: sender,
+                caption: caption,
+                message: caption,
+                text: caption,
+                color: 'gold',
+                dataUrl: mediaUrl,
+                mediaData: mediaUrl,
+                mediaUrl: mediaUrl,
+                videoUrl: mediaUrl,
+                celebrant: 'Nishika',
+                dedicatedBy: 'Dilip',
+                timestamp: new Date().toISOString(),
+                localTime: new Date().toLocaleString()
+              })
+            });
+          } catch(err) {
+            console.warn('Queued locally:', err);
+          }
+
+          // Scroll to memories gallery
+          const memSec = document.getElementById('memoriesGallerySection');
+          if (memSec) memSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+
+      // 7. GOOGLE SHEETS CLOUD INTEGRATION & STICKY WISH WALL ENGINE
       const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec';
       const LOCAL_STORAGE_WISHES_KEY = 'eternal_love_sticky_wishes_v3';
+
+      function saveWishesToLocal(wishesList) {
+        try {
+          const safeList = wishesList.map(w => {
+            if (w.mediaUrl && w.mediaUrl.startsWith('data:video') && w.mediaUrl.length > 300000) {
+              return { ...w, mediaUrl: '' };
+            }
+            return w;
+          });
+          localStorage.setItem(LOCAL_STORAGE_WISHES_KEY, JSON.stringify(safeList));
+        } catch(e) {
+          console.warn('LocalStorage save skipped to protect memory quota:', e);
+        }
+      }
 
       // Default Pre-Populated Royal Dedications with Photos & Videos
       const DEFAULT_WISHES = [
@@ -2825,6 +3288,7 @@
       let activeFilter = 'all';
 
       const stickyNotesGrid = document.getElementById('stickyNotesGrid');
+      const memoriesGrid = document.getElementById('memoriesGrid');
       const countAll = document.getElementById('countAll');
       const countPhotos = document.getElementById('countPhotos');
       const countVideos = document.getElementById('countVideos');
@@ -2846,6 +3310,92 @@
         if (!name) return '👑';
         const clean = name.replace(/[^a-zA-Z]/g, '');
         return clean.length > 0 ? clean[0].toUpperCase() : '👑';
+      }
+
+      // Filter & Memory State
+      let activeMemoryFilter = 'all';
+      const memoriesFilterBar = document.getElementById('memoriesFilterBar');
+      const countMemoriesAll = document.getElementById('countMemoriesAll');
+      const countMemoriesPhotos = document.getElementById('countMemoriesPhotos');
+      const countMemoriesVideos = document.getElementById('countMemoriesVideos');
+
+      if (memoriesFilterBar) {
+        memoriesFilterBar.addEventListener('click', (e) => {
+          const btn = e.target.closest('.filter-pill');
+          if (!btn) return;
+          memoriesFilterBar.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+          btn.classList.add('active');
+          activeMemoryFilter = btn.dataset.memoryFilter || 'all';
+          renderMemoriesGrid();
+        });
+      }
+
+      // Render Royal Memories Polaroid & Video Gallery
+      function renderMemoriesGrid() {
+        if (!memoriesGrid) return;
+        memoriesGrid.innerHTML = '';
+
+        const allMedia = allWishes.filter(w => (w.mediaType === 'photo' || w.mediaType === 'video') && w.mediaUrl);
+        
+        if (countMemoriesAll) countMemoriesAll.textContent = allMedia.length;
+        if (countMemoriesPhotos) countMemoriesPhotos.textContent = allMedia.filter(w => w.mediaType === 'photo').length;
+        if (countMemoriesVideos) countMemoriesVideos.textContent = allMedia.filter(w => w.mediaType === 'video').length;
+
+        const mediaItems = allMedia.filter(w => {
+          if (activeMemoryFilter === 'photo') return w.mediaType === 'photo';
+          if (activeMemoryFilter === 'video') return w.mediaType === 'video';
+          return true;
+        });
+        const rotationAngles = [-2.5, 1.8, -1.6, 2.2, -2.0, 1.5, -1.8, 2.0];
+
+        if (mediaItems.length === 0) {
+          memoriesGrid.innerHTML = `
+            <div class="sticky-empty-box">
+              <i class="fa-solid fa-camera-retro"></i>
+              <h3>No ${activeMemoryFilter !== 'all' ? activeMemoryFilter : 'memory'} items found</h3>
+              <p>Click "+ Add Image / Photo" or "+ Add Video Reel" above to consecrate memories for Queen Nishika!</p>
+            </div>
+          `;
+          return;
+        }
+
+        mediaItems.forEach((item, idx) => {
+          const rot = rotationAngles[idx % rotationAngles.length];
+          const card = document.createElement('div');
+          card.className = 'polaroid-card';
+          card.style.transform = `rotate(${rot}deg)`;
+
+          let mediaVisual = '';
+          if (item.mediaType === 'photo') {
+            mediaVisual = `
+              <div class="polaroid-img-wrap">
+                <img src="${item.mediaUrl}" alt="${escapeHtml(item.message || item.name)}" loading="lazy" />
+              </div>
+            `;
+          } else {
+            mediaVisual = `
+              <div class="polaroid-video-wrap">
+                ${parseVideoEmbed(item.mediaUrl, false)}
+              </div>
+            `;
+          }
+
+          card.innerHTML = `
+            ${mediaVisual}
+            <div class="polaroid-caption">"${escapeHtml(item.message || 'Our sacred memory 💖')}"</div>
+            <div class="polaroid-meta">
+              <span><i class="fa-solid fa-user-heart"></i> ${escapeHtml(item.name || 'Dilip')}</span>
+              <span class="polaroid-tag">${item.mediaType === 'video' ? '🎬 Video Reel' : '📸 Polaroid'}</span>
+            </div>
+          `;
+
+          card.addEventListener('click', (e) => {
+            if (e.target.tagName === 'IFRAME' || e.target.tagName === 'VIDEO' || e.target.closest('.polaroid-video-wrap')) return;
+            openLightbox(item.mediaType, item.mediaUrl, item.name, item.message);
+          });
+
+          memoriesGrid.appendChild(card);
+        });
       }
 
       function renderStickyNotes() {
@@ -2975,30 +3525,52 @@
         });
       });
 
-      // Universal Image URL Normalizer (Converts Google Drive file links to high-speed CDN thumbnails)
-      function normalizeCloudImageUrl(url) {
-        if (!url) return '';
-        url = url.toString().trim();
-        if (url.startsWith('data:image')) return url;
+      // Comprehensive Media Normalizer for Google Drive, YouTube, Vimeo, MP4, and Photos
+      function normalizeMediaData(url, typeHint = 'none') {
+        if (!url) return { url: '', type: 'none' };
+        let str = url.toString().trim();
+        if (str.startsWith('data:image')) return { url: str, type: 'photo' };
+        if (str.startsWith('data:video')) return { url: str, type: 'video' };
 
-        let driveId = '';
-        if (url.includes('drive.google.com') || url.includes('docs.google.com') || url.includes('googleusercontent.com')) {
-          const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/) ||
-                          url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
-                          url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
-                          url.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
-          if (idMatch && idMatch[1]) {
-            driveId = idMatch[1];
+        // 1. Google Drive Links
+        if (str.includes('drive.google.com') || str.includes('docs.google.com') || str.includes('googleusercontent.com')) {
+          let driveId = '';
+          const m1 = str.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+          const m2 = str.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+          const m3 = str.match(/\/d\/([a-zA-Z0-9_-]+)/);
+          const m4 = str.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+          if (m1 && m1[1]) driveId = m1[1];
+          else if (m2 && m2[1]) driveId = m2[1];
+          else if (m3 && m3[1]) driveId = m3[1];
+          else if (m4 && m4[1]) driveId = m4[1];
+
+          if (driveId) {
+            if (typeHint === 'video' || str.includes('/preview') || str.includes('.mp4') || str.includes('.webm')) {
+              return { url: `https://drive.google.com/file/d/${driveId}/preview`, type: 'video' };
+            } else {
+              return { url: `https://drive.google.com/thumbnail?id=${driveId}&sz=w1000`, type: 'photo' };
+            }
           }
         }
 
-        if (driveId) {
-          return `https://lh3.googleusercontent.com/d/${driveId}`;
+        // 2. Video Streaming & File Links
+        if (typeHint === 'video' ||
+            str.includes('youtube.com') ||
+            str.includes('youtu.be') ||
+            str.includes('vimeo.com') ||
+            str.match(/\.(mp4|webm|mov|m4v|ogg|avi|mkv)($|\?)/i)) {
+          return { url: str, type: 'video' };
         }
-        return url;
+
+        // 3. Photo Links
+        if (typeHint === 'photo' || str.match(/\.(jpg|jpeg|png|gif|webp|svg)($|\?)/i)) {
+          return { url: str, type: 'photo' };
+        }
+
+        return { url: str, type: typeHint === 'none' ? (str ? 'photo' : 'none') : typeHint };
       }
 
-      // JSONP Fallback loader for Google Apps Script Web App
+      // JSONP Fallback loader
       function fetchJsonp(url, timeoutMs = 8000) {
         return new Promise((resolve, reject) => {
           const callbackName = 'gas_jsonp_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
@@ -3049,37 +3621,60 @@
             if (data) {
               if (Array.isArray(data.wishes)) {
                 data.wishes.forEach(w => {
-                  const rawUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
-                  const normUrl = (w.mediaType === 'photo' || (!w.mediaType && rawUrl.match(/\.(jpg|jpeg|png|gif|webp)|drive\.google/i)))
-                    ? normalizeCloudImageUrl(rawUrl)
-                    : rawUrl;
+                  const rawUrl = w.mediaUrl || w.mediaLink || w.mediaData || w.videoUrl || '';
+                  const norm = normalizeMediaData(rawUrl, w.mediaType || 'none');
                   cloudWishes.push({
                     id: w.id || ('gs_wish_' + Math.random()),
                     name: w.author || w.name || 'Loving Well-wisher',
+                    author: w.author || w.name || 'Loving Well-wisher',
                     message: w.message || w.text || '',
+                    text: w.message || w.text || '',
                     color: w.color || 'pink',
-                    mediaType: w.mediaType || (rawUrl ? (rawUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i) ? 'video' : 'photo') : 'none'),
-                    mediaUrl: normUrl,
+                    mediaType: norm.type,
+                    mediaUrl: norm.url,
                     likes: w.likes || 18,
                     isRoyal: w.isRoyal || (w.author && w.author.toLowerCase().includes('dilip')) || (w.name && w.name.toLowerCase().includes('dilip')),
                     localTime: w.localTime || 'Recently'
                   });
                 });
               }
-              // Also map synced Polaroid photos from Google Sheet Photos tab
               if (Array.isArray(data.photos)) {
                 data.photos.forEach(p => {
-                  const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '');
+                  const rawUrl = p.imgUrl || p.driveUrl || p.mediaUrl || '';
+                  const norm = normalizeMediaData(rawUrl, p.mediaType || 'photo');
+                  const sender = p.dedicatedBy || p.author || p.name || 'Dilip 👑';
                   cloudWishes.push({
                     id: p.id || ('photo_' + Math.random()),
-                    name: p.dedicatedBy || 'Dilip 👑',
-                    message: p.caption || `Our unforgettable celebration memory with ${p.celebrant || 'Nishika'} 💖`,
+                    name: sender,
+                    author: sender,
+                    message: p.caption || p.message || `Our unforgettable celebration memory with ${p.celebrant || 'Nishika'} 💖`,
+                    text: p.caption || p.message || `Our unforgettable celebration memory with ${p.celebrant || 'Nishika'} 💖`,
                     color: 'peach',
-                    mediaType: 'photo',
-                    mediaUrl: photoUrl,
+                    mediaType: norm.type,
+                    mediaUrl: norm.url,
                     likes: 24,
-                    isRoyal: true,
+                    isRoyal: sender.toLowerCase().includes('dilip'),
                     localTime: p.localTime || 'Recently'
+                  });
+                });
+              }
+              if (Array.isArray(data.videos)) {
+                data.videos.forEach(v => {
+                  const rawUrl = v.videoUrl || v.driveUrl || v.mediaUrl || '';
+                  const norm = normalizeMediaData(rawUrl, 'video');
+                  const sender = v.dedicatedBy || v.author || v.name || 'Dilip 👑';
+                  cloudWishes.push({
+                    id: v.id || ('video_' + Math.random()),
+                    name: sender,
+                    author: sender,
+                    message: v.caption || v.message || 'Royal video dedication for Queen Nishika 🎬',
+                    text: v.caption || v.message || 'Royal video dedication for Queen Nishika 🎬',
+                    color: 'gold',
+                    mediaType: 'video',
+                    mediaUrl: norm.url,
+                    likes: 30,
+                    isRoyal: sender.toLowerCase().includes('dilip'),
+                    localTime: v.localTime || 'Recently'
                   });
                 });
               }
@@ -3092,17 +3687,17 @@
             if (data) {
               if (Array.isArray(data.wishes)) {
                 data.wishes.forEach(w => {
-                  const rawUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
-                  const normUrl = (w.mediaType === 'photo' || (!w.mediaType && rawUrl.match(/\.(jpg|jpeg|png|gif|webp)|drive\.google/i)))
-                    ? normalizeCloudImageUrl(rawUrl)
-                    : rawUrl;
+                  const rawUrl = w.mediaUrl || w.mediaLink || w.mediaData || w.videoUrl || '';
+                  const norm = normalizeMediaData(rawUrl, w.mediaType || 'none');
                   cloudWishes.push({
                     id: w.id || ('gs_wish_' + Math.random()),
                     name: w.author || w.name || 'Loving Well-wisher',
+                    author: w.author || w.name || 'Loving Well-wisher',
                     message: w.message || w.text || '',
+                    text: w.message || w.text || '',
                     color: w.color || 'pink',
-                    mediaType: w.mediaType || (rawUrl ? (rawUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i) ? 'video' : 'photo') : 'none'),
-                    mediaUrl: normUrl,
+                    mediaType: norm.type,
+                    mediaUrl: norm.url,
                     likes: w.likes || 18,
                     isRoyal: w.isRoyal || (w.author && w.author.toLowerCase().includes('dilip')) || (w.name && w.name.toLowerCase().includes('dilip')),
                     localTime: w.localTime || 'Recently'
@@ -3111,17 +3706,41 @@
               }
               if (Array.isArray(data.photos)) {
                 data.photos.forEach(p => {
-                  const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '');
+                  const rawUrl = p.imgUrl || p.driveUrl || p.mediaUrl || '';
+                  const norm = normalizeMediaData(rawUrl, p.mediaType || 'photo');
+                  const sender = p.dedicatedBy || p.author || p.name || 'Dilip 👑';
                   cloudWishes.push({
                     id: p.id || ('photo_' + Math.random()),
-                    name: p.dedicatedBy || 'Dilip 👑',
-                    message: p.caption || `Our unforgettable celebration memory with ${p.celebrant || 'Nishika'} 💖`,
+                    name: sender,
+                    author: sender,
+                    message: p.caption || p.message || `Our unforgettable celebration memory with ${p.celebrant || 'Nishika'} 💖`,
+                    text: p.caption || p.message || `Our unforgettable celebration memory with ${p.celebrant || 'Nishika'} 💖`,
                     color: 'peach',
-                    mediaType: 'photo',
-                    mediaUrl: photoUrl,
+                    mediaType: norm.type,
+                    mediaUrl: norm.url,
                     likes: 24,
-                    isRoyal: true,
+                    isRoyal: sender.toLowerCase().includes('dilip'),
                     localTime: p.localTime || 'Recently'
+                  });
+                });
+              }
+              if (Array.isArray(data.videos)) {
+                data.videos.forEach(v => {
+                  const rawUrl = v.videoUrl || v.driveUrl || v.mediaUrl || '';
+                  const norm = normalizeMediaData(rawUrl, 'video');
+                  const sender = v.dedicatedBy || v.author || v.name || 'Dilip 👑';
+                  cloudWishes.push({
+                    id: v.id || ('video_' + Math.random()),
+                    name: sender,
+                    author: sender,
+                    message: v.caption || v.message || 'Royal video dedication for Queen Nishika 🎬',
+                    text: v.caption || v.message || 'Royal video dedication for Queen Nishika 🎬',
+                    color: 'gold',
+                    mediaType: 'video',
+                    mediaUrl: norm.url,
+                    likes: 30,
+                    isRoyal: sender.toLowerCase().includes('dilip'),
+                    localTime: v.localTime || 'Recently'
                   });
                 });
               }
@@ -3131,29 +3750,33 @@
           }
         }
 
-        // Deduplicate and Merge
+        // Deduplicate and Merge with Cloud, Local Storage, and Defaults
+        let savedLocal = [];
+        try {
+          savedLocal = JSON.parse(localStorage.getItem(LOCAL_STORAGE_WISHES_KEY) || '[]');
+        } catch(e) {}
+
         const mergedMap = new Map();
-        [...cloudWishes, ...DEFAULT_WISHES].forEach(w => {
-          const key = (w.name + '_' + w.message).trim().toLowerCase();
+        [...cloudWishes, ...savedLocal, ...DEFAULT_WISHES].forEach(w => {
+          if (!w || (!w.message && !w.text)) return;
+          const key = ((w.name || w.author || '') + '_' + (w.message || w.text || '')).trim().toLowerCase();
           if (!mergedMap.has(key)) {
             mergedMap.set(key, w);
           }
         });
 
         allWishes = Array.from(mergedMap.values());
-
-        try {
-          localStorage.setItem(LOCAL_STORAGE_WISHES_KEY, JSON.stringify(allWishes));
-        } catch (e) {}
+        saveWishesToLocal(allWishes);
 
         if (syncWishesBtn) syncWishesBtn.classList.remove('rotating');
         renderStickyNotes();
+        renderMemoriesGrid();
       }
 
       if (syncWishesBtn) syncWishesBtn.addEventListener('click', fetchWishesFromCloud);
       fetchWishesFromCloud();
 
-      // 7. FORM SUBMISSION (Syncs to Google Sheets + Updates Wall in Real-Time)
+      // 8. FORM SUBMISSION (Syncs to Google Sheets + Updates Wall & Memories in Real-Time)
       const wishForm = document.getElementById('preLaunchWishForm');
       const feedback = document.getElementById('blessingFeedback');
       const submitWishBtn = document.getElementById('submitWishBtn');
@@ -3195,10 +3818,9 @@
 
           // Optimistic local update
           allWishes.unshift(newWish);
-          try {
-            localStorage.setItem(LOCAL_STORAGE_WISHES_KEY, JSON.stringify(allWishes));
-          } catch (e) {}
+          saveWishesToLocal(allWishes);
           renderStickyNotes();
+          renderMemoriesGrid();
 
           // Scroll smoothly to the wish wall
           const wallSec = document.getElementById('stickyWishWallSection');
@@ -3220,6 +3842,8 @@
                 mediaType: selectedMediaType,
                 mediaData: selectedMediaData,
                 mediaUrl: selectedMediaData,
+                dataUrl: selectedMediaData,
+                videoUrl: selectedMediaData,
                 celebrant: 'Nishika',
                 dedicatedBy: 'Dilip',
                 timestamp: new Date().toISOString(),
@@ -3258,7 +3882,7 @@
         });
       }
 
-      // 8. MEDIA LIGHTBOX CONTROLLER
+      // 9. MEDIA LIGHTBOX CONTROLLER
       const mediaLightbox = document.getElementById('mediaLightboxModal');
       const closeLightboxBtn = document.getElementById('closeLightboxBtn');
       const lightboxViewport = document.getElementById('lightboxViewport');

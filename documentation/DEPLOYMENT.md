@@ -16,7 +16,7 @@ Hosting Cost: 100% Free Forever with Automated Global HTTPS & Fastly Edge CDN
 ## 📑 Table of Contents
 
 1. [🚀 1. Step-by-Step GitHub Pages Deployment](#1-step-by-step-github-pages-deployment)
-2. [⏳ 2. Automated Launch Lifecycle (September 20 Launch)](#2-automated-launch-lifecycle-september-20-launch)
+2. [⏳ 2. Platform Routing & Access Flow (`index.html` $\rightarrow$ `main.html`)](#2-platform-routing--access-flow-indexhtml--mainhtml)
 3. [🏷️ 3. Free Custom Domain Setup (e.g. `happybirthdaynishika.com`)](#3-free-custom-domain-setup-eg-happybirthdaynishikacom)
 4. [📱 4. Generating a Free QR Code for Physical Gift Cards](#4-generating-a-free-qr-code-for-physical-gift-cards)
 5. [🛡️ 5. GitHub Pages Production Checklist](#5-github-pages-production-checklist)
@@ -27,33 +27,33 @@ Hosting Cost: 100% Free Forever with Automated Global HTTPS & Fastly Edge CDN
 
 ### Step 1: Create a GitHub Repository
 1. Navigate to [github.com/new](https://github.com/new).
-2. Set your **Repository Name** (e.g., `happy-birthday-nishika` or `eternal-love`).
+2. Set your **Repository Name** (e.g., `happy-birthday` or `eternal-love`).
 3. Set visibility to **Public** (required for free GitHub Pages hosting).
-4. Do **not** check "Add a README file" (the repository already has complete documentation).
+4. Do **not** check "Add a README file" (the repository already contains complete documentation).
 5. Click **Create repository**.
 
 ---
 
 ### Step 2: Push Your Project Code to GitHub
-Open your terminal inside this project folder and run:
+Open your terminal inside the project directory and run:
 
 ```bash
 # 1. Initialize Git repository
 git init
 
-# 2. Add all files (including .nojekyll, coming-soon.html, index.html, and docs)
+# 2. Add all files (including .nojekyll, index.html, main.html, Code.gs, documentation/)
 git add .
 
 # 3. Commit the project
 git commit -m "feat: Eternal Love celebration release 👑💖"
 
-# 4. Set the default branch to main
+# 4. Set default branch to main
 git branch -M main
 
-# 5. Link your GitHub remote repository (replace with your actual GitHub username and repo)
+# 5. Link your GitHub remote repository
 git remote add origin https://github.com/<YOUR-GITHUB-USERNAME>/<YOUR-REPO-NAME>.git
 
-# 6. Push the code to GitHub
+# 6. Push code to GitHub
 git push -u origin main
 ```
 
@@ -74,33 +74,38 @@ https://<YOUR-GITHUB-USERNAME>.github.io/<YOUR-REPO-NAME>/
 
 ---
 
-## 2. ⏳ Automated Launch Lifecycle (September 20 Launch)
-
-The website includes an automated client-side launch router built into `<head>`:
+## 2. ⏳ Platform Routing & Access Flow (`index.html` $\rightarrow$ `main.html`)
 
 ```
                   ┌───────────────────────────────┐
                   │   Visitor opens Website URL   │
                   └──────────────┬────────────────┘
                                  │
-                 Is Date < September 20, 2026?
+                                 ▼
+                     [ Serve index.html ]
+              (Pre-Launch Countdown & Blessings Hub)
+                                 │
                  ┌───────────────┴───────────────┐
-             YES │                               │ NO
+                 │                               │
                  ▼                               ▼
-     Has VIP Key / ?preview=true?     [ Serve index.html ]
-         ┌───────┴───────┐            (Grand Celebration Arena)
-     YES │               │ NO
-         ▼               ▼
- [ Serve index.html ] [ Serve coming-soon.html ]
- (VIP Preview Mode)   (Live Countdown & Early Wishes)
+      [ Submit Birthday Wish ]        [ Tap 👑 VIP Access Keypad ]
+      • Text, Photos & Videos         • Enter PIN: 2912 or 22092000
+      • Saves to Drive & Sheets       • Saves Session & Opens main.html
+                                                 │
+                                                 ▼
+                                         [ main.html: Welcome Screen ]
+                                         • 3D Bouncing Gift Box
+                                         • Tap to open Passcode Modal
+                                         • 3D Unboxing -> 25 Stages!
 ```
 
-1. **Before September 20, 2026**:
-   - Visitors opening your GitHub Pages link automatically see [`coming-soon.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/coming-soon.html) with the live countdown clock, sneak peeks, and early blessing collector.
-2. **VIP Early Access Bypass**:
-   - Queen Nishika or Dilip can unlock the full [`index.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html) anytime before September 20 by entering PIN **`2912`** or clicking the **Queen Nishika 👑 Instant Access Key** on the Coming Soon page (or visiting `https://<YOUR-USERNAME>.github.io/<REPO>/?preview=true`).
-3. **On & After September 20, 2026**:
-   - The website automatically transitions [`index.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html) to the primary landing page for all visitors worldwide without requiring any manual redeployment or repo changes!
+1. **Pre-Launch Portal ([index.html](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html))**:
+   - Visitors view the real-time countdown clock, send early birthday blessings with photos/videos, and explore the interactive sticky wall.
+2. **VIP & Direct Access**:
+   - Tapping **👑 VIP Access** and entering `2912` or `22092000` unlocks direct entry to `main.html?vip=unlocked`.
+   - Direct query parameters (`?preview=true`, `?passcode=22092000`, `?pin=2912`) grant immediate access without redirection.
+3. **Celebration Arena ([main.html](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/main.html))**:
+   - Arriving on `main.html` presents the Welcome Screen with the 3D bouncing gift box first. Tapping the box prompts for the passcode to trigger the 3D unboxing animation and reveal the full celebration.
 
 ---
 
@@ -127,7 +132,7 @@ To make the birthday gift presentation unforgettable, you can print a physical Q
 
 1. Copy your live GitHub Pages URL (e.g. `https://<your-username>.github.io/<your-repo>/`).
 2. Go to any free, high-resolution QR generator (such as [qrserver.com](https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=https://your-url)).
-3. Download the high-resolution PNG QR code.
+3. Download the high-resolution PNG QR code (or use the included [webqr.png](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/webqr.png)).
 4. Print it on a card with the title:  
    *“Scan with your phone to unbox your surprise, Queen Nishika 👑”*
 
@@ -137,8 +142,41 @@ To make the birthday gift presentation unforgettable, you can print a physical Q
 
 - [x] **`.nojekyll` File Present**: Ensures GitHub Pages bypasses Jekyll and serves raw static HTML5/CSS3/ES6 files directly.
 - [x] **Relative Path Integrity**: All styles, scripts, canvas particles, and sub-pages resolve cleanly on repository subpaths (`/<repo-name>/`).
-- [x] **Automated Date Gate**: Coming Soon mode is active until September 20; full celebration is live afterwards.
+- [x] **Strict Passcode Security**: Passcodes restricted to `22092000` and `2912`.
 - [x] **Free Global SSL**: Enforced by GitHub automatically.
+
+---
+
+## 6. ☁️ Google Apps Script (`Code.gs`) Web App Deployment & Cloud Sync
+
+To connect your website's **Image & Video uploads**, **Live Wish Wall**, and **Starry Time Capsule** directly to your private Google Sheet & Google Drive:
+
+### Step 1: Open Google Sheets & Apps Script Editor
+1. Create or open your Google Spreadsheet (e.g. named *"Eternal Love Wishes — Queen Nishika"*).
+2. Click **Extensions** $\rightarrow$ **Apps Script** in the top menu bar.
+
+### Step 2: Paste `Code.gs`
+1. Delete any default placeholder code in the script editor.
+2. Open [`Code.gs`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/Code.gs) from this project, copy all contents, and paste into the editor.
+3. Click the 💾 **Save project** button (or `Ctrl + S`).
+
+### Step 3: Deploy as Web App
+1. Click the blue **Deploy** button (top right) $\rightarrow$ **New deployment** (or **Manage deployments** $\rightarrow$ **Edit** $\rightarrow$ **New version** if updating).
+2. Select type: **Web app** (click the gear icon ⚙️ if not already selected).
+3. Set the following required settings:
+   - **Description**: `Eternal Love Media & Wishes Hub v2.7`
+   - **Execute as**: `Me (your_email@gmail.com)`
+   - **Who has access**: `Anyone` *(Crucial: allows visitors from GitHub Pages to send wishes and upload photos/videos without needing a Google login)*
+4. Click **Deploy**.
+5. When prompted, click **Authorize access**, select your Google account, click *Advanced* $\rightarrow$ *Go to Eternal Love (unsafe)*, and click **Allow**.
+6. Copy the generated **Web App URL** (e.g. `https://script.google.com/macros/s/AKfycb.../exec`).
+
+### Step 4: Link Web App URL to `index.html` & `script.js`
+- Verify that `GOOGLE_SHEET_URL` in [`index.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html) matches your Web App URL.
+- All submitted images, videos, and wishes will now automatically:
+  1. Save uploaded photo and video files to your Google Drive folder (`"Eternal Love Wishes (Queen Nishika)"`).
+  2. Log structured rows to the `"Wishes"`, `"Photos"`, and `"Videos"` sheet tabs.
+  3. Stream live playable video players and full-screen HD Lightbox previews back to any visitor on the website!
 
 ---
 

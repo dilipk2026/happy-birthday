@@ -5327,10 +5327,59 @@ h1, h2, h3, h4 {
   transform: translateY(-1px);
 }
 
-.filter-rose img { filter: sepia(0.2) saturate(1.4) hue-rotate(320deg); }
-.filter-golden img { filter: sepia(0.3) saturate(1.6) brightness(1.05); }
-.filter-vintage img { filter: contrast(1.1) brightness(0.9) sepia(0.4); }
-.filter-bw img { filter: grayscale(1) contrast(1.2); }
+/* Polaroid Romantic Filters (Applied to Grid or Individual Cards) */
+.polaroid-grid.filter-rose .polaroid-photo,
+.polaroid-grid.filter-rose img,
+.polaroid-grid.filter-rose .photo-sweet,
+.polaroid-grid.filter-rose .photo-love,
+.polaroid-grid.filter-rose .photo-magic,
+.polaroid-grid.filter-rose .photo-art-illustration,
+.polaroid-card.filter-rose .polaroid-photo,
+.polaroid-card.filter-rose img {
+  filter: sepia(0.28) saturate(1.6) hue-rotate(320deg) brightness(1.03) !important;
+}
+
+.polaroid-grid.filter-golden .polaroid-photo,
+.polaroid-grid.filter-golden img,
+.polaroid-grid.filter-golden .photo-sweet,
+.polaroid-grid.filter-golden .photo-love,
+.polaroid-grid.filter-golden .photo-magic,
+.polaroid-grid.filter-golden .photo-art-illustration,
+.polaroid-card.filter-golden .polaroid-photo,
+.polaroid-card.filter-golden img {
+  filter: sepia(0.42) saturate(1.75) brightness(1.08) hue-rotate(15deg) !important;
+}
+
+.polaroid-grid.filter-vintage .polaroid-photo,
+.polaroid-grid.filter-vintage img,
+.polaroid-grid.filter-vintage .photo-sweet,
+.polaroid-grid.filter-vintage .photo-love,
+.polaroid-grid.filter-vintage .photo-magic,
+.polaroid-grid.filter-vintage .photo-art-illustration,
+.polaroid-card.filter-vintage .polaroid-photo,
+.polaroid-card.filter-vintage img {
+  filter: contrast(1.18) brightness(0.92) sepia(0.55) hue-rotate(-8deg) !important;
+}
+
+.polaroid-grid.filter-bw .polaroid-photo,
+.polaroid-grid.filter-bw img,
+.polaroid-grid.filter-bw .photo-sweet,
+.polaroid-grid.filter-bw .photo-love,
+.polaroid-grid.filter-bw .photo-magic,
+.polaroid-grid.filter-bw .photo-art-illustration,
+.polaroid-card.filter-bw .polaroid-photo,
+.polaroid-card.filter-bw img {
+  filter: grayscale(1) contrast(1.22) brightness(1.04) !important;
+}
+
+.polaroid-photo,
+.polaroid-photo img,
+.photo-sweet,
+.photo-love,
+.photo-magic,
+.photo-art-illustration {
+  transition: filter 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease;
+}
 
 .polaroid-grid,
 .memories-grid {
@@ -10153,6 +10202,32 @@ img, svg, canvas, video {
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 45px rgba(255, 64, 129, 0.28);
   position: relative;
   overflow: hidden;
+}
+
+.passcode-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffd700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.passcode-close-btn:hover {
+  background: rgba(255, 64, 129, 0.3);
+  border-color: #ff4081;
+  color: #ffffff;
+  transform: scale(1.1) rotate(90deg);
 }
 
 .page-passcode-card::before {

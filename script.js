@@ -384,6 +384,10 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (e) {}
     }
 
+    playChime(frequency = 523.25, duration = 0.2, type = 'triangle') {
+      this.playTone(frequency, duration, type, 0.15);
+    }
+
     playStep() {
       if (!this.isPlaying) return;
       if (state.musicMode === 'piano') {
@@ -902,62 +906,41 @@ document.addEventListener('DOMContentLoaded', () => {
   let isPagePasscodeVerifying = false;
   let pagePasscodeErrorTimer = null;
 
-  const VALID_PASSCODES = [
-    '22092000', '2209', '2912', '29122025', '29122026',
-    '2000', '2025', '2026', '220900', '291225', '1229', '0922',
-    '09222000', '20000922', '20251229', '0509', '0905'
-  ];
+  const VALID_PASSCODES = ['2912', '22092000'];
 
   function isPasscodeMatch(pin) {
     if (!pin) return false;
     const cleanDigits = String(pin).replace(/[^0-9]/g, '');
-    const cleanAlpha = String(pin).trim().toLowerCase();
-    if (VALID_PASSCODES.includes(cleanDigits)) return true;
-    if (cleanAlpha === 'nishika' || cleanAlpha === 'dilip' || cleanAlpha === 'queen') return true;
-    return false;
+    return cleanDigits === '2912' || cleanDigits === '22092000';
   }
 
   function checkPasscodeAuth() {
-    let isAuthed = false;
     try {
-      const urlP = typeof URLSearchParams !== 'undefined' ? new URLSearchParams(window.location.search || '') : null;
-      const passedPass = urlP ? (urlP.get('passcode') || urlP.get('pwd') || urlP.get('pin')) : null;
-      const isVipParam = urlP && (urlP.get('vip') === 'unlocked' || urlP.get('preview') === 'true');
+      // Purge stale passcode tokens so Welcome Screen and lockscreen verification show reliably on every visit/reload
+      localStorage.removeItem('eternal_love_passcode_auth');
+      sessionStorage.removeItem('eternal_love_passcode_auth');
+    } catch(e) {}
 
-      if (isPasscodeMatch(passedPass) || isVipParam) {
-        sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
-        sessionStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
-        sessionStorage.setItem('eternal_love_vip_unlocked', 'true');
-        sessionStorage.setItem('birthday_vip_unlocked', 'true');
-        localStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
-        localStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
-        localStorage.setItem('eternal_love_vip_unlocked', 'true');
-        localStorage.setItem('birthday_vip_unlocked', 'true');
-        localStorage.setItem('queen_vip_unlocked', 'true');
-        localStorage.setItem('queen_authenticated', 'true');
-        isAuthed = true;
-      } else {
-        isAuthed = sessionStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
-                   sessionStorage.getItem('eternal_love_vip_session') === 'authenticated_2912' ||
-                   sessionStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
-                   sessionStorage.getItem('birthday_vip_unlocked') === 'true' ||
-                   localStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
-                   localStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
-                   localStorage.getItem('birthday_vip_unlocked') === 'true' ||
-                   localStorage.getItem('queen_vip_unlocked') === 'true' ||
-                   localStorage.getItem('queen_authenticated') === 'true';
-      }
-    } catch(e) {
-      isAuthed = false;
-    }
-
-    if (isAuthed && pagePasscodeOverlay) {
-      pagePasscodeOverlay.classList.add('unlocked', 'fade-out');
+    // Stage 1: Always display the surprise gift unboxing Welcome Screen first on visit/reload
+    if (pagePasscodeOverlay) {
+      pagePasscodeOverlay.classList.remove('unlocked', 'fade-out');
       pagePasscodeOverlay.style.display = 'none';
-      if (mainApp) {
-        mainApp.style.display = 'block';
-        mainApp.classList.remove('hidden');
-      }
+      pagePasscodeOverlay.style.opacity = '0';
+      pagePasscodeOverlay.style.visibility = 'hidden';
+      pagePasscodeOverlay.style.pointerEvents = 'none';
+    }
+    if (introOverlay) {
+      introOverlay.classList.remove('fade-out', 'unlocked', 'hidden');
+      introOverlay.style.display = 'flex';
+      introOverlay.style.opacity = '1';
+      introOverlay.style.visibility = 'visible';
+      introOverlay.style.pointerEvents = 'auto';
+    }
+    if (mainApp) {
+      mainApp.classList.add('hidden');
+      mainApp.style.display = 'none';
+      mainApp.style.opacity = '0';
+      mainApp.style.visibility = 'hidden';
     }
   }
 
@@ -1026,43 +1009,27 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeof burstConfetti === 'function') burstConfetti(window.innerWidth / 2, window.innerHeight / 2, 80);
 
       try {
-        sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
-        sessionStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
-        sessionStorage.setItem('eternal_love_vip_unlocked', 'true');
-        sessionStorage.setItem('birthday_vip_unlocked', 'true');
-        localStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
-        localStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
-        localStorage.setItem('eternal_love_vip_unlocked', 'true');
-        localStorage.setItem('birthday_vip_unlocked', 'true');
-        localStorage.setItem('queen_vip_unlocked', 'true');
-        localStorage.setItem('queen_authenticated', 'true');
+        sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_' + rawVal);
+        sessionStorage.setItem('birthday_surprise_unlocked', 'true');
+        localStorage.removeItem('eternal_love_passcode_auth');
       } catch(e) {}
 
       setTimeout(() => {
         if (pagePasscodeOverlay) {
-          pagePasscodeOverlay.classList.add('unlocked', 'fade-out');
+          pagePasscodeOverlay.classList.add('unlocked', 'fade-out', 'hidden');
           pagePasscodeOverlay.style.display = 'none';
         }
-        if (introOverlay) {
-          introOverlay.classList.add('fade-out', 'unlocked');
-          introOverlay.style.display = 'none';
-        }
-        if (mainApp) {
-          mainApp.style.display = 'block';
-          mainApp.classList.remove('hidden');
-        }
-        showToast("👑 Royal Passcode Verified! Welcome Queen Nishika ✨");
         if (typeof unboxBirthdaySurprise === 'function') {
           unboxBirthdaySurprise(true);
         }
         isPagePasscodeVerifying = false;
-      }, 250);
+      }, 300);
     } else {
       isPagePasscodeVerifying = false;
       // Failure State
       if (pagePasscodeFeedback) {
         pagePasscodeFeedback.className = 'passcode-feedback error';
-        pagePasscodeFeedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Incorrect passcode! Hint: Queen Nishika\'s Birthday in DDMMYYYY format 💕';
+        pagePasscodeFeedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Incorrect passcode! Hint: Queen Nishika\'s Date of Birth in DDMMYYYY format 💕';
       }
 
       const card = document.querySelector('.page-passcode-card');
@@ -1116,7 +1083,7 @@ document.addEventListener('DOMContentLoaded', () => {
           audioSynth.playChime(523.25 + (val.length * 35), 0.1);
         }
       }
-      if (isPasscodeMatch(val) || val.length === 8) {
+      if (val.length === 8) {
         verifyPagePasscode();
       }
     });
@@ -1141,9 +1108,6 @@ document.addEventListener('DOMContentLoaded', () => {
           if (pagePasscodeFeedback) {
             pagePasscodeFeedback.className = 'passcode-feedback';
             pagePasscodeFeedback.innerHTML = '';
-          }
-          if (isPasscodeMatch(digit)) {
-            verifyPagePasscode();
           }
           return;
         }
@@ -1191,6 +1155,25 @@ document.addEventListener('DOMContentLoaded', () => {
     pagePasscodeSubmitBtn.addEventListener('click', verifyPagePasscode);
   }
 
+  const closePagePasscodeBtn = document.getElementById('closePagePasscodeBtn');
+  function closePasscodeOverlay() {
+    if (pagePasscodeOverlay) {
+      pagePasscodeOverlay.classList.add('fade-out');
+      setTimeout(() => {
+        if (pagePasscodeOverlay) {
+          pagePasscodeOverlay.style.display = 'none';
+          pagePasscodeOverlay.classList.remove('fade-out');
+        }
+      }, 200);
+    }
+  }
+  if (closePagePasscodeBtn) closePagePasscodeBtn.addEventListener('click', closePasscodeOverlay);
+  if (pagePasscodeOverlay) {
+    pagePasscodeOverlay.addEventListener('click', (e) => {
+      if (e.target === pagePasscodeOverlay) closePasscodeOverlay();
+    });
+  }
+
   if (togglePasscodeVisibilityBtn && pagePasscodeInput && passcodeEyeIcon) {
     togglePasscodeVisibilityBtn.addEventListener('click', () => {
       if (pagePasscodeInput.type === 'password') {
@@ -1209,6 +1192,7 @@ document.addEventListener('DOMContentLoaded', () => {
       audioSynth.playChime(659.25, 0.2);
     });
   }
+
 
   // Glass Keypad click handler
   if (pagePasscodeKeypad && pagePasscodeInput) {
@@ -1243,7 +1227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pagePasscodeFeedback.className = 'passcode-feedback';
         pagePasscodeFeedback.innerHTML = '';
       }
-      if (isPasscodeMatch(pagePasscodeInput.value) || pagePasscodeInput.value.length === 8) {
+      if (pagePasscodeInput.value.length === 8) {
         verifyPagePasscode();
       }
     });
@@ -1344,33 +1328,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }, delay);
   }
 
+  function handleGiftBoxClick(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+
+    const pOverlay = pagePasscodeOverlay || document.getElementById('pagePasscodeOverlay');
+    if (pOverlay) {
+      pOverlay.classList.remove('unlocked', 'fade-out', 'hidden');
+      pOverlay.style.display = 'flex';
+      pOverlay.style.opacity = '1';
+      pOverlay.style.visibility = 'visible';
+      pOverlay.style.pointerEvents = 'auto';
+      if (pagePasscodeInput) {
+        pagePasscodeInput.value = '';
+        updatePasscodeDots('');
+        resetPagePasscodeError();
+        setTimeout(() => pagePasscodeInput.focus(), 150);
+      }
+      if (audioSynth && audioSynth.playChime) {
+        audioSynth.playChime(659.25, 0.2);
+      }
+      if (pagePasscodeFeedback) {
+        pagePasscodeFeedback.className = 'passcode-feedback';
+        pagePasscodeFeedback.innerHTML = '✨ Enter Queen Nishika\'s Royal Birthday Passcode (22092000) to open your surprise!';
+      }
+      return;
+    }
+
+    unboxBirthdaySurprise(false);
+  }
+
   // Expose globally for inline and external triggers
+  window.handleGiftBoxClick = handleGiftBoxClick;
   window.unboxBirthdaySurprise = unboxBirthdaySurprise;
 
   if (giftBoxTrigger) {
     giftBoxTrigger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      unboxBirthdaySurprise(false);
+      handleGiftBoxClick(e);
     });
   }
   if (openGiftBtn) {
     openGiftBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      unboxBirthdaySurprise(false);
+      handleGiftBoxClick(e);
     });
   }
   const introContentElem = document.querySelector('.intro-content');
   if (introContentElem) {
     introContentElem.addEventListener('click', (e) => {
       if (!e.target.closest('#openGiftBtn') && !e.target.closest('#giftBoxTrigger')) {
-        unboxBirthdaySurprise(false);
+        handleGiftBoxClick(e);
       }
     });
   }
   if (introOverlay) {
     introOverlay.addEventListener('click', (e) => {
       if (e.target === introOverlay && !isSurpriseUnboxing) {
-        unboxBirthdaySurprise(false);
+        handleGiftBoxClick(e);
       }
     });
   }
@@ -1652,14 +1664,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (submitPasscodeBtn && vaultPasscodeInput) {
     submitPasscodeBtn.addEventListener('click', () => {
-      const pin = vaultPasscodeInput.value.trim();
-      const dateDigits = (state.startDate || '2025-12-29').replace(/\D/g, '');
-      const validPins = ['22092000', '2912', '1229', '2025', '0509', '0905', dateDigits.slice(-4), dateDigits.slice(0, 4)];
-      if (validPins.includes(pin) || pin === '22092000' || pin === '2912' || pin.length >= 4) {
+      const pin = vaultPasscodeInput.value.trim().replace(/\D/g, '');
+      if (pin === '2912' || pin === '22092000') {
         unlockWishVault();
       } else {
         audioSynth.playPopSound();
-        showToast("Incorrect Passcode! Hint: Queen Nishika's Date of Birth (DDMMYYYY) or tap Queen's Heart Key below 💕");
+        showToast("Incorrect Passcode! Hint: Enter 2912 or 22092000 💕");
+      }
+    });
+
+    vaultPasscodeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        submitPasscodeBtn.click();
       }
     });
   }
@@ -4388,13 +4405,24 @@ const romanticReasons = [
   let currentActiveFilter = 'none';
 
   // Filter selection
-  document.querySelectorAll('.filter-chip').forEach(chip => {
+  const photoFilterChips = document.querySelectorAll('.photo-filter-chips .filter-chip');
+  photoFilterChips.forEach(chip => {
     chip.addEventListener('click', () => {
-      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      photoFilterChips.forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
-      currentActiveFilter = chip.getAttribute('data-filter');
-      audioSynth.playPopSound();
-      showToast(`Filter selected: ${chip.textContent.trim()} 📸`);
+      const filterType = chip.getAttribute('data-filter') || 'none';
+      currentActiveFilter = filterType;
+
+      if (polaroidGrid) {
+        polaroidGrid.classList.remove('filter-rose', 'filter-golden', 'filter-vintage', 'filter-bw');
+        if (filterType && filterType !== 'none') {
+          polaroidGrid.classList.add(filterType);
+        }
+      }
+      if (audioSynth && audioSynth.playPopSound) audioSynth.playPopSound();
+      if (typeof showToast === 'function') {
+        showToast(`Filter applied: ${chip.textContent.trim()} 📸`);
+      }
     });
   });
 
@@ -7327,7 +7355,7 @@ const romanticReasons = [
     if (introOverlay && introOverlay.style.display !== 'none' && !introOverlay.classList.contains('fade-out')) {
       if (e.key === 'Enter' || e.code === 'Space') {
         e.preventDefault();
-        unboxBirthdaySurprise(false);
+        handleGiftBoxClick(e);
         return;
       }
     }

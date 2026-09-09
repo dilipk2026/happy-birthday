@@ -1,6 +1,6 @@
 {
-  "total": 45,
-  "passed": 45,
+  "total": 49,
+  "passed": 49,
   "failed": 0,
   "suites": [
     {
@@ -44,7 +44,7 @@
         {
           "testName": "index.html has valid luxury title",
           "passed": true,
-          "details": "Title is: \"Eternal Love ✨ Coming Soon — Launching September 21\"",
+          "details": "Title is: \"Eternal Love ✨ Queen Nishika — Launching September 21\"",
           "bugInfo": null
         },
         {
@@ -68,7 +68,7 @@
         {
           "testName": "Virtual Keypad rejects invalid PIN \"0000\" with error feedback and shake animation",
           "passed": true,
-          "details": "Feedback: \" Incorrect VIP code. Check hint for anniversary or birthday digits 💕\"",
+          "details": "Feedback: \" Incorrect VIP PIN. Check hint for the day we first met clue 💕\"",
           "bugInfo": null
         },
         {
@@ -154,13 +154,37 @@
       "name": "Suite 4: Main Celebration Arena",
       "tests": [
         {
-          "testName": "Intro Unboxing screen (#introOverlay) is rendered upon first landing",
+          "testName": "Royal Birthday Passcode Overlay (#pagePasscodeOverlay) exists with \"Open Birthday Surprise\" interface",
           "passed": true,
-          "details": "Intro visible: true",
+          "details": "Passcode overlay verified",
           "bugInfo": null
         },
         {
-          "testName": "Main Celebration Arena (#mainApp) is active and visible",
+          "testName": "Passcode Keypad rejects invalid passcode with error feedback and shake animation",
+          "passed": true,
+          "details": "Invalid passcode error state verified",
+          "bugInfo": null
+        },
+        {
+          "testName": "Passcode Hint toggle reveals romantic birthday clue (DDMMYYYY September 2000)",
+          "passed": true,
+          "details": "Hint toggle verified",
+          "bugInfo": null
+        },
+        {
+          "testName": "Passcode Keypad validates 8-digit Birthday Passcode (22092000) and unlocks celebration overlay",
+          "passed": true,
+          "details": "Passcode 22092000 accepted",
+          "bugInfo": null
+        },
+        {
+          "testName": "Intro 3D Gift Box Unboxing screen (#introOverlay) exists with \"Open My Birthday Surprise\" CTA",
+          "passed": true,
+          "details": "Intro present: true",
+          "bugInfo": null
+        },
+        {
+          "testName": "Main Celebration Arena (#mainApp) is active and revealed upon unboxing",
           "passed": true,
           "details": "Main app container verified",
           "bugInfo": null

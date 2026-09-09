@@ -6,6 +6,7 @@ DEVELOPER CONTRIBUTION GUIDE & ENGINEERING STANDARDS
 Project: Eternal Love — Ultra-Luxurious Romantic Celebration Web Application
 Celebrant: Queen Nishika 👑 | Dedicated with Infinite Love by: Dilip 💖
 Standard: Clean Vanilla JS (ES6+), Vanilla CSS3 Tokens & Semantic HTML5
+Test Suite: Automated Playwright QA Matrix (playwright-test-runner.js)
 ===============================================================================
 ```
 
@@ -25,17 +26,18 @@ Standard: Clean Vanilla JS (ES6+), Vanilla CSS3 Tokens & Semantic HTML5
    - [6.2 Adding New Love Reasons to the Jar](#62-adding-new-love-reasons-to-the-jar)
    - [6.3 Adding New Sound Synth Melodies](#63-adding-new-sound-synth-melodies)
    - [6.4 Adding Love Coupons](#64-adding-love-coupons)
-7. [🧪 7. Testing & Quality Assurance](#7-testing--quality-assurance)
+7. [🧪 7. Automated Testing & Quality Assurance](#7-automated-testing--quality-assurance)
 8. [📝 8. Git Commit & Release Guidelines](#8-git-commit--release-guidelines)
 
 ---
 
 ## 1. 🌟 Core Engineering Principles
 
-1. **Zero External Framework Dependencies**: We write pure, native Vanilla HTML5, CSS3, and ES6+ JavaScript. Do not introduce React, Vue, jQuery, Tailwind, or external bundle tooling without explicit consensus.
+1. **Zero External Framework Dependencies**: We write pure, native Vanilla HTML5, CSS3, and ES6+ JavaScript. Do not introduce React, Vue, jQuery, Tailwind, or complex build bundlers without consensus.
 2. **60 FPS Visual Elegance**: Animations, canvas particles, and 3D transforms must run silky smooth without layout thrashing or stutter.
-3. **Mobile-First Responsiveness**: Every single interactive element must look breathtaking and fit with 0px horizontal overflow on viewports from 320px up to 4K displays.
-4. **Resilient Offline First**: The app must function smoothly even when completely disconnected from the internet.
+3. **Mobile-First Responsiveness**: Every interactive element must look breathtaking and fit with 0px horizontal overflow on viewports from 320px up to 4K displays.
+4. **Strict Passcode Integrity**: Passcodes are strictly locked to **`22092000`** (DOB) and **`2912`** (Anniversary PIN).
+5. **Resilient Offline First**: The app must function smoothly even when disconnected from the network.
 
 ---
 
@@ -43,7 +45,8 @@ Standard: Clean Vanilla JS (ES6+), Vanilla CSS3 Tokens & Semantic HTML5
 
 ### Prerequisites
 * Any modern web browser (Google Chrome, Microsoft Edge, Firefox, Safari).
-* A lightweight local HTTP server (such as VS Code Live Server, Python HTTP server, or Node.js).
+* Node.js v16+ (for running Playwright test harness).
+* A lightweight local HTTP server.
 
 ### Step-by-Step Setup
 1. **Clone the Repository**:
@@ -61,8 +64,6 @@ Standard: Clean Vanilla JS (ES6+), Vanilla CSS3 Tokens & Semantic HTML5
      ```bash
      npx serve . -p 8080
      ```
-   * **Using VS Code**:
-     Install the **Live Server** extension and click **"Go Live"** in the bottom status bar.
 
 3. **Open in Browser**:
    Navigate to `http://localhost:8080` to experience the celebration.
@@ -72,25 +73,17 @@ Standard: Clean Vanilla JS (ES6+), Vanilla CSS3 Tokens & Semantic HTML5
 ## 3. 📁 Project Structure & Code Layout
 
 ```text
-├── index.html                   # Master Semantic HTML5 Presentation Shell
+├── index.html                   # Pre-Launch Countdown & Early Birthday Blessing Media Portal
+├── main.html                    # Main Celebration Arena (Welcome Screen, Passcode Lock, 25 Stages)
 ├── style.css                    # Luxury CSS Design System, Themes & Keyframe Animations
 ├── script.js                    # Core Interactive Engine, Web Audio Synth, Canvas Particles
-├── Code.gs                      # Google Apps Script Serverless Backend Webhook Engine
-├── netlify.toml                 # Netlify Edge Routing & Header Optimization Config
-├── vercel.json                  # Vercel Global Edge CDN & Cache-Control Configuration
-├── screenshots/                 # High-Definition Showcase & Multi-Device Previews
+├── Code.gs                      # Google Apps Script Serverless Backend Webhook Engine (v5.0)
+├── playwright-test-runner.js    # Playwright Automated QA Test Suite (49/49 Assertions Passed)
+├── playwright_test_results.json # Automated test results data log
+├── favicon.svg                  # Scalable SVG Crown/Heart Vector Icon
+├── webqr.png                    # Instant Mobile Access QR Code
 ├── README.md                    # Master Project Showcase & Quick Start Guide
-├── USER_GUIDE.md                # Interactive User Guide & Celebration Handbook
-├── ARCHITECTURE_AND_PROCUREMENT.md # System Architecture & Zero-Cost Procurement Blueprint
-├── API_DOCUMENTATION.md         # Serverless API Specification & Payload Models
-├── SOFTWARE_REQUIREMENTS_SPECIFICATION.md # IEEE-830 Compliant Functional Requirements
-├── SECURITY_AND_PRIVACY_POLICY.md # Security Threat Model & Zero-Tracking Privacy Policy
-├── TESTING_REPORT.md            # Multi-Device Verification & Automation Test Report
-├── FAQ_AND_TROUBLESHOOTING.md   # Troubleshooting Guide & Operational Knowledge Base
-├── MAINTENANCE_AND_OPERATIONS.md # Annual Runbook, Backup & Long-Term Archival Guide
-├── CONTRIBUTING.md              # Contributor Workflow & Coding Standards (This File)
-├── CHANGELOG.md                 # Semantic Release History & Milestone Changelog
-└── DOCUMENTATION_INDEX.md       # Master Documentation Directory & Navigation Map
+└── documentation/               # Complete 14-Document Architecture & Specification Suite
 ```
 
 ---
@@ -117,25 +110,19 @@ All styles must utilize CSS custom properties defined in `:root` or theme classe
 }
 ```
 
-### CSS Guidelines:
-* Use `rem` and `em` for scalable typography.
-* Ensure all modals and containers use `max-width: 95vw` and `box-sizing: border-box` to prevent horizontal scrolling.
-* Use `backdrop-filter: blur(12px)` for glassmorphic elements with solid color fallback.
-
 ---
 
 ## 5. ⚡ JavaScript Architecture & Style Guide
 
-* **Event Delegation**: Attach event listeners at parent containers when handling dynamic lists (e.g., love reasons, bucket list checkboxes).
-* **Async/Await**: Use modern `async/await` syntax for all asynchronous operations and network calls.
-* **Defensive DOM Querying**: Always verify DOM elements exist before attaching listeners or mutating attributes:
+* **Defensive DOM Querying**: Always verify elements exist before attaching listeners:
   ```javascript
   const btn = document.getElementById('myButton');
   if (btn) {
     btn.addEventListener('click', handleAction);
   }
   ```
-* **State Immutability**: Mutate the global `state` object predictably and always follow with `saveState()`.
+* **HTML Sanitization**: Always wrap dynamic user strings with `escapeHtml(str)` before DOM injection.
+* **Strict Passcode Matching**: Use `isPasscodeMatch(pin)` comparing strictly to `'2912'` and `'22092000'`.
 
 ---
 
@@ -151,37 +138,29 @@ All styles must utilize CSS custom properties defined in `:root` or theme classe
      --primary-pink: #00f5d4;
    }
    ```
-2. Open `index.html` and add a new theme dot option in the Theme Switcher.
+2. Open `main.html` and add a new theme option in the Theme Switcher.
 
 ### 6.2 Adding New Love Reasons to the Jar
-Open `script.js` and append your reason object to the `REASONS_DATABASE` array:
+Open `script.js` and append your reason object to `REASONS_DATABASE`:
 ```javascript
 {
-  category: 'romance', // or 'queen', 'little-things', 'brilliance', 'memories'
+  category: 'romance',
   text: "The way your eyes light up when you talk about your passions.",
   author: "Dilip 💖"
 }
 ```
 
-### 6.3 Adding New Sound Synth Melodies
-In `script.js`, extend the `playSynthMelody()` frequency array:
-```javascript
-const myNewMelody = [
-  { note: 'C4', duration: 0.4 },
-  { note: 'E4', duration: 0.4 },
-  { note: 'G4', duration: 0.8 }
-];
-```
-
 ---
 
-## 7. 🧪 Testing & Quality Assurance
+## 7. 🧪 Automated Testing & Quality Assurance
 
-Before submitting pull requests or committing new features:
-1. **Responsive Matrix Verification**: Test the viewport across 320px, 375px, 768px, 1366px, and 1920px. Confirm horizontal overflow is exactly `0px`.
-2. **Audio Synth Verification**: Confirm audio initializes without throwing `AudioContext` errors.
-3. **Console Hygiene**: Ensure 0 uncaught errors or unhandled promise rejections appear in DevTools.
-4. **Cloud Integration Check**: Ensure test wish submissions deliver successfully to the Google Sheet.
+Before committing changes, execute the automated Playwright test suite:
+
+```bash
+node playwright-test-runner.js
+```
+
+Ensure all 49 assertions pass with **0 console errors**.
 
 ---
 
@@ -192,13 +171,7 @@ We follow **Conventional Commits**:
 * `fix:` A bug fix, layout adjustment, or responsive repair.
 * `docs:` Documentation updates or additions.
 * `style:` CSS formatting, theme refinement, or visual polish.
-* `refactor:` Code refactoring with no functional changes.
-* `perf:` Performance optimization (particle throttling, image compression).
-
-### Example Commit:
-```bash
-git commit -m "feat(synth): add acoustic guitar arpeggio melody mode"
-```
+* `test:` Automated test suite updates.
 
 ---
 

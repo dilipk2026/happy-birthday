@@ -5,145 +5,145 @@
 OPERATIONAL FAQ, DIAGNOSTIC PROCEDURES & TROUBLESHOOTING GUIDE
 Project: Eternal Love — Ultra-Luxurious Romantic Birthday Celebration
 Celebrant: Queen Nishika 👑 | Dedicated with Infinite Love by: Dilip 💖
+Birthday: September 22nd | Relationship Milestone: December 29, 2025
+Passcodes: 22092000 (DOB DDMMYYYY) & 2912 (VIP Anniversary DDMM)
 Support Classification: Level 1-3 Diagnostic Runbook
 ===============================================================================
 ```
 
-> **Welcome to the Troubleshooting Guide & Knowledge Base**. If you experience any audio playback issues, Google Sheet synchronization delays, display quirks on older devices, or have questions about how features work, refer to the verified diagnostic steps below.
+> **Welcome to the Troubleshooting Guide & Knowledge Base**. If you experience any audio playback issues, Google Sheet synchronization questions, passcode inquiries, or display quirks on specific devices, refer to the verified diagnostic steps below.
 
 ---
 
 ## 📑 Table of Contents
 
-1. [🎵 Audio & Synthesizer Issues](#1--audio--synthesizer-issues)
-   - [1.1 Why isn't music playing automatically when the page opens?](#11-why-isnt-music-playing-automatically-when-the-page-opens)
-   - [1.2 Audio sounds distorted or stuttering on mobile](#12-audio-sounds-distorted-or-stuttering-on-mobile)
-2. [☁️ Google Sheets & Cloud Sync Issues](#2-️-google-sheets--cloud-sync-issues)
-   - [2.1 Submitted wish doesn't show up in my Google Sheet immediately](#21-submitted-wish-doesnt-show-up-in-my-google-sheet-immediately)
-   - [2.2 Getting an error when deploying the Google Apps Script Web App](#22-getting-an-error-when-deploying-the-google-apps-script-web-app)
-3. [📸 Photo Upload & Google Drive Issues](#3--photo-upload--google-drive-issues)
-   - [3.1 Memory photo fails to upload or takes too long](#31-memory-photo-fails-to-upload-or-takes-too-long)
-   - [3.2 Photos are not appearing in the Google Drive folder](#32-photos-are-not-appearing-in-the-google-drive-folder)
-4. [🗝️ Secret Vault & Access Issues](#4-️-secret-vault--access-issues)
-   - [4.1 What is the passcode for Queen's Secret Vault?](#41-what-is-the-passcode-for-queens-secret-vault)
-   - [4.2 How does the Queen's Heart Key bypass work?](#42-how-does-the-queens-heart-key-bypass-work)
-5. [📱 Mobile Display & Browser Layout Issues](#5--mobile-display--browser-layout-issues)
-   - [5.1 The navigation bar covers the top of the section when scrolling](#51-the-navigation-bar-covers-the-top-of-the-section-when-scrolling)
-   - [5.2 Horizontal scrolling occurs on my screen](#52-horizontal-scrolling-occurs-on-my-screen)
+1. [🗝️ Passcodes & Authentication](#1-️-passcodes--authentication)
+   - [1.1 What are the valid passcodes to unlock the celebration?](#11-what-are-the-valid-passcodes-to-unlock-the-celebration)
+   - [1.2 Why did I get a shake animation and error chime when entering my PIN?](#12-why-did-i-get-a-shake-animation-and-error-chime-when-entering-my-pin)
+   - [1.3 How does the Welcome Screen and 3D Unboxing work on `main.html`?](#13-how-does-the-welcome-screen-and-3d-unboxing-work-on-mainhtml)
+2. [🎵 Audio & Synthesizer Issues](#2--audio--synthesizer-issues)
+   - [2.1 Why isn't music playing automatically when the page opens?](#21-why-isnt-music-playing-automatically-when-the-page-opens)
+   - [2.2 Audio sounds distorted or stuttering on mobile](#22-audio-sounds-distorted-or-stuttering-on-mobile)
+3. [💌 Early Birthday Blessings & Media Uploads](#3--early-birthday-blessings--media-uploads)
+   - [3.1 How do photo and video attachments work on the Sticky Wall?](#31-how-do-photo-and-video-attachments-work-on-the-sticky-wall)
+   - [3.2 Photos take long to upload or fail on slow mobile connections](#32-photos-take-long-to-upload-or-fail-on-slow-mobile-connections)
+   - [3.3 How do I view photos and videos in full-screen?](#33-how-do-i-view-photos-and-videos-in-full-screen)
+4. [☁️ Google Sheets & Cloud Sync Issues](#4-️-google-sheets--cloud-sync-issues)
+   - [4.1 Submitted wish doesn't show up in my Google Sheet immediately](#41-submitted-wish-doesnt-show-up-in-my-google-sheet-immediately)
+   - [4.2 Where are uploaded photos and videos stored in Google Drive?](#42-where-are-uploaded-photos-and-videos-stored-in-google-drive)
+5. [📱 Mobile Display & Browser Layout](#5--mobile-display--browser-layout)
+   - [5.1 Is the website responsive on all screen sizes?](#51-is-the-website-responsive-on-all-screen-sizes)
 6. [💾 Local Storage, State Reset & Privacy](#6--local-storage-state-reset--privacy)
    - [6.1 How do I reset the celebration to fresh state?](#61-how-do-i-reset-the-celebration-to-fresh-state)
    - [6.2 Will my data be lost if I close my browser tab?](#62-will-my-data-be-lost-if-i-close-my-browser-tab)
 
 ---
 
-## 1. 🎵 Audio & Synthesizer Issues
+## 1. 🗝️ Passcodes & Authentication
 
-### 1.1 Why isn't music playing automatically when the page opens?
-* **Root Cause**: All modern browsers (Chrome, Safari, iOS, Edge, Firefox) enforce strict **Autoplay Policies**. They prohibit web applications from generating audio until the user has performed at least one physical gesture (click, tap, or keypress).
+### 1.1 What are the valid passcodes to unlock the celebration?
+Across the entire platform, only **two specific passcodes** are authorized:
+1. **`22092000`** — Queen Nishika's 8-digit Date of Birth: 22nd September 2000 in `DDMMYYYY` format.
+2. **`2912`** — VIP Anniversary PIN: 29th December in `DDMM` format.
+
+---
+
+### 1.2 Why did I get a shake animation and error chime when entering my PIN?
+* The system enforces strict authentication. Any PIN other than `22092000` or `2912` (such as `0000`, `1234`, `1111`) is rejected.
+* Click the **Hint** button on the keypad modal for a romantic reminder of the anniversary milestone without exposing raw digits.
+
+---
+
+### 1.3 How does the Welcome Screen and 3D Unboxing work on `main.html`?
+1. Upon arriving at [main.html](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/main.html), you see the **Welcome Screen** with a bouncing 3D gift box and the prompt *"Tap To Open Your Surprise"*.
+2. Clicking the gift box or the **"Open My Birthday Surprise"** button smoothly opens the Passcode Lock screen.
+3. Entering `22092000` or `2912` triggers victory fanfare, bursts multi-color confetti, animates the 3D gift box lid open, and unveils the full celebration arena (`#mainApp`).
+4. If you opened the passcode modal by mistake, click the **`X`** close button to return to the gift box screen.
+
+---
+
+## 2. 🎵 Audio & Synthesizer Issues
+
+### 2.1 Why isn't music playing automatically when the page opens?
+* **Root Cause**: All modern web browsers (Chrome, Safari, iOS, Edge, Firefox) enforce strict **Autoplay Policies**. They prohibit web apps from generating audio until the user has performed at least one physical gesture (click, tap, or keypress).
 * **Resolution**:
-  1. Simply click anywhere on the page or tap the floating **`🎵 Play Music`** button in the top navigation bar.
+  1. Simply click anywhere on the page or tap the floating **`🎵 Play Music`** button in the navigation bar.
   2. The `AudioContext` will instantly unlock and resume audio synthesis smoothly.
 
 ---
 
-### 1.2 Audio sounds distorted or stuttering on mobile
-* **Root Cause**: Low-power mode or high CPU load from background applications.
+### 2.2 Audio sounds distorted or stuttering on mobile
 * **Resolution**:
   1. Disable Battery Saver / Low Power Mode on your smartphone.
-  2. The synth engine automatically scales down oscillator count on low-tier mobile processors to prevent audio buffer underruns.
+  2. The synth engine automatically optimizes oscillator count on mobile devices to prevent buffer underruns.
 
 ---
 
-## 2. ☁️ Google Sheets & Cloud Sync Issues
+## 3. 💌 Early Birthday Blessings & Media Uploads
 
-### 2.1 Submitted wish doesn't show up in my Google Sheet immediately
-* **Diagnostic Check**:
-  1. Open your browser console (`F12` $\rightarrow$ `Console`).
-  2. Look for the message: `Wish successfully synchronized with Google Cloud.`
-  3. Ensure your Google Apps Script URL is correctly set in `script.js` under `DEFAULT_GOOGLE_SHEET_URL`.
-* **Resolution**:
-  - Google Apps Script webhooks execute asynchronously. Allow 3 to 8 seconds for Google's cloud servers to append the row and update spreadsheet formulas.
-  - If offline, the wish is saved in the browser's `localStorage` and will remain visible on your screen.
+### 3.1 How do photo and video attachments work on the Sticky Wall?
+* On [index.html](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html), the Early Birthday Blessing form accepts:
+  - Text messages.
+  - Photos (automatically compressed client-side via HTML5 Canvas to $<1200\text{px}$ and $<300\text{ KB}$).
+  - Video uploads (MP4) or video URLs (YouTube, Shorts, Vimeo, Google Drive, MP4).
+* Submitted wishes appear instantly on the live Sticky Wall with in-card playable video controls and photo thumbnails.
 
 ---
 
-### 2.2 Getting an error when deploying the Google Apps Script Web App
-* **Ensure Correct Deployment Settings**:
-  - **Execute as**: `Me (<your-email@gmail.com>)`
-  - **Who has access**: `Anyone` *(Must NOT be "Only Myself" or "Anyone within organization")*.
-  - When updating code in Apps Script, always click **Deploy** $\rightarrow$ **Manage deployments** $\rightarrow$ **Edit (pencil icon)** $\rightarrow$ **New Version** $\rightarrow$ **Deploy**.
+### 3.2 Photos take long to upload or fail on slow mobile connections
+* The platform automatically resizes images before upload to ensure quick transmissions. If using a slow network, allow 3-6 seconds for Google Apps Script to upload the media to Google Drive and return the CDN preview link.
 
 ---
 
-## 3. 📸 Photo Upload & Google Drive Issues
-
-### 3.1 Memory photo fails to upload or takes too long
-* **Root Cause**: High-resolution camera photos (e.g. 48MP/100MP photos) can exceed 25MB before compression.
-* **Resolution**:
-  - Eternal Love features an automated **HTML5 Canvas Downscaler** that automatically compresses photos to 1280px max bounds before upload.
-  - Ensure your device has an active internet connection during upload.
-  - If using a slow mobile connection, allow 5-10 seconds for the Base64 image payload to reach Google Cloud.
+### 3.3 How do I view photos and videos in full-screen?
+* Click on any photo or video card on the Sticky Wish Wall to open the full-screen **Media Lightbox Modal** (`#mediaLightboxModal`). Press <kbd>Esc</kbd> or click the backdrop to close it.
 
 ---
 
-### 3.2 Photos are not appearing in the Google Drive folder
-* **Diagnostic Check**:
-  1. Open your Google Drive at [drive.google.com](https://drive.google.com).
-  2. Search for the folder named **`Eternal Love Memories (Nishika)`**.
-  3. Verify that your Google Account has sufficient free cloud storage space (Google provides 15 GB free).
+## 4. ☁️ Google Sheets & Cloud Sync Issues
+
+### 4.1 Submitted wish doesn't show up in my Google Sheet immediately
+* Google Apps Script webhooks execute asynchronously. Allow 3 to 8 seconds for Google's cloud servers to append the row.
+* In the meantime, the wish is saved in the browser's `localStorage` and remains visible on the wall immediately.
 
 ---
 
-## 4. 🗝️ Secret Vault & Access Issues
-
-### 4.1 What is the passcode for Queen's Secret Vault?
-* The secret anniversary passcode is:
-  ```text
-  2912
-  ```
-  *(Representing December 29, the special anniversary milestone).*
+### 4.2 Where are uploaded photos and videos stored in Google Drive?
+Uploaded media is automatically organized into two dedicated folders in the project owner's Google Drive:
+1. **`Eternal Love Wishes (Queen Nishika)`** — Contains photos and videos attached to early birthday blessings.
+2. **`Eternal Love Memories (Nishika)`** — Contains memory photos uploaded to the Polaroid Scrapbook.
 
 ---
 
-### 4.2 How does the Queen's Heart Key bypass work?
-* If you do not wish to type the PIN manually, click or tap the glowing **`🔑 Queen's Heart Key`** button located next to the keypad.
-* This triggers an instant royal authorization event and slides open the vault chamber.
+## 5. 📱 Mobile Display & Browser Layout
 
----
-
-## 5. 📱 Mobile Display & Browser Layout Issues
-
-### 5.1 The navigation bar covers the top of the section when scrolling
-* **Resolution**:
-  - All section headers feature built-in CSS `scroll-margin-top: 80px`.
-  - If custom styling was modified, ensure `:target` and section containers retain appropriate scroll offsets.
-
----
-
-### 5.2 Horizontal scrolling occurs on my screen
-* **Resolution**:
-  - Eternal Love has been strictly audited to guarantee **0px horizontal overflow** across all screens (320px to 4K).
-  - If you notice overflow, ensure your browser zoom level is set to 100% and no third-party browser extensions (like translation overlays) are injecting fixed-width elements.
+### 5.1 Is the website responsive on all screen sizes?
+* **Yes!** Eternal Love has been strictly audited with **0px horizontal overflow** across:
+  - Compact Mobile (320px - iPhone SE)
+  - Standard Smartphones (375px–430px - iPhone 14/15, Samsung Galaxy)
+  - Tablets & iPads (768px–1024px)
+  - Laptops & Desktops (1280px–1920px)
+  - 4K Ultra-Wide Displays (2560px–3840px)
 
 ---
 
 ## 6. 💾 Local Storage, State Reset & Privacy
 
 ### 6.1 How do I reset the celebration to fresh state?
-To clear all redeemed coupons, favorited reasons, and reset the counters to default:
-1. Open the Developer Console (`F12` on Windows/Linux or `Cmd + Option + I` on Mac).
-2. Paste and run the following command:
+To clear local state:
+1. Open the Developer Console (`F12`).
+2. Paste and run:
    ```javascript
    localStorage.clear();
+   sessionStorage.clear();
    location.reload();
    ```
-3. The page will reload in pristine out-of-the-box condition.
 
 ---
 
 ### 6.2 Will my data be lost if I close my browser tab?
-* **No!** All state (favorited reasons, claimed coupons, unlocked milestones, custom bucket list items) is automatically saved to your browser's persistent `localStorage`.
-* Furthermore, all wishes and photos are saved permanently in your personal Google Sheets and Google Drive cloud storage!
+* **No!** All preferences, favorited reasons, claimed coupons, and local wishes are persisted in browser `localStorage`.
+* Furthermore, all wishes and media are permanently stored in your personal Google Sheets and Google Drive cloud folders!
 
 ---
 

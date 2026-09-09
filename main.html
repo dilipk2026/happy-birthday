@@ -27,12 +27,14 @@
 
           let isStoredAuth = false;
           try {
-            isStoredAuth = sessionStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
+            // Purge stale permanent passcode bypass so lock screen shows reliably
+            localStorage.removeItem('eternal_love_passcode_auth');
+            isStoredAuth = sessionStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
                            sessionStorage.getItem('eternal_love_vip_session') === 'authenticated_2912' ||
-                           sessionStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
+                           sessionStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
                            sessionStorage.getItem('birthday_vip_unlocked') === 'true' ||
-                           localStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
                            localStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
+                           localStorage.getItem('eternal_love_vip_session') === 'authenticated_2912' ||
                            localStorage.getItem('birthday_vip_unlocked') === 'true' ||
                            localStorage.getItem('queen_vip_unlocked') === 'true' ||
                            localStorage.getItem('queen_authenticated') === 'true';
@@ -51,7 +53,35 @@
       }
     })();
 
-    // Early Unboxing Bridge (ensures instantaneous response on click/tap)
+    // Early Unboxing Bridge & Passcode Check (Always triggers lockscreen on gift box tap)
+    window.handleGiftBoxClick = window.handleGiftBoxClick || function(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      try {
+        var passcode = document.getElementById('pagePasscodeOverlay');
+        var input = document.getElementById('pagePasscodeInput');
+        if (passcode) {
+          passcode.classList.remove('unlocked', 'fade-out', 'hidden');
+          passcode.style.display = 'flex';
+          passcode.style.opacity = '1';
+          passcode.style.visibility = 'visible';
+          passcode.style.pointerEvents = 'auto';
+          if (input) {
+            input.value = '';
+            setTimeout(function() { input.focus(); }, 150);
+          }
+          var feedback = document.getElementById('pagePasscodeFeedback');
+          if (feedback) {
+            feedback.className = 'passcode-feedback';
+            feedback.innerHTML = '✨ Enter Queen Nishika\'s Royal Birthday Passcode (22092000) to open your surprise!';
+          }
+          return;
+        }
+        if (typeof window.unboxBirthdaySurprise === 'function') {
+          window.unboxBirthdaySurprise(false);
+        }
+      } catch(err) {}
+    };
+
     window.unboxBirthdaySurprise = window.unboxBirthdaySurprise || function(immediate) {
       try {
         var intro = document.getElementById('introOverlay');
@@ -82,10 +112,6 @@
         document.querySelectorAll('.reveal-on-scroll').forEach(function(el) {
           if (window.innerWidth <= 1024) el.classList.add('is-revealed');
         });
-        sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
-        sessionStorage.setItem('eternal_love_vip_unlocked', 'true');
-        localStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
-        localStorage.setItem('eternal_love_vip_unlocked', 'true');
       } catch(e) {}
     };
   </script>
@@ -121,16 +147,18 @@
   <div class="ambient-glow orb-2"></div>
   <div class="ambient-glow orb-3"></div>
 
-  <!-- ROYAL BIRTHDAY PASSCODE LOCK SCREEN OVERLAY -->
-  <div id="pagePasscodeOverlay" class="page-passcode-overlay" role="dialog" aria-modal="true" aria-labelledby="pagePasscodeTitle">
+  <!-- ROYAL BIRTHDAY PASSCODE LOCK SCREEN OVERLAY (Opens when Gift Box or Open Surprise Button is clicked) -->
+  <div id="pagePasscodeOverlay" class="page-passcode-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="pagePasscodeTitle">
     <div class="page-passcode-card glass-card animate-scale-up">
+      <button type="button" class="passcode-close-btn" id="closePagePasscodeBtn" aria-label="Close Passcode Dialog" title="Back to Gift Box"><i class="fa-solid fa-xmark"></i></button>
+
       <div class="passcode-header">
         <div class="passcode-crown-badge">
           <i class="fa-solid fa-crown"></i>
           <span>Queen Nishika's Royal Birthday 🎂</span>
         </div>
         <h1 class="passcode-card-title" id="pagePasscodeTitle">Open Birthday Surprise 🎁</h1>
-        <p class="passcode-card-subtitle">This private celebration is consecrated exclusively for Queen Nishika. Enter the secret 8-digit birthday password to open your surprise! ✨</p>
+        <p class="passcode-card-subtitle">Enter Queen Nishika's 8-digit Royal Birthday Passcode (22092000) to unlock the birthday surprise! ✨</p>
       </div>
 
       <!-- Status Feedback message -->
@@ -148,7 +176,7 @@
             placeholder="••••••••" 
             autocomplete="off" 
             inputmode="numeric"
-            aria-label="Enter 8-digit Birthday Passcode"
+            aria-label="Enter Birthday Passcode"
           />
           <button type="button" id="togglePasscodeVisibilityBtn" class="passcode-eye-btn" aria-label="Toggle password visibility" title="Show/Hide Passcode">
             <i class="fa-solid fa-eye" id="passcodeEyeIcon"></i>
@@ -199,7 +227,7 @@
           <span>Need a Birthday Hint?</span>
         </button>
         <div id="pagePasscodeHintBox" class="passcode-hint-box">
-          🎂 <strong>Birthday Hint:</strong> Enter Queen Nishika's Date of Birth in DDMMYYYY format (her special day in September 2000) 💕
+          🎂 <strong>Birthday Passcode Hint:</strong> Enter Queen Nishika's Date of Birth in DDMMYYYY format (22092000) or VIP Anniversary PIN (2912) 💕
         </div>
       </div>
     </div>
@@ -209,11 +237,11 @@
   <div id="introOverlay" class="intro-overlay">
     <div class="intro-content">
       <div class="floating-badge animate-pulse">
-        <i class="fa-solid fa-heart pulse-heart"></i>
-        <span>Eternal Love • Special Delivery</span>
+        <i class="fa-solid fa-crown pulse-heart" style="color:#ffd700;"></i>
+        <span>Welcome to Queen Nishika's Celebration ✨</span>
       </div>
       
-      <div class="gift-box-wrapper" id="giftBoxTrigger" onclick="if(typeof unboxBirthdaySurprise==='function')unboxBirthdaySurprise(false)" title="Click or Tap to Open Your Birthday Surprise!">
+      <div class="gift-box-wrapper" id="giftBoxTrigger" onclick="if(typeof handleGiftBoxClick==='function'){handleGiftBoxClick(event);}else if(typeof unboxBirthdaySurprise==='function'){unboxBirthdaySurprise(false);}" title="Click or Tap to Open Your Birthday Surprise!">
         <div class="gift-box">
           <div class="gift-ribbon-vertical"></div>
           <div class="gift-ribbon-horizontal"></div>
@@ -232,10 +260,10 @@
         </div>
       </div>
 
-      <h1 class="intro-title" onclick="if(typeof unboxBirthdaySurprise==='function')unboxBirthdaySurprise(false)">Tap To Unbox Your Surprise</h1>
+      <h1 class="intro-title" onclick="if(typeof handleGiftBoxClick==='function'){handleGiftBoxClick(event);}else if(typeof unboxBirthdaySurprise==='function'){unboxBirthdaySurprise(false);}">Tap To Open Your Surprise</h1>
       <p class="intro-subtitle">A celestial celebration handcrafted with all my heart and love 💕</p>
       
-      <button class="btn-primary pulse-btn" id="openGiftBtn" onclick="if(typeof unboxBirthdaySurprise==='function')unboxBirthdaySurprise(false)" aria-label="Open Birthday Surprise">
+      <button class="btn-primary pulse-btn" id="openGiftBtn" onclick="if(typeof handleGiftBoxClick==='function'){handleGiftBoxClick(event);}else if(typeof unboxBirthdaySurprise==='function'){unboxBirthdaySurprise(false);}" aria-label="Open Birthday Surprise">
         <i class="fa-solid fa-gift"></i>
         <span>Open My Birthday Surprise</span>
       </button>
@@ -337,7 +365,7 @@
       <section class="hero-section reveal-on-scroll" id="heroSec" data-reveal="fade-up">
         <div class="celebration-pill animate-fade-down">
           <span class="confetti-emoji">✨</span>
-          <span class="pill-badge">September 5th • Today The Universe Celebrates You</span>
+          <span class="pill-badge">September 22nd • Today The Universe Celebrates You</span>
           <span class="confetti-emoji">👑</span>
         </div>
 
@@ -415,7 +443,7 @@
             <!-- Letter Sheet (Slides up and unfolds) -->
             <div class="letter-sheet" id="letterSheet">
               <div class="letter-header">
-                <span class="letter-date" id="letterDateDisplay">September 5th • For Today & Forever</span>
+                <span class="letter-date" id="letterDateDisplay">September 22nd • For Today & Forever</span>
                 <span class="letter-heart-watermark">💖</span>
               </div>
               <div class="letter-body">
@@ -640,12 +668,12 @@
               <i class="fa-solid fa-crown"></i>
             </div>
             <div class="timeline-content glass-card milestone-highlight">
-              <span class="milestone-badge milestone-gold-badge">Chapter 5 • September 5th 🎂</span>
+              <span class="milestone-badge milestone-gold-badge">Chapter 5 • September 22nd 🎂</span>
               <h3 class="milestone-title">Celebrating The Queen of My Heart</h3>
               <p class="milestone-text">
                 Today is your birthday, and I want you to know that you are cherished, adored, and loved beyond anything words can capture. Here's to forever!
               </p>
-              <span class="milestone-tag">🎂 September 5th — Happy Birthday, My Queen!</span>
+              <span class="milestone-tag">🎂 September 22nd — Happy Birthday, My Queen!</span>
             </div>
           </div>
         </div>
@@ -2994,7 +3022,7 @@
             <div class="keepsake-header">
               <span class="keepsake-crown">👑</span>
               <h2>Eternal Love Official Certificate</h2>
-              <p class="keepsake-subtitle">Conferred on September 5th with all my heart and devotion</p>
+              <p class="keepsake-subtitle">Conferred on September 22nd with all my heart and devotion</p>
             </div>
             
             <div class="keepsake-content">
@@ -3040,7 +3068,7 @@
             <div class="star-cert-header">
               <span class="star-icon-gold">⭐ 💫 ⭐</span>
               <h2>International Celestial Star Registry</h2>
-              <p class="star-cert-subtitle">Official Deed of Dedication • Registered on September 5th</p>
+              <p class="star-cert-subtitle">Official Deed of Dedication • Registered on September 22nd</p>
             </div>
             
             <div class="star-cert-body">
@@ -3139,7 +3167,7 @@
             <p class="revealed-wish-text" id="vaultWishDisplay">
               "No secret wish has been sealed yet! Blow out the candles on the cake to lock in your secret wish."
             </p>
-            <span class="wish-timestamp">⭐ Whispered to the Cosmos on September 5th ⭐</span>
+            <span class="wish-timestamp">⭐ Whispered to the Cosmos on September 22nd ⭐</span>
           </div>
           <p class="vault-reassurance">"Every wish spoken from a golden heart like yours is already on its way to reality." 💕</p>
         </div>

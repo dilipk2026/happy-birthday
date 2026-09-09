@@ -3,29 +3,30 @@
 ```
 ===============================================================================
 GOOGLE APPS SCRIPT WEBHOOK API & CLIENT DISPATCH SPECIFICATION
-Protocol: HTTPS JSON Webhook | Architecture: Serverless Google Cloud Micro-Engine
+Protocol: HTTPS JSON Webhook & JSONP | Architecture: Serverless Google Cloud Micro-Engine
 Backend Runtime: Google Apps Script V8 Engine (ECMAScript 6+)
-Endpoints: GET (Health Check) & POST (Dispatcher)
+Endpoints: GET (Live Wishes & Photos Ingestion / Health Check) & POST (Dispatcher)
+Backend Script: Code.gs (v5.0 Enterprise Cloud Collector)
 ===============================================================================
 ```
 
-> **Overview**: This technical document provides complete developer specifications for the serverless cloud backend powering **Eternal Love**. It defines the HTTP interfaces, payload schemas, Google Sheets/Drive persistence models, error handling strategies, and client-side communication adapters.
+> **Overview**: This technical specification provides complete developer documentation for the serverless cloud backend powering **Eternal Love**. It defines the HTTP interfaces, payload schemas, Google Sheets/Drive persistence models, media decoding pipelines (images & videos), and client-side communication adapters.
 
 ---
 
 ## 📑 Table of Contents
 
 1. [🌐 Endpoint Architecture & Service URL](#1--endpoint-architecture--service-url)
-2. [🩺 Health Check Endpoint (GET)](#2--health-check-endpoint-get)
+2. [🩺 Data Fetch & Health Check Endpoint (GET)](#2--data-fetch--health-check-endpoint-get)
 3. [📨 Main Data Dispatch Endpoint (POST)](#3--main-data-dispatch-endpoint-post)
 4. [📦 Detailed Payload Schemas](#4--detailed-payload-schemas)
-   - [4.1 Birthday Wish Payload (`type: "wish"`)](#41-birthday-wish-payload-type-wish)
-   - [4.2 Secret Vault Wish Payload (`type: "secret_wish"`)](#42-secret-vault-wish-payload-type-secret_wish)
-   - [4.3 Memory Photo Payload (`type: "photo"`)](#43-memory-photo-payload-type-photo)
+   - [4.1 Birthday Wish & Media Payload (`type: "wish"`)](#41-birthday-wish--media-payload-type-wish)
+   - [4.2 Polaroid Memory Photo Payload (`type: "photo"`)](#42-polaroid-memory-photo-payload-type-photo)
+   - [4.3 Secret Vault Wish Payload (`type: "secret_wish"`)](#43-secret-vault-wish-payload-type-secret_wish)
 5. [📊 Google Sheets Data Models & Schema Design](#5--google-sheets-data-models--schema-design)
 6. [📁 Google Drive Auto-Organization Pipeline](#6--google-drive-auto-organization-pipeline)
 7. [🛡️ CORS, Browser Security & Transport Architecture](#7-️-cors-browser-security--transport-architecture)
-8. [💻 Client-Side Integration Reference (`script.js`)](#8--client-side-integration-reference-scriptjs)
+8. [💻 Client-Side Integration Reference (`script.js` & `index.html`)](#8--client-side-integration-reference-scriptjs--indexhtml)
 9. [🧪 Code Integration Examples (cURL, JS, Python)](#9--code-integration-examples-curl-js-python)
 10. [⚙️ Code.gs Function Reference](#10-️-codegs-function-reference)
 
@@ -45,24 +46,59 @@ The backend runs on Google Apps Script as an authenticated Web App executed unde
 
 ---
 
-## 2. 🩺 Health Check Endpoint (GET)
+## 2. 🩺 Data Fetch & Health Check Endpoint (GET)
 
-Used by uptime monitors, test runners, and diagnostic panels to verify backend availability.
+Used by the frontend to fetch all persisted wishes and photos from Google Sheets on page load, and by uptime monitors to verify backend availability.
 
 ### Request
 ```http
-GET /macros/s/.../exec HTTP/1.1
+GET /macros/s/.../exec?action=getAll HTTP/1.1
 Host: script.google.com
 Accept: application/json
 ```
 
+Optional JSONP query parameter: `?action=getAll&callback=myCallbackFunction`
+
 ### Success Response (`200 OK`)
 ```json
 {
-  "status": "online",
-  "title": "Eternal Love Cloud Collector 👑💖",
-  "message": "Google Apps Script Web App is connected and ready to receive wishes and photos!",
-  "timestamp": "2026-09-07T07:57:33.493Z"
+  "status": "success",
+  "title": "Eternal Love Cloud Hub 👑💖",
+  "countWishes": 12,
+  "countPhotos": 6,
+  "wishes": [
+    {
+      "id": "gs_wish_2",
+      "timestamp": "2026-09-09T12:00:00.000Z",
+      "localTime": "9/9/2026, 5:30:00 PM",
+      "celebrant": "Nishika",
+      "dedicatedBy": "Dilip",
+      "author": "Dilip 💖",
+      "name": "Dilip 💖",
+      "message": "Happy Birthday to my eternal Queen Nishika!",
+      "text": "Happy Birthday to my eternal Queen Nishika!",
+      "color": "pink",
+      "styleClass": "sticky-pink",
+      "mediaType": "photo",
+      "mediaUrl": "https://drive.google.com/thumbnail?id=1a2B3c4D5e...&sz=w1000",
+      "likes": 12
+    }
+  ],
+  "photos": [
+    {
+      "id": "gs_photo_2",
+      "timestamp": "2026-09-09T12:05:00.000Z",
+      "localTime": "9/9/2026, 5:35:00 PM",
+      "celebrant": "Nishika",
+      "dedicatedBy": "Dilip",
+      "caption": "Our first sunset walk ✨",
+      "title": "Our first sunset walk ✨",
+      "tag": "Real Moment 📸",
+      "driveUrl": "https://drive.google.com/file/d/1xYz.../view",
+      "imgUrl": "https://drive.google.com/thumbnail?id=1xYz...&sz=w1000"
+    }
+  ],
+  "timestamp": "2026-09-09T12:30:00.000Z"
 }
 ```
 
@@ -70,7 +106,7 @@ Accept: application/json
 
 ## 3. 📨 Main Data Dispatch Endpoint (POST)
 
-All client events (wishes, secret notes, memory photos) are routed through the single unified `POST` endpoint.
+All client events (wishes, media attachments, memory photos, secret notes) are routed through the single unified `POST` endpoint.
 
 ### Request Headers
 ```http
@@ -86,18 +122,22 @@ Content-Type: text/plain;charset=utf-8
 
 ## 4. 📦 Detailed Payload Schemas
 
-### 4.1 Birthday Wish Payload (`type: "wish"`)
+### 4.1 Birthday Wish & Media Payload (`type: "wish"`)
 
-Dispatched when a visitor or Dilip submits a public birthday wish on the Wish Wall.
+Dispatched when a visitor or Dilip submits a birthday blessing on the Sticky Wish Wall (with optional compressed photo or attached video).
 
 #### Request JSON
 ```json
 {
   "type": "wish",
-  "name": "Dilip 💖",
+  "author": "Dilip 💖",
   "message": "Happy Birthday to my eternal Queen Nishika! May your year be as radiant as your smile.",
-  "color": "ruby",
-  "timestamp": "2026-09-05T00:00:00.000Z"
+  "color": "pink",
+  "mediaType": "photo",
+  "mediaUrl": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ...",
+  "localTime": "9/9/2026, 5:30:00 PM",
+  "celebrant": "Nishika",
+  "dedicatedBy": "Dilip"
 }
 ```
 
@@ -105,98 +145,42 @@ Dispatched when a visitor or Dilip submits a public birthday wish on the Wish Wa
 | Field | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
 | `type` | `string` | **Yes** | Literal `"wish"` |
-| `name` | `string` | **Yes** | Sender name (sanitized, max 100 chars) |
-| `message` | `string` | **Yes** | Wish content (max 2,000 chars) |
-| `color` | `string` | No | Color theme tag (`ruby`, `gold`, `sapphire`, `emerald`, `amethyst`) |
-| `timestamp` | `string` | No | ISO 8601 UTC timestamp |
+| `author` / `name` | `string` | **Yes** | Sender name (sanitized, max 100 chars) |
+| `message` / `text` | `string` | **Yes** | Wish content (max 2,000 chars) |
+| `color` / `styleClass` | `string` | No | Sticky note color style (`pink`, `yellow`, `blue`, `mint`, `purple`, `gold`) |
+| `mediaType` | `string` | No | Attached media type (`photo`, `video`, or `none`) |
+| `mediaUrl` | `string` | No | Base64 image/video string, or direct URL (YouTube, Vimeo, Google Drive, MP4) |
+| `localTime` | `string` | No | Human-readable client local timestamp |
+| `celebrant` | `string` | No | Default: `"Nishika"` |
+| `dedicatedBy` | `string` | No | Default: `"Dilip"` |
 
 #### Response JSON
 ```json
 {
   "status": "success",
-  "message": "Wish saved to Google Sheet! 💌",
-  "row": 42
-}
-```
-
----
-
-### 4.2 Pre-Launch Blessing Payload (`coming-soon.html`)
-
-Dispatched when a visitor or guest leaves an early birthday blessing on the **Coming Soon** page before September 20.
-
-#### Request JSON
-```json
-{
   "type": "wish",
-  "name": "Dilip 💖 (Pre-Launch Blessing)",
-  "message": "Counting down the seconds until your grand celebration, my Queen!",
-  "color": "gold",
-  "timestamp": "2026-09-07T12:00:00.000Z"
-}
-```
-
-#### Field Specifications
-| Field | Type | Required | Description |
-| :--- | :--- | :---: | :--- |
-| `type` | `string` | **Yes** | Literal `"wish"` |
-| `name` | `string` | **Yes** | Sender name appended with `(Pre-Launch Blessing)` tag |
-| `message` | `string` | **Yes** | Blessing text |
-| `color` | `string` | No | Fixed to `"gold"` for celestial pre-launch wishes |
-| `timestamp` | `string` | No | ISO 8601 UTC timestamp |
-
-#### Response JSON
-```json
-{
-  "status": "success",
-  "message": "Wish saved to Google Sheet! 💌",
-  "row": 15
+  "mediaUrl": "https://drive.google.com/thumbnail?id=1a2B3c4D5e...&sz=w1000",
+  "mediaType": "photo",
+  "message": "Wish note saved to Google Sheet successfully!"
 }
 ```
 
 ---
 
-### 4.3 Secret Vault Wish Payload (`type: "secret_wish"`)
+### 4.2 Polaroid Memory Photo Payload (`type: "photo"`)
 
-Dispatched when Queen Nishika locks her sacred birthday wish inside the Secret Vault.
-
-#### Request JSON
-```json
-{
-  "type": "secret_wish",
-  "wish": "My deepest wish for our upcoming year together...",
-  "timestamp": "2026-09-05T00:01:30.000Z"
-}
-```
-
-#### Field Specifications
-| Field | Type | Required | Description |
-| :--- | :--- | :---: | :--- |
-| `type` | `string` | **Yes** | Literal `"secret_wish"` |
-| `wish` | `string` | **Yes** | Secret wish text (stored in private restricted sheet) |
-| `timestamp` | `string` | No | ISO 8601 UTC timestamp |
-
-#### Response JSON
-```json
-{
-  "status": "success",
-  "message": "Secret wish locked in the vault! 🗝️"
-}
-```
-
----
-
-### 4.4 Memory Photo Payload (`type: "photo"`)
-
-Dispatched when a user adds a memory photo to the 3D Polaroid wall.
+Dispatched when adding a Polaroid photo to the Memory Wall.
 
 #### Request JSON
 ```json
 {
   "type": "photo",
   "caption": "Our unforgettable evening under the stars ✨",
-  "base64": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBD...",
-  "timestamp": "2026-09-05T00:05:00.000Z"
+  "tag": "Real Moment 📸",
+  "dataUrl": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ...",
+  "localTime": "9/9/2026, 5:35:00 PM",
+  "celebrant": "Nishika",
+  "dedicatedBy": "Dilip"
 }
 ```
 
@@ -204,17 +188,45 @@ Dispatched when a user adds a memory photo to the 3D Polaroid wall.
 | Field | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
 | `type` | `string` | **Yes** | Literal `"photo"` |
-| `caption` | `string` | No | Photo caption / memory description |
-| `base64` | `string` | **Yes** | Data URL or raw Base64 string of the image (JPEG/PNG/WebP) |
-| `timestamp` | `string` | No | ISO 8601 UTC timestamp |
+| `caption` / `title` | `string` | No | Photo caption / memory description |
+| `tag` | `string` | No | Moment tag / badge label (e.g. `Real Moment 📸`, `Genesis Moment ✨`) |
+| `dataUrl` / `base64` | `string` | **Yes** | Canvas-downscaled Base64 image data URL (`data:image/jpeg;base64,...`) |
+| `localTime` | `string` | No | Client local timestamp |
 
 #### Response JSON
 ```json
 {
   "status": "success",
-  "message": "Photo uploaded to Google Drive & Sheet updated! 📸",
-  "fileId": "1a2B3c4D5e6F7g8H9i0J",
-  "url": "https://drive.google.com/file/d/1a2B3c4D5e6F7g8H9i0J/view?usp=drivesdk"
+  "type": "photo",
+  "fileUrl": "https://drive.google.com/file/d/1a2B3c4D5e.../view?usp=drivesdk",
+  "imgUrl": "https://drive.google.com/thumbnail?id=1a2B3c4D5e...&sz=w1000",
+  "message": "Photo saved to Google Drive and logged in Google Sheet!"
+}
+```
+
+---
+
+### 4.3 Secret Vault Wish Payload (`type: "secret_wish"`)
+
+Dispatched when Queen Nishika locks her confidential birthday wish inside the Secret Vault.
+
+#### Request JSON
+```json
+{
+  "type": "secret_wish",
+  "wish": "My deepest wish for our upcoming year together...",
+  "localTime": "9/9/2026, 5:40:00 PM",
+  "celebrant": "Nishika",
+  "dedicatedBy": "Dilip"
+}
+```
+
+#### Response JSON
+```json
+{
+  "status": "success",
+  "type": "secret_wish",
+  "message": "Secret wish sealed safely into Google Sheet!"
 }
 ```
 
@@ -222,42 +234,56 @@ Dispatched when a user adds a memory photo to the 3D Polaroid wall.
 
 ## 5. 📊 Google Sheets Data Models & Schema Design
 
-When `Code.gs` executes, it automatically checks the active spreadsheet. If sheets are missing, it initializes them with pastel header styles, bold titles, and frozen rows.
+When `Code.gs` executes, it automatically initializes tabs if missing, complete with pastel headers, bold labels, and frozen header rows.
 
-### Sheet 1: `"Wishes"` Tab
-| Column | Name | Format | Description |
+### Sheet 1: `"Wishes"` Tab (10 Columns)
+| Column | Header Name | Format | Description |
 | :---: | :--- | :--- | :--- |
-| **A** | `Timestamp` | `yyyy-MM-dd HH:mm:ss` | Time wish was recorded |
-| **B** | `Sender Name` | Text (Bold) | Name of sender |
-| **C** | `Wish Message` | Text (Wrap) | Full message |
-| **D** | `Color Style` | Text (Centered) | Visual theme tag |
+| **A** | `Timestamp` | `Date / Time` | UTC Server execution timestamp |
+| **B** | `Local Time` | Text | Client local time string |
+| **C** | `Celebrant` | Text | `"Nishika"` |
+| **D** | `Dedicated By`| Text | `"Dilip"` |
+| **E** | `Author / Sender` | Text (Bold) | Name of sender |
+| **F** | `Heartfelt Message` | Text (Wrap) | Message text content |
+| **G** | `Sticky Note Style` | Text | Color style (`pink`, `yellow`, `blue`, etc.) |
+| **H** | `Media Type` | Text | Media classification (`photo`, `video`, `none`) |
+| **I** | `Media URL` | Hyperlink | Direct Drive/CDN preview URL |
+| **J** | `Likes Count` | Integer | Heart counter integer |
 
-### Sheet 2: `"Secret Wishes"` Tab
-| Column | Name | Format | Description |
+### Sheet 2: `"Photos"` Tab (8 Columns)
+| Column | Header Name | Format | Description |
 | :---: | :--- | :--- | :--- |
-| **A** | `Timestamp` | `yyyy-MM-dd HH:mm:ss` | Time secret wish was sealed |
-| **B** | `Secret Birthday Wish` | Text (Wrap) | Confidential text |
+| **A** | `Timestamp` | `Date / Time` | Upload timestamp |
+| **B** | `Local Time` | Text | Client local time |
+| **C** | `Celebrant` | Text | `"Nishika"` |
+| **D** | `Dedicated By`| Text | `"Dilip"` |
+| **E** | `Photo Caption` | Text (Italic) | Memory caption |
+| **F** | `Moment Tag` | Text | Milestone badge tag |
+| **G** | `Google Drive Link` | Hyperlink | Direct Drive file view URL |
+| **H** | `Image Preview` | Formula | `=IMAGE("https://drive.google.com/thumbnail?id=...&sz=w1000")` |
 
-### Sheet 3: `"Photos"` Tab
-| Column | Name | Format | Description |
+### Sheet 3: `"Secret Wishes"` Tab (5 Columns)
+| Column | Header Name | Format | Description |
 | :---: | :--- | :--- | :--- |
-| **A** | `Timestamp` | `yyyy-MM-dd HH:mm:ss` | Upload timestamp |
-| **B** | `Caption` | Text (Italic) | Memory caption |
-| **C** | `Google Drive Link`| Hyperlink | Direct URL to Drive asset |
-| **D** | `Image Preview` | Formula | `=IMAGE("https://drive.google.com/uc?id=<ID>")` |
+| **A** | `Timestamp` | `Date / Time` | Sealed timestamp |
+| **B** | `Local Time` | Text | Client local time |
+| **C** | `Celebrant` | Text | `"Nishika"` |
+| **D** | `Dedicated By`| Text | `"Dilip"` |
+| **E** | `Secret Birthday Wish` | Text (Wrap) | Confidential sealed text |
 
 ---
 
 ## 6. 📁 Google Drive Auto-Organization Pipeline
 
-When a photo payload is received:
-1. `Code.gs` checks for a folder named **`Eternal Love Memories (Nishika)`**.
-2. If it does not exist, it creates the folder in the user's root Google Drive.
-3. The Base64 string is stripped of its MIME prefix (`data:image/...;base64,`).
-4. Decoded bytes are converted into a `Utilities.newBlob(bytes, mimeType, filename)`.
-5. The file is created with name format: `Memory_YYYY-MM-DD_HH-mm-ss.jpg`.
-6. Access permissions are set to `DriveApp.Access.ANYONE_WITH_LINK` (View Only).
-7. The direct view URL and Drive File ID are returned to the client and logged to the Sheet.
+When a Base64 photo or video is received:
+1. **Wish Media Attachments**: Stored in folder **`Eternal Love Wishes (Queen Nishika)`**.
+2. **Polaroid Memory Photos**: Stored in folder **`Eternal Love Memories (Nishika)`**.
+3. **MIME & Name Processing**:
+   - Strips data URL prefix (`data:image/...;base64,` or `data:video/...;base64,`).
+   - Decodes bytes into `Utilities.newBlob()`.
+   - File named with author and timestamp (e.g. `WishPhoto_Dilip_2026-09-09_18-30-00.jpg` or `Nishika_Memory_2026-09-09_18-30-00.jpg`).
+4. **Permissions**: Set to `DriveApp.Access.ANYONE_WITH_LINK` with `Permission.VIEW`.
+5. **CDN Thumbnail Conversion**: Generates high-res direct CDN links (`https://drive.google.com/thumbnail?id=FILE_ID&sz=w1000`).
 
 ---
 
@@ -279,36 +305,23 @@ When a photo payload is received:
 └─────────────────────────┘                            └─────────────────────────┘
 ```
 
-### Key Security Safeguards:
-* **Zero Credential Exposure**: No Google API Secret Keys, OAuth tokens, or Service Account credentials are leaked in the client-side JavaScript.
-* **Content Sanitization**: Client HTML escapes all text input before local injection to eliminate Stored and Reflected Cross-Site Scripting (XSS).
-* **Payload Size Limiter**: Photos are client-downscaled via HTML5 Canvas before Base64 encoding to stay well below the 10MB Google Apps Script POST payload limit.
-
 ---
 
-## 8. 💻 Client-Side Integration Reference (`script.js`)
+## 8. 💻 Client-Side Integration Reference (`script.js` & `index.html`)
 
 ### Wish Dispatch Implementation
 ```javascript
-async function sendWishToCloud(name, message, color) {
-  const payload = {
-    type: 'wish',
-    name: name.trim(),
-    message: message.trim(),
-    color: color || 'ruby',
-    timestamp: new Date().toISOString()
-  };
-
+async function sendWishToCloud(payload) {
   try {
-    await fetch(state.googleSheetUrl, {
+    await fetch(GOOGLE_SHEET_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     });
-    console.log('Wish successfully synchronized with Google Cloud.');
+    console.log('Wish successfully dispatched to Google Cloud.');
   } catch (err) {
-    console.warn('Network offline. Cached wish locally for later sync.', err);
+    console.warn('Offline: Saved locally in localStorage.', err);
   }
 }
 ```
@@ -317,12 +330,7 @@ async function sendWishToCloud(name, message, color) {
 
 ## 9. 🧪 Code Integration Examples
 
-### Example 1: cURL Health Check
-```bash
-curl -L -X GET "https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec"
-```
-
-### Example 2: Python POST Request
+### Example: Python POST Request
 ```python
 import requests
 import json
@@ -332,20 +340,19 @@ url = "https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH
 
 payload = {
     "type": "wish",
-    "name": "Dilip 💖",
-    "message": "Wishing you eternal smiles, my love! 🎂",
-    "color": "gold",
-    "timestamp": datetime.utcnow().isoformat() + "Z"
+    "author": "Dilip 💖",
+    "message": "Wishing you eternal joy and love, Queen Nishika! 🎂",
+    "color": "pink",
+    "mediaType": "none",
+    "localTime": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 }
 
 response = requests.post(
     url, 
     data=json.dumps(payload),
-    headers={"Content-Type": "text/plain;charset=utf-8"},
-    allow_redirects=True
+    headers={"Content-Type": "text/plain;charset=utf-8"}
 )
-
-print(response.status_code, response.text)
+print(response.status_code)
 ```
 
 ---
@@ -354,13 +361,8 @@ print(response.status_code, response.text)
 
 | Function Signature | Description | Scope |
 | :--- | :--- | :--- |
-| `doGet(e)` | Serves the JSON health check response | Public Webhook |
-| `doPost(e)` | Core request router for `wish`, `secret_wish`, and `photo` | Public Webhook |
-| `handleWish(sheet, data)` | Validates and appends wish to `"Wishes"` tab | Internal Helper |
-| `handleSecretWish(sheet, data)` | Validates and appends secret note to `"Secret Wishes"` tab | Internal Helper |
-| `handlePhoto(sheet, data)` | Decodes Base64, creates Drive file, appends row with formula | Internal Helper |
-| `getOrCreateSheet(ss, name)` | Retrieves or initializes formatted tab with headers | Utility |
-| `getOrCreateFolder(name)` | Retrieves or creates Google Drive destination directory | Utility |
+| `doGet(e)` | Serves live wishes, photos, counts, and JSONP output | Public Webhook |
+| `doPost(e)` | Core router for `wish` (with photos/videos), `photo`, and `secret_wish` | Public Webhook |
 
 ---
 
