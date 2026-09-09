@@ -2062,43 +2062,125 @@
         </div>
 
         <!-- Dynamic Wish Sticky Notes Board -->
-        <div class="wish-board-wrapper glass-card">
+        <div class="wish-board-wrapper glass-card" id="wishBoardSection">
           <div class="wish-board-header">
             <div>
-              <h3><i class="fa-solid fa-envelope-open-text"></i> Leave a Sweet Note for <span class="recipient-name-display">Nishika</span></h3>
-              <p class="sub-text">Write a warm birthday message to pin it permanently onto her celebration board!</p>
+              <h3><i class="fa-solid fa-envelope-open-text"></i> Royal Sticky Wish Wall for <span class="recipient-name-display">Nishika</span> 💌</h3>
+              <p class="sub-text">Write a heartfelt message, attach photographs, or link celebratory videos to consecrate onto Queen Nishika's live board!</p>
             </div>
-            <span class="cloud-sync-chip" id="wishSyncChip" title="Synced to Google Sheets">
-              <i class="fa-solid fa-cloud-check"></i> <span id="wishSyncText">Google Sheets Ready</span>
-            </span>
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <span class="cloud-sync-chip" id="wishSyncChip" title="Synced to Google Sheets">
+                <i class="fa-solid fa-cloud-check"></i> <span id="wishSyncText">Google Sheets Ready</span>
+              </span>
+              <button type="button" class="sync-refresh-btn" id="syncWishesBtn" title="Sync live wishes from Google Cloud">
+                <i class="fa-solid fa-rotate"></i>
+                <span>Sync Live</span>
+              </button>
+            </div>
           </div>
 
-          <form id="wishForm" class="wish-input-form">
-            <div class="form-row">
-              <input type="text" id="wishAuthorInput" placeholder="Your Name (e.g. Dilip 💕)" required class="app-input" />
-              <input type="text" id="wishTextInput" placeholder="Write your heartfelt note..." required class="app-input flex-grow" />
-              <button type="submit" class="btn-primary">
-                <i class="fa-solid fa-paper-plane"></i> Pin Note
+          <form id="wishForm" class="wish-input-form blessing-form">
+            <div class="form-row-2col" style="display:grid; grid-template-columns: 1fr 2fr; gap:12px; width:100%;">
+              <div>
+                <label for="wishAuthorInput" class="form-group-label"><i class="fa-solid fa-user-crown"></i> Your Royal Name</label>
+                <input type="text" id="wishAuthorInput" placeholder="Your Name (e.g. Dilip 💕, Loving Court)" required class="app-input" style="width:100%;" />
+              </div>
+              <div>
+                <label for="wishTextInput" class="form-group-label"><i class="fa-solid fa-envelope-heart"></i> Heartfelt Birthday Message</label>
+                <input type="text" id="wishTextInput" placeholder="Write your sweetest blessings and memories for Queen Nishika..." required class="app-input" style="width:100%;" />
+              </div>
+            </div>
+
+            <!-- Media Attachment Bar -->
+            <div class="media-attach-bar">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <span class="form-group-label" style="margin:0;"><i class="fa-solid fa-paperclip"></i> Add Media Attachment (Optional)</span>
+                <div class="media-tabs">
+                  <button type="button" class="media-tab-btn active" data-tab="mainTabNone"><i class="fa-solid fa-font"></i> Text Only</button>
+                  <button type="button" class="media-tab-btn" data-tab="mainTabPhoto"><i class="fa-solid fa-camera"></i> Photo</button>
+                  <button type="button" class="media-tab-btn" data-tab="mainTabVideo"><i class="fa-solid fa-video"></i> Video</button>
+                </div>
+              </div>
+
+              <!-- Photo Upload & URL Pane -->
+              <div class="media-content-pane" id="mainTabPhoto">
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                  <div class="file-dropzone" id="mainPhotoDropzone">
+                    <input type="file" id="mainWishPhotoInput" accept="image/*" />
+                    <div class="dropzone-text">
+                      <i class="fa-solid fa-cloud-arrow-up"></i>
+                      <span>Click or drag photo here to upload (JPG, PNG, GIF, WEBP)</span>
+                    </div>
+                  </div>
+                  <div style="text-align:center; font-size:0.78rem; color:var(--text-muted); letter-spacing:1px;">— OR PASTE IMAGE LINK —</div>
+                  <input type="url" id="mainWishPhotoUrl" class="app-input" placeholder="Paste direct image URL from Google Photos, Drive, Unsplash, Imgur..." />
+                </div>
+                <div class="media-preview-box" id="mainPhotoPreviewBox" style="display:none;">
+                  <img id="mainPhotoPreviewImg" src="" alt="Photo Preview" />
+                  <button type="button" class="remove-preview-btn" id="mainRemovePhotoBtn" title="Remove Photo">&times;</button>
+                </div>
+              </div>
+
+              <!-- Video Upload/Link Pane -->
+              <div class="media-content-pane" id="mainTabVideo">
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                  <input type="url" id="mainWishVideoUrl" class="app-input" placeholder="Paste YouTube, YouTube Shorts, Vimeo, or MP4 Video Link..." />
+                  <div style="text-align:center; font-size:0.78rem; color:var(--text-muted); letter-spacing:1px;">— OR SELECT VIDEO FILE —</div>
+                  <div class="file-dropzone" id="mainVideoDropzone">
+                    <input type="file" id="mainWishVideoInput" accept="video/mp4,video/webm,video/ogg,video/quicktime" />
+                    <div class="dropzone-text">
+                      <i class="fa-solid fa-file-video"></i>
+                      <span>Select video file from your device (MP4, WebM)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="media-preview-box" id="mainVideoPreviewBox" style="display:none; max-width:280px;">
+                  <div id="mainVideoPreviewContainer">
+                    <video id="mainVideoPreviewPlayer" controls style="width:100%; border-radius:10px;"></video>
+                  </div>
+                  <button type="button" class="remove-preview-btn" id="mainRemoveVideoBtn" title="Remove Video">&times;</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sticky Note Style Selector -->
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:4px;">
+              <div>
+                <span class="form-group-label"><i class="fa-solid fa-palette"></i> Choose Sticky Theme</span>
+                <div class="color-palette-bar" id="mainStickyColorPalette">
+                  <div class="color-chip chip-pink active" data-theme="pink" title="Rose Quartz 🌸"></div>
+                  <div class="color-chip chip-gold" data-theme="gold" title="Royal Gold 👑"></div>
+                  <div class="color-chip chip-purple" data-theme="purple" title="Celestial Purple 💜"></div>
+                  <div class="color-chip chip-peach" data-theme="peach" title="Sunset Coral 🍑"></div>
+                  <div class="color-chip chip-sapphire" data-theme="sapphire" title="Ocean Sapphire 💎"></div>
+                </div>
+              </div>
+              <button type="submit" class="btn-primary" id="mainSubmitWishBtn" style="padding: 12px 28px;">
+                <i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨
               </button>
             </div>
           </form>
 
+          <!-- Filter & Controls Bar -->
+          <div class="sticky-controls-bar" style="margin-top:10px; margin-bottom:10px;">
+            <div class="filter-pills" id="mainWishFilterBar">
+              <button type="button" class="filter-pill active" data-filter="all">
+                <i class="fa-solid fa-layer-group"></i> All Blessings <span class="filter-count" id="mainCountAll">0</span>
+              </button>
+              <button type="button" class="filter-pill" data-filter="photo">
+                <i class="fa-solid fa-camera"></i> With Photos <span class="filter-count" id="mainCountPhotos">0</span>
+              </button>
+              <button type="button" class="filter-pill" data-filter="video">
+                <i class="fa-solid fa-video"></i> With Videos <span class="filter-count" id="mainCountVideos">0</span>
+              </button>
+              <button type="button" class="filter-pill" data-filter="royal">
+                <i class="fa-solid fa-crown"></i> Dilip's Dedications <span class="filter-count" id="mainCountRoyal">0</span>
+              </button>
+            </div>
+          </div>
+
           <div class="wishes-pinboard" id="wishesPinboard">
-            <div class="wish-sticky sticky-gold">
-              <span class="pin">📌</span>
-              <p class="sticky-msg">"Happy Birthday to the most beautiful, intelligent, and lovely girl! You make my life complete!"</p>
-              <span class="sticky-author">— With all my love, Dilip 💖</span>
-            </div>
-            <div class="wish-sticky sticky-pink">
-              <span class="pin">📌</span>
-              <p class="sticky-msg">"Wishing you a year filled with grand dreams coming true, cute laughs, and zero worries!"</p>
-              <span class="sticky-author">— Forever Yours</span>
-            </div>
-            <div class="wish-sticky sticky-cyan">
-              <span class="pin">📌</span>
-              <p class="sticky-msg">"You are my favorite notification, my favorite thought, and my favorite person. Cheers to your best year yet!"</p>
-              <span class="sticky-author">— Your Biggest Admirer</span>
-            </div>
+            <!-- Dynamic Sticky Cards injected by script.js -->
           </div>
         </div>
       </section>
@@ -3537,7 +3619,7 @@
   </div>
 
   <!-- UNIFIED COMING SOON MODALS -->
-  <!-- LIGHTBOX MODAL DIALOG -->
+  <!-- PHOTO LIGHTBOX MODAL DIALOG -->
   <div class="lightbox-modal-overlay" id="photoLightboxModal" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
     <div class="lightbox-box">
       <button type="button" class="modal-close-btn" id="closeLightboxBtn" title="Close" style="color:#000; background:rgba(0,0,0,0.08);"><i class="fa-solid fa-xmark"></i></button>
@@ -3554,6 +3636,22 @@
           <i class="fa-solid fa-heart"></i>
           <span id="lightboxLoveText">Love This Moment 💖 (<span id="lightboxLoveCount">12</span>)</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEDIA LIGHTBOX MODAL (Photos & Videos) -->
+  <div class="media-lightbox-overlay" id="mediaLightboxModal" role="dialog" aria-modal="true" aria-labelledby="lightboxAuthorName">
+    <div class="media-lightbox-card">
+      <button type="button" class="lightbox-close-btn" id="closeMediaLightboxBtn" title="Close Lightbox">&times;</button>
+      <div class="lightbox-media-viewport" id="lightboxViewport">
+        <!-- Image or Video injected dynamically -->
+      </div>
+      <div class="lightbox-info-pane">
+        <div class="lightbox-author" id="lightboxAuthorName">
+          <i class="fa-solid fa-crown"></i> <span>Dilip</span>
+        </div>
+        <p class="lightbox-caption" id="lightboxMessage"></p>
       </div>
     </div>
   </div>

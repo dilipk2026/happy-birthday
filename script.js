@@ -4478,75 +4478,691 @@ const romanticReasons = [
     state.uploadedPhotos.forEach(p => renderUploadedPolaroid(p));
   }
 
-  // Sticky Pinboard
+  // --------------------------------------------------------------------------
+  // 17. SECTION 10: STICKY WISH WALL ENGINE (With Photos, Videos & Cloud Sync)
+  // --------------------------------------------------------------------------
   const wishForm = document.getElementById('wishForm');
   const wishAuthorInput = document.getElementById('wishAuthorInput');
   const wishTextInput = document.getElementById('wishTextInput');
   const wishesPinboard = document.getElementById('wishesPinboard');
-  const stickyClasses = ['sticky-gold', 'sticky-pink', 'sticky-cyan'];
+  const syncWishesBtn = document.getElementById('syncWishesBtn');
 
-  function renderPinnedWishes() {
-    if (!wishesPinboard) return;
-    state.pinnedWishes.forEach(item => {
-      const sticky = document.createElement('div');
-      sticky.className = `wish-sticky ${item.styleClass || 'sticky-pink'}`;
-      sticky.style.transform = `rotate(${item.rot || 0}deg)`;
-      sticky.innerHTML = `
-        <span class="pin">📌</span>
-        <p class="sticky-msg">"${escapeHtml(item.text)}"</p>
-        <span class="sticky-author">— ${escapeHtml(item.author)}</span>
-      `;
-      wishesPinboard.prepend(sticky);
+  const mainCountAll = document.getElementById('mainCountAll');
+  const mainCountPhotos = document.getElementById('mainCountPhotos');
+  const mainCountVideos = document.getElementById('mainCountVideos');
+  const mainCountRoyal = document.getElementById('mainCountRoyal');
+
+  let mainSelectedMediaType = 'none';
+  let mainSelectedMediaData = '';
+  let mainSelectedTheme = 'pink';
+  let mainActiveFilter = 'all';
+
+  // Default multimedia royal dedications with photos & videos
+  const DEFAULT_MAIN_WISHES = [
+    {
+      id: 'def_main_1',
+      name: 'Dilip (With Infinite Devotion 👑)',
+      author: 'Dilip (With Infinite Devotion 👑)',
+      message: 'Happy Birthday to the most radiant, beautiful, and enchanting Queen Nishika! Every moment with you is poetry written in starlight. My whole heart is consecrated to you forever! 💕✨',
+      text: 'Happy Birthday to the most radiant, beautiful, and enchanting Queen Nishika! Every moment with you is poetry written in starlight. My whole heart is consecrated to you forever! 💕✨',
+      color: 'gold',
+      styleClass: 'sticky-gold',
+      mediaType: 'photo',
+      mediaUrl: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=900&auto=format&fit=crop&q=80',
+      likes: 58,
+      isRoyal: true,
+      localTime: 'Consecrated for Eternity'
+    },
+    {
+      id: 'def_main_2',
+      name: 'Celestial Rhapsody 🎶',
+      author: 'Celestial Rhapsody 🎶',
+      message: 'A heavenly romantic birthday melody dedicated to Queen Nishika! May your 26th year be filled with divine melodies and infinite royal joy! 🎂✨',
+      text: 'A heavenly romantic birthday melody dedicated to Queen Nishika! May your 26th year be filled with divine melodies and infinite royal joy! 🎂✨',
+      color: 'pink',
+      styleClass: 'sticky-pink',
+      mediaType: 'video',
+      mediaUrl: 'https://www.youtube.com/watch?v=nl62hhiBMOM',
+      likes: 44,
+      isRoyal: false,
+      localTime: 'September 2026'
+    },
+    {
+      id: 'def_main_3',
+      name: 'The Royal Court & Best Friends 🌸',
+      author: 'The Royal Court & Best Friends 🌸',
+      message: 'Wishing our magnificent Queen Nishika a spectacular birthday filled with grand surprises, unending laughter, and pure happiness! 👑💖',
+      text: 'Wishing our magnificent Queen Nishika a spectacular birthday filled with grand surprises, unending laughter, and pure happiness! 👑💖',
+      color: 'purple',
+      styleClass: 'sticky-purple',
+      mediaType: 'photo',
+      mediaUrl: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&auto=format&fit=crop&q=80',
+      likes: 31,
+      isRoyal: false,
+      localTime: 'Special Blessing'
+    },
+    {
+      id: 'def_main_4',
+      name: 'Starlight Soulmates 💎',
+      author: 'Starlight Soulmates 💎',
+      message: 'Celebrating your grace, kindness, and royal brilliance. May all your celestial dreams turn into reality this year! 🌟✨',
+      text: 'Celebrating your grace, kindness, and royal brilliance. May all your celestial dreams turn into reality this year! 🌟✨',
+      color: 'sapphire',
+      styleClass: 'sticky-cyan',
+      mediaType: 'photo',
+      mediaUrl: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=900&auto=format&fit=crop&q=80',
+      likes: 36,
+      isRoyal: false,
+      localTime: 'Anniversary Blessing'
+    },
+    {
+      id: 'def_main_5',
+      name: 'Sunset Blessings 🍑',
+      author: 'Sunset Blessings 🍑',
+      message: 'May every sunrise bring you radiant smiles and every sunset bring you peaceful serenity. Happy Birthday Queen Nishika! 🎂🥂',
+      text: 'May every sunrise bring you radiant smiles and every sunset bring you peaceful serenity. Happy Birthday Queen Nishika! 🎂🥂',
+      color: 'peach',
+      styleClass: 'sticky-peach',
+      mediaType: 'photo',
+      mediaUrl: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=900&auto=format&fit=crop&q=80',
+      likes: 27,
+      isRoyal: false,
+      localTime: 'Grand Celebration'
+    }
+  ];
+
+  // Helper: Normalize Google Drive and web image URLs
+  function normalizeGasImageUrl(url) {
+    if (!url) return '';
+    const trimmed = url.trim();
+    if (trimmed.includes('drive.google.com')) {
+      if (trimmed.includes('id=')) {
+        const id = trimmed.split('id=')[1].split('&')[0].split('/')[0];
+        return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+      } else if (trimmed.includes('/d/')) {
+        const id2 = trimmed.split('/d/')[1].split('/')[0];
+        return `https://drive.google.com/thumbnail?id=${id2}&sz=w1000`;
+      }
+    }
+    return trimmed;
+  }
+
+  // Helper: Parse video URLs into responsive iframes or video players
+  function parseGasVideoEmbed(url, inLightbox = false) {
+    if (!url) return '';
+    const clean = url.trim();
+
+    // 1. YouTube standard watch or youtu.be
+    if (clean.includes('youtube.com/watch') || clean.includes('youtu.be/')) {
+      let videoId = '';
+      if (clean.includes('v=')) videoId = clean.split('v=')[1].split('&')[0];
+      else if (clean.includes('youtu.be/')) videoId = clean.split('youtu.be/')[1].split('?')[0];
+      if (videoId) {
+        return `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+      }
+    }
+
+    // 2. YouTube Shorts
+    if (clean.includes('youtube.com/shorts/')) {
+      const sId = clean.split('youtube.com/shorts/')[1].split('?')[0].split('/')[0];
+      if (sId) {
+        return `<iframe src="https://www.youtube.com/embed/${sId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+      }
+    }
+
+    // 3. Vimeo
+    if (clean.includes('vimeo.com/')) {
+      const vId = clean.split('vimeo.com/')[1].split('?')[0].split('/')[0];
+      if (vId) {
+        return `<iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+      }
+    }
+
+    // 4. Google Drive Video link
+    if (clean.includes('drive.google.com/file/d/')) {
+      const gId = clean.split('/file/d/')[1].split('/')[0];
+      return `<iframe src="https://drive.google.com/file/d/${gId}/preview" allow="autoplay" allowfullscreen loading="lazy"></iframe>`;
+    }
+
+    // 5. Direct MP4 / WebM / Blob Video
+    return `<video src="${clean}" controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="width:100%; height:100%; object-fit:cover; border-radius:10px;"></video>`;
+  }
+
+  function getWishAvatarLetter(name) {
+    if (!name) return '👑';
+    const clean = name.replace(/[^a-zA-Z]/g, '');
+    return clean.length > 0 ? clean[0].toUpperCase() : '👑';
+  }
+
+  // Media Tab Switching in Main Wish Form
+  const mainMediaTabBtns = document.querySelectorAll('.media-tab-btn[data-tab^="mainTab"]');
+  mainMediaTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      mainMediaTabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const targetTab = btn.getAttribute('data-tab');
+
+      document.querySelectorAll('#wishBoardSection .media-content-pane').forEach(p => p.classList.remove('active'));
+      if (targetTab === 'mainTabPhoto') {
+        const pane = document.getElementById('mainTabPhoto');
+        if (pane) pane.classList.add('active');
+        mainSelectedMediaType = 'photo';
+      } else if (targetTab === 'mainTabVideo') {
+        const pane = document.getElementById('mainTabVideo');
+        if (pane) pane.classList.add('active');
+        mainSelectedMediaType = 'video';
+      } else {
+        mainSelectedMediaType = 'none';
+        mainSelectedMediaData = '';
+      }
+    });
+  });
+
+  // Photo Attachment Handler
+  const mainWishPhotoInput = document.getElementById('mainWishPhotoInput');
+  const mainWishPhotoUrl = document.getElementById('mainWishPhotoUrl');
+  const mainPhotoPreviewBox = document.getElementById('mainPhotoPreviewBox');
+  const mainPhotoPreviewImg = document.getElementById('mainPhotoPreviewImg');
+  const mainRemovePhotoBtn = document.getElementById('mainRemovePhotoBtn');
+
+  if (mainWishPhotoInput) {
+    mainWishPhotoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          mainSelectedMediaData = evt.target.result;
+          mainSelectedMediaType = 'photo';
+          if (mainPhotoPreviewImg) mainPhotoPreviewImg.src = mainSelectedMediaData;
+          if (mainPhotoPreviewBox) mainPhotoPreviewBox.style.display = 'inline-block';
+          if (mainWishPhotoUrl) mainWishPhotoUrl.value = '';
+        };
+        reader.readAsDataURL(file);
+      }
     });
   }
 
+  if (mainWishPhotoUrl) {
+    mainWishPhotoUrl.addEventListener('input', (e) => {
+      const val = normalizeGasImageUrl(e.target.value);
+      if (val) {
+        mainSelectedMediaData = val;
+        mainSelectedMediaType = 'photo';
+        if (mainPhotoPreviewImg) mainPhotoPreviewImg.src = val;
+        if (mainPhotoPreviewBox) mainPhotoPreviewBox.style.display = 'inline-block';
+        if (mainWishPhotoInput) mainWishPhotoInput.value = '';
+      }
+    });
+  }
+
+  if (mainRemovePhotoBtn) {
+    mainRemovePhotoBtn.addEventListener('click', () => {
+      if (mainWishPhotoInput) mainWishPhotoInput.value = '';
+      if (mainWishPhotoUrl) mainWishPhotoUrl.value = '';
+      if (mainPhotoPreviewBox) mainPhotoPreviewBox.style.display = 'none';
+      if (mainPhotoPreviewImg) mainPhotoPreviewImg.src = '';
+      mainSelectedMediaData = '';
+      mainSelectedMediaType = 'none';
+    });
+  }
+
+  // Video Attachment Handler
+  const mainWishVideoInput = document.getElementById('mainWishVideoInput');
+  const mainWishVideoUrl = document.getElementById('mainWishVideoUrl');
+  const mainVideoPreviewBox = document.getElementById('mainVideoPreviewBox');
+  const mainVideoPreviewContainer = document.getElementById('mainVideoPreviewContainer');
+  const mainRemoveVideoBtn = document.getElementById('mainRemoveVideoBtn');
+
+  function updateMainVideoPreview(val) {
+    if (!mainVideoPreviewBox || !mainVideoPreviewContainer) return;
+    mainSelectedMediaData = val;
+    mainSelectedMediaType = 'video';
+
+    if (val.includes('youtube.com') || val.includes('youtu.be') || val.includes('vimeo.com') || val.includes('drive.google.com')) {
+      mainVideoPreviewContainer.innerHTML = `<div style="height:140px; border-radius:10px; overflow:hidden;">${parseGasVideoEmbed(val)}</div>`;
+    } else {
+      mainVideoPreviewContainer.innerHTML = `<video src="${val}" controls style="width:100%; height:140px; object-fit:cover; border-radius:10px;"></video>`;
+    }
+    mainVideoPreviewBox.style.display = 'inline-block';
+  }
+
+  if (mainWishVideoInput) {
+    mainWishVideoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const videoUrl = URL.createObjectURL(file);
+        updateMainVideoPreview(videoUrl);
+        if (mainWishVideoUrl) mainWishVideoUrl.value = '';
+      }
+    });
+  }
+
+  if (mainWishVideoUrl) {
+    mainWishVideoUrl.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      if (val) {
+        updateMainVideoPreview(val);
+        if (mainWishVideoInput) mainWishVideoInput.value = '';
+      }
+    });
+  }
+
+  if (mainRemoveVideoBtn) {
+    mainRemoveVideoBtn.addEventListener('click', () => {
+      if (mainWishVideoInput) mainWishVideoInput.value = '';
+      if (mainWishVideoUrl) mainWishVideoUrl.value = '';
+      if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'none';
+      if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
+      mainSelectedMediaData = '';
+      mainSelectedMediaType = 'none';
+    });
+  }
+
+  // Theme Color Swatches Picker
+  const mainColorChips = document.querySelectorAll('#mainStickyColorPalette .color-chip');
+  mainColorChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      mainColorChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      mainSelectedTheme = chip.getAttribute('data-theme') || 'pink';
+    });
+  });
+
+  // Filter Pills Handler
+  const mainFilterPills = document.querySelectorAll('#mainWishFilterBar .filter-pill');
+  mainFilterPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      mainFilterPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      mainActiveFilter = pill.getAttribute('data-filter') || 'all';
+      renderPinnedWishes();
+    });
+  });
+
+  // Render Dynamic Sticky Notes on Wall
+  function renderPinnedWishes() {
+    if (!wishesPinboard) return;
+    wishesPinboard.innerHTML = '';
+
+    // Ensure default wishes exist if state is empty
+    if (!state.pinnedWishes || state.pinnedWishes.length === 0) {
+      state.pinnedWishes = [...DEFAULT_MAIN_WISHES];
+    }
+
+    const allNotes = state.pinnedWishes;
+
+    const filtered = allNotes.filter(w => {
+      const isPhoto = (w.mediaType === 'photo' && w.mediaUrl) || (w.mediaUrl && w.mediaUrl.match(/\.(jpg|jpeg|png|gif|webp)/i));
+      const isVideo = (w.mediaType === 'video' && w.mediaUrl) || (w.mediaUrl && w.mediaUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i));
+      const isRoyal = w.isRoyal || (w.author && w.author.toLowerCase().includes('dilip')) || (w.name && w.name.toLowerCase().includes('dilip'));
+
+      if (mainActiveFilter === 'photo') return isPhoto;
+      if (mainActiveFilter === 'video') return isVideo;
+      if (mainActiveFilter === 'royal') return isRoyal;
+      return true;
+    });
+
+    // Update Counter Badges
+    if (mainCountAll) mainCountAll.textContent = allNotes.length;
+    if (mainCountPhotos) mainCountPhotos.textContent = allNotes.filter(w => (w.mediaType === 'photo' && w.mediaUrl) || (w.mediaUrl && w.mediaUrl.match(/\.(jpg|jpeg|png|gif|webp)/i))).length;
+    if (mainCountVideos) mainCountVideos.textContent = allNotes.filter(w => (w.mediaType === 'video' && w.mediaUrl) || (w.mediaUrl && w.mediaUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i))).length;
+    if (mainCountRoyal) mainCountRoyal.textContent = allNotes.filter(w => w.isRoyal || (w.author && w.author.toLowerCase().includes('dilip')) || (w.name && w.name.toLowerCase().includes('dilip'))).length;
+
+    if (filtered.length === 0) {
+      wishesPinboard.innerHTML = `
+        <div class="sticky-empty-box">
+          <i class="fa-solid fa-sparkles"></i>
+          <h3>No notes in this category yet</h3>
+          <p>Be the first to consecrate a heartfelt wish, photo, or video dedication for Queen Nishika!</p>
+        </div>
+      `;
+      return;
+    }
+
+    const rotationAngles = [-2.0, 1.8, -1.4, 2.2, -1.8, 1.5, -2.2, 1.7];
+
+    filtered.forEach((item, idx) => {
+      const rot = item.rot !== undefined ? item.rot : rotationAngles[idx % rotationAngles.length];
+      const authorName = item.author || item.name || 'Loving Well-wisher';
+      const messageText = item.message || item.text || '';
+      const isRoyal = item.isRoyal || authorName.toLowerCase().includes('dilip');
+      const themeClass = item.styleClass || `theme-${item.color || 'pink'}`;
+      const mediaType = item.mediaType || 'none';
+      const mediaUrl = item.mediaUrl || item.mediaData || '';
+      const likesCount = item.likes || Math.floor(Math.random() * 8) + 12;
+
+      const sticky = document.createElement('div');
+      sticky.className = `wish-sticky ${themeClass}`;
+      sticky.style.transform = `rotate(${rot}deg)`;
+
+      let mediaHtml = '';
+      if (mediaType === 'photo' && mediaUrl) {
+        mediaHtml = `
+          <div class="sticky-media-wrap" data-img="${mediaUrl}" data-author="${encodeURIComponent(authorName)}" data-msg="${encodeURIComponent(messageText)}">
+            <img src="${mediaUrl}" alt="Attached Memory" loading="lazy" />
+            <span class="sticky-media-badge"><i class="fa-solid fa-expand"></i> View Photo</span>
+          </div>
+        `;
+      } else if (mediaType === 'video' && mediaUrl) {
+        mediaHtml = `
+          <div class="sticky-video-embed">
+            <div class="sticky-video-action-bar">
+              <button type="button" class="sticky-video-expand-btn" data-video="${mediaUrl}" data-author="${encodeURIComponent(authorName)}" data-msg="${encodeURIComponent(messageText)}" title="Expand Video in Lightbox">
+                <i class="fa-solid fa-expand"></i> Lightbox
+              </button>
+            </div>
+            ${parseGasVideoEmbed(mediaUrl, false)}
+          </div>
+        `;
+      }
+
+      sticky.innerHTML = `
+        <span class="pin">📌</span>
+        <div class="sticky-card-header">
+          <div class="sticky-avatar">${getWishAvatarLetter(authorName)}</div>
+          <div class="sticky-author-info">
+            <div class="sticky-author-name ${isRoyal ? 'is-royal' : ''}">
+              ${escapeHtml(authorName)} ${isRoyal ? '👑' : '✨'}
+            </div>
+            <div class="sticky-date">${item.localTime || 'Recently'}</div>
+          </div>
+        </div>
+        <p class="sticky-msg">"${escapeHtml(messageText)}"</p>
+        ${mediaHtml}
+        <div class="sticky-card-footer">
+          <button type="button" class="sticky-like-btn" data-id="${item.id || ('wish_' + idx)}">
+            <i class="fa-solid fa-heart"></i>
+            <span class="like-count">${likesCount}</span>
+          </button>
+          <span class="sticky-tag">#QueenNishika2026</span>
+        </div>
+      `;
+
+      // Photo Lightbox Click
+      const mediaWrap = sticky.querySelector('.sticky-media-wrap');
+      if (mediaWrap) {
+        mediaWrap.addEventListener('click', () => {
+          openMediaLightbox('photo', mediaUrl, authorName, messageText);
+        });
+      }
+
+      // Video Lightbox Click
+      const videoExpandBtn = sticky.querySelector('.sticky-video-expand-btn');
+      if (videoExpandBtn) {
+        videoExpandBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openMediaLightbox('video', mediaUrl, authorName, messageText);
+        });
+      }
+
+      // Like Button Interaction
+      const likeBtn = sticky.querySelector('.sticky-like-btn');
+      if (likeBtn) {
+        likeBtn.addEventListener('click', () => {
+          audioSynth.playChimeSound(659.25, 0.2);
+          item.likes = (item.likes || likesCount) + 1;
+          likeBtn.classList.add('liked');
+          const countSpan = likeBtn.querySelector('.like-count');
+          if (countSpan) countSpan.textContent = item.likes;
+          saveState();
+        });
+      }
+
+      wishesPinboard.appendChild(sticky);
+    });
+  }
+  window.renderPinnedWishes = renderPinnedWishes;
+
+  // JSONP Fallback loader for Google Apps Script Web App
+  function fetchGasJsonp(url, timeoutMs = 8000) {
+    return new Promise((resolve, reject) => {
+      const callbackName = 'gas_main_jsonp_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+      const script = document.createElement('script');
+      const timeout = setTimeout(() => {
+        cleanup();
+        reject(new Error('JSONP request timed out'));
+      }, timeoutMs);
+
+      function cleanup() {
+        clearTimeout(timeout);
+        if (script.parentNode) script.parentNode.removeChild(script);
+        delete window[callbackName];
+      }
+
+      window[callbackName] = (data) => {
+        cleanup();
+        resolve(data);
+      };
+
+      const separator = url.includes('?') ? '&' : '?';
+      script.src = `${url}${separator}callback=${callbackName}`;
+      script.onerror = () => {
+        cleanup();
+        reject(new Error('JSONP script load error'));
+      };
+      document.body.appendChild(script);
+    });
+  }
+
+  // Live Cloud Fetch for Wishes & Photos
+  async function fetchCloudWishes() {
+    const sheetUrl = state.googleSheetUrl || localStorage.getItem('eternal_love_sheet_url') || DEFAULT_GOOGLE_SHEET_URL;
+    if (!sheetUrl || !sheetUrl.startsWith('http')) return;
+
+    if (syncWishesBtn) syncWishesBtn.classList.add('rotating');
+    let cloudWishes = [];
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const res = await fetch(sheetUrl + '?action=getAll', {
+        method: 'GET',
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data) {
+          if (Array.isArray(data.wishes)) {
+            cloudWishes.push(...data.wishes);
+          }
+          if (Array.isArray(data.photos)) {
+            data.photos.forEach(p => {
+              cloudWishes.push({
+                id: p.id || ('photo_' + Math.random()),
+                name: p.dedicatedBy || 'Royal Memory 📸',
+                author: p.dedicatedBy || 'Royal Memory 📸',
+                message: p.caption || 'Our unforgettable celebration memory ✨',
+                text: p.caption || 'Our unforgettable celebration memory ✨',
+                color: 'peach',
+                styleClass: 'sticky-peach',
+                mediaType: 'photo',
+                mediaUrl: p.imgUrl || p.driveUrl,
+                likes: 22,
+                isRoyal: true,
+                localTime: p.localTime || 'Recently'
+              });
+            });
+          }
+        }
+      }
+    } catch (fetchErr) {
+      console.warn('Standard fetch failed in main arena, attempting JSONP fallback...', fetchErr);
+      try {
+        const data = await fetchGasJsonp(sheetUrl + '?action=getAll');
+        if (data) {
+          if (Array.isArray(data.wishes)) {
+            cloudWishes.push(...data.wishes);
+          }
+          if (Array.isArray(data.photos)) {
+            data.photos.forEach(p => {
+              cloudWishes.push({
+                id: p.id || ('photo_' + Math.random()),
+                name: p.dedicatedBy || 'Royal Memory 📸',
+                author: p.dedicatedBy || 'Royal Memory 📸',
+                message: p.caption || 'Our unforgettable celebration memory ✨',
+                text: p.caption || 'Our unforgettable celebration memory ✨',
+                color: 'peach',
+                styleClass: 'sticky-peach',
+                mediaType: 'photo',
+                mediaUrl: p.imgUrl || p.driveUrl,
+                likes: 22,
+                isRoyal: true,
+                localTime: p.localTime || 'Recently'
+              });
+            });
+          }
+        }
+      } catch (jsonpErr) {
+        console.warn('JSONP fallback also failed in main arena:', jsonpErr);
+      }
+    }
+
+    // Merge and Deduplicate
+    const mergedMap = new Map();
+    [...cloudWishes, ...(state.pinnedWishes || []), ...DEFAULT_MAIN_WISHES].forEach(w => {
+      const key = ((w.author || w.name) + '_' + (w.message || w.text)).trim().toLowerCase();
+      if (!mergedMap.has(key)) {
+        mergedMap.set(key, w);
+      }
+    });
+
+    state.pinnedWishes = Array.from(mergedMap.values());
+    saveState();
+
+    if (syncWishesBtn) syncWishesBtn.classList.remove('rotating');
+    renderPinnedWishes();
+  }
+
+  if (syncWishesBtn) syncWishesBtn.addEventListener('click', fetchCloudWishes);
+  fetchCloudWishes();
+
+  // Wish Form Submission Handler
   if (wishForm) {
     wishForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const author = wishAuthorInput ? wishAuthorInput.value.trim() : '';
+      const author = wishAuthorInput ? wishAuthorInput.value.trim() : (state.senderName || 'Loving Friend');
       const text = wishTextInput ? wishTextInput.value.trim() : '';
-      if (!author || !text) return;
+      if (!text) return;
 
-      const randomStickyClass = stickyClasses[Math.floor(Math.random() * stickyClasses.length)];
-      const randomRot = (Math.random() * 6 - 3).toFixed(1);
+      const randomRot = (Math.random() * 5 - 2.5).toFixed(1);
+      const styleThemeClass = `theme-${mainSelectedTheme}`;
 
-      const newWish = { author, text, styleClass: randomStickyClass, rot: randomRot };
-      state.pinnedWishes.push(newWish);
+      const newWish = {
+        id: 'local_wish_' + Date.now(),
+        author: author,
+        name: author,
+        text: text,
+        message: text,
+        color: mainSelectedTheme,
+        styleClass: styleThemeClass,
+        rot: randomRot,
+        mediaType: mainSelectedMediaType,
+        mediaUrl: mainSelectedMediaData,
+        mediaData: mainSelectedMediaData,
+        likes: 1,
+        isRoyal: author.toLowerCase().includes('dilip'),
+        localTime: 'Just Now',
+        timestamp: new Date().toISOString()
+      };
+
+      if (!state.pinnedWishes) state.pinnedWishes = [];
+      state.pinnedWishes.unshift(newWish);
       saveState();
+      renderPinnedWishes();
 
-      const sticky = document.createElement('div');
-      sticky.className = `wish-sticky ${randomStickyClass}`;
-      sticky.style.transform = `rotate(${randomRot}deg)`;
-      sticky.innerHTML = `
-        <span class="pin">📌</span>
-        <p class="sticky-msg">"${escapeHtml(text)}"</p>
-        <span class="sticky-author">— ${escapeHtml(author)}</span>
-      `;
-
-      wishesPinboard.prepend(sticky);
       audioSynth.playCheerSound();
-      burstConfetti(window.innerWidth / 2, window.innerHeight * 0.7, 40);
+      burstConfetti(window.innerWidth / 2, window.innerHeight * 0.7, 45);
 
-      // Sync wish to Google Sheets
+      // Sync wish note to Google Sheets & Drive
       sendToGoogleSheet({
         type: 'wish',
         name: author,
         author: author,
         message: text,
         text: text,
-        styleClass: randomStickyClass
+        color: mainSelectedTheme,
+        styleClass: styleThemeClass,
+        mediaType: mainSelectedMediaType,
+        mediaData: mainSelectedMediaData,
+        mediaUrl: mainSelectedMediaData,
+        celebrant: state.recipientName || 'Nishika',
+        dedicatedBy: state.senderName || 'Dilip',
+        timestamp: new Date().toISOString(),
+        localTime: new Date().toLocaleString()
       }, {
         chipElement: document.getElementById('wishSyncChip'),
         textElement: document.getElementById('wishSyncText'),
-        successText: 'Wish Saved to Google Sheets! 💖✨',
+        successText: 'Wish & Media Saved to Google Sheets! 💖✨',
         defaultText: 'Google Sheets Connected ✨'
       });
 
-      if (wishAuthorInput) wishAuthorInput.value = '';
-      if (wishTextInput) wishTextInput.value = '';
-      showToast('Note pinned & saved to celebration board! 📌✨');
+      // Reset form
+      wishForm.reset();
+      mainSelectedMediaData = '';
+      mainSelectedMediaType = 'none';
+      if (mainPhotoPreviewBox) mainPhotoPreviewBox.style.display = 'none';
+      if (mainPhotoPreviewImg) mainPhotoPreviewImg.src = '';
+      if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'none';
+      if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
+
+      mainMediaTabBtns.forEach(b => b.classList.remove('active'));
+      const defaultTab = document.querySelector('.media-tab-btn[data-tab="mainTabNone"]');
+      if (defaultTab) defaultTab.classList.add('active');
+      document.querySelectorAll('#wishBoardSection .media-content-pane').forEach(p => p.classList.remove('active'));
+
+      showToast('Note & media pinned to Queen Nishika\'s celebration board! 📌✨');
     });
   }
+
+  // --------------------------------------------------------------------------
+  // MEDIA LIGHTBOX CONTROLLER (Photos & Videos)
+  // --------------------------------------------------------------------------
+  const mediaLightboxModal = document.getElementById('mediaLightboxModal');
+  const closeMediaLightboxBtn = document.getElementById('closeMediaLightboxBtn');
+  const lightboxViewport = document.getElementById('lightboxViewport');
+  const lightboxAuthorName = document.getElementById('lightboxAuthorName');
+  const lightboxMessage = document.getElementById('lightboxMessage');
+
+  function openMediaLightbox(type, url, author, msg) {
+    if (!mediaLightboxModal || !lightboxViewport) return;
+    audioSynth.playChimeSound(659.25, 0.2);
+
+    if (type === 'photo') {
+      lightboxViewport.innerHTML = `<img src="${url}" alt="Full Photo" style="max-width:100%; max-height:60vh; object-fit:contain; border-radius:12px;" />`;
+    } else if (type === 'video') {
+      lightboxViewport.innerHTML = `<div style="width:100%; height:55vh; max-height:550px;">${parseGasVideoEmbed(url, true)}</div>`;
+    }
+
+    const decodedAuthor = decodeURIComponent(author || 'Loving Well-wisher');
+    const decodedMsg = decodeURIComponent(msg || '');
+
+    if (lightboxAuthorName) lightboxAuthorName.innerHTML = `<i class="fa-solid fa-crown"></i> <span>${decodedAuthor}</span>`;
+    if (lightboxMessage) lightboxMessage.textContent = decodedMsg;
+
+    mediaLightboxModal.classList.add('active');
+  }
+  window.openMediaLightbox = openMediaLightbox;
+
+  function closeMediaLightbox() {
+    if (!mediaLightboxModal) return;
+    mediaLightboxModal.classList.remove('active');
+    if (lightboxViewport) lightboxViewport.innerHTML = '';
+  }
+
+  if (closeMediaLightboxBtn) closeMediaLightboxBtn.addEventListener('click', closeMediaLightbox);
+  if (mediaLightboxModal) {
+    mediaLightboxModal.addEventListener('click', (e) => {
+      if (e.target === mediaLightboxModal) closeMediaLightbox();
+    });
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mediaLightboxModal && mediaLightboxModal.classList.contains('active')) {
+      closeMediaLightbox();
+    }
+  });
 
 
 
