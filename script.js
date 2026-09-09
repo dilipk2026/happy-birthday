@@ -4,6 +4,18 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   try {
+  // Global HTML Sanitizer
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+  window.escapeHtml = escapeHtml;
+
   // --------------------------------------------------------------------------
   // 1. STATE MANAGEMENT & LOCAL STORAGE PERSISTENCE
   // --------------------------------------------------------------------------
@@ -262,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.sendToGoogleSheet = sendToGoogleSheet;
 
   // --------------------------------------------------------------------------
-  // 2. SCROLL REVEAL OBSERVER (INTERSECTION OBSERVER)
+  // 2. SCROLL REVEAL OBSERVER (INTERSECTION OBSERVER) & MOBILE GUARANTEE
   // --------------------------------------------------------------------------
   const revealElements = document.querySelectorAll('.reveal-on-scroll');
   const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -272,9 +284,34 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.02, rootMargin: '120px 0px 80px 0px' });
 
-  revealElements.forEach(el => revealObserver.observe(el));
+  revealElements.forEach(el => {
+    revealObserver.observe(el);
+    // Instant reveal fallback on mobile / tablet devices (<= 1024px)
+    if (window.innerWidth <= 1024) {
+      el.classList.add('is-revealed');
+    }
+  });
+
+  // Safeguard: Ensure Section 7 (Polaroid & Wish Wall) and all sections are revealed
+  const ensureVisibleSections = () => {
+    const memSec = document.getElementById('memoriesSec');
+    if (memSec) {
+      memSec.classList.add('is-revealed');
+    }
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 1.6 || window.innerWidth <= 1024) {
+        el.classList.add('is-revealed');
+      }
+    });
+  };
+  window.addEventListener('load', ensureVisibleSections);
+  window.addEventListener('resize', ensureVisibleSections);
+  window.addEventListener('scroll', ensureVisibleSections, { passive: true });
+  setTimeout(ensureVisibleSections, 200);
+  setTimeout(ensureVisibleSections, 1000);
 
   // --------------------------------------------------------------------------
   // 3. WEB AUDIO SYNTHESIZER ENGINE
@@ -2463,7 +2500,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const note = document.createElement('div');
       note.className = 'floating-love-note whisper-dynamic';
-      note.innerHTML = `<span class="note-icon">💌</span><span class="note-text">${text}</span>`;
+      note.innerHTML = `<span class="note-icon">💌</span><span class="note-text">${escapeHtml(text)}</span>`;
       note.style.left = `${15 + Math.random() * 40}%`;
       note.style.top = `${30 + Math.random() * 40}px`;
 
@@ -4325,6 +4362,7 @@ const romanticReasons = [
   const tiltCards = document.querySelectorAll('.tilt-element');
   tiltCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
+      if (window.innerWidth <= 1024 || window.matchMedia('(hover: none)').matches) return;
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -4336,6 +4374,9 @@ const romanticReasons = [
     });
 
     card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+    card.addEventListener('touchend', () => {
       card.style.transform = '';
     });
   });
@@ -4435,7 +4476,7 @@ const romanticReasons = [
   function renderUploadedPolaroid(photoItem, prepend = false) {
     if (!polaroidGrid) return;
     const card = document.createElement('div');
-    card.className = `polaroid-card tilt-element ${photoItem.filterClass || ''}`;
+    card.className = `polaroid-card dynamic-uploaded tilt-element ${photoItem.filterClass || ''}`;
     card.innerHTML = `
       <div class="polaroid-inner">
         <div class="polaroid-front">
@@ -4453,6 +4494,7 @@ const romanticReasons = [
     `;
 
     card.addEventListener('mousemove', (e) => {
+      if (window.innerWidth <= 1024 || window.matchMedia('(hover: none)').matches) return;
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -4465,6 +4507,9 @@ const romanticReasons = [
     card.addEventListener('mouseleave', () => {
       card.style.transform = '';
     });
+    card.addEventListener('touchend', () => {
+      card.style.transform = '';
+    });
 
     if (prepend) {
       polaroidGrid.prepend(card);
@@ -4472,6 +4517,17 @@ const romanticReasons = [
       polaroidGrid.appendChild(card);
     }
   }
+
+  function renderAllPolaroidGallery() {
+    const grid = polaroidGrid || document.getElementById('polaroidGrid') || document.getElementById('polaroidsGrid') || document.querySelector('.polaroid-grid');
+    if (!grid) return;
+    const dynamicCards = grid.querySelectorAll('.polaroid-card.dynamic-uploaded');
+    dynamicCards.forEach(c => c.remove());
+    if (state.uploadedPhotos && state.uploadedPhotos.length > 0) {
+      state.uploadedPhotos.forEach(p => renderUploadedPolaroid(p));
+    }
+  }
+  window.renderAllPolaroidGallery = renderAllPolaroidGallery;
 
   // Load existing uploaded photos from storage
   if (state.uploadedPhotos && state.uploadedPhotos.length > 0) {
@@ -4706,24 +4762,26 @@ const romanticReasons = [
     });
   }
 
-  // Video Attachment Handler
+  // Video Attachment Handlers
   const mainWishVideoInput = document.getElementById('mainWishVideoInput');
   const mainWishVideoUrl = document.getElementById('mainWishVideoUrl');
   const mainVideoPreviewBox = document.getElementById('mainVideoPreviewBox');
   const mainVideoPreviewContainer = document.getElementById('mainVideoPreviewContainer');
   const mainRemoveVideoBtn = document.getElementById('mainRemoveVideoBtn');
 
-  function updateMainVideoPreview(val) {
-    if (!mainVideoPreviewBox || !mainVideoPreviewContainer) return;
-    mainSelectedMediaData = val;
-    mainSelectedMediaType = 'video';
-
-    if (val.includes('youtube.com') || val.includes('youtu.be') || val.includes('vimeo.com') || val.includes('drive.google.com')) {
-      mainVideoPreviewContainer.innerHTML = `<div style="height:140px; border-radius:10px; overflow:hidden;">${parseGasVideoEmbed(val)}</div>`;
-    } else {
-      mainVideoPreviewContainer.innerHTML = `<video src="${val}" controls style="width:100%; height:140px; object-fit:cover; border-radius:10px;"></video>`;
+  function updateMainVideoPreview(src) {
+    if (!src) {
+      if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'none';
+      if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
+      mainSelectedMediaData = '';
+      return;
     }
-    mainVideoPreviewBox.style.display = 'inline-block';
+    mainSelectedMediaData = src;
+    mainSelectedMediaType = 'video';
+    if (mainVideoPreviewContainer) {
+      mainVideoPreviewContainer.innerHTML = parseGasVideoEmbed(src, false);
+    }
+    if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'inline-block';
   }
 
   if (mainWishVideoInput) {
@@ -4779,6 +4837,55 @@ const romanticReasons = [
     });
   });
 
+  function isPhotoItem(w) {
+    if (!w) return false;
+    const type = (w.mediaType || '').toLowerCase();
+    if (type === 'photo') return true;
+    const url = (w.mediaUrl || w.mediaData || '').toLowerCase();
+    if (!url) return false;
+    return url.startsWith('data:image') ||
+           url.includes('googleusercontent.com') ||
+           url.includes('drive.google.com') ||
+           url.includes('photos.app.goo.gl') ||
+           /\.(jpg|jpeg|png|gif|webp|avif|svg)(\?.*)?$/i.test(url);
+  }
+
+  function isVideoItem(w) {
+    if (!w) return false;
+    const type = (w.mediaType || '').toLowerCase();
+    if (type === 'video') return true;
+    const url = (w.mediaUrl || w.mediaData || '').toLowerCase();
+    if (!url) return false;
+    return url.includes('youtube.com') ||
+           url.includes('youtu.be') ||
+           url.includes('vimeo.com') ||
+           /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
+  }
+
+  // Universal Image URL Normalizer (Converts Google Drive file links to high-speed CDN thumbnails)
+  function normalizeCloudImageUrl(url) {
+    if (!url) return '';
+    url = url.toString().trim();
+    if (url.startsWith('data:image')) return url;
+
+    let driveId = '';
+    if (url.includes('drive.google.com') || url.includes('docs.google.com') || url.includes('googleusercontent.com')) {
+      const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/) ||
+                      url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
+                      url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                      url.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+      if (idMatch && idMatch[1]) {
+        driveId = idMatch[1];
+      }
+    }
+
+    if (driveId) {
+      return `https://lh3.googleusercontent.com/d/${driveId}`;
+    }
+    return url;
+  }
+  window.normalizeCloudImageUrl = normalizeCloudImageUrl;
+
   // Render Dynamic Sticky Notes on Wall
   function renderPinnedWishes() {
     if (!wishesPinboard) return;
@@ -4792,8 +4899,8 @@ const romanticReasons = [
     const allNotes = state.pinnedWishes;
 
     const filtered = allNotes.filter(w => {
-      const isPhoto = (w.mediaType === 'photo' && w.mediaUrl) || (w.mediaUrl && w.mediaUrl.match(/\.(jpg|jpeg|png|gif|webp)/i));
-      const isVideo = (w.mediaType === 'video' && w.mediaUrl) || (w.mediaUrl && w.mediaUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i));
+      const isPhoto = isPhotoItem(w);
+      const isVideo = isVideoItem(w);
       const isRoyal = w.isRoyal || (w.author && w.author.toLowerCase().includes('dilip')) || (w.name && w.name.toLowerCase().includes('dilip'));
 
       if (mainActiveFilter === 'photo') return isPhoto;
@@ -4804,8 +4911,8 @@ const romanticReasons = [
 
     // Update Counter Badges
     if (mainCountAll) mainCountAll.textContent = allNotes.length;
-    if (mainCountPhotos) mainCountPhotos.textContent = allNotes.filter(w => (w.mediaType === 'photo' && w.mediaUrl) || (w.mediaUrl && w.mediaUrl.match(/\.(jpg|jpeg|png|gif|webp)/i))).length;
-    if (mainCountVideos) mainCountVideos.textContent = allNotes.filter(w => (w.mediaType === 'video' && w.mediaUrl) || (w.mediaUrl && w.mediaUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i))).length;
+    if (mainCountPhotos) mainCountPhotos.textContent = allNotes.filter(w => isPhotoItem(w)).length;
+    if (mainCountVideos) mainCountVideos.textContent = allNotes.filter(w => isVideoItem(w)).length;
     if (mainCountRoyal) mainCountRoyal.textContent = allNotes.filter(w => w.isRoyal || (w.author && w.author.toLowerCase().includes('dilip')) || (w.name && w.name.toLowerCase().includes('dilip'))).length;
 
     if (filtered.length === 0) {
@@ -4827,8 +4934,10 @@ const romanticReasons = [
       const messageText = item.message || item.text || '';
       const isRoyal = item.isRoyal || authorName.toLowerCase().includes('dilip');
       const themeClass = item.styleClass || `theme-${item.color || 'pink'}`;
-      const mediaType = item.mediaType || 'none';
-      const mediaUrl = item.mediaUrl || item.mediaData || '';
+      const isPhoto = isPhotoItem(item);
+      const isVideo = isVideoItem(item);
+      const rawMediaUrl = item.mediaUrl || item.mediaData || '';
+      const mediaUrl = isPhoto ? normalizeCloudImageUrl(rawMediaUrl) : rawMediaUrl;
       const likesCount = item.likes || Math.floor(Math.random() * 8) + 12;
 
       const sticky = document.createElement('div');
@@ -4836,14 +4945,14 @@ const romanticReasons = [
       sticky.style.transform = `rotate(${rot}deg)`;
 
       let mediaHtml = '';
-      if (mediaType === 'photo' && mediaUrl) {
+      if (isPhoto && mediaUrl) {
         mediaHtml = `
           <div class="sticky-media-wrap" data-img="${mediaUrl}" data-author="${encodeURIComponent(authorName)}" data-msg="${encodeURIComponent(messageText)}">
-            <img src="${mediaUrl}" alt="Attached Memory" loading="lazy" />
+            <img src="${mediaUrl}" alt="Attached Memory" loading="lazy" onerror="this.onerror=null; if(this.src.indexOf('lh3.googleusercontent.com')!==-1){this.src=this.src.replace('lh3.googleusercontent.com/d/','drive.google.com/thumbnail?id=').split('?')[0]+'&sz=w1000';}" />
             <span class="sticky-media-badge"><i class="fa-solid fa-expand"></i> View Photo</span>
           </div>
         `;
-      } else if (mediaType === 'video' && mediaUrl) {
+      } else if (isVideo && mediaUrl) {
         mediaHtml = `
           <div class="sticky-video-embed">
             <div class="sticky-video-action-bar">
@@ -4951,6 +5060,7 @@ const romanticReasons = [
 
     if (syncWishesBtn) syncWishesBtn.classList.add('rotating');
     let cloudWishes = [];
+    let cloudPhotos = [];
 
     try {
       const controller = new AbortController();
@@ -4965,23 +5075,64 @@ const romanticReasons = [
         const data = await res.json();
         if (data) {
           if (Array.isArray(data.wishes)) {
-            cloudWishes.push(...data.wishes);
+            data.wishes.forEach(w => {
+              const rawMediaUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
+              const normalizedMediaUrl = normalizeCloudImageUrl(rawMediaUrl);
+              const authorName = w.author || w.name || 'Loving Well-wisher';
+              const messageText = w.message || w.text || '';
+              const isRoyal = w.isRoyal || authorName.toLowerCase().includes('dilip');
+
+              cloudWishes.push({
+                id: w.id || ('gs_wish_' + Math.random()),
+                author: authorName,
+                name: authorName,
+                message: messageText,
+                text: messageText,
+                color: w.color || 'pink',
+                styleClass: w.styleClass || `theme-${w.color || 'pink'}`,
+                mediaType: w.mediaType || (rawMediaUrl ? (rawMediaUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i) ? 'video' : 'photo') : 'none'),
+                mediaUrl: normalizedMediaUrl,
+                likes: w.likes || (Math.floor(Math.random() * 8) + 12),
+                isRoyal: isRoyal,
+                localTime: w.localTime || 'Recently',
+                timestamp: w.timestamp || new Date().toISOString()
+              });
+            });
           }
+
           if (Array.isArray(data.photos)) {
             data.photos.forEach(p => {
+              const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '');
+              const author = p.dedicatedBy || 'Dilip 👑';
+              const caption = p.caption || `Our unforgettable memory with ${p.celebrant || state.recipientName} 💖`;
+
+              cloudPhotos.push({
+                id: p.id || ('gs_photo_' + Math.random()),
+                imgUrl: photoUrl,
+                dataUrl: photoUrl,
+                rawDriveUrl: p.driveUrl || '',
+                caption: caption,
+                tag: p.tag || 'Real Moment 📸',
+                celebrant: p.celebrant || 'Nishika',
+                dedicatedBy: author,
+                localTime: p.localTime || 'Recently',
+                timestamp: p.timestamp || new Date().toISOString()
+              });
+
               cloudWishes.push({
-                id: p.id || ('photo_' + Math.random()),
-                name: p.dedicatedBy || 'Royal Memory 📸',
-                author: p.dedicatedBy || 'Royal Memory 📸',
-                message: p.caption || 'Our unforgettable celebration memory ✨',
-                text: p.caption || 'Our unforgettable celebration memory ✨',
+                id: p.id || ('photo_sticky_' + Math.random()),
+                author: author,
+                name: author,
+                message: caption,
+                text: caption,
                 color: 'peach',
-                styleClass: 'sticky-peach',
+                styleClass: 'theme-peach',
                 mediaType: 'photo',
-                mediaUrl: p.imgUrl || p.driveUrl,
-                likes: 22,
+                mediaUrl: photoUrl,
+                likes: 24,
                 isRoyal: true,
-                localTime: p.localTime || 'Recently'
+                localTime: p.localTime || 'Recently',
+                timestamp: p.timestamp || new Date().toISOString()
               });
             });
           }
@@ -4993,23 +5144,64 @@ const romanticReasons = [
         const data = await fetchGasJsonp(sheetUrl + '?action=getAll');
         if (data) {
           if (Array.isArray(data.wishes)) {
-            cloudWishes.push(...data.wishes);
+            data.wishes.forEach(w => {
+              const rawMediaUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
+              const normalizedMediaUrl = normalizeCloudImageUrl(rawMediaUrl);
+              const authorName = w.author || w.name || 'Loving Well-wisher';
+              const messageText = w.message || w.text || '';
+              const isRoyal = w.isRoyal || authorName.toLowerCase().includes('dilip');
+
+              cloudWishes.push({
+                id: w.id || ('gs_wish_' + Math.random()),
+                author: authorName,
+                name: authorName,
+                message: messageText,
+                text: messageText,
+                color: w.color || 'pink',
+                styleClass: w.styleClass || `theme-${w.color || 'pink'}`,
+                mediaType: w.mediaType || (rawMediaUrl ? (rawMediaUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i) ? 'video' : 'photo') : 'none'),
+                mediaUrl: normalizedMediaUrl,
+                likes: w.likes || (Math.floor(Math.random() * 8) + 12),
+                isRoyal: isRoyal,
+                localTime: w.localTime || 'Recently',
+                timestamp: w.timestamp || new Date().toISOString()
+              });
+            });
           }
+
           if (Array.isArray(data.photos)) {
             data.photos.forEach(p => {
+              const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '');
+              const author = p.dedicatedBy || 'Dilip 👑';
+              const caption = p.caption || `Our unforgettable memory with ${p.celebrant || state.recipientName} 💖`;
+
+              cloudPhotos.push({
+                id: p.id || ('gs_photo_' + Math.random()),
+                imgUrl: photoUrl,
+                dataUrl: photoUrl,
+                rawDriveUrl: p.driveUrl || '',
+                caption: caption,
+                tag: p.tag || 'Real Moment 📸',
+                celebrant: p.celebrant || 'Nishika',
+                dedicatedBy: author,
+                localTime: p.localTime || 'Recently',
+                timestamp: p.timestamp || new Date().toISOString()
+              });
+
               cloudWishes.push({
-                id: p.id || ('photo_' + Math.random()),
-                name: p.dedicatedBy || 'Royal Memory 📸',
-                author: p.dedicatedBy || 'Royal Memory 📸',
-                message: p.caption || 'Our unforgettable celebration memory ✨',
-                text: p.caption || 'Our unforgettable celebration memory ✨',
+                id: p.id || ('photo_sticky_' + Math.random()),
+                author: author,
+                name: author,
+                message: caption,
+                text: caption,
                 color: 'peach',
-                styleClass: 'sticky-peach',
+                styleClass: 'theme-peach',
                 mediaType: 'photo',
-                mediaUrl: p.imgUrl || p.driveUrl,
-                likes: 22,
+                mediaUrl: photoUrl,
+                likes: 24,
                 isRoyal: true,
-                localTime: p.localTime || 'Recently'
+                localTime: p.localTime || 'Recently',
+                timestamp: p.timestamp || new Date().toISOString()
               });
             });
           }
@@ -5019,7 +5211,21 @@ const romanticReasons = [
       }
     }
 
-    // Merge and Deduplicate
+    // Merge Photos into state.uploadedPhotos & re-render Polaroid Gallery
+    if (cloudPhotos.length > 0) {
+      const photoMap = new Map();
+      [...cloudPhotos, ...(state.uploadedPhotos || [])].forEach(p => {
+        const key = (p.imgUrl || p.dataUrl || p.caption).trim().toLowerCase();
+        if (key && !photoMap.has(key)) {
+          photoMap.set(key, p);
+        }
+      });
+      state.uploadedPhotos = Array.from(photoMap.values());
+      saveState();
+      renderAllPolaroidGallery();
+    }
+
+    // Merge Wishes into state.pinnedWishes & re-render Sticky Wish Wall
     const mergedMap = new Map();
     [...cloudWishes, ...(state.pinnedWishes || []), ...DEFAULT_MAIN_WISHES].forEach(w => {
       const key = ((w.author || w.name) + '_' + (w.message || w.text)).trim().toLowerCase();
@@ -5130,7 +5336,7 @@ const romanticReasons = [
     audioSynth.playChimeSound(659.25, 0.2);
 
     if (type === 'photo') {
-      lightboxViewport.innerHTML = `<img src="${url}" alt="Full Photo" style="max-width:100%; max-height:60vh; object-fit:contain; border-radius:12px;" />`;
+      lightboxViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Full Photo" style="max-width:100%; max-height:60vh; object-fit:contain; border-radius:12px;" />`;
     } else if (type === 'video') {
       lightboxViewport.innerHTML = `<div style="width:100%; height:55vh; max-height:550px;">${parseGasVideoEmbed(url, true)}</div>`;
     }
@@ -5138,7 +5344,7 @@ const romanticReasons = [
     const decodedAuthor = decodeURIComponent(author || 'Loving Well-wisher');
     const decodedMsg = decodeURIComponent(msg || '');
 
-    if (lightboxAuthorName) lightboxAuthorName.innerHTML = `<i class="fa-solid fa-crown"></i> <span>${decodedAuthor}</span>`;
+    if (lightboxAuthorName) lightboxAuthorName.innerHTML = `<i class="fa-solid fa-crown"></i> <span>${escapeHtml(decodedAuthor)}</span>`;
     if (lightboxMessage) lightboxMessage.textContent = decodedMsg;
 
     mediaLightboxModal.classList.add('active');

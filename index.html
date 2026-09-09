@@ -2831,6 +2831,17 @@
       const countRoyal = document.getElementById('countRoyal');
       const syncWishesBtn = document.getElementById('syncWishesBtn');
 
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+      window.escapeHtml = escapeHtml;
+
       function getAvatarLetter(name) {
         if (!name) return '👑';
         const clean = name.replace(/[^a-zA-Z]/g, '');
@@ -2903,12 +2914,12 @@
               <div class="sticky-avatar">${getAvatarLetter(wish.name)}</div>
               <div class="sticky-author-info">
                 <div class="sticky-author-name ${isDilip ? 'is-royal' : ''}">
-                  ${wish.name} ${isDilip ? '👑' : '✨'}
+                  ${escapeHtml(wish.name)} ${isDilip ? '👑' : '✨'}
                 </div>
-                <div class="sticky-date">${wish.localTime || 'Recently'}</div>
+                <div class="sticky-date">${escapeHtml(wish.localTime || 'Recently')}</div>
               </div>
             </div>
-            <div class="sticky-message">"${wish.message}"</div>
+            <div class="sticky-message">"${escapeHtml(wish.message)}"</div>
             ${mediaHtml}
             <div class="sticky-card-footer">
               <button type="button" class="sticky-like-btn" data-id="${wish.id}">
@@ -2964,6 +2975,29 @@
         });
       });
 
+      // Universal Image URL Normalizer (Converts Google Drive file links to high-speed CDN thumbnails)
+      function normalizeCloudImageUrl(url) {
+        if (!url) return '';
+        url = url.toString().trim();
+        if (url.startsWith('data:image')) return url;
+
+        let driveId = '';
+        if (url.includes('drive.google.com') || url.includes('docs.google.com') || url.includes('googleusercontent.com')) {
+          const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/) ||
+                          url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
+                          url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                          url.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+          if (idMatch && idMatch[1]) {
+            driveId = idMatch[1];
+          }
+        }
+
+        if (driveId) {
+          return `https://lh3.googleusercontent.com/d/${driveId}`;
+        }
+        return url;
+      }
+
       // JSONP Fallback loader for Google Apps Script Web App
       function fetchJsonp(url, timeoutMs = 8000) {
         return new Promise((resolve, reject) => {
@@ -3014,19 +3048,36 @@
             const data = await res.json();
             if (data) {
               if (Array.isArray(data.wishes)) {
-                cloudWishes.push(...data.wishes);
+                data.wishes.forEach(w => {
+                  const rawUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
+                  const normUrl = (w.mediaType === 'photo' || (!w.mediaType && rawUrl.match(/\.(jpg|jpeg|png|gif|webp)|drive\.google/i)))
+                    ? normalizeCloudImageUrl(rawUrl)
+                    : rawUrl;
+                  cloudWishes.push({
+                    id: w.id || ('gs_wish_' + Math.random()),
+                    name: w.author || w.name || 'Loving Well-wisher',
+                    message: w.message || w.text || '',
+                    color: w.color || 'pink',
+                    mediaType: w.mediaType || (rawUrl ? (rawUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i) ? 'video' : 'photo') : 'none'),
+                    mediaUrl: normUrl,
+                    likes: w.likes || 18,
+                    isRoyal: w.isRoyal || (w.author && w.author.toLowerCase().includes('dilip')) || (w.name && w.name.toLowerCase().includes('dilip')),
+                    localTime: w.localTime || 'Recently'
+                  });
+                });
               }
               // Also map synced Polaroid photos from Google Sheet Photos tab
               if (Array.isArray(data.photos)) {
                 data.photos.forEach(p => {
+                  const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '');
                   cloudWishes.push({
                     id: p.id || ('photo_' + Math.random()),
-                    name: p.dedicatedBy || 'Royal Memory 📸',
-                    message: p.caption || 'Our unforgettable celebration memory ✨',
+                    name: p.dedicatedBy || 'Dilip 👑',
+                    message: p.caption || `Our unforgettable celebration memory with ${p.celebrant || 'Nishika'} 💖`,
                     color: 'peach',
                     mediaType: 'photo',
-                    mediaUrl: p.imgUrl || p.driveUrl,
-                    likes: 18,
+                    mediaUrl: photoUrl,
+                    likes: 24,
                     isRoyal: true,
                     localTime: p.localTime || 'Recently'
                   });
@@ -3040,18 +3091,35 @@
             const data = await fetchJsonp(GOOGLE_SHEET_URL + '?action=getAll');
             if (data) {
               if (Array.isArray(data.wishes)) {
-                cloudWishes.push(...data.wishes);
+                data.wishes.forEach(w => {
+                  const rawUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
+                  const normUrl = (w.mediaType === 'photo' || (!w.mediaType && rawUrl.match(/\.(jpg|jpeg|png|gif|webp)|drive\.google/i)))
+                    ? normalizeCloudImageUrl(rawUrl)
+                    : rawUrl;
+                  cloudWishes.push({
+                    id: w.id || ('gs_wish_' + Math.random()),
+                    name: w.author || w.name || 'Loving Well-wisher',
+                    message: w.message || w.text || '',
+                    color: w.color || 'pink',
+                    mediaType: w.mediaType || (rawUrl ? (rawUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i) ? 'video' : 'photo') : 'none'),
+                    mediaUrl: normUrl,
+                    likes: w.likes || 18,
+                    isRoyal: w.isRoyal || (w.author && w.author.toLowerCase().includes('dilip')) || (w.name && w.name.toLowerCase().includes('dilip')),
+                    localTime: w.localTime || 'Recently'
+                  });
+                });
               }
               if (Array.isArray(data.photos)) {
                 data.photos.forEach(p => {
+                  const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '');
                   cloudWishes.push({
                     id: p.id || ('photo_' + Math.random()),
-                    name: p.dedicatedBy || 'Royal Memory 📸',
-                    message: p.caption || 'Our unforgettable celebration memory ✨',
+                    name: p.dedicatedBy || 'Dilip 👑',
+                    message: p.caption || `Our unforgettable celebration memory with ${p.celebrant || 'Nishika'} 💖`,
                     color: 'peach',
                     mediaType: 'photo',
-                    mediaUrl: p.imgUrl || p.driveUrl,
-                    likes: 18,
+                    mediaUrl: photoUrl,
+                    likes: 24,
                     isRoyal: true,
                     localTime: p.localTime || 'Recently'
                   });
@@ -3203,7 +3271,7 @@
         playChime(659.25, 0.2);
 
         if (type === 'photo') {
-          lightboxViewport.innerHTML = `<img src="${url}" alt="Full Photo" style="max-width:100%; max-height:60vh; object-fit:contain; border-radius:12px;" />`;
+          lightboxViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Full Photo" style="max-width:100%; max-height:60vh; object-fit:contain; border-radius:12px;" />`;
         } else if (type === 'video') {
           lightboxViewport.innerHTML = `<div style="width:100%; height:55vh; max-height:550px;">${parseVideoEmbed(url, true)}</div>`;
         }
@@ -3211,7 +3279,7 @@
         const decodedAuthor = decodeURIComponent(author || 'Loving Well-wisher');
         const decodedMsg = decodeURIComponent(msg || '');
 
-        if (lightboxAuthorName) lightboxAuthorName.innerHTML = `<i class="fa-solid fa-crown"></i> <span>${decodedAuthor}</span>`;
+        if (lightboxAuthorName) lightboxAuthorName.innerHTML = `<i class="fa-solid fa-crown"></i> <span>${escapeHtml(decodedAuthor)}</span>`;
         if (lightboxMessage) lightboxMessage.textContent = decodedMsg;
 
         mediaLightbox.classList.add('active');

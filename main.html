@@ -77,6 +77,11 @@
           main.style.visibility = 'visible';
           main.style.opacity = '1';
         }
+        var memSec = document.getElementById('memoriesSec');
+        if (memSec) memSec.classList.add('is-revealed');
+        document.querySelectorAll('.reveal-on-scroll').forEach(function(el) {
+          if (window.innerWidth <= 1024) el.classList.add('is-revealed');
+        });
         sessionStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
         sessionStorage.setItem('eternal_love_vip_unlocked', 'true');
         localStorage.setItem('eternal_love_passcode_auth', 'authenticated_22092000');
