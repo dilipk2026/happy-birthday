@@ -1,7 +1,7 @@
 {
   "total": 56,
-  "passed": 55,
-  "failed": 1,
+  "passed": 56,
+  "failed": 0,
   "suites": [
     {
       "name": "Suite 1: Static Assets & HTTP Delivery",
@@ -68,7 +68,7 @@
         {
           "testName": "Virtual Keypad rejects invalid PIN \"0000\" with error feedback and shake animation",
           "passed": true,
-          "details": "Feedback: \" Enter 4-digit VIP PIN first! 💕\"",
+          "details": "Feedback: \" Incorrect VIP PIN. Check hint for the day we first met clue 💕\"",
           "bugInfo": null
         },
         {
@@ -357,8 +357,8 @@
         },
         {
           "testName": "Clicking Video Lightbox button expands video into full-screen iframe theater modal",
-          "passed": false,
-          "details": "Lightbox failed to open video",
+          "passed": true,
+          "details": "Lightbox modal active with video",
           "bugInfo": null
         },
         {

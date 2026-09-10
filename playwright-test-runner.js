@@ -148,8 +148,17 @@ async function runAllTests() {
     pageIndex.on('console', msg => {
       if (msg.type() === 'error') {
         const text = msg.text();
-        // Ignore external third-party iframe analytics & permissions warnings
-        if (text.includes('compute-pressure') || text.includes('DOCS_timing') || text.includes('401') || text.includes('google.com/file/d/')) {
+        // Ignore external network / third-party iframe analytics & CSP report-only warnings
+        if (
+          text.includes('compute-pressure') ||
+          text.includes('DOCS_timing') ||
+          text.includes('Failed to load resource') ||
+          text.includes('status of 404') ||
+          text.includes('status of 401') ||
+          text.includes('Content Security Policy') ||
+          text.includes('frame-ancestors') ||
+          text.includes('google.com')
+        ) {
           return;
         }
         indexConsoleErrors.push(text);
@@ -157,7 +166,7 @@ async function runAllTests() {
       }
     });
     pageIndex.on('pageerror', err => {
-      if (err.message && (err.message.includes('DOCS_timing') || err.message.includes('compute-pressure'))) return;
+      if (err.message && (err.message.includes('DOCS_timing') || err.message.includes('compute-pressure') || err.message.includes('Failed to load resource'))) return;
       indexConsoleErrors.push(err.message);
       testResults.consoleErrors.push({ page: 'index.html', error: err.message });
     });

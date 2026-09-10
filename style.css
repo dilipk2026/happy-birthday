@@ -6015,6 +6015,24 @@ h1, h2, h3, h4 {
   color: #ffffff;
 }
 
+.video-embed-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+}
+
+.yt-direct-pill:hover {
+  background: rgba(255, 0, 0, 0.85) !important;
+  border-color: #ff0000 !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
+}
+
 /* Bottom Actions inside Sticky Note */
 .sticky-card-footer {
   display: flex;

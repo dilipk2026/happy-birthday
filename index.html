@@ -2907,38 +2907,67 @@
       const videoPreviewContainer = document.getElementById('videoPreviewContainer');
       const removeVideoBtn = document.getElementById('removeVideoBtn');
 
+      function extractYouTubeId(url) {
+        if (!url) return null;
+        let str = url.toString().trim();
+        const iframeMatch = str.match(/src=["']([^"']+)["']/i);
+        if (iframeMatch && iframeMatch[1]) str = iframeMatch[1].trim();
+        str = str.replace(/^[<"']+|[>"']+$/g, '');
+
+        let match = str.match(/(?:youtube\.com|youtu\.be)\/shorts\/([a-zA-Z0-9_-]{11})/i);
+        if (match && match[1]) return match[1];
+
+        match = str.match(/(?:youtube\.com|youtu\.be)\/live\/([a-zA-Z0-9_-]{11})/i);
+        if (match && match[1]) return match[1];
+
+        match = str.match(/(?:youtube\.com\/(?:embed|v)|youtu\.be|youtube-nocookie\.com\/embed)\/([a-zA-Z0-9_-]{11})/i);
+        if (match && match[1]) return match[1];
+
+        match = str.match(/[?&]v=([a-zA-Z0-9_-]{11})/i);
+        if (match && match[1]) return match[1];
+
+        match = str.match(/(?:https?:\/\/)?(?:www\.|m\.|music\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?.*v=|embed\/|v\/|shorts\/|live\/)?([a-zA-Z0-9_-]{11})/i);
+        if (match && match[1]) return match[1];
+
+        return null;
+      }
+
       function parseVideoEmbed(url, inLightbox = false) {
         if (!url) return '';
         const clean = url.toString().trim();
 
-        // 1. YouTube standard watch, youtu.be, embed
-        if (clean.includes('youtube.com/watch') || clean.includes('youtu.be/') || clean.includes('youtube.com/embed/')) {
-          let videoId = '';
-          if (clean.includes('v=')) videoId = clean.split('v=')[1].split('&')[0];
-          else if (clean.includes('youtu.be/')) videoId = clean.split('youtu.be/')[1].split('?')[0].split('&')[0];
-          else if (clean.includes('youtube.com/embed/')) videoId = clean.split('youtube.com/embed/')[1].split('?')[0].split('&')[0];
-          if (videoId) {
-            return `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
-          }
+        // 1. YouTube standard watch, youtu.be, shorts, live, embed, mobile, music
+        const ytId = extractYouTubeId(clean);
+        if (ytId) {
+          const embedUrl = `https://www.youtube.com/embed/${ytId}?autoplay=${inLightbox ? 1 : 0}&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
+          const watchUrl = `https://www.youtube.com/watch?v=${ytId}`;
+          return `
+            <div class="video-embed-container" style="position:relative; width:100%; height:100%; min-height:160px; border-radius:10px; overflow:hidden; background:#000;">
+              <iframe src="${embedUrl}" 
+                      title="YouTube Video Player"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                      allowfullscreen 
+                      loading="lazy" 
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px; display:block;">
+              </iframe>
+              <a href="${watchUrl}" target="_blank" rel="noopener noreferrer" class="yt-direct-pill" title="Watch directly on YouTube" style="position:absolute; bottom:6px; right:6px; z-index:4; display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; padding:3px 8px; border-radius:6px; background:rgba(0,0,0,0.78); color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(4px); transition:all 0.2s ease;">
+                <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube ↗
+              </a>
+            </div>
+          `;
         }
 
-        // 2. YouTube Shorts
-        if (clean.includes('youtube.com/shorts/')) {
-          const sId = clean.split('youtube.com/shorts/')[1].split('?')[0].split('/')[0].split('&')[0];
-          if (sId) {
-            return `<iframe src="https://www.youtube.com/embed/${sId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
-          }
-        }
-
-        // 3. Vimeo
+        // 2. Vimeo
         if (clean.includes('vimeo.com/')) {
-          const vId = clean.split('vimeo.com/')[1].split('?')[0].split('/')[0].split('&')[0];
+          const vMatch = clean.match(/vimeo\.com\/(?:video\/)?([0-9]+)/i);
+          const vId = vMatch ? vMatch[1] : clean.split('vimeo.com/')[1].split('?')[0].split('/')[0].split('&')[0];
           if (vId) {
             return `<iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
           }
         }
 
-        // 4. Google Drive Video Link (all variants: /file/d/, open?id=, uc?id=, thumbnail?id=, googleusercontent.com/d/, docs.google.com)
+        // 3. Google Drive Video Link (all variants: /file/d/, open?id=, uc?id=, thumbnail?id=, googleusercontent.com/d/, docs.google.com)
         if (clean.includes('drive.google.com') || clean.includes('docs.google.com') || clean.includes('googleusercontent.com')) {
           let gId = '';
           const m1 = clean.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
@@ -2955,8 +2984,8 @@
           }
         }
 
-        // 5. Direct MP4 / WebM / Blob Video / Base64 Data URL
-        return `<video src="${clean}" controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="width:100%; height:100%; max-height:400px; object-fit:contain; border-radius:10px; background:#000;"></video>`;
+        // 4. Direct MP4 / WebM / Blob Video / Base64 Data URL
+        return `<video src="${clean}" controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="width:100%; height:100%; min-height:160px; max-height:400px; object-fit:contain; border-radius:10px; background:#000;"></video>`;
       }
 
       function updateVideoPreview(val) {
@@ -3311,7 +3340,7 @@
           message: 'A heavenly romantic birthday melody dedicated to Queen Nishika! May your 26th year be filled with divine melodies and infinite royal joy! 🎂✨',
           color: 'pink',
           mediaType: 'video',
-          mediaUrl: 'https://www.youtube.com/watch?v=nl62hhiBMOM',
+          mediaUrl: 'https://www.youtube.com/watch?v=2Vv-BfVoq4g',
           likes: 38,
           isRoyal: false,
           localTime: 'September 2026'
