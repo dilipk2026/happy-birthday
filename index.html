@@ -1785,8 +1785,17 @@
     }
 
     @media (max-width: 480px) {
+      html, body {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100vw;
+      }
       .page-wrapper {
         padding: 8px 10px 30px;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+        box-sizing: border-box;
       }
       .header-nav {
         padding: 8px 12px;
@@ -1820,9 +1829,24 @@
       .countdown-label {
         font-size: 0.68rem;
       }
-      .blessing-section {
+      .blessing-section, .sticky-wall-section, .memories-section {
         padding: 20px 14px;
         border-radius: 18px;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        box-sizing: border-box;
+      }
+      .sticky-notes-grid, .memories-grid {
+        grid-template-columns: 100%;
+        width: 100%;
+        gap: 16px;
+      }
+      .sticky-note, .polaroid-card {
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
       }
       .pin-digit-slot {
         width: 44px;
@@ -1850,6 +1874,12 @@
       }
       .vip-modal-box, .quick-media-box {
         padding: 20px 10px;
+      }
+      .sticky-notes-grid, .memories-grid {
+        grid-template-columns: 100%;
+      }
+      .sticky-note, .polaroid-card {
+        transform: none !important;
       }
     }
   </style>
@@ -2859,6 +2889,17 @@
         });
       }
 
+      // Async helper to convert file to Base64
+      function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+          if (!file) return resolve('');
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = (err) => reject(err);
+          reader.readAsDataURL(file);
+        });
+      }
+
       // Video Upload & Link handling
       const wishVideoInput = document.getElementById('wishVideoInput');
       const wishVideoUrl = document.getElementById('wishVideoUrl');
@@ -2870,11 +2911,12 @@
         if (!url) return '';
         const clean = url.toString().trim();
 
-        // 1. YouTube standard watch or youtu.be
-        if (clean.includes('youtube.com/watch') || clean.includes('youtu.be/')) {
+        // 1. YouTube standard watch, youtu.be, embed
+        if (clean.includes('youtube.com/watch') || clean.includes('youtu.be/') || clean.includes('youtube.com/embed/')) {
           let videoId = '';
           if (clean.includes('v=')) videoId = clean.split('v=')[1].split('&')[0];
           else if (clean.includes('youtu.be/')) videoId = clean.split('youtu.be/')[1].split('?')[0].split('&')[0];
+          else if (clean.includes('youtube.com/embed/')) videoId = clean.split('youtube.com/embed/')[1].split('?')[0].split('&')[0];
           if (videoId) {
             return `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
           }
@@ -2896,8 +2938,8 @@
           }
         }
 
-        // 4. Google Drive Video Link (file/d/, open?id=, uc?id=, thumbnail?id=, preview)
-        if (clean.includes('drive.google.com') || clean.includes('docs.google.com')) {
+        // 4. Google Drive Video Link (all variants: /file/d/, open?id=, uc?id=, thumbnail?id=, googleusercontent.com/d/, docs.google.com)
+        if (clean.includes('drive.google.com') || clean.includes('docs.google.com') || clean.includes('googleusercontent.com')) {
           let gId = '';
           const m1 = clean.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
           const m2 = clean.match(/[?&]id=([a-zA-Z0-9_-]+)/);
@@ -2926,7 +2968,7 @@
       }
 
       if (wishVideoInput) {
-        wishVideoInput.addEventListener('change', (e) => {
+        wishVideoInput.addEventListener('change', async (e) => {
           const file = e.target.files && e.target.files[0];
           if (file) {
             if (file.size > 25 * 1024 * 1024) {
@@ -2937,13 +2979,14 @@
             const blobUrl = URL.createObjectURL(file);
             updateVideoPreview(blobUrl);
 
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-              selectedMediaData = evt.target.result;
+            try {
+              const base64Data = await readFileAsBase64(file);
+              selectedMediaData = base64Data;
               selectedMediaType = 'video';
               if (wishVideoUrl) wishVideoUrl.value = '';
-            };
-            reader.readAsDataURL(file);
+            } catch (err) {
+              console.warn('Base64 encoding error:', err);
+            }
           }
         });
       }
@@ -3084,7 +3127,7 @@
       }
 
       if (modalVideoFileInput) {
-        modalVideoFileInput.addEventListener('change', (e) => {
+        modalVideoFileInput.addEventListener('change', async (e) => {
           const file = e.target.files && e.target.files[0];
           if (file) {
             if (file.size > 25 * 1024 * 1024) {
@@ -3097,12 +3140,13 @@
               modalVideoPreview.style.display = 'block';
             }
 
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-              modalMediaData = evt.target.result;
+            try {
+              const base64Data = await readFileAsBase64(file);
+              modalMediaData = base64Data;
               if (modalVideoUrlInput) modalVideoUrlInput.value = '';
-            };
-            reader.readAsDataURL(file);
+            } catch (err) {
+              console.warn('Modal video base64 error:', err);
+            }
           }
         });
       }
@@ -3130,6 +3174,24 @@
 
           const sender = document.getElementById('quickSenderName')?.value.trim() || 'Loving Well-wisher';
           const caption = document.getElementById('quickCaption')?.value.trim() || 'Our unforgettable memory 💖';
+
+          // Ensure Base64 conversion is fully resolved before dispatch
+          if (modalMediaType === 'video' && modalVideoFileInput && modalVideoFileInput.files && modalVideoFileInput.files[0]) {
+            try {
+              modalMediaData = await readFileAsBase64(modalVideoFileInput.files[0]);
+            } catch (fileErr) {
+              console.warn('Video encoding failed:', fileErr);
+            }
+          } else if (modalMediaType === 'photo' && modalPhotoFileInput && modalPhotoFileInput.files && modalPhotoFileInput.files[0]) {
+            if (!modalMediaData || !modalMediaData.startsWith('data:image')) {
+              try {
+                modalMediaData = await readFileAsBase64(modalPhotoFileInput.files[0]);
+              } catch (photoErr) {
+                console.warn('Photo encoding failed:', photoErr);
+              }
+            }
+          }
+
           const mediaUrl = modalMediaData;
 
           if (!mediaUrl) {
@@ -3213,15 +3275,20 @@
 
       function saveWishesToLocal(wishesList) {
         try {
-          const safeList = wishesList.map(w => {
-            if (w.mediaUrl && w.mediaUrl.startsWith('data:video') && w.mediaUrl.length > 300000) {
-              return { ...w, mediaUrl: '' };
-            }
-            return w;
-          });
-          localStorage.setItem(LOCAL_STORAGE_WISHES_KEY, JSON.stringify(safeList));
+          localStorage.setItem(LOCAL_STORAGE_WISHES_KEY, JSON.stringify(wishesList));
         } catch(e) {
-          console.warn('LocalStorage save skipped to protect memory quota:', e);
+          console.warn('LocalStorage quota limit reached, saving safe representation:', e);
+          try {
+            const compactList = wishesList.map(w => {
+              if (w.mediaUrl && w.mediaUrl.startsWith('data:video') && w.mediaUrl.length > 500000) {
+                return { ...w, mediaUrl: '' };
+              }
+              return w;
+            });
+            localStorage.setItem(LOCAL_STORAGE_WISHES_KEY, JSON.stringify(compactList));
+          } catch(innerErr) {
+            console.warn('LocalStorage save failed completely:', innerErr);
+          }
         }
       }
 
@@ -3285,6 +3352,16 @@
       ];
 
       let allWishes = [];
+      try {
+        const cached = JSON.parse(localStorage.getItem(LOCAL_STORAGE_WISHES_KEY) || '[]');
+        if (Array.isArray(cached) && cached.length > 0) {
+          allWishes = cached;
+        } else {
+          allWishes = [...DEFAULT_WISHES];
+        }
+      } catch(e) {
+        allWishes = [...DEFAULT_WISHES];
+      }
       let activeFilter = 'all';
 
       const stickyNotesGrid = document.getElementById('stickyNotesGrid');
@@ -3335,18 +3412,20 @@
         if (!memoriesGrid) return;
         memoriesGrid.innerHTML = '';
 
-        const allMedia = allWishes.filter(w => (w.mediaType === 'photo' || w.mediaType === 'video') && w.mediaUrl);
-        
-        if (countMemoriesAll) countMemoriesAll.textContent = allMedia.length;
-        if (countMemoriesPhotos) countMemoriesPhotos.textContent = allMedia.filter(w => w.mediaType === 'photo').length;
-        if (countMemoriesVideos) countMemoriesVideos.textContent = allMedia.filter(w => w.mediaType === 'video').length;
-
-        const mediaItems = allMedia.filter(w => {
+        const mediaItems = allWishes.filter(w => {
+          const hasMedia = Boolean(w.mediaUrl && w.mediaUrl.trim());
+          if (!hasMedia) return false;
           if (activeMemoryFilter === 'photo') return w.mediaType === 'photo';
           if (activeMemoryFilter === 'video') return w.mediaType === 'video';
           return true;
         });
-        const rotationAngles = [-2.5, 1.8, -1.6, 2.2, -2.0, 1.5, -1.8, 2.0];
+
+        // Update Gallery Counter Badges
+        if (countMemoriesAll) countMemoriesAll.textContent = allWishes.filter(w => Boolean(w.mediaUrl && w.mediaUrl.trim())).length;
+        if (countMemoriesPhotos) countMemoriesPhotos.textContent = allWishes.filter(w => w.mediaType === 'photo' && Boolean(w.mediaUrl && w.mediaUrl.trim())).length;
+        if (countMemoriesVideos) countMemoriesVideos.textContent = allWishes.filter(w => w.mediaType === 'video' && Boolean(w.mediaUrl && w.mediaUrl.trim())).length;
+
+        const rotationAngles = [-1.5, 1.2, -2.0, 1.8, -1.0, 2.2, -1.8, 1.5];
 
         if (mediaItems.length === 0) {
           memoriesGrid.innerHTML = `
@@ -3403,16 +3482,18 @@
         stickyNotesGrid.innerHTML = '';
 
         const filtered = allWishes.filter(w => {
-          if (activeFilter === 'photo') return w.mediaType === 'photo' && w.mediaUrl;
-          if (activeFilter === 'video') return w.mediaType === 'video' && w.mediaUrl;
+          const isVid = (w.mediaType === 'video') || (w.mediaUrl && (w.mediaUrl.includes('youtube.com') || w.mediaUrl.includes('youtu.be') || w.mediaUrl.includes('vimeo.com') || w.mediaUrl.includes('/preview') || w.mediaUrl.includes('.mp4') || w.mediaUrl.includes('.webm') || w.mediaUrl.startsWith('data:video')));
+          const isPic = (w.mediaType === 'photo') || (w.mediaUrl && !isVid);
+          if (activeFilter === 'photo') return isPic && w.mediaUrl;
+          if (activeFilter === 'video') return isVid && w.mediaUrl;
           if (activeFilter === 'royal') return w.isRoyal || (w.name && w.name.toLowerCase().includes('dilip'));
           return true;
         });
 
         // Update Counter Badges
         if (countAll) countAll.textContent = allWishes.length;
-        if (countPhotos) countPhotos.textContent = allWishes.filter(w => w.mediaType === 'photo' && w.mediaUrl).length;
-        if (countVideos) countVideos.textContent = allWishes.filter(w => w.mediaType === 'video' && w.mediaUrl).length;
+        if (countPhotos) countPhotos.textContent = allWishes.filter(w => ((w.mediaType === 'photo') || (w.mediaUrl && !(w.mediaType === 'video' || w.mediaUrl.includes('youtube') || w.mediaUrl.includes('preview')))) && w.mediaUrl).length;
+        if (countVideos) countVideos.textContent = allWishes.filter(w => ((w.mediaType === 'video') || (w.mediaUrl && (w.mediaUrl.includes('youtube.com') || w.mediaUrl.includes('youtu.be') || w.mediaUrl.includes('vimeo.com') || w.mediaUrl.includes('/preview') || w.mediaUrl.includes('.mp4') || w.mediaUrl.includes('.webm')))) && w.mediaUrl).length;
         if (countRoyal) countRoyal.textContent = allWishes.filter(w => w.isRoyal || (w.name && w.name.toLowerCase().includes('dilip'))).length;
 
         if (filtered.length === 0) {
@@ -3433,19 +3514,14 @@
           const isDilip = wish.isRoyal || (wish.name && wish.name.toLowerCase().includes('dilip'));
           const theme = wish.color || 'pink';
 
+          const isVid = (wish.mediaType === 'video') || (wish.mediaUrl && (wish.mediaUrl.includes('youtube.com') || wish.mediaUrl.includes('youtu.be') || wish.mediaUrl.includes('vimeo.com') || wish.mediaUrl.includes('/preview') || wish.mediaUrl.includes('.mp4') || wish.mediaUrl.includes('.webm') || wish.mediaUrl.startsWith('data:video')));
+
           const card = document.createElement('div');
           card.className = `sticky-note theme-${theme}`;
           card.style.transform = `rotate(${rot}deg)`;
 
           let mediaHtml = '';
-          if (wish.mediaType === 'photo' && wish.mediaUrl) {
-            mediaHtml = `
-              <div class="sticky-media-wrap" data-img="${wish.mediaUrl}" data-author="${encodeURIComponent(wish.name)}" data-msg="${encodeURIComponent(wish.message)}">
-                <img src="${wish.mediaUrl}" alt="Attached Memory" loading="lazy" />
-                <span class="sticky-media-badge"><i class="fa-solid fa-expand"></i> View Photo</span>
-              </div>
-            `;
-          } else if (wish.mediaType === 'video' && wish.mediaUrl) {
+          if (isVid && wish.mediaUrl) {
             mediaHtml = `
               <div class="sticky-video-embed">
                 <div class="sticky-video-action-bar">
@@ -3454,6 +3530,13 @@
                   </button>
                 </div>
                 ${parseVideoEmbed(wish.mediaUrl, false)}
+              </div>
+            `;
+          } else if (wish.mediaUrl) {
+            mediaHtml = `
+              <div class="sticky-media-wrap" data-img="${wish.mediaUrl}" data-author="${encodeURIComponent(wish.name)}" data-msg="${encodeURIComponent(wish.message)}">
+                <img src="${wish.mediaUrl}" alt="Attached Memory" loading="lazy" />
+                <span class="sticky-media-badge"><i class="fa-solid fa-expand"></i> View Photo</span>
               </div>
             `;
           }
@@ -3515,10 +3598,10 @@
       }
 
       // Filter Tabs click
-      const filterPills = document.querySelectorAll('.filter-pill');
-      filterPills.forEach(pill => {
+      const wishFilterPills = document.querySelectorAll('#wishFilterBar .filter-pill');
+      wishFilterPills.forEach(pill => {
         pill.addEventListener('click', () => {
-          filterPills.forEach(p => p.classList.remove('active'));
+          wishFilterPills.forEach(p => p.classList.remove('active'));
           pill.classList.add('active');
           activeFilter = pill.getAttribute('data-filter') || 'all';
           renderStickyNotes();
@@ -3529,6 +3612,7 @@
       function normalizeMediaData(url, typeHint = 'none') {
         if (!url) return { url: '', type: 'none' };
         let str = url.toString().trim();
+        if (str.startsWith('blob:')) return { url: '', type: 'none' };
         if (str.startsWith('data:image')) return { url: str, type: 'photo' };
         if (str.startsWith('data:video')) return { url: str, type: 'video' };
 
@@ -3757,11 +3841,17 @@
         } catch(e) {}
 
         const mergedMap = new Map();
-        [...cloudWishes, ...savedLocal, ...DEFAULT_WISHES].forEach(w => {
+        [...savedLocal, ...cloudWishes, ...DEFAULT_WISHES].forEach(w => {
           if (!w || (!w.message && !w.text)) return;
           const key = ((w.name || w.author || '') + '_' + (w.message || w.text || '')).trim().toLowerCase();
           if (!mergedMap.has(key)) {
             mergedMap.set(key, w);
+          } else {
+            const existing = mergedMap.get(key);
+            if (!existing.mediaUrl && w.mediaUrl) {
+              existing.mediaUrl = w.mediaUrl;
+              existing.mediaType = w.mediaType;
+            }
           }
         });
 
@@ -3772,6 +3862,10 @@
         renderStickyNotes();
         renderMemoriesGrid();
       }
+
+      // Initial local render
+      renderStickyNotes();
+      renderMemoriesGrid();
 
       if (syncWishesBtn) syncWishesBtn.addEventListener('click', fetchWishesFromCloud);
       fetchWishesFromCloud();
@@ -3794,6 +3888,23 @@
           const message = wishInput ? wishInput.value.trim() : '';
 
           if (!message) return;
+
+          // Ensure Base64 file is fully encoded before dispatching payload
+          if (selectedMediaType === 'video' && wishVideoInput && wishVideoInput.files && wishVideoInput.files[0]) {
+            try {
+              selectedMediaData = await readFileAsBase64(wishVideoInput.files[0]);
+            } catch (vErr) {
+              console.warn('Wish video encoding error:', vErr);
+            }
+          } else if (selectedMediaType === 'photo' && wishPhotoInput && wishPhotoInput.files && wishPhotoInput.files[0]) {
+            if (!selectedMediaData || !selectedMediaData.startsWith('data:image')) {
+              try {
+                selectedMediaData = await readFileAsBase64(wishPhotoInput.files[0]);
+              } catch (pErr) {
+                console.warn('Wish photo encoding error:', pErr);
+              }
+            }
+          }
 
           if (submitWishBtn) {
             submitWishBtn.disabled = true;

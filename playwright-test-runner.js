@@ -147,11 +147,17 @@ async function runAllTests() {
     const indexConsoleErrors = [];
     pageIndex.on('console', msg => {
       if (msg.type() === 'error') {
-        indexConsoleErrors.push(msg.text());
-        testResults.consoleErrors.push({ page: 'index.html', error: msg.text() });
+        const text = msg.text();
+        // Ignore external third-party iframe analytics & permissions warnings
+        if (text.includes('compute-pressure') || text.includes('DOCS_timing') || text.includes('401') || text.includes('google.com/file/d/')) {
+          return;
+        }
+        indexConsoleErrors.push(text);
+        testResults.consoleErrors.push({ page: 'index.html', error: text });
       }
     });
     pageIndex.on('pageerror', err => {
+      if (err.message && (err.message.includes('DOCS_timing') || err.message.includes('compute-pressure'))) return;
       indexConsoleErrors.push(err.message);
       testResults.consoleErrors.push({ page: 'index.html', error: err.message });
     });
@@ -761,6 +767,229 @@ async function runAllTests() {
       await ctxVp.close();
     }
 
+    // -------------------------------------------------------------------------
+    // SUITE 6: VIDEO UPLOAD, GOOGLE DRIVE STREAMING & CLOUD PREVIEW RECOVERY
+    // -------------------------------------------------------------------------
+    console.log('\n🎬 SUITE 6: Video Upload, Google Drive Streaming & Cloud Preview Recovery');
+    const suite6 = 'Suite 6: Video Upload & Cloud Preview';
+
+    const ctxSuite6 = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const pSuite6 = await ctxSuite6.newPage();
+
+    // Test 6.1: Video URL Submission on index.html
+    await pSuite6.goto(`${BASE_URL}/index.html`, { waitUntil: 'domcontentloaded' });
+    await pSuite6.waitForTimeout(400);
+
+    const tabVideoBtn = await pSuite6.$('.media-tab-btn[data-tab="tabVideo"]');
+    if (tabVideoBtn) await tabVideoBtn.click();
+    await pSuite6.waitForTimeout(200);
+
+    const guestNameInput = await pSuite6.$('#guestName');
+    const guestWishInput = await pSuite6.$('#guestWish');
+    const wishVideoUrl = await pSuite6.$('#wishVideoUrl');
+    const submitWishBtn = await pSuite6.$('#submitWishBtn');
+
+    if (guestNameInput && guestWishInput && wishVideoUrl && submitWishBtn) {
+      await guestNameInput.fill('Dilip (Royal Video Test)');
+      await guestWishInput.fill('Forever dedicated to Queen Nishika! 🎬💖');
+      await wishVideoUrl.fill('https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/view');
+      await submitWishBtn.click();
+      await pSuite6.waitForTimeout(600);
+
+      const hasVideoInSticky = await pSuite6.evaluate(() => {
+        const grid = document.getElementById('stickyNotesGrid');
+        if (!grid) return false;
+        return grid.innerHTML.includes('iframe') && grid.innerHTML.includes('drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/preview');
+      });
+
+      recordTest(
+        suite6,
+        'Submitting Google Drive video link on index.html renders responsive iframe video player on #stickyNotesGrid',
+        hasVideoInSticky,
+        hasVideoInSticky ? 'Google Drive iframe rendered' : 'Video iframe not found on sticky grid'
+      );
+
+      const hasVideoInMemories = await pSuite6.evaluate(() => {
+        const grid = document.getElementById('memoriesGrid');
+        if (!grid) return false;
+        return grid.innerHTML.includes('iframe') && grid.innerHTML.includes('drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/preview');
+      });
+
+      recordTest(
+        suite6,
+        'Submitting video link renders video card in Memories Polaroid Gallery (#memoriesGrid)',
+        hasVideoInMemories,
+        hasVideoInMemories ? 'Video present in Memories gallery' : 'Video not found in Memories gallery'
+      );
+    }
+
+    // Test 6.2: Refreshing index.html preserves video embed without local storage stripping
+    await pSuite6.reload({ waitUntil: 'domcontentloaded' });
+    await pSuite6.waitForTimeout(400);
+
+    const hasVideoAfterReload = await pSuite6.evaluate(() => {
+      const grid = document.getElementById('stickyNotesGrid');
+      if (!grid) return false;
+      return grid.innerHTML.includes('drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/preview');
+    });
+
+    recordTest(
+      suite6,
+      'Reloading index.html preserves Google Drive video iframe on Sticky Wall (zero localStorage stripping)',
+      hasVideoAfterReload,
+      hasVideoAfterReload ? 'Video iframe preserved after refresh' : 'Video URL was wiped on refresh'
+    );
+
+    // Test 6.3: Video Filter Pill isolation on index.html
+    const videoFilterPill = await pSuite6.$('.filter-pill[data-filter="video"]');
+    if (videoFilterPill) {
+      await videoFilterPill.click();
+      await pSuite6.waitForTimeout(300);
+
+      const onlyVideosShown = await pSuite6.evaluate(() => {
+        const notes = document.querySelectorAll('#stickyNotesGrid .sticky-note');
+        if (notes.length === 0) return false;
+        return Array.from(notes).every(n => n.querySelector('.sticky-video-embed') !== null);
+      });
+
+      recordTest(
+        suite6,
+        'Clicking Video Filter Pill on index.html displays only video dedication sticky notes',
+        onlyVideosShown,
+        onlyVideosShown ? 'All visible notes have video embeds' : 'Non-video notes appeared'
+      );
+    }
+
+    // Test 6.4: main.html Google Drive & YouTube Video Embeds
+    await pSuite6.goto(`${BASE_URL}/main.html?preview=true`, { waitUntil: 'domcontentloaded' });
+    await pSuite6.waitForTimeout(500);
+
+    // Dismiss intro overlay & passcode overlay for testing
+    await pSuite6.evaluate(() => {
+      if (typeof window.unboxBirthdaySurprise === 'function') {
+        window.unboxBirthdaySurprise(true);
+      } else {
+        const intro = document.getElementById('introOverlay');
+        if (intro) { intro.style.display = 'none'; intro.classList.add('fade-out', 'unlocked', 'hidden'); }
+        const lock = document.getElementById('pagePasscodeOverlay');
+        if (lock) { lock.style.display = 'none'; lock.classList.add('hidden'); }
+        const app = document.getElementById('mainApp');
+        if (app) { app.style.display = 'block'; app.classList.remove('hidden'); }
+      }
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+        el.classList.add('is-revealed');
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+        el.style.pointerEvents = 'auto';
+      });
+    });
+    await pSuite6.waitForTimeout(300);
+
+    // Click Video tab on wish form
+    await pSuite6.evaluate(() => {
+      const tab = document.querySelector('.media-tab-btn[data-tab="mainTabVideo"]');
+      if (tab) tab.click();
+    });
+    await pSuite6.waitForTimeout(200);
+
+    const mainAuthorInput = await pSuite6.$('#wishAuthorInput');
+    const mainTextInput = await pSuite6.$('#wishTextInput');
+    const mainVideoUrlInput = await pSuite6.$('#mainWishVideoUrl');
+
+    if (mainAuthorInput && mainTextInput && mainVideoUrlInput) {
+      await mainAuthorInput.scrollIntoViewIfNeeded();
+      await mainAuthorInput.fill('Dilip (Main Video Test)');
+      await mainTextInput.fill('Majestic birthday reel for Queen Nishika! 🌟');
+      await mainVideoUrlInput.fill('https://drive.google.com/open?id=1AbCdEfGhIjKlMnOpQrStUvWxYz123456');
+      
+      await pSuite6.evaluate(() => {
+        const btn = document.getElementById('mainSubmitWishBtn');
+        if (btn) btn.click();
+      });
+      await pSuite6.waitForTimeout(600);
+
+      const hasMainDriveVideo = await pSuite6.evaluate(() => {
+        const board = document.getElementById('wishesPinboard');
+        if (!board) return false;
+        return board.innerHTML.includes('drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz123456/preview');
+      });
+
+      recordTest(
+        suite6,
+        'main.html Pinboard normalizes open?id= Google Drive link to streaming /preview iframe without converting to image thumbnail',
+        hasMainDriveVideo,
+        hasMainDriveVideo ? 'Proper /preview iframe rendered' : 'Failed to render streaming video iframe'
+      );
+    }
+
+    // Test 6.5: Video Lightbox Modal Opens on main.html
+    const isExpanded = await pSuite6.evaluate(() => {
+      const btn = document.querySelector('.sticky-video-expand-btn');
+      if (btn) {
+        btn.click();
+        return true;
+      }
+      return false;
+    });
+    await pSuite6.waitForTimeout(300);
+
+    const isModalActive = await pSuite6.evaluate(() => {
+      const modal = document.getElementById('mediaLightboxModal');
+      const viewport = document.getElementById('lightboxViewport');
+      return modal && modal.classList.contains('active') && viewport && viewport.innerHTML.includes('iframe');
+    });
+
+    recordTest(
+      suite6,
+      'Clicking Video Lightbox button expands video into full-screen iframe theater modal',
+      isModalActive,
+      isModalActive ? 'Lightbox modal active with video' : 'Lightbox failed to open video'
+    );
+
+    await pSuite6.evaluate(() => {
+      const closeBtn = document.getElementById('closeMediaLightboxBtn');
+      if (closeBtn) closeBtn.click();
+    });
+    await pSuite6.waitForTimeout(200);
+
+    // Test 6.6: Refreshing main.html retains pinned video
+    await pSuite6.reload({ waitUntil: 'domcontentloaded' });
+    await pSuite6.waitForTimeout(400);
+
+    await pSuite6.evaluate(() => {
+      if (typeof window.unboxBirthdaySurprise === 'function') {
+        window.unboxBirthdaySurprise(true);
+      } else {
+        const intro = document.getElementById('introOverlay');
+        if (intro) { intro.style.display = 'none'; intro.classList.add('fade-out', 'unlocked', 'hidden'); }
+        const lock = document.getElementById('pagePasscodeOverlay');
+        if (lock) { lock.style.display = 'none'; lock.classList.add('hidden'); }
+        const app = document.getElementById('mainApp');
+        if (app) { app.style.display = 'block'; app.classList.remove('hidden'); }
+      }
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+        el.classList.add('is-revealed');
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+        el.style.pointerEvents = 'auto';
+      });
+    });
+    await pSuite6.waitForTimeout(300);
+
+    const hasMainVideoAfterReload = await pSuite6.evaluate(() => {
+      const board = document.getElementById('wishesPinboard');
+      if (!board) return false;
+      return board.innerHTML.includes('drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz123456/preview');
+    });
+
+    recordTest(
+      suite6,
+      'Reloading main.html preserves pinned video sticky note from state storage',
+      hasMainVideoAfterReload,
+      hasMainVideoAfterReload ? 'Pinned video restored on reload' : 'Video missing after reload'
+    );
+
+    await ctxSuite6.close();
   } catch (err) {
     console.error('Fatal execution error during Playwright testing:', err);
     recordTest('FATAL', 'Playwright harness execution', false, err.message, { severity: 'Critical', description: err.stack });

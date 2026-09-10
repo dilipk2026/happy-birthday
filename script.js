@@ -71,6 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
   if (urlParams.get('theme')) state.theme = urlParams.get('theme');
   if (urlParams.get('sheet')) state.googleSheetUrl = decodeURIComponent(urlParams.get('sheet')).trim();
 
+  // Async helper to convert file to Base64
+  function readFileAsBase64(file) {
+    return new Promise((resolve, reject) => {
+      if (!file) return resolve('');
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (err) => reject(err);
+      reader.readAsDataURL(file);
+    });
+  }
+  window.readFileAsBase64 = readFileAsBase64;
+
   function saveState() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
@@ -100,7 +112,21 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('eternal_love_sheet_url', state.googleSheetUrl);
       }
     } catch (e) {
-      console.warn('Storage quota limit reached or unavailable', e);
+      console.warn('Storage quota limit reached, saving safe representation:', e);
+      try {
+        const safeWishes = (state.pinnedWishes || []).map(w => {
+          if (w.mediaUrl && w.mediaUrl.startsWith('data:video') && w.mediaUrl.length > 500000) {
+            return { ...w, mediaUrl: '' };
+          }
+          return w;
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          ...state,
+          pinnedWishes: safeWishes
+        }));
+      } catch (innerE) {
+        console.warn('Storage quota completely unavailable:', innerE);
+      }
     }
   }
 
@@ -4659,13 +4685,19 @@ const romanticReasons = [
   function normalizeGasImageUrl(url) {
     if (!url) return '';
     const trimmed = url.trim();
-    if (trimmed.includes('drive.google.com')) {
-      if (trimmed.includes('id=')) {
-        const id = trimmed.split('id=')[1].split('&')[0].split('/')[0];
+    if (trimmed.includes('drive.google.com') || trimmed.includes('docs.google.com') || trimmed.includes('googleusercontent.com')) {
+      let id = '';
+      const m1 = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      const m2 = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      const m3 = trimmed.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      const m4 = trimmed.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+      if (m1 && m1[1]) id = m1[1];
+      else if (m2 && m2[1]) id = m2[1];
+      else if (m3 && m3[1]) id = m3[1];
+      else if (m4 && m4[1]) id = m4[1];
+
+      if (id) {
         return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
-      } else if (trimmed.includes('/d/')) {
-        const id2 = trimmed.split('/d/')[1].split('/')[0];
-        return `https://drive.google.com/thumbnail?id=${id2}&sz=w1000`;
       }
     }
     return trimmed;
@@ -4674,43 +4706,56 @@ const romanticReasons = [
   // Helper: Parse video URLs into responsive iframes or video players
   function parseGasVideoEmbed(url, inLightbox = false) {
     if (!url) return '';
-    const clean = url.trim();
+    const clean = url.toString().trim();
 
-    // 1. YouTube standard watch or youtu.be
-    if (clean.includes('youtube.com/watch') || clean.includes('youtu.be/')) {
+    // 1. YouTube standard watch, youtu.be, embed
+    if (clean.includes('youtube.com/watch') || clean.includes('youtu.be/') || clean.includes('youtube.com/embed/')) {
       let videoId = '';
       if (clean.includes('v=')) videoId = clean.split('v=')[1].split('&')[0];
-      else if (clean.includes('youtu.be/')) videoId = clean.split('youtu.be/')[1].split('?')[0];
+      else if (clean.includes('youtu.be/')) videoId = clean.split('youtu.be/')[1].split('?')[0].split('&')[0];
+      else if (clean.includes('youtube.com/embed/')) videoId = clean.split('youtube.com/embed/')[1].split('?')[0].split('&')[0];
       if (videoId) {
-        return `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+        return `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
       }
     }
 
     // 2. YouTube Shorts
     if (clean.includes('youtube.com/shorts/')) {
-      const sId = clean.split('youtube.com/shorts/')[1].split('?')[0].split('/')[0];
+      const sId = clean.split('youtube.com/shorts/')[1].split('?')[0].split('/')[0].split('&')[0];
       if (sId) {
-        return `<iframe src="https://www.youtube.com/embed/${sId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+        return `<iframe src="https://www.youtube.com/embed/${sId}?autoplay=${inLightbox ? 1 : 0}&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
       }
     }
 
     // 3. Vimeo
     if (clean.includes('vimeo.com/')) {
-      const vId = clean.split('vimeo.com/')[1].split('?')[0].split('/')[0];
+      const vId = clean.split('vimeo.com/')[1].split('?')[0].split('/')[0].split('&')[0];
       if (vId) {
-        return `<iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+        return `<iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
       }
     }
 
-    // 4. Google Drive Video link
-    if (clean.includes('drive.google.com/file/d/')) {
-      const gId = clean.split('/file/d/')[1].split('/')[0];
-      return `<iframe src="https://drive.google.com/file/d/${gId}/preview" allow="autoplay" allowfullscreen loading="lazy"></iframe>`;
+    // 4. Google Drive Video Link (all variants: /file/d/, open?id=, uc?id=, thumbnail?id=, googleusercontent.com/d/, docs.google.com)
+    if (clean.includes('drive.google.com') || clean.includes('docs.google.com') || clean.includes('googleusercontent.com')) {
+      let gId = '';
+      const m1 = clean.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      const m2 = clean.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      const m3 = clean.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      const m4 = clean.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+      if (m1 && m1[1]) gId = m1[1];
+      else if (m2 && m2[1]) gId = m2[1];
+      else if (m3 && m3[1]) gId = m3[1];
+      else if (m4 && m4[1]) gId = m4[1];
+
+      if (gId) {
+        return `<iframe src="https://drive.google.com/file/d/${gId}/preview" allow="autoplay; encrypted-media" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
+      }
     }
 
-    // 5. Direct MP4 / WebM / Blob Video
-    return `<video src="${clean}" controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="width:100%; height:100%; object-fit:cover; border-radius:10px;"></video>`;
+    // 5. Direct MP4 / WebM / Blob Video / Base64 Data URL
+    return `<video src="${clean}" controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="width:100%; height:100%; min-height:160px; max-height:400px; object-fit:contain; border-radius:10px; background:#000;"></video>`;
   }
+  window.parseGasVideoEmbed = parseGasVideoEmbed;
 
   function getWishAvatarLetter(name) {
     if (!name) return '👑';
@@ -4750,18 +4795,19 @@ const romanticReasons = [
   const mainRemovePhotoBtn = document.getElementById('mainRemovePhotoBtn');
 
   if (mainWishPhotoInput) {
-    mainWishPhotoInput.addEventListener('change', (e) => {
+    mainWishPhotoInput.addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (file) {
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          mainSelectedMediaData = evt.target.result;
+        try {
+          const dataUrl = await readFileAsBase64(file);
+          mainSelectedMediaData = dataUrl;
           mainSelectedMediaType = 'photo';
-          if (mainPhotoPreviewImg) mainPhotoPreviewImg.src = mainSelectedMediaData;
+          if (mainPhotoPreviewImg) mainPhotoPreviewImg.src = dataUrl;
           if (mainPhotoPreviewBox) mainPhotoPreviewBox.style.display = 'inline-block';
           if (mainWishPhotoUrl) mainWishPhotoUrl.value = '';
-        };
-        reader.readAsDataURL(file);
+        } catch(err) {
+          console.warn('Photo encoding error:', err);
+        }
       }
     });
   }
@@ -4813,12 +4859,24 @@ const romanticReasons = [
   }
 
   if (mainWishVideoInput) {
-    mainWishVideoInput.addEventListener('change', (e) => {
+    mainWishVideoInput.addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (file) {
+        if (file.size > 25 * 1024 * 1024) {
+          alert('Video file is larger than 25MB. Please choose a smaller video clip or paste a YouTube / Google Drive link.');
+          return;
+        }
         const videoUrl = URL.createObjectURL(file);
         updateMainVideoPreview(videoUrl);
-        if (mainWishVideoUrl) mainWishVideoUrl.value = '';
+
+        try {
+          const base64Data = await readFileAsBase64(file);
+          mainSelectedMediaData = base64Data;
+          mainSelectedMediaType = 'video';
+          if (mainWishVideoUrl) mainWishVideoUrl.value = '';
+        } catch(vErr) {
+          console.warn('Video encoding error:', vErr);
+        }
       }
     });
   }
@@ -4868,9 +4926,13 @@ const romanticReasons = [
   function isPhotoItem(w) {
     if (!w) return false;
     const type = (w.mediaType || '').toLowerCase();
+    if (type === 'video') return false;
     if (type === 'photo') return true;
     const url = (w.mediaUrl || w.mediaData || '').toLowerCase();
     if (!url) return false;
+    if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com') || url.includes('/preview') || /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url) || url.startsWith('data:video')) {
+      return false;
+    }
     return url.startsWith('data:image') ||
            url.includes('googleusercontent.com') ||
            url.includes('drive.google.com') ||
@@ -4882,19 +4944,23 @@ const romanticReasons = [
     if (!w) return false;
     const type = (w.mediaType || '').toLowerCase();
     if (type === 'video') return true;
+    if (type === 'photo') return false;
     const url = (w.mediaUrl || w.mediaData || '').toLowerCase();
     if (!url) return false;
     return url.includes('youtube.com') ||
            url.includes('youtu.be') ||
            url.includes('vimeo.com') ||
-           /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
+           url.includes('/preview') ||
+           url.startsWith('data:video') ||
+           /\.(mp4|webm|ogg|mov|m4v|avi|mkv)(\?.*)?$/i.test(url);
   }
 
-  // Universal Image URL Normalizer (Converts Google Drive file links to high-speed CDN thumbnails)
-  function normalizeCloudImageUrl(url) {
+  // Universal Media URL Normalizer (Keeps Video stream links intact and converts Photos to fast CDN thumbnails)
+  function normalizeCloudImageUrl(url, isVideo = false) {
     if (!url) return '';
     url = url.toString().trim();
-    if (url.startsWith('data:image')) return url;
+    if (url.startsWith('blob:')) return '';
+    if (url.startsWith('data:image') || url.startsWith('data:video')) return url;
 
     let driveId = '';
     if (url.includes('drive.google.com') || url.includes('docs.google.com') || url.includes('googleusercontent.com')) {
@@ -4908,6 +4974,9 @@ const romanticReasons = [
     }
 
     if (driveId) {
+      if (isVideo || url.includes('/preview') || url.match(/\.(mp4|webm|mov|m4v)/i)) {
+        return `https://drive.google.com/file/d/${driveId}/preview`;
+      }
       return `https://lh3.googleusercontent.com/d/${driveId}`;
     }
     return url;
@@ -5036,7 +5105,9 @@ const romanticReasons = [
       const likeBtn = sticky.querySelector('.sticky-like-btn');
       if (likeBtn) {
         likeBtn.addEventListener('click', () => {
-          audioSynth.playChimeSound(659.25, 0.2);
+          if (typeof audioSynth !== 'undefined' && audioSynth && typeof audioSynth.playChime === 'function') {
+            try { audioSynth.playChime(659.25, 0.2); } catch(e) {}
+          }
           item.likes = (item.likes || likesCount) + 1;
           likeBtn.classList.add('liked');
           const countSpan = likeBtn.querySelector('.like-count');
@@ -5081,7 +5152,7 @@ const romanticReasons = [
     });
   }
 
-  // Live Cloud Fetch for Wishes & Photos
+  // Live Cloud Fetch for Wishes, Photos & Videos
   async function fetchCloudWishes() {
     const sheetUrl = state.googleSheetUrl || localStorage.getItem('eternal_love_sheet_url') || DEFAULT_GOOGLE_SHEET_URL;
     if (!sheetUrl || !sheetUrl.startsWith('http')) return;
@@ -5104,8 +5175,9 @@ const romanticReasons = [
         if (data) {
           if (Array.isArray(data.wishes)) {
             data.wishes.forEach(w => {
-              const rawMediaUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
-              const normalizedMediaUrl = normalizeCloudImageUrl(rawMediaUrl);
+              const rawMediaUrl = w.mediaUrl || w.mediaLink || w.mediaData || w.videoUrl || '';
+              const isVideo = (w.mediaType === 'video') || isVideoItem({ mediaType: w.mediaType, mediaUrl: rawMediaUrl });
+              const normalizedMediaUrl = normalizeCloudImageUrl(rawMediaUrl, isVideo);
               const authorName = w.author || w.name || 'Loving Well-wisher';
               const messageText = w.message || w.text || '';
               const isRoyal = w.isRoyal || authorName.toLowerCase().includes('dilip');
@@ -5118,8 +5190,9 @@ const romanticReasons = [
                 text: messageText,
                 color: w.color || 'pink',
                 styleClass: w.styleClass || `theme-${w.color || 'pink'}`,
-                mediaType: w.mediaType || (rawMediaUrl ? (rawMediaUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i) ? 'video' : 'photo') : 'none'),
+                mediaType: isVideo ? 'video' : (w.mediaType || (rawMediaUrl ? 'photo' : 'none')),
                 mediaUrl: normalizedMediaUrl,
+                mediaData: normalizedMediaUrl,
                 likes: w.likes || (Math.floor(Math.random() * 8) + 12),
                 isRoyal: isRoyal,
                 localTime: w.localTime || 'Recently',
@@ -5130,7 +5203,7 @@ const romanticReasons = [
 
           if (Array.isArray(data.photos)) {
             data.photos.forEach(p => {
-              const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '');
+              const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '', false);
               const author = p.dedicatedBy || 'Dilip 👑';
               const caption = p.caption || `Our unforgettable memory with ${p.celebrant || state.recipientName} 💖`;
 
@@ -5161,6 +5234,32 @@ const romanticReasons = [
                 isRoyal: true,
                 localTime: p.localTime || 'Recently',
                 timestamp: p.timestamp || new Date().toISOString()
+              });
+            });
+          }
+
+          if (Array.isArray(data.videos)) {
+            data.videos.forEach(v => {
+              const rawUrl = v.videoUrl || v.driveUrl || v.mediaUrl || '';
+              const videoUrl = normalizeCloudImageUrl(rawUrl, true);
+              const sender = v.dedicatedBy || v.author || v.name || 'Dilip 👑';
+              const caption = v.caption || v.message || 'Royal video dedication for Queen Nishika 🎬';
+
+              cloudWishes.push({
+                id: v.id || ('gs_video_' + Math.random()),
+                author: sender,
+                name: sender,
+                message: caption,
+                text: caption,
+                color: 'gold',
+                styleClass: 'theme-gold',
+                mediaType: 'video',
+                mediaUrl: videoUrl,
+                mediaData: videoUrl,
+                likes: 30,
+                isRoyal: true,
+                localTime: v.localTime || 'Recently',
+                timestamp: v.timestamp || new Date().toISOString()
               });
             });
           }
@@ -5173,8 +5272,9 @@ const romanticReasons = [
         if (data) {
           if (Array.isArray(data.wishes)) {
             data.wishes.forEach(w => {
-              const rawMediaUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
-              const normalizedMediaUrl = normalizeCloudImageUrl(rawMediaUrl);
+              const rawMediaUrl = w.mediaUrl || w.mediaLink || w.mediaData || w.videoUrl || '';
+              const isVideo = (w.mediaType === 'video') || isVideoItem({ mediaType: w.mediaType, mediaUrl: rawMediaUrl });
+              const normalizedMediaUrl = normalizeCloudImageUrl(rawMediaUrl, isVideo);
               const authorName = w.author || w.name || 'Loving Well-wisher';
               const messageText = w.message || w.text || '';
               const isRoyal = w.isRoyal || authorName.toLowerCase().includes('dilip');
@@ -5187,8 +5287,9 @@ const romanticReasons = [
                 text: messageText,
                 color: w.color || 'pink',
                 styleClass: w.styleClass || `theme-${w.color || 'pink'}`,
-                mediaType: w.mediaType || (rawMediaUrl ? (rawMediaUrl.match(/(youtube|youtu\.be|vimeo|\.mp4|\.webm)/i) ? 'video' : 'photo') : 'none'),
+                mediaType: isVideo ? 'video' : (w.mediaType || (rawMediaUrl ? 'photo' : 'none')),
                 mediaUrl: normalizedMediaUrl,
+                mediaData: normalizedMediaUrl,
                 likes: w.likes || (Math.floor(Math.random() * 8) + 12),
                 isRoyal: isRoyal,
                 localTime: w.localTime || 'Recently',
@@ -5199,7 +5300,7 @@ const romanticReasons = [
 
           if (Array.isArray(data.photos)) {
             data.photos.forEach(p => {
-              const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '');
+              const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '', false);
               const author = p.dedicatedBy || 'Dilip 👑';
               const caption = p.caption || `Our unforgettable memory with ${p.celebrant || state.recipientName} 💖`;
 
@@ -5230,6 +5331,32 @@ const romanticReasons = [
                 isRoyal: true,
                 localTime: p.localTime || 'Recently',
                 timestamp: p.timestamp || new Date().toISOString()
+              });
+            });
+          }
+
+          if (Array.isArray(data.videos)) {
+            data.videos.forEach(v => {
+              const rawUrl = v.videoUrl || v.driveUrl || v.mediaUrl || '';
+              const videoUrl = normalizeCloudImageUrl(rawUrl, true);
+              const sender = v.dedicatedBy || v.author || v.name || 'Dilip 👑';
+              const caption = v.caption || v.message || 'Royal video dedication for Queen Nishika 🎬';
+
+              cloudWishes.push({
+                id: v.id || ('gs_video_' + Math.random()),
+                author: sender,
+                name: sender,
+                message: caption,
+                text: caption,
+                color: 'gold',
+                styleClass: 'theme-gold',
+                mediaType: 'video',
+                mediaUrl: videoUrl,
+                mediaData: videoUrl,
+                likes: 30,
+                isRoyal: true,
+                localTime: v.localTime || 'Recently',
+                timestamp: v.timestamp || new Date().toISOString()
               });
             });
           }
@@ -5274,11 +5401,28 @@ const romanticReasons = [
 
   // Wish Form Submission Handler
   if (wishForm) {
-    wishForm.addEventListener('submit', (e) => {
+    wishForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const author = wishAuthorInput ? wishAuthorInput.value.trim() : (state.senderName || 'Loving Friend');
       const text = wishTextInput ? wishTextInput.value.trim() : '';
       if (!text) return;
+
+      // Ensure Base64 file is fully encoded before dispatching payload
+      if (mainSelectedMediaType === 'video' && mainWishVideoInput && mainWishVideoInput.files && mainWishVideoInput.files[0]) {
+        try {
+          mainSelectedMediaData = await readFileAsBase64(mainWishVideoInput.files[0]);
+        } catch (vErr) {
+          console.warn('Main wish video encoding error:', vErr);
+        }
+      } else if (mainSelectedMediaType === 'photo' && mainWishPhotoInput && mainWishPhotoInput.files && mainWishPhotoInput.files[0]) {
+        if (!mainSelectedMediaData || !mainSelectedMediaData.startsWith('data:image')) {
+          try {
+            mainSelectedMediaData = await readFileAsBase64(mainWishPhotoInput.files[0]);
+          } catch (pErr) {
+            console.warn('Main wish photo encoding error:', pErr);
+          }
+        }
+      }
 
       const randomRot = (Math.random() * 5 - 2.5).toFixed(1);
       const styleThemeClass = `theme-${mainSelectedTheme}`;
@@ -5321,6 +5465,8 @@ const romanticReasons = [
         mediaType: mainSelectedMediaType,
         mediaData: mainSelectedMediaData,
         mediaUrl: mainSelectedMediaData,
+        dataUrl: mainSelectedMediaData,
+        videoUrl: mainSelectedMediaData,
         celebrant: state.recipientName || 'Nishika',
         dedicatedBy: state.senderName || 'Dilip',
         timestamp: new Date().toISOString(),
@@ -5361,7 +5507,9 @@ const romanticReasons = [
 
   function openMediaLightbox(type, url, author, msg) {
     if (!mediaLightboxModal || !lightboxViewport) return;
-    audioSynth.playChimeSound(659.25, 0.2);
+    if (typeof audioSynth !== 'undefined' && audioSynth && typeof audioSynth.playChime === 'function') {
+      try { audioSynth.playChime(659.25, 0.2); } catch(e) {}
+    }
 
     if (type === 'photo') {
       lightboxViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Full Photo" style="max-width:100%; max-height:60vh; object-fit:contain; border-radius:12px;" />`;
@@ -5408,7 +5556,9 @@ const romanticReasons = [
     card.addEventListener('click', () => {
       if (!card.classList.contains('flipped')) {
         card.classList.add('flipped');
-        audioSynth.playCheerSound();
+        if (typeof audioSynth !== 'undefined' && audioSynth && typeof audioSynth.playCelebrationFanfare === 'function') {
+          try { audioSynth.playCelebrationFanfare(); } catch(e) {}
+        }
         const rect = card.getBoundingClientRect();
         burstConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2, 50);
       }

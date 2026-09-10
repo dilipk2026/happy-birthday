@@ -1,7 +1,7 @@
 {
-  "total": 49,
-  "passed": 49,
-  "failed": 0,
+  "total": 56,
+  "passed": 55,
+  "failed": 1,
   "suites": [
     {
       "name": "Suite 1: Static Assets & HTTP Delivery",
@@ -50,7 +50,7 @@
         {
           "testName": "Live Countdown timer elements (Days, Hours, Minutes, Seconds) render valid integers",
           "passed": true,
-          "details": "Days: 12",
+          "details": "Days: 11",
           "bugInfo": null
         },
         {
@@ -68,7 +68,7 @@
         {
           "testName": "Virtual Keypad rejects invalid PIN \"0000\" with error feedback and shake animation",
           "passed": true,
-          "details": "Feedback: \" Incorrect VIP PIN. Check hint for the day we first met clue 💕\"",
+          "details": "Feedback: \" Enter 4-digit VIP PIN first! 💕\"",
           "bugInfo": null
         },
         {
@@ -318,6 +318,53 @@
           "testName": "main.html [4K Ultra-Wide Monitor - 2560px]: 0px Horizontal Overflow",
           "passed": true,
           "details": "Horizontal Overflow: 0px",
+          "bugInfo": null
+        }
+      ]
+    },
+    {
+      "name": "Suite 6: Video Upload & Cloud Preview",
+      "tests": [
+        {
+          "testName": "Submitting Google Drive video link on index.html renders responsive iframe video player on #stickyNotesGrid",
+          "passed": true,
+          "details": "Google Drive iframe rendered",
+          "bugInfo": null
+        },
+        {
+          "testName": "Submitting video link renders video card in Memories Polaroid Gallery (#memoriesGrid)",
+          "passed": true,
+          "details": "Video present in Memories gallery",
+          "bugInfo": null
+        },
+        {
+          "testName": "Reloading index.html preserves Google Drive video iframe on Sticky Wall (zero localStorage stripping)",
+          "passed": true,
+          "details": "Video iframe preserved after refresh",
+          "bugInfo": null
+        },
+        {
+          "testName": "Clicking Video Filter Pill on index.html displays only video dedication sticky notes",
+          "passed": true,
+          "details": "All visible notes have video embeds",
+          "bugInfo": null
+        },
+        {
+          "testName": "main.html Pinboard normalizes open?id= Google Drive link to streaming /preview iframe without converting to image thumbnail",
+          "passed": true,
+          "details": "Proper /preview iframe rendered",
+          "bugInfo": null
+        },
+        {
+          "testName": "Clicking Video Lightbox button expands video into full-screen iframe theater modal",
+          "passed": false,
+          "details": "Lightbox failed to open video",
+          "bugInfo": null
+        },
+        {
+          "testName": "Reloading main.html preserves pinned video sticky note from state storage",
+          "passed": true,
+          "details": "Pinned video restored on reload",
           "bugInfo": null
         }
       ]

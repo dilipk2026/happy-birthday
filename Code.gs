@@ -72,16 +72,21 @@ function doGet(e) {
 
           // Auto-detect media type & format URLs
           if (mediaUrl) {
-            var driveId = extractDriveId(mediaUrl);
-            if (mediaType === 'video' || isVideoUrl(mediaUrl)) {
-              mediaType = 'video';
-              if (driveId) {
-                mediaUrl = 'https://drive.google.com/file/d/' + driveId + '/preview';
-              }
-            } else if (mediaType === 'photo' || mediaUrl.match(/(\.jpg|\.jpeg|\.png|\.gif|\.webp|data:image|drive\.google)/i)) {
-              mediaType = 'photo';
-              if (driveId) {
-                mediaUrl = 'https://drive.google.com/thumbnail?id=' + driveId + '&sz=w1000';
+            if (mediaUrl.indexOf('blob:') === 0) {
+              mediaUrl = '';
+              mediaType = 'none';
+            } else {
+              var driveId = extractDriveId(mediaUrl);
+              if (mediaType === 'video' || isVideoUrl(mediaUrl)) {
+                mediaType = 'video';
+                if (driveId) {
+                  mediaUrl = 'https://drive.google.com/file/d/' + driveId + '/preview';
+                }
+              } else if (mediaType === 'photo' || mediaUrl.match(/(\.jpg|\.jpeg|\.png|\.gif|\.webp|data:image|drive\.google)/i)) {
+                mediaType = 'photo';
+                if (driveId) {
+                  mediaUrl = 'https://drive.google.com/thumbnail?id=' + driveId + '&sz=w1000';
+                }
               }
             }
           }
@@ -251,11 +256,11 @@ function doPost(e) {
         var folders = DriveApp.getFoldersByName(folderName);
         var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(folderName);
 
-        var mimeType = base64Uri.substring(5, base64Uri.indexOf(';')) || (isVideoFile ? 'video/mp4' : 'image/jpeg');
+        var mimeType = (base64Uri.indexOf(';') > 5) ? base64Uri.substring(5, base64Uri.indexOf(';')) : (isVideoFile ? 'video/mp4' : 'image/jpeg');
         var rawBase64 = base64Uri.substring(base64Uri.indexOf(',') + 1);
         var dateFormatted = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || 'GMT+0530', 'yyyy-MM-dd_HH-mm-ss');
-        var ext = isVideoFile ? '.mp4' : '.jpg';
-        var safePrefix = (fileNamePrefix || 'Memory').replace(/[^a-zA-Z0-9]/g, '_');
+        var ext = isVideoFile ? (mimeType.indexOf('webm') !== -1 ? '.webm' : (mimeType.indexOf('ogg') !== -1 ? '.ogg' : '.mp4')) : (mimeType.indexOf('png') !== -1 ? '.png' : (mimeType.indexOf('webp') !== -1 ? '.webp' : '.jpg'));
+        var safePrefix = (fileNamePrefix || (isVideoFile ? 'Video' : 'Photo')).replace(/[^a-zA-Z0-9]/g, '_');
         var fileName = safePrefix + '_' + dateFormatted + ext;
 
         var blob = Utilities.newBlob(Utilities.base64Decode(rawBase64), mimeType, fileName);
@@ -322,10 +327,12 @@ function doPost(e) {
         }
       } else if (mediaUrl) {
         // Direct link normalizer (Google Drive / YouTube / Vimeo / etc.)
-        if (mediaUrl.indexOf('drive.google.com') !== -1 || mediaUrl.indexOf('docs.google.com') !== -1) {
+        if (mediaUrl.indexOf('drive.google.com') !== -1 || mediaUrl.indexOf('docs.google.com') !== -1 || mediaUrl.indexOf('googleusercontent.com') !== -1) {
           var m1 = mediaUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
           var m2 = mediaUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-          var dId = (m1 && m1[1]) || (m2 && m2[1]);
+          var m3 = mediaUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+          var m4 = mediaUrl.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+          var dId = (m1 && m1[1]) || (m2 && m2[1]) || (m3 && m3[1]) || (m4 && m4[1]);
           if (dId) {
             if (mediaType === 'video') {
               mediaUrl = 'https://drive.google.com/file/d/' + dId + '/preview';
@@ -348,6 +355,42 @@ function doPost(e) {
         mediaUrl,
         1
       ]);
+
+      // If video attached, cross-log to Videos tab
+      if (mediaType === 'video' && mediaUrl) {
+        var videoSheet = ss.getSheetByName('Videos') || ss.insertSheet('Videos');
+        if (videoSheet.getLastRow() === 0) {
+          videoSheet.appendRow(['Timestamp', 'Local Time', 'Celebrant', 'Dedicated By', 'Video Caption', 'Moment Tag', 'Video Link / Stream URL']);
+          videoSheet.getRange(1, 1, 1, 7).setFontWeight('bold').setFontColor('#831843').setBackground('#fce7f3');
+          videoSheet.setFrozenRows(1);
+        }
+        videoSheet.appendRow([
+          new Date(),
+          data.localTime || new Date().toLocaleString(),
+          data.celebrant || 'Nishika',
+          author,
+          message || 'Royal video dedication for Queen Nishika 🎬',
+          'Video Reel 🎬',
+          mediaUrl
+        ]);
+      } else if (mediaType === 'photo' && mediaUrl) {
+        var photoSheet = ss.getSheetByName('Photos') || ss.insertSheet('Photos');
+        if (photoSheet.getLastRow() === 0) {
+          photoSheet.appendRow(['Timestamp', 'Local Time', 'Celebrant', 'Dedicated By', 'Photo Caption', 'Moment Tag', 'Google Drive Link', 'Image Preview']);
+          photoSheet.getRange(1, 1, 1, 8).setFontWeight('bold').setFontColor('#831843').setBackground('#fce7f3');
+          photoSheet.setFrozenRows(1);
+        }
+        photoSheet.appendRow([
+          new Date(),
+          data.localTime || new Date().toLocaleString(),
+          data.celebrant || 'Nishika',
+          author,
+          message || 'Our unforgettable memory',
+          'Real Moment 📸',
+          mediaUrl,
+          '=IMAGE("' + mediaUrl + '")'
+        ]);
+      }
 
       return ContentService.createTextOutput(JSON.stringify({
         status: 'success',
@@ -461,10 +504,12 @@ function doPost(e) {
           videoLink = driveResult.mediaUrl;
         }
       } else if (videoLink) {
-        if (videoLink.indexOf('drive.google.com') !== -1 || videoLink.indexOf('docs.google.com') !== -1) {
+        if (videoLink.indexOf('drive.google.com') !== -1 || videoLink.indexOf('docs.google.com') !== -1 || videoLink.indexOf('googleusercontent.com') !== -1) {
           var m1 = videoLink.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
           var m2 = videoLink.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-          var dId = (m1 && m1[1]) || (m2 && m2[1]);
+          var m3 = videoLink.match(/\/d\/([a-zA-Z0-9_-]+)/);
+          var m4 = videoLink.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+          var dId = (m1 && m1[1]) || (m2 && m2[1]) || (m3 && m3[1]) || (m4 && m4[1]);
           if (dId) {
             videoLink = 'https://drive.google.com/file/d/' + dId + '/preview';
           }
