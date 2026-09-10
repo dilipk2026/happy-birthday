@@ -7,6 +7,16 @@
   <meta name="description" content="Eternal Love — An ultra-luxurious, magical romantic celebration handcrafted exclusively for Queen Nishika with infinite devotion by Dilip." />
   <meta name="theme-color" content="#0d0614" />
 
+  <!-- AUTOMATIC POST-LAUNCH REDIRECT (After 21 September 2026 23:00 IST -> main.html without password) -->
+  <script>
+    (function() {
+      const TARGET_LAUNCH_DATE = new Date('2026-09-21T23:00:00+05:30').getTime();
+      if (Date.now() >= TARGET_LAUNCH_DATE) {
+        window.location.replace('main.html');
+      }
+    })();
+  </script>
+
   <!-- OpenGraph / Social Sharing -->
   <meta property="og:title" content="Eternal Love ✨ Queen Nishika's Grand Reveal Coming Soon" />
   <meta property="og:description" content="A celestial, animated romantic birthday celebration made for Queen Nishika. Handcrafted with love by Dilip." />
@@ -2311,8 +2321,14 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. COUNTDOWN TIMER ENGINE
+      // 1. COUNTDOWN TIMER ENGINE & AUTO-REDIRECT
       const TARGET_LAUNCH_DATE = new Date('2026-09-21T23:00:00+05:30').getTime();
+
+      // Immediate redirect check on load: after 21 September 23:00, redirect straight to main.html
+      if (Date.now() >= TARGET_LAUNCH_DATE) {
+        window.location.replace('main.html');
+        return;
+      }
 
       const daysVal = document.getElementById('daysVal');
       const hoursVal = document.getElementById('hoursVal');
@@ -2332,6 +2348,9 @@
           if (secondsVal) secondsVal.textContent = '00';
           if (progressBarFill) progressBarFill.style.width = '100%';
           if (progressText) progressText.textContent = '100% Launch Ready!';
+
+          // Automatically redirect to main.html without requiring any password
+          window.location.replace('main.html');
           return;
         }
 
@@ -2637,14 +2656,32 @@
         updatePinDisplay();
       }
 
-      if (openVipBtn) openVipBtn.addEventListener('click', openVipModal);
-      if (heroPreviewBtn) heroPreviewBtn.addEventListener('click', openVipModal);
+      if (openVipBtn) {
+        openVipBtn.addEventListener('click', () => {
+          if (Date.now() >= TARGET_LAUNCH_DATE) {
+            window.location.href = 'main.html';
+          } else {
+            openVipModal();
+          }
+        });
+      }
+      if (heroPreviewBtn) {
+        heroPreviewBtn.addEventListener('click', () => {
+          if (Date.now() >= TARGET_LAUNCH_DATE) {
+            window.location.href = 'main.html';
+          } else {
+            openVipModal();
+          }
+        });
+      }
       if (directCelebrationLink) {
         directCelebrationLink.addEventListener('click', (e) => {
           const now = Date.now();
           if (now < TARGET_LAUNCH_DATE) {
             e.preventDefault();
             openVipModal();
+          } else {
+            window.location.href = 'main.html';
           }
         });
       }

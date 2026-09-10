@@ -914,6 +914,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   // 5.5 MASTER ROYAL BIRTHDAY PASSCODE & OVERLAYS CONTROLLER
   // --------------------------------------------------------------------------
+  const TARGET_LAUNCH_DATE = new Date('2026-09-21T23:00:00+05:30').getTime();
   const MASTER_PASSCODE = '22092000';
   const mainApp = document.getElementById('mainApp');
   const introOverlay = document.getElementById('introOverlay');
@@ -1357,8 +1358,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleGiftBoxClick(e) {
     if (e && e.stopPropagation) e.stopPropagation();
 
+    const isPreLaunch = Date.now() < TARGET_LAUNCH_DATE;
     const pOverlay = pagePasscodeOverlay || document.getElementById('pagePasscodeOverlay');
-    if (pOverlay) {
+    if (pOverlay && isPreLaunch) {
       pOverlay.classList.remove('unlocked', 'fade-out', 'hidden');
       pOverlay.style.display = 'flex';
       pOverlay.style.opacity = '1';

@@ -53,13 +53,15 @@
       }
     })();
 
-    // Early Unboxing Bridge & Passcode Check (Always triggers lockscreen on gift box tap)
+    // Early Unboxing Bridge & Passcode Check (Triggers lockscreen before launch date, direct unboxing without password after launch)
     window.handleGiftBoxClick = window.handleGiftBoxClick || function(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       try {
+        var TARGET_LAUNCH_DATE = new Date('2026-09-21T23:00:00+05:30').getTime();
+        var isPreLaunch = Date.now() < TARGET_LAUNCH_DATE;
         var passcode = document.getElementById('pagePasscodeOverlay');
         var input = document.getElementById('pagePasscodeInput');
-        if (passcode) {
+        if (passcode && isPreLaunch) {
           passcode.classList.remove('unlocked', 'fade-out', 'hidden');
           passcode.style.display = 'flex';
           passcode.style.opacity = '1';
@@ -227,8 +229,7 @@
           <span>Need a Birthday Hint?</span>
         </button>
         <div id="pagePasscodeHintBox" class="passcode-hint-box">
-          <!-- 🎂 <strong>Birthday Passcode Hint:</strong> Enter Queen Nishika's Date of Birth in DDMMYYYY format (22092000) or VIP Anniversary PIN (2912) 💕 -->
-           🎂 <strong>Birthday Passcode Hint:</strong> Enter Queen Nishika's Date of Birth in DDMMYYYY format 
+           🎂 <strong>Birthday Passcode Hint:</strong> Enter Queen Nishika's Date of Birth in DDMMYYYY format (September 2000) 💕
         </div>
       </div>
     </div>
