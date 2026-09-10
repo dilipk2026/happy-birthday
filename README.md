@@ -1,4 +1,4 @@
-# 👑 Eternal Love — Ultra-Premium Romantic Birthday Celebration & QA Documentation
+# 👑 Eternal Love — Ultra-Premium Romantic Birthday Celebration & QA Package
 
 ```
    ███████╗████████╗███████╗██████╗ ███╗   ██╗ █████╗ ██╗     ██╗      ██████╗ ██╗   ██╗███████╗
@@ -11,136 +11,275 @@
 
 > ### *A Celestial, Animated & Deeply Personalized Digital Experience Handcrafted with Infinite Love for Queen Nishika*
 
-[![Live Local Server](https://img.shields.io/badge/Preview%20Live-http%3A%2F%2Flocalhost%3A8080-ff1493?style=for-the-badge&logo=googlechrome&logoColor=white)](http://localhost:8080)
-[![Celebrant](https://img.shields.io/badge/Celebrant-Queen%20Nishika%20👑-ffd700?style=for-the-badge)](#-overview)
-[![Dedicated By](https://img.shields.io/badge/Dedicated%20By-Dilip%20💖-ff4081?style=for-the-badge)](#-overview)
-[![Playwright Tests](https://img.shields.io/badge/Playwright%20QA-56%2F56%20Passed%20(100%25)-10b981?style=for-the-badge&logo=playwright&logoColor=white)](docs/testing/Test-Execution-Report.md)
-[![Tech Stack](https://img.shields.io/badge/Stack-Vanilla%20HTML5%20%7C%20CSS3%20%7C%20ES6+-00f2fe?style=for-the-badge&logo=javascript&logoColor=white)](#-technology-stack)
-[![Zero Dependencies](https://img.shields.io/badge/Runtime%20Dependencies-ZERO-success?style=flat-square&logo=speedtest&logoColor=white)](#-technology-stack)
-[![Google Sheets Sync](https://img.shields.io/badge/Google%20Sheets-Live%20Sync%20Ready-34a853?style=flat-square&logo=googlesheets&logoColor=white)](docs/06-Database-Documentation.md)
-[![Google Drive Cloud](https://img.shields.io/badge/Google%20Drive-Photo%20%26%20Video%20Storage-4285f4?style=flat-square&logo=googledrive&logoColor=white)](docs/06-Database-Documentation.md)
-[![Audio Synthesizer](https://img.shields.io/badge/Web%20Audio%20API-Polyphonic%20Synthesizer-9d4edd?style=flat-square&logo=audacity&logoColor=white)](docs/04-Technical-Documentation.md)
-[![Responsive Matrix](https://img.shields.io/badge/Responsiveness-320px%20to%204K%20UHD%20(100%25%20Zero--Overflow)-10b981?style=flat-square&logo=googlechrome&logoColor=white)](docs/testing/UI-Test-Cases.md)
-
----
-
-## 📸 Visual Showcase & Screen Previews
-
-### 🖥️ Desktop Cinema View (1366px × 768px)
-*Ultra-luxurious cosmic atmosphere, real-time relationship countdown, floating glowing lanterns & heart particles.*
-
-![Desktop Hero Showcase](screenshots/01-desktop-hero.png)
-
----
-
-### 📱 Mobile Experience (375px - 390px Viewport)
-*Sleek sticky navigation header, thumb-friendly category chips, zero horizontal overflow.*
-
-| 📱 Mobile Hero & Header | 🏺 Magic Reasons Jar | 🛋️ Cuddle Haven Cinema |
-| :---: | :---: | :---: |
-| ![Mobile Hero & Header](screenshots/07-mobile-hero.png) | ![Mobile Love Jar](screenshots/08-mobile-jar.png) | ![Mobile Cuddle Haven](screenshots/09-mobile-cuddle.png) |
-
----
-
-### 📲 Instant QR Code Access
-*Scan with smartphone camera to immediately unbox the celebration on any mobile browser:*
-
 <div align="center">
-  <a href="webqr.png">
-    <img src="webqr.png" alt="Scan to Launch Eternal Love Celebration" width="200" style="border-radius: 16px; box-shadow: 0 8px 30px rgba(255, 64, 129, 0.35); border: 2px solid #ffd700;" />
-  </a>
-  <p><strong>👑 Point Phone Camera to Scan & Launch Celebration Instantly</strong></p>
+
+[![Live GitHub Pages Portal](https://img.shields.io/badge/🚀%20LIVE%20PORTAL-dilipk2026.github.io%2Fhappy--birthday-ff1493?style=for-the-badge&logo=githubpages&logoColor=white)](https://dilipk2026.github.io/happy-birthday/)
+[![Live Local Server](https://img.shields.io/badge/Local%20Preview-http%3A%2F%2Flocalhost%3A8080-00f2fe?style=for-the-badge&logo=googlechrome&logoColor=white)](http://localhost:8080)
+[![Playwright Tests](https://img.shields.io/badge/Playwright%20QA-56%2F56%20Passed%20(100%25)-10b981?style=for-the-badge&logo=playwright&logoColor=white)](docs/testing/Test-Execution-Report.md)
+
+[![Celebrant](https://img.shields.io/badge/👑%20Celebrant-Queen%20Nishika-ffd700?style=flat-square)](#-overview--concept)
+[![Dedicated By](https://img.shields.io/badge/💖%20Dedicated%20By-Dilip-ff4081?style=flat-square)](#-overview--concept)
+[![Milestone](https://img.shields.io/badge/⏳%20Milestone-Dec%2029%2C%202025-a855f7?style=flat-square)](#-overview--concept)
+[![Tech Stack](https://img.shields.io/badge/Stack-Vanilla%20HTML5%20%7C%20CSS3%20%7C%20ES6+-00f2fe?style=flat-square&logo=javascript&logoColor=white)](#-technology-stack)
+[![Zero Runtime Dependencies](https://img.shields.io/badge/Runtime%20Dependencies-ZERO-success?style=flat-square&logo=speedtest&logoColor=white)](#-technology-stack)
+[![Google Drive Cloud](https://img.shields.io/badge/Google%20Drive-Photo%20%26%20Video%20Storage-4285f4?style=flat-square&logo=googledrive&logoColor=white)](docs/06-Database-Documentation.md)
+[![Google Sheets Sync](https://img.shields.io/badge/Google%20Sheets-Live%20Sync%20Ready-34a853?style=flat-square&logo=googlesheets&logoColor=white)](docs/06-Database-Documentation.md)
+[![Audio Synthesizer](https://img.shields.io/badge/Web%20Audio%20API-Polyphonic%20Synthesizer-9d4edd?style=flat-square&logo=audacity&logoColor=white)](docs/04-Technical-Documentation.md)
+[![Mobile Viewports](https://img.shields.io/badge/Responsiveness-320px%20to%204K%20UHD%20(Zero--Overflow)-10b981?style=flat-square&logo=googlechrome&logoColor=white)](docs/testing/UI-Test-Cases.md)
+
 </div>
 
 ---
 
-## 🌟 Overview & Problem Statement
+## 🌐 Instant Live Access & Mobile Launch
+
+You can launch and explore the live production celebration directly on the web or scan the QR code using any smartphone:
+
+<div align="center">
+
+### 🌟 [👉 Click Here to Open Live GitHub Pages Portal 👈](https://dilipk2026.github.io/happy-birthday/)
+
+<a href="https://dilipk2026.github.io/happy-birthday/">
+  <img src="webqr.png" alt="Scan QR Code to Open Eternal Love" width="220" style="border-radius: 18px; box-shadow: 0 10px 35px rgba(255, 64, 129, 0.45); border: 3px solid #ffd700; margin: 15px 0;" />
+</a>
+
+<p><strong>📱 Scan QR Code with Phone Camera to Launch the Royal Celebration Instantly</strong></p>
+
+```
+Live Production URL : https://dilipk2026.github.io/happy-birthday/
+<details>
+<summary>Click to reveal</summary>
+<!-- Authorized Birthday Passcode : 22092000 (DDMMYYYY - Sept 22, 2000) -->
+<!-- Authorized VIP Anniversary PIN : 2912 (DDMM - Dec 29) -->
+</details>
+```
+
+</div>
+
+---
+
+## 🖼️ Graphical Interface & Visual Showcase
+
+### 1. 🌟 Stage 1: Celestial Landing, Starlight Sky & 3D Gift Box Unboxing
+*Cosmic particle backdrop with glowing lanterns, real-time relationship countdown chronometer, and interactive 3D perspective gift box.*
+
+| 🎁 3D Unboxing Box & Fanfare | 🌌 Cosmic Hero Atmosphere |
+| :---: | :---: |
+| ![3D Unboxing Intro](screenshots/10-unboxing-intro.png) | ![Desktop Hero View](screenshots/01-desktop-hero.png) |
+
+---
+
+### 2. 🎂 Stage 2: 3D Interactive Birthday Cake Cutting & Realistic Video Cinema
+*Interactive candle blowing, realistic knife slicing physics, sparklers, and celebratory fireworks fanfare.*
+
+| 🎂 3D Cake Cutting Ceremony | 🛋️ Couple Cuddle Cinema |
+| :---: | :---: |
+| ![Cake Cutting Cinema](screenshots/02-desktop-cake.png) | ![Couple Cuddle Cinema](screenshots/03-desktop-cuddle.png) |
+
+---
+
+### 3. 🏺 Stage 3: 100 Reasons Why I Love You & Polyphonic Music Synthesizer
+*Interactive floating origami reasons jar and procedural Web Audio synthesizer with Grand Piano and 6 ambient soundscapes.*
+
+| 🏺 100 Reasons Magic Jar | 🎵 Procedural Ambient Soundscapes |
+| :---: | :---: |
+| ![Magic Reasons Jar](screenshots/08-mobile-jar.png) | ![Audio Soundscapes](screenshots/04-desktop-music.png) |
+
+---
+
+### 4. 💌 Stage 4: Royal Love Letters, Time Capsule & Coupons Vault
+*Heartfelt handwritten love letters with delicate calligraphy, "Open When" envelopes, and redeemable love coupons.*
+
+| 💌 Queen Nishika Love Letter | 📬 "Open When" Letter Vault | 🎟️ Romantic Love Coupons |
+| :---: | :---: | :---: |
+| ![Love Letter](screenshots/11-love-letter.png) | ![Open When Letters](screenshots/12-open-when-letters.png) | ![Love Coupons](screenshots/05-desktop-coupons.png) |
+
+---
+
+### 5. 📜 Stage 5: Relationship Story Timeline & 3D Flower Bouquet Studio
+*Interactive chronological milestone journey and custom romantic bouquet designer with wrapping papers and ribbons.*
+
+| 📜 Love Story Milestone Timeline | 💐 Custom 3D Bouquet Studio |
+| :---: | :---: |
+| ![Story Timeline](screenshots/13-story-timeline.png) | ![Bouquet Studio](screenshots/14-bouquet-studio.png) |
+
+---
+
+### 6. 📸 Stage 6: Live Memory Polaroid Scrapbook & Video Streaming Wall
+*Permanent cloud-synced memory wall supporting Base64 video/photo uploads, YouTube/Vimeo embeds, and Google Drive streaming.*
+
+| 📸 Polaroid Memories Gallery | 🕹️ Couple Quiz & Fortune Roulette |
+| :---: | :---: |
+| ![Polaroid Gallery](screenshots/16-polaroid-gallery.png) | ![Couple Quiz](screenshots/15-couple-quiz.png) |
+
+---
+
+### 7. 🌌 Stage 7: Constellation Starlight Sky, Sky Lanterns & Magic Mirror
+*Interactive stardust constellations, releaseable glowing sky lanterns, vintage film projector, and playful Magic Mirror.*
+
+| 🌌 Constellation Starlight Sky | 🏮 Sky Lanterns Ceremony | 🪞 Enchanted Magic Mirror |
+| :---: | :---: | :---: |
+| ![Constellation Sky](screenshots/17-constellation-sky.png) | ![Sky Lanterns](screenshots/18-sky-lanterns.png) | ![Magic Mirror](screenshots/20-magic-mirror.png) |
+
+---
+
+### 8. 📱 Stage 8: Mobile Ultra-Responsive Experience (320px - 414px)
+*Tailored thumb-friendly navigation, 2-row sticky headers, swipeable carousels, and 0px horizontal overflow across iPhone SE, Galaxy, and Pixel devices.*
+
+| 📱 Mobile Hero & Countdown | 📱 Mobile Reasons Jar | 📱 Mobile Cuddle Cinema |
+| :---: | :---: | :---: |
+| ![Mobile Hero](screenshots/07-mobile-hero.png) | ![Mobile Jar](screenshots/08-mobile-jar.png) | ![Mobile Cuddle](screenshots/09-mobile-cuddle.png) |
+
+---
+
+## 🌟 Overview & Concept
 
 **Eternal Love** is a production-grade romantic celebration web portal handcrafted specifically for **Queen Nishika's Birthday**, dedicated with infinite devotion by **Dilip**.
 
 ### The Problem
-Traditional birthday greetings and physical cards are ephemeral, non-interactive, and easily misplaced. Standard digital greeting templates lack custom emotional depth, require costly SaaS subscriptions, suffer from media storage link expiration, and frequently fail on mobile viewports.
+Traditional birthday greeting cards and physical gifts are static, easily lost, and offer no long-term multimedia interaction. Generic greeting websites rely on expensive recurring subscriptions, have rigid templates, lose attached video/photo uploads over time, and suffer from layout breakdown on mobile devices.
 
 ### The Solution
-**Eternal Love** delivers an uncompromised, zero-cost, serverless celebration platform combining:
-1. **2-Stage Unboxing Ceremony**: Interactive 3D gift box with particle fanfare leading to a dual-passcode protected memory vault.
-2. **Permanent Cloud Synchronization**: Free Google Apps Script webhook integration storing uploaded videos/photos in Google Drive and structured wishes in Google Sheets.
-3. **Zero-Dependency Native Web Architecture**: Pure HTML5, Vanilla CSS3, Web Audio API, and dual HTML5 Canvases with 100% offline-first resilience.
+**Eternal Love** provides an uncompromised, zero-cost, permanent digital celebration platform featuring:
+1. **2-Stage Unboxing Ceremony**: 3D interactive gift box with physics-based particle confetti and dual-passcode security vault.
+2. **Permanent Serverless Cloud Synchronization**: Free Google Apps Script webhook integration saving Base64 video/photo uploads directly into Queen Nishika's personal Google Drive folder (`"Eternal Love Wishes (Queen Nishika)"`) and logging structured records in Google Sheets.
+3. **Pure Native Web Architecture**: Built using pure HTML5, Vanilla CSS3, Web Audio API, and dual HTML5 2D Canvases with **zero runtime NPM dependencies** and 100% offline-first local cache resilience.
 
-| Key Project Attribute | Specification |
-| :--- | :--- |
-| **👑 Birthday Celebrant** | **Queen Nishika** *(The Birthday Queen)* |
-| **💖 Dedicated By** | **Dilip** |
+```
++---------------------------------------------------------------------------------------+
+|                                CORE SYSTEM ATTRIBUTES                                 |
++--------------------------+------------------------------------------------------------+
+| 👑 Birthday Celebrant    | Queen Nishika (The Birthday Queen)                         |
+| 💖 Dedicated By          | Dilip                                                      |
+| ⚡ Client Engine         | Pure Vanilla HTML5 + CSS3 + ES6+ (0 NPM runtime packages)  |
+| ☁️ Cloud Engine          | Serverless Google Apps Script + Google Drive + Sheets      |
+| 🌐 Deployment            | GitHub Pages Edge CDN (Free Global HTTPS)                  |
+| 🧪 QA Benchmark          | 🟢 56/56 Automated Playwright Tests Passed (100% Pass)     |
++--------------------------+------------------------------------------------------------+
+```
 
-| **🗝️ Authorized Passcodes** | **`22092000`** (Birthday DOB) & **`2912`** (VIP Anniversary PIN) |
-| **⚡ Client Engine** | Pure Vanilla HTML5 + CSS3 + ES6+ (0 runtime NPM packages) |
-| **☁️ Backend Engine** | Google Apps Script (`Code.gs`) + Google Drive + Google Sheets |
-| **🧪 Automated QA Status** | 🟢 **56/56 Playwright Tests Passed (100% Pass Rate, 0 Console Errors)** |
+---
+
+## 🏛️ System Architecture Diagrams
+
+### 1. High-Level C4 Context & Cloud Topology
+
+```mermaid
+flowchart TB
+    subgraph Users["End-User Clients"]
+        NISHIKA["👑 Queen Nishika (Royal Celebrant)"]
+        DILIP["💖 Dilip (Dedicator / VIP Admin)"]
+        GUESTS["✨ Guests & Well-Wishers"]
+    end
+
+    subgraph Frontend["Frontend Client Architecture (GitHub Pages Edge CDN)"]
+        direction TB
+        INDEX["Stage 1: index.html (Unboxing & Lockscreen)"]
+        MAIN["Stage 2: main.html (Royal Celebration Platform)"]
+        CSS["style.css (Design System, 3D CSS, Dark Theme)"]
+        JS["script.js (State Router, Synth Engine, Canvas Physics)"]
+        LS[("Browser LocalStorage Cache")]
+        
+        INDEX --> JS
+        MAIN --> JS
+        CSS --> INDEX
+        CSS --> MAIN
+        JS <--> LS
+    end
+
+    subgraph Backend["Google Cloud / Workspace Serverless Tier ($0.00 Cost)"]
+        direction TB
+        GAS["Google Apps Script Webhook (Code.gs)"]
+        GDRIVE[("Google Drive: 'Eternal Love Wishes (Queen Nishika)'")]
+        GSHEETS[("Google Sheets: 'Wishes', 'Telemetry', 'VIP Guests'")]
+
+        GAS --> GDRIVE
+        GAS --> GSHEETS
+    end
+
+
+    JS -- "2. POST Base64 Media Payload" --> GAS
+    GAS -- "3. Save Binary Blob (MP4/JPG)" --> GDRIVE
+    GDRIVE -- "4. Return Permanent Stream URL" --> GAS
+    GAS -- "5. Append Wish Row" --> GSHEETS
+    GAS -. "6. JSONP Wish Feed Sync" .-> JS
+```
+
+---
+
+### 2. User Journey & Stage Routing Flowchart
+
+```mermaid
+flowchart TD
+    START(["User Navigates to Portal"])
+    CHECK_AUTH{"Is Already Authenticated in LocalStorage?"}
+    
+    START --> CHECK_AUTH
+    CHECK_AUTH -- Yes --> SHOW_MAIN["Unlock main.html Celebration Arena"]
+    CHECK_AUTH -- No --> SHOW_STAGE1["Render index.html 3D Gift Box Landing"]
+
+    SHOW_STAGE1 --> TAP_BOX["User Taps 'Open My Gift 🎁'"]
+    TAP_BOX --> AUDIO_INIT["Initialize Web Audio API Context (Polyphonic Chimes)"]
+    AUDIO_INIT --> BURST_CANVAS["Trigger Floating Hearts Particle Burst"]
+    BURST_CANVAS --> PROMPT_PIN["Display Passcode Security Modal"]
+
+    PROMPT_PIN --> VALIDATE_PIN{"Validate Passcode"}
+   
+    VALIDATE_PIN -- Invalid --> SHAKE_PIN["Play Error Sound & Trigger CSS Shake Animation"]
+
+    UNLOCK_STAGE2 --> SHOW_MAIN
+    UNLOCK_VIP --> SHOW_MAIN
+
+    SHOW_MAIN --> INTERACT["Explore 25 Celebration Arenas (Cake, Cinema, Wishes, Constellations)"]
+```
+
+---
+
+### 3. Media Upload & Cloud Synchronization Engine
+
+```mermaid
+flowchart LR
+    subgraph ClientProcess["Client Video / Photo Processing"]
+        PICKER["User Attaches MP4 Video or Pastes YouTube URL"]
+        B64_CONV["FileReader converts Video to Base64 String"]
+        OPT_RENDER["Optimistically Render Video on Wish Wall"]
+        LOCAL_SAVE["Cache in LocalStorage (No ephemeral blob: URLs)"]
+    end
+
+    subgraph CloudProcess["Serverless Cloud Execution"]
+        WEBHOOK["fetch(Code.gs Webhook, {mode: 'no-cors'})"]
+        DRIVE_UPLOAD["GAS Decodes Base64 & Creates MP4 File in Drive"]
+        PERM_SET["GAS Sets Anyone with Link -> View Permission"]
+        STREAM_URL["Generate https://drive.google.com/file/d/ID/preview"]
+        SHEET_ROW["Append Row to Google Sheets Database"]
+    end
+
+    PICKER --> B64_CONV --> OPT_RENDER --> LOCAL_SAVE --> WEBHOOK
+    WEBHOOK --> DRIVE_UPLOAD --> PERM_SET --> STREAM_URL --> SHEET_ROW
+```
 
 ---
 
 ## 💻 Technology Stack
 
-[VERIFIED] The system is built with pure web standards for zero-runtime maintenance overhead:
+[VERIFIED] The entire application is built using pure web standards for lightning speed, zero dependencies, and long-term maintainability:
 
-| Technology | Version | Purpose |
+| Technology | Version | Purpose & Implementation Area |
 | :--- | :--- | :--- |
-| **HTML5** | HTML Living Standard | Semantic document structure, modal dialogues, media elements |
-| **Vanilla CSS3** | CSS Level 3 / 4 | Custom design system, CSS custom properties, 3D perspective, flex/grid layouts |
-| **JavaScript (ES6+)** | ECMAScript 2022+ | Application state routing, particle physics, Base64 encoding, DOM manipulation |
-| **Web Audio API** | W3C Standard | Polyphonic sound synthesis (piano, guitar, chimes, fireworks audio) |
-| **HTML5 Canvas API** | Canvas 2D Context | Dual particle animation engines (starlight hearts & celebratory fireworks) |
-| **Google Apps Script** | V8 Runtime Engine | Serverless webhook handler (`doPost`), Base64 stream decoding, Drive/Sheets API |
-| **Google Drive API** | v3 (GAS Built-in) | Persistent cloud blob storage for MP4 video and JPEG/PNG image wishes |
+| **HTML5** | Living Standard | Semantic page layout, modal dialogs, audio/video players in [`index.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/index.html) and [`main.html`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/main.html) |
+| **Vanilla CSS3** | Level 3 / 4 | Custom design system, CSS variables, 3D perspective (`preserve-3d`), glassmorphism, animations in [`style.css`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/style.css) |
+| **JavaScript (ES6+)** | ECMAScript 2022+ | Application state routing, particle physics, Base64 encoding, DOM manipulation in [`script.js`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/script.js) |
+| **Web Audio API** | W3C Standard | Zero-dependency polyphonic synthesizer (`OscillatorNode`, `GainNode`, ADSR envelopes, procedural audio) |
+| **HTML5 Canvas API** | Canvas 2D Context | Dual particle animation engines (starlight hearts loop & midnight fireworks simulation) |
+| **Google Apps Script** | V8 Runtime Engine | Serverless webhook handler (`doPost`), Base64 stream decoding in [`Code.gs`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/Code.gs) |
+| **Google Drive API** | v3 (GAS Built-in) | Persistent cloud blob storage for MP4 video and JPEG/PNG image uploads |
 | **Google Sheets API** | v4 (GAS Built-in) | Tabular database for structured wish entries, telemetry, and VIP records |
-| **Playwright** | v1.40+ (Node.js) | Automated end-to-end regression testing across Desktop and Mobile engines |
+| **Playwright** | v1.40+ (Node.js) | Automated end-to-end regression testing across Desktop and Mobile viewports in [`playwright-test-runner.js`](file:///c:/Users/Himanshu/Documents/HTML/New%20folder/new/playwright-test-runner.js) |
 | **Python HTTP Server** | Python 3.10+ | Local development server (`python -m http.server 8080`) |
 
 ---
 
-## 🏛️ System Architecture
-
-```mermaid
-flowchart TD
-    subgraph ClientLayer["Client Layer (Desktop & Mobile Browsers)"]
-        UI["UI Layer: index.html (Stage 1) & main.html (Stage 2)"]
-        STYLE["Design System & 3D CSS Engine (style.css)"]
-        CORE["Core Logic & State Controller (script.js)"]
-        CANVAS["Dual HTML5 Canvas Engines (Hearts & Fireworks)"]
-        AUDIO["Web Audio API Polyphonic Synthesizer"]
-        STORAGE[("Browser LocalStorage Cache")]
-        
-        UI --> CORE
-        STYLE --> UI
-        CORE --> CANVAS
-        CORE --> AUDIO
-        CORE --> STORAGE
-    end
-
-    subgraph CloudLayer["Serverless Cloud Backend (Google Workspace)"]
-        WEBHOOK["Google Apps Script Webhook (Code.gs)"]
-        GDRIVE[("Google Drive: 'Eternal Love Wishes (Queen Nishika)'")]
-        GSHEETS[("Google Sheets: 'Wishes', 'Telemetry', 'VIP Guests'")]
-        
-        CORE -- "1. POST Base64 Media Payload" --> WEBHOOK
-        WEBHOOK -- "2. Decode & Save Binary Blob" --> GDRIVE
-        GDRIVE -- "3. Return Permanent Stream URL" --> WEBHOOK
-        WEBHOOK -- "4. Append Structured Record" --> GSHEETS
-        WEBHOOK -. "5. JSONP Wish Feed Sync" .-> CORE
-    end
-```
-
----
-
-## 📦 Prerequisites & System Requirements
-
-- **Local Development**: Any modern web browser (Google Chrome 120+, Apple Safari 17+, Mozilla Firefox 120+, Microsoft Edge 120+).
-- **HTTP Server**: Python 3.8+ (for `python -m http.server`) or Node.js (for `npx serve` or Live Server).
-- **QA Automation**: Node.js v18.0.0+ and Playwright (`npm install playwright`).
-
----
-
-## 🚀 Installation & Quick Start
+## 🚀 Installation & Local Development
 
 ### 1. Clone the Repository
 ```bash
@@ -148,7 +287,7 @@ git clone https://github.com/dilipk2026/happy-birthday.git
 cd happy-birthday
 ```
 
-### 2. Start the Local Server
+### 2. Start Local Development Server
 ```bash
 # Using Python 3 (Recommended)
 python -m http.server 8080
@@ -158,88 +297,40 @@ npx serve -l 8080 .
 ```
 
 ### 3. Open in Browser
-Navigate to:
-```
-http://localhost:8080
-```
+Visit `http://localhost:8080` in any modern web browser.
 
 ---
 
-## ⚙️ Environment Configuration
+## 🚢 GitHub Pages 60-Second Deployment Guide
 
-[VERIFIED] Cloud integration is configured via public Google Apps Script Webhooks:
-
-```javascript
-// Google Apps Script Webhook Configuration (script.js)
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec";
-```
-
-*Note: No private database credentials or passwords are ever exposed to client-side code.*
-
----
-
-## 📁 Project Structure
-
-```
-.
-├── index.html                    # Stage 1: Landing, 3D Gift Unboxing & Lock Screen
-├── main.html                     # Stage 2: Full Celebration Portal (Memories, Games, Wishes)
-├── script.js                     # Core Application Controller, Audio Synth & Canvas Physics
-├── style.css                     # Design System, 3D Parallax & Responsive Viewport Rules
-├── Code.gs                       # Google Apps Script Serverless Cloud Webhook Handler
-├── playwright-test-runner.js     # 56-Test Playwright Automated End-to-End Test Suite
-├── playwright_test_results.json  # Output execution log of the 56 passed Playwright tests
-├── webqr.png                     # High-resolution QR Code asset for instant mobile scanning
-├── screenshots/                  # 20+ Visual audit captures across desktop and mobile
-│   ├── 01-desktop-hero.png
-│   ├── 07-mobile-hero.png
-│   └── ...
-└── docs/                         # Master Engineering & QA Documentation Package (32 Files)
-    ├── README.md                 # Documentation Hub & Navigation Map
-    ├── 01-Project-Overview.md    # Executive Summary & Objectives
-    ├── 02-SRS.md                 # Software Requirements Specification (FR-001 to FR-014)
-    ├── 03-System-Architecture.md # C4 Architectural Model & Security Zones
-    ├── 04-Technical-Documentation.md # Module Specs & Function Catalog
-    ├── 05-API-Documentation.md   # Google Apps Script Webhook Reference
-    ├── 06-Database-Documentation.md # Google Sheets & Drive Schema
-    ├── 07-User-Documentation.md  # Celebrant & Dedicator User Manual
-    ├── 08-Installation-and-Setup.md # Local Setup & Environment Guide
-    ├── 09-Deployment-Documentation.md # GitHub Pages & Cloud Deployment Guide
-    ├── 10-Security-Documentation.md # Dual-PIN Threat Model & Sanitization
-    ├── 11-Maintenance-Documentation.md # Annual Birthday Rollover Runbook
-    ├── 12-Troubleshooting.md     # Diagnostic & Solution Matrix
-    ├── 13-FAQ.md                 # Frequently Asked Questions
-    ├── 14-Release-Notes.md       # Semantic Release History (v1.0.0 to v3.0.0)
-    ├── 15-Code-Quality-Review.md # Quality Scorecard & Code Profiling
-    ├── 16-Requirements-Traceability-Matrix.md # RTM linking FRs to Tests
-    ├── testing/                  # Comprehensive QA & Test Strategy Suite
-    │   ├── Test-Strategy.md      # Master QA Strategy
-    │   ├── Test-Plan.md          # Execution Test Plan & Scope
-    │   ├── Test-Scenarios.md     # TS-001 to TS-020 Scenarios
-    │   ├── Test-Cases.md         # TC-1.1 to TC-6.7 Full Matrix
-    │   ├── API-Test-Cases.md     # Webhook Test Matrix
-    │   ├── UI-Test-Cases.md      # Viewport Test Matrix (320px-1920px)
-    │   ├── Security-Test-Cases.md# Security & Auth Test Cases
-    │   ├── Performance-Test-Plan.md # FPS, Audio Latency & Memory Plan
-    │   ├── UAT-Test-Cases.md     # Business Acceptance Tests
-    │   ├── Defect-Report.md      # Root-Cause Defect Resolution Log
-    │   ├── Test-Execution-Report.md # 56/56 Passed Execution Log
-    │   └── Final-Test-Report.md  # Official QA Sign-Off & Release Approval
-    └── diagrams/                 # Mermaid Architectural Diagrams
-        ├── System-Architecture.md# C4 Context & Component Topology
-        ├── Data-Flow.md          # Level 0 & Level 1 DFDs
-        ├── Sequence-Diagrams.md  # Sequence Flows
-        └── Database-ER-Diagram.md# Entity-Relationship Diagram
-```
-
----
-
-## 🧪 Automated Testing & QA Verification
-
-The codebase includes an enterprise-grade automated Playwright test suite validating all 56 functional criteria:
+Deploying this celebration to GitHub Pages provides instant global HTTPS and CDN caching at zero cost:
 
 ```bash
-# Execute the automated test suite
+# 1. Initialize git and stage all files
+git init
+git add .
+git commit -m "feat: Eternal Love v3.0.0 official celebration release 👑💖"
+
+# 2. Push to GitHub main branch
+git branch -M main
+git remote add origin https://github.com/dilipk2026/happy-birthday.git
+git push -u origin main
+```
+
+### Activate GitHub Pages:
+1. Navigate to repository **Settings** $\rightarrow$ **Pages**.
+2. Under **Build and deployment** $\rightarrow$ **Source**, select **Deploy from a branch**.
+3. Select branch `main` and folder `/ (root)` $\rightarrow$ click **Save**.
+4. 🎉 **Live URL**: `https://dilipk2026.github.io/happy-birthday/`
+
+---
+
+## 🧪 Automated Playwright QA Test Suite
+
+The codebase includes an enterprise-grade automated Playwright test suite validating all 56 functional criteria across 6 test suites:
+
+```bash
+# Run the complete automated test suite
 node playwright-test-runner.js
 ```
 
@@ -249,44 +340,75 @@ node playwright-test-runner.js
 - **Failed / Blocked / Skipped**: 0
 - **Uncaught Console Errors**: 0
 - **Execution Duration**: 10.63 seconds
+- **Full Report**: [`docs/testing/Test-Execution-Report.md`](docs/testing/Test-Execution-Report.md)
 
 ---
 
-## 📡 API & Database Overview
+## 📁 Repository Directory Structure
 
-- **API Documentation**: Detailed in [`docs/05-API-Documentation.md`](docs/05-API-Documentation.md). Documents the Google Apps Script POST webhook, payload parameters (`author`, `message`, `color`, `fileData`, `mimeType`), and JSONP wish feed endpoint (`?action=getWishes&callback=handleWishes`).
-- **Database Schema**: Detailed in [`docs/06-Database-Documentation.md`](docs/06-Database-Documentation.md). Documents the 3 Google Sheet tabs (`Wishes`, `Telemetry`, `VIP_Guests`), Google Drive folder storage, and client `localStorage` persistence.
+```
+.
+├── index.html                    # Stage 1: Landing, 3D Gift Unboxing & Lock Screen
+├── main.html                     # Stage 2: Royal Celebration Platform (Memories, Audio, Wishes)
+├── script.js                     # Core Application Controller, Audio Synth & Particle Physics
+├── style.css                     # Design System, 3D Parallax & Responsive Viewport Rules
+├── Code.gs                       # Google Apps Script Cloud Webhook (Drive & Sheets Sync)
+├── README.md                     # Master Repository Showcase & Navigation (This File)
+├── favicon.svg                   # Custom Royal Crown Favicon
+├── webqr.png                     # Instant Mobile Celebration QR Code
+├── playwright-test-runner.js     # Automated End-to-End Test Suite (56 Assertions)
+├── playwright_test_results.json  # Automated Test Run Log (100% Passed)
+├── screenshots/                  # 20 Visual UI Audit Captures (Desktop & Mobile)
+│   ├── 01-desktop-hero.png ... 20-magic-mirror.png
+└── docs/                         # Master Engineering & QA Documentation Package (33 Files)
+    ├── README.md                 # Master Documentation Navigation Map
+    ├── 01-Project-Overview.md    # Executive Summary, Scope & Objectives
+    ├── 02-SRS.md                 # Software Requirements Specification (IEEE-830)
+    ├── 03-System-Architecture.md # C4 Architectural Model & Security Boundaries
+    ├── 04-Technical-Documentation.md # Detailed Module Catalog & Synth Engine
+    ├── 05-API-Documentation.md   # Google Apps Script Webhook Reference
+    ├── 06-Database-Documentation.md # Google Sheets Schema, Drive Blobs & LocalStorage
+    ├── 07-User-Documentation.md  # Celebrant & Dedicator User Manual
+    ├── 08-Installation-and-Setup.md # Local Setup & Environment Guide
+    ├── 09-Deployment-Documentation.md # GitHub Pages & Cloud Webhook Deployment
+    ├── 10-Security-Documentation.md # Dual-PIN Auth, DOM XSS Sanitization & Sandboxing
+    ├── 11-Maintenance-Documentation.md # Annual Birthday Rollover Runbook
+    ├── 12-Troubleshooting.md     # Diagnostic & Solution Matrix
+    ├── 13-FAQ.md                 # Frequently Asked Questions
+    ├── 14-Release-Notes.md       # Semantic Release History (v1.0.0 to v3.0.0)
+    ├── 15-Code-Quality-Review.md # Quality Scorecard & Static Analysis
+    ├── 16-Requirements-Traceability-Matrix.md # RTM linking FRs to 56 Tests
+    ├── testing/                  # Comprehensive QA & Test Strategy Suite (12 Files)
+    │   ├── Test-Strategy.md      # Master QA Strategy
+    │   ├── Test-Plan.md          # Execution Test Plan & Scope
+    │   ├── Test-Scenarios.md     # TS-001 to TS-020 Scenarios
+    │   ├── Test-Cases.md         # Full Functional Test Matrix (TC-1.1 to TC-6.7)
+    │   ├── API-Test-Cases.md     # Webhook & JSONP Test Cases
+    │   ├── UI-Test-Cases.md      # Viewport Matrix (320px to 1920px)
+    │   ├── Security-Test-Cases.md# Passcode & XSS Security Test Cases
+    │   ├── Performance-Test-Plan.md # FPS, Audio Latency & Memory Limits Plan
+    │   ├── UAT-Test-Cases.md     # Business Acceptance Test Cases
+    │   ├── Defect-Report.md      # 5 Resolved Defects & Root Cause Analysis
+    │   ├── Test-Execution-Report.md # 56/56 Passed Execution Log
+    │   └── Final-Test-Report.md  # Official QA Release Sign-Off
+    └── diagrams/                 # Mermaid Architectural Diagrams (4 Files)
+        ├── System-Architecture.md# C4 Context & Component Topologies
+        ├── Data-Flow.md          # Level 0 & Level 1 DFDs
+        ├── Sequence-Diagrams.md  # Sequence Flows
+        └── Database-ER-Diagram.md# Entity-Relationship Model
+```
 
 ---
 
-## 🚢 Deployment Guide
+## 📚 Master Documentation Hub (33 Production Documents)
 
-The application is 100% static and deploys to **GitHub Pages** in seconds:
-
-1. Push repository code to GitHub:
-   ```bash
-   git add .
-   git commit -m "feat: Eternal Love v3.0.0 release"
-   git push origin main
-   ```
-2. In GitHub repository settings $\rightarrow$ **Pages** $\rightarrow$ select `main` branch and `/ (root)` folder $\rightarrow$ click **Save**.
-3. Live celebration URL: `https://<your-username>.github.io/<repo-name>/`.
-
-For custom domains and DNS configuration, refer to [`docs/09-Deployment-Documentation.md`](docs/09-Deployment-Documentation.md).
-
----
-
-## 📚 Master Documentation Hub (32 Production Documents)
-
-Explore the full documentation package categorized below:
-
-| # | Document Category | File | Focus / Key Content |
+| # | Document Category | File | Description / Key Focus |
 | :-: | :--- | :--- | :--- |
 | 1 | **Navigation Hub** | [docs/README.md](docs/README.md) | Complete Documentation Portal & Reading Paths |
-| 2 | **Project Overview** | [docs/01-Project-Overview.md](docs/01-Project-Overview.md) | Business Scope, Stakeholders & High-Level Architecture |
+| 2 | **Project Overview** | [docs/01-Project-Overview.md](docs/01-Project-Overview.md) | Business Scope, Stakeholders & High-Level Objectives |
 | 3 | **Requirements (SRS)** | [docs/02-SRS.md](docs/02-SRS.md) | IEEE-830 Functional (FR-001 to FR-014) & Non-Functional Specs |
 | 4 | **Architecture** | [docs/03-System-Architecture.md](docs/03-System-Architecture.md) | C4 System Context, Components, Security Boundaries |
-| 5 | **Technical Reference** | [docs/04-Technical-Documentation.md](docs/04-Technical-Documentation.md) | Module Catalog, Audio Synth, Canvas Loop Specifications |
+| 5 | **Technical Reference** | [docs/04-Technical-Documentation.md](docs/04-Technical-Documentation.md) | Module Catalog, Audio Synth, Canvas Physics Specifications |
 | 6 | **API Reference** | [docs/05-API-Documentation.md](docs/05-API-Documentation.md) | Google Apps Script REST Webhook & JSONP Endpoints |
 | 7 | **Database Specs** | [docs/06-Database-Documentation.md](docs/06-Database-Documentation.md) | Google Sheets Schema, Drive Blobs & LocalStorage |
 | 8 | **User Manual** | [docs/07-User-Documentation.md](docs/07-User-Documentation.md) | User Guide for Queen Nishika, Dilip, and Well-Wishers |
