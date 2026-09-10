@@ -47,12 +47,6 @@ You can launch and explore the live production celebration directly on the web o
 
 ```
 Live Production URL : https://dilipk2026.github.io/happy-birthday/
-<details>
-<summary>Click to reveal</summary>
-<!-- Authorized Birthday Passcode : 22092000 (DDMMYYYY - Sept 22, 2000) -->
-<!-- Authorized VIP Anniversary PIN : 2912 (DDMM - Dec 29) -->
-</details>
-```
 
 </div>
 
