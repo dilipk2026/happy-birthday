@@ -332,9 +332,9 @@
           "bugInfo": null
         },
         {
-          "testName": "Submitting video link renders video card in Memories Polaroid Gallery (#memoriesGrid)",
+          "testName": "Submitting video link renders responsive video player with theater expansion on Sticky Wall",
           "passed": true,
-          "details": "Video present in Memories gallery",
+          "details": "Video player and expand button present",
           "bugInfo": null
         },
         {

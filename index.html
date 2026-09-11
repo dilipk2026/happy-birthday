@@ -2085,39 +2085,6 @@
         </div>
       </section>
 
-      <!-- ROYAL POLAROID & VIDEO MEMORIES GALLERY SECTION -->
-      <section class="memories-section" id="memoriesGallerySection">
-        <div class="memories-header">
-          <h2 class="memories-title">📸 Royal Polaroid & Video Memories 🎬</h2>
-          <p class="memories-subtitle">Unforgettable memories, photographs & romantic video reels dedicated to My Love Nishika. Click to view in full-screen cinema mode!</p>
-          <div class="memories-action-bar">
-            <button type="button" class="btn-primary" id="addMemoryPhotoBtn" style="padding: 10px 22px; font-size: 0.9rem;">
-              <i class="fa-solid fa-camera"></i>
-              <span>+ Add Image / Photo</span>
-            </button>
-            <button type="button" class="btn-secondary" id="addMemoryVideoBtn" style="padding: 10px 22px; font-size: 0.9rem;">
-              <i class="fa-solid fa-video"></i>
-              <span>+ Add Video Reel</span>
-            </button>
-          </div>
-          <div class="filter-pills" id="memoriesFilterBar" style="justify-content: center; margin-top: 15px;">
-            <button type="button" class="filter-pill active" data-memory-filter="all">
-              <i class="fa-solid fa-layer-group"></i> All Memories <span class="filter-count" id="countMemoriesAll">0</span>
-            </button>
-            <button type="button" class="filter-pill" data-memory-filter="photo">
-              <i class="fa-solid fa-camera"></i> 📸 Photos <span class="filter-count" id="countMemoriesPhotos">0</span>
-            </button>
-            <button type="button" class="filter-pill" data-memory-filter="video">
-              <i class="fa-solid fa-video"></i> 🎬 Videos <span class="filter-count" id="countMemoriesVideos">0</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="memories-grid" id="memoriesGrid">
-          <!-- Populated dynamically via JS -->
-        </div>
-      </section>
-
       <!-- STICKY WISH WALL SECTION -->
       <section class="sticky-wall-section" id="stickyWishWallSection">
         <div class="sticky-wall-header">
@@ -3350,9 +3317,9 @@
             console.warn('Queued locally:', err);
           }
 
-          // Scroll to memories gallery
-          const memSec = document.getElementById('memoriesGallerySection');
-          if (memSec) memSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Scroll to Sticky Wish Wall
+          const wallSec = document.getElementById('stickyWishWallSection');
+          if (wallSec) wallSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       }
 

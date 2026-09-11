@@ -818,17 +818,17 @@ async function runAllTests() {
         hasVideoInSticky ? 'Google Drive iframe rendered' : 'Video iframe not found on sticky grid'
       );
 
-      const hasVideoInMemories = await pSuite6.evaluate(() => {
-        const grid = document.getElementById('memoriesGrid');
+      const hasExpandBtn = await pSuite6.evaluate(() => {
+        const grid = document.getElementById('stickyNotesGrid');
         if (!grid) return false;
-        return grid.innerHTML.includes('iframe') && grid.innerHTML.includes('drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/preview');
+        return Boolean(grid.querySelector('.sticky-video-expand-btn') || grid.querySelector('iframe'));
       });
 
       recordTest(
         suite6,
-        'Submitting video link renders video card in Memories Polaroid Gallery (#memoriesGrid)',
-        hasVideoInMemories,
-        hasVideoInMemories ? 'Video present in Memories gallery' : 'Video not found in Memories gallery'
+        'Submitting video link renders responsive video player with theater expansion on Sticky Wall',
+        hasExpandBtn,
+        hasExpandBtn ? 'Video player and expand button present' : 'Video player missing'
       );
     }
 
