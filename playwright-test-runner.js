@@ -320,7 +320,7 @@ async function runAllTests() {
 
       if (guestNameInput && guestWishInput && submitWishBtn) {
         await guestNameInput.fill('Aaditya (Playwright QA)');
-        await guestWishInput.fill('Happy 26th Birthday Queen Nishika! May all your celestial dreams blossom! 💖✨');
+        await guestWishInput.fill('Happy 26th Birthday My Love Nishika! May all your celestial dreams blossom! 💖✨');
         await submitWishBtn.click();
         await pageIndex.waitForTimeout(500);
 
@@ -613,7 +613,7 @@ async function runAllTests() {
       { id: '#soundscapeSec', name: 'Stage 5: Web Audio Synthesizer & Soundscapes' },
       { id: '#capsuleSec', name: 'Stage 6: Romantic Time Capsule' },
       { id: '#couponsSec', name: 'Stage 7: Love Coupons Redemption' },
-      { id: '#letterSec', name: 'Stage 8: Queen Nishika Royal Love Letters' }
+      { id: '#letterSec', name: 'Stage 8: Royal Love Letters' }
     ];
 
     for (const sec of expectedSections) {
@@ -702,7 +702,7 @@ async function runAllTests() {
     const capsuleInput = await pageMain.$('#capsuleMessage, #capsuleTextInput, #capsuleText');
     const capsuleBtn = await pageMain.$('#sealCapsuleBtn, #submitCapsuleBtn, #saveCapsule');
     if (capsuleInput && capsuleBtn) {
-      await capsuleInput.fill('A romantic promise sealed for Queen Nishika! 💖✨');
+      await capsuleInput.fill('A romantic promise sealed for My Love Nishika! 💖✨');
       await capsuleBtn.click({ force: true }).catch(() => {});
       await pageMain.waitForTimeout(400);
       recordTest(
@@ -800,7 +800,7 @@ async function runAllTests() {
 
     if (guestNameInput && guestWishInput && wishVideoUrl && submitWishBtn) {
       await guestNameInput.fill('Dilip (Royal Video Test)');
-      await guestWishInput.fill('Forever dedicated to Queen Nishika! 🎬💖');
+      await guestWishInput.fill('Forever dedicated to My Love Nishika! 🎬💖');
       await wishVideoUrl.fill('https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/view');
       await submitWishBtn.click();
       await pSuite6.waitForTimeout(600);
@@ -908,7 +908,7 @@ async function runAllTests() {
     if (mainAuthorInput && mainTextInput && mainVideoUrlInput) {
       await mainAuthorInput.scrollIntoViewIfNeeded();
       await mainAuthorInput.fill('Dilip (Main Video Test)');
-      await mainTextInput.fill('Majestic birthday reel for Queen Nishika! 🌟');
+      await mainTextInput.fill('Majestic birthday reel for My Love Nishika! 🌟');
       await mainVideoUrlInput.fill('https://drive.google.com/open?id=1AbCdEfGhIjKlMnOpQrStUvWxYz123456');
       
       await pSuite6.evaluate(() => {

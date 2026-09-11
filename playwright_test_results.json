@@ -44,13 +44,13 @@
         {
           "testName": "index.html has valid luxury title",
           "passed": true,
-          "details": "Title is: \"Eternal Love ✨ Queen Nishika — Launching September 21\"",
+          "details": "Title is: \"Eternal Love ✨ My Love Nishika — Launching September 21\"",
           "bugInfo": null
         },
         {
           "testName": "Live Countdown timer elements (Days, Hours, Minutes, Seconds) render valid integers",
           "passed": true,
-          "details": "Days: 11",
+          "details": "Days: 10",
           "bugInfo": null
         },
         {
@@ -232,7 +232,7 @@
           "bugInfo": null
         },
         {
-          "testName": "Arena Stage 8: Queen Nishika Royal Love Letters (#letterSec) is properly structured in DOM",
+          "testName": "Arena Stage 8: Royal Love Letters (#letterSec) is properly structured in DOM",
           "passed": true,
           "details": "Element present",
           "bugInfo": null

@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (keepsakeSign) keepsakeSign.textContent = `${state.senderName} 💖`;
 
     const bouquetTag = document.getElementById('bouquetTagText');
-    if (bouquetTag) bouquetTag.textContent = `To Queen ${state.recipientName} 👑 Forever In Bloom`;
+    if (bouquetTag) bouquetTag.textContent = `To My Love ${state.recipientName} 👑 Forever In Bloom`;
 
     const giftingSender = document.getElementById('giftingSenderName');
     if (giftingSender) giftingSender.textContent = `Forever ${state.senderName} 💖`;
@@ -1056,7 +1056,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Failure State
       if (pagePasscodeFeedback) {
         pagePasscodeFeedback.className = 'passcode-feedback error';
-        pagePasscodeFeedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Incorrect passcode! Hint: Queen Nishika\'s Date of Birth in DDMMYYYY format 💕';
+        pagePasscodeFeedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Incorrect passcode! Hint: My Love Nishika\'s Date of Birth in DDMMYYYY format 💕';
       }
 
       const card = document.querySelector('.page-passcode-card');
@@ -1345,7 +1345,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (typeof showToast === 'function') {
-          showToast(`👑 Welcome to your royal celebration, Queen ${state.recipientName}! 💖✨`);
+          showToast(`👑 Welcome to your royal celebration, My Love ${state.recipientName}! 💖✨`);
         }
       } catch (err) {
         console.error('Error completing unbox transition:', err);
@@ -1377,7 +1377,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (pagePasscodeFeedback) {
         pagePasscodeFeedback.className = 'passcode-feedback';
-        pagePasscodeFeedback.innerHTML = '✨ Enter Queen Nishika\'s Royal Birthday Passcode (22092000) to open your surprise!';
+        pagePasscodeFeedback.innerHTML = '✨ Enter My Love Nishika\'s Royal Birthday Passcode (22092000) to open your surprise!';
       }
       return;
     }
@@ -1477,7 +1477,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       audioSynth.playCheerSound();
       burstConfetti(e.clientX, e.clientY, 40);
-      showToast('Cheers to the Birthday Queen! 🥂✨');
+      showToast('Cheers to the Birthday Love! 🥂✨');
     });
   }
 
@@ -2393,7 +2393,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      showToast(`Fed the sweetest first slice to Queen ${state.recipientName}! 🍓🍰👑 "Forever sweeter with you, my Queen!"`);
+      showToast(`Fed the sweetest first slice to My Love ${state.recipientName}! 🍓🍰👑 "Forever sweeter with you, my Love!"`);
 
       setTimeout(() => {
         if (feedingLoveBubble) feedingLoveBubble.classList.remove('active');
@@ -2427,7 +2427,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let cuddleSynthInterval = null;
 
   const cuddleSubtitles = [
-    `"In your arms is where I always want to be... Happy Birthday, my Queen Nishika." 💖`,
+    `"In your arms is where I always want to be... Happy Birthday, my Love Nishika." 💖`,
     `"Every storm in the universe fades away the moment I hold you close." 🛋️✨`,
     `"Under every star in the cosmos, my heart chooses you in every lifetime." 🌌`,
     `"Wrapped in this blanket with you, forever feels like it's just beginning." ☕🕯️`,
@@ -2530,11 +2530,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const cuddleWhispersList = [
     `"Holding you, Nishika, is the most peaceful feeling in the universe." 💖`,
-    `"Happy Birthday to my eternal love, my sweetest comfort, my Queen." 👑✨`,
+    `"Happy Birthday to my eternal love, my sweetest comfort, my Love." 👑✨`,
     `"With every breath, Dilip falls deeper in love with you." 💓`,
     `"Under millions of stars, you shine brighter than them all." 🌌`,
     `"Forever wrapped in warm cashmere and endless love with you." ☕🛋️`,
-    `"Your smile is my favorite constellation, my Queen Nishika." 💫`
+    `"Your smile is my favorite constellation, my Love Nishika." 💫`
   ];
   let whisperIndex = 0;
 
@@ -2674,7 +2674,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: 'You Miss Me & Need A Hug',
       paragraphs: [
         'Close your eyes for three seconds, take a slow deep breath, and wrap your arms around yourself. Feel that warmth? That is me holding you, no matter how many miles or minutes stand between us.',
-        'Whenever the world feels a little too quiet or you just miss hearing my voice, remember that my heart beats in rhythm with yours. You are never alone, my sweet Queen. I am right here with you in every memory, every whisper of the wind, and every star in the night sky.',
+        'Whenever the world feels a little too quiet or you just miss hearing my voice, remember that my heart beats in rhythm with yours. You are never alone, my sweet Love. I am right here with you in every memory, every whisper of the wind, and every star in the night sky.',
         'You are my favorite thought, every hour of every day. Never forget how completely adored you are.'
       ]
     },
@@ -2702,7 +2702,7 @@ document.addEventListener('DOMContentLoaded', () => {
       paragraphs: [
         'Did you know that whenever you smile, it sets off an instant celebration in my heart?',
         'You possess that rare, radiant beauty that lights up everything around you. Remember the funny moments, our goofy inside jokes, and how cute you look when you get excited about the little things? That joy is your superpower.',
-        'Keep that breathtaking smile on your face today, my Queen—the world is infinitely brighter because of you.'
+        'Keep that breathtaking smile on your face today, my Love—the world is infinitely brighter because of you.'
       ]
     }
   };
@@ -2715,7 +2715,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (owModalContent) {
       owModalContent.innerHTML = letter.paragraphs
-        .map(p => `<p>${p.replace(/Queen Nishika/g, `Queen ${state.recipientName}`).replace(/Nishika/g, state.recipientName)}</p>`)
+        .map(p => `<p>${p.replace(/My Love Nishika/g, `My Love ${state.recipientName}`).replace(/Nishika/g, state.recipientName)}</p>`)
         .join('');
     }
 
@@ -2816,27 +2816,27 @@ const romanticReasons = [
   { cat: "🏡 Safe Haven", text: "How you inspire me to be the strongest, kindest, and most loving version of myself." },
   { cat: "🏡 Safe Haven", text: "The simple truth that you are my anchor, my peace, and my sweetest sanctuary." },
 
-  // 👑 Radiant Queen Nishika (61-80)
-  { cat: "👑 Radiant Queen", text: "Your natural elegance, royal grace, and the dignified way you carry yourself everywhere." },
-  { cat: "👑 Radiant Queen", text: "The radiant beauty that shines from your pure golden heart and illuminates your face." },
-  { cat: "👑 Radiant Queen", text: "How fierce, dedicated, and hardworking you are when pursuing your goals and passions." },
-  { cat: "👑 Radiant Queen", text: "Your brilliant mind and the captivating perspective you bring to every discussion." },
-  { cat: "👑 Radiant Queen", text: "How you treat everyone around you with respect, warmth, and generous kindness." },
-  { cat: "👑 Radiant Queen", text: "The way you light up any gathering simply by walking in with your radiant presence." },
-  { cat: "👑 Radiant Queen", text: "How your confidence and sweet humility balance each other in the most captivating harmony." },
-  { cat: "👑 Radiant Queen", text: "Your impeccable style, whether dressed in royal finery or cozy oversized loungewear." },
-  { cat: "👑 Radiant Queen", text: "The strength and resilience you show when facing challenges, inspiring me every day." },
-  { cat: "👑 Radiant Queen", text: "How your beauty is timeless, breathtaking, and only grows more radiant with each sunrise." },
-  { cat: "👑 Radiant Queen", text: "Your sharp wit, wonderful sense of humor, and how quick you are to bring joy to others." },
-  { cat: "👑 Radiant Queen", text: "How you hold your crown with effortless dignity, never needing to boast or show off." },
-  { cat: "👑 Radiant Queen", text: "The genuine love and thoughtful care you pour into your family and close friends." },
-  { cat: "👑 Radiant Queen", text: "How you inspire everyone blessed to know you to become better and kinder human beings." },
-  { cat: "👑 Radiant Queen", text: "The gentle authority and poise you possess that commands natural respect and love." },
-  { cat: "👑 Radiant Queen", text: "How proud and honored Dilip feels every single day to walk beside Queen Nishika." },
-  { cat: "👑 Radiant Queen", text: "Your rare combination of boundless empathy, sharp intellect, and irresistible sweetness." },
-  { cat: "👑 Radiant Queen", text: "How you turn every ordinary space into a royal palace simply by being in it." },
-  { cat: "👑 Radiant Queen", text: "The sparkle of wisdom and kindness in your eyes that never dims." },
-  { cat: "👑 Radiant Queen", text: "Because you are the undisputed, forever-crowned Queen of my entire world and heart." },
+  // 👑 Radiant My Love Nishika (61-80)
+  { cat: "💖 Radiant Love", text: "Your natural elegance, royal grace, and the dignified way you carry yourself everywhere." },
+  { cat: "💖 Radiant Love", text: "The radiant beauty that shines from your pure golden heart and illuminates your face." },
+  { cat: "💖 Radiant Love", text: "How fierce, dedicated, and hardworking you are when pursuing your goals and passions." },
+  { cat: "💖 Radiant Love", text: "Your brilliant mind and the captivating perspective you bring to every discussion." },
+  { cat: "💖 Radiant Love", text: "How you treat everyone around you with respect, warmth, and generous kindness." },
+  { cat: "💖 Radiant Love", text: "The way you light up any gathering simply by walking in with your radiant presence." },
+  { cat: "💖 Radiant Love", text: "How your confidence and sweet humility balance each other in the most captivating harmony." },
+  { cat: "💖 Radiant Love", text: "Your impeccable style, whether dressed in royal finery or cozy oversized loungewear." },
+  { cat: "💖 Radiant Love", text: "The strength and resilience you show when facing challenges, inspiring me every day." },
+  { cat: "💖 Radiant Love", text: "How your beauty is timeless, breathtaking, and only grows more radiant with each sunrise." },
+  { cat: "💖 Radiant Love", text: "Your sharp wit, wonderful sense of humor, and how quick you are to bring joy to others." },
+  { cat: "💖 Radiant Love", text: "How you hold your crown with effortless dignity, never needing to boast or show off." },
+  { cat: "💖 Radiant Love", text: "The genuine love and thoughtful care you pour into your family and close friends." },
+  { cat: "💖 Radiant Love", text: "How you inspire everyone blessed to know you to become better and kinder human beings." },
+  { cat: "💖 Radiant Love", text: "The gentle authority and poise you possess that commands natural respect and love." },
+  { cat: "💖 Radiant Love", text: "How proud and honored Dilip feels every single day to walk beside My Love Nishika." },
+  { cat: "💖 Radiant Love", text: "Your rare combination of boundless empathy, sharp intellect, and irresistible sweetness." },
+  { cat: "💖 Radiant Love", text: "How you turn every ordinary space into a royal palace simply by being in it." },
+  { cat: "💖 Radiant Love", text: "The sparkle of wisdom and kindness in your eyes that never dims." },
+  { cat: "💖 Radiant Love", text: "Because you are the undisputed, forever-crowned Love of my entire world and heart." },
 
   // ☕ Daily Moments (81-90)
   { cat: "☕ Daily Moments", text: "The simple joy of grocery shopping together and turning everyday errands into cute dates." },
@@ -2859,7 +2859,7 @@ const romanticReasons = [
   { cat: "💫 Forever Love", text: "The sacred vow that no storm in the universe could ever shake our devotion to each other." },
   { cat: "💫 Forever Love", text: "How you make the concept of 'forever' feel not just possible, but the greatest adventure imaginable." },
   { cat: "💫 Forever Love", text: "The certainty that in any universe, in any timeline, my soul would find and choose you again." },
-  { cat: "💫 Forever Love", text: "How every sunrise is a fresh opportunity for Dilip to love, protect, and cherish Queen Nishika." },
+  { cat: "💫 Forever Love", text: "How every sunrise is a fresh opportunity for Dilip to love, protect, and cherish My Love Nishika." },
   { cat: "💫 Forever Love", text: "The eternal truth that I love you more than all words, more than all stars, endlessly and forever." }
 ];
 
@@ -3809,7 +3809,7 @@ const romanticReasons = [
 
   // Sync Tag with Recipient Name
   if (bouquetTagText) {
-    bouquetTagText.textContent = `To Queen ${state.recipientName} 👑 Forever In Bloom`;
+    bouquetTagText.textContent = `To My Love ${state.recipientName} 👑 Forever In Bloom`;
   }
 
   // 3D Perspective Mouse & Touch Tilt Physics
@@ -4017,19 +4017,19 @@ const romanticReasons = [
     if (giftingCurrentTime < 3.0) {
       // Scene 1: Presentation & Silk Tie
       if (heroBouquet3D) heroBouquet3D.className = 'hero-bouquet-3d';
-      if (giftingStatusCaption) giftingStatusCaption.textContent = `🎬 Scene 1: Dilip carefully handcrafts and ties the eternal silk ribbon for Queen ${state.recipientName}... 🎀`;
+      if (giftingStatusCaption) giftingStatusCaption.textContent = `🎬 Scene 1: Dilip carefully handcrafts and ties the eternal silk ribbon for My Love ${state.recipientName}... 🎀`;
     } else if (giftingCurrentTime < 6.0) {
       // Scene 2: 3D Offering Forward
       if (heroBouquet3D) heroBouquet3D.className = 'hero-bouquet-3d gift-offering';
-      if (giftingStatusCaption) giftingStatusCaption.textContent = `💎 Scene 2: Dilip extends his arms forward, gifting the forever bouquet to his Queen in 3D perspective... ✨`;
+      if (giftingStatusCaption) giftingStatusCaption.textContent = `💎 Scene 2: Dilip extends his arms forward, gifting the forever bouquet to his Love in 3D perspective... ✨`;
     } else if (giftingCurrentTime < 8.5) {
-      // Scene 3: Queen Nishika Embraces Bouquet with Falling Petals
+      // Scene 3: My Love Nishika Embraces Bouquet with Falling Petals
       if (heroBouquet3D) heroBouquet3D.className = 'hero-bouquet-3d gift-received';
-      if (giftingStatusCaption) giftingStatusCaption.textContent = `👑 Scene 3: Queen ${state.recipientName} joyfully receives her blooms under a shower of falling petals! 🌸`;
+      if (giftingStatusCaption) giftingStatusCaption.textContent = `👑 Scene 3: My Love ${state.recipientName} joyfully receives her blooms under a shower of falling petals! 🌸`;
     } else {
       // Scene 4: Royal Proclamation Dedicated
       if (heroBouquet3D) heroBouquet3D.className = 'hero-bouquet-3d gift-received';
-      if (giftingStatusCaption) giftingStatusCaption.textContent = `💖 Scene 4: Eternal Love Proclamation Registered! 'To my Queen ${state.recipientName}, forever in bloom!' 📜👑`;
+      if (giftingStatusCaption) giftingStatusCaption.textContent = `💖 Scene 4: Eternal Love Proclamation Registered! 'To my My Love ${state.recipientName}, forever in bloom!' 📜👑`;
     }
   }
 
@@ -4083,7 +4083,7 @@ const romanticReasons = [
       giftingSenderName.textContent = `Forever ${state.senderName} 💖`;
     }
     if (heroTagDedication) {
-      heroTagDedication.textContent = `To Queen ${state.recipientName} 👑 Forever In Bloom`;
+      heroTagDedication.textContent = `To My Love ${state.recipientName} 👑 Forever In Bloom`;
     }
 
     // Clone live blooms into hero dome
@@ -4106,7 +4106,7 @@ const romanticReasons = [
     // Petal shower
     spawnPetalShower(70);
     burstConfetti(window.innerWidth / 2, window.innerHeight * 0.35, 90);
-    showToast(`Royal Forever Bouquet 3D Video Ceremony playing for Queen ${state.recipientName}! 👑💎💖`);
+    showToast(`Royal Forever Bouquet 3D Video Ceremony playing for My Love ${state.recipientName}! 👑💎💖`);
   }
 
   function closeGiftingCeremony() {
@@ -4235,7 +4235,7 @@ const romanticReasons = [
         'Beyond infinity and for all eternity 🚀💖'
       ],
       correct: 3,
-      feedback: 'Forever and always, my Queen!'
+      feedback: 'Forever and always, my Love!'
     }
   ];
 
@@ -4307,7 +4307,7 @@ const romanticReasons = [
 
   const balloonColors = ['#f43f5e', '#fb7185', '#c084fc', '#38bdf8', '#10b981', '#fbbf24'];
   const sweetWishes = [
-    'My Queen! 👑', 'Pure Love! 💖', 'Stay Radiant! ✨', 'Best Year Ever! 🎉',
+    'My Love! 💖', 'Pure Love! 💖', 'Stay Radiant! ✨', 'Best Year Ever! 🎉',
     'Limitless Joy! ⭐', 'Forever Yours! 💕', 'So Beautiful! 🌸', 'Sweetest Smiles! 😊'
   ];
 
@@ -4615,8 +4615,8 @@ const romanticReasons = [
       id: 'def_main_1',
       name: 'Dilip (With Infinite Devotion 👑)',
       author: 'Dilip (With Infinite Devotion 👑)',
-      message: 'Happy Birthday to the most radiant, beautiful, and enchanting Queen Nishika! Every moment with you is poetry written in starlight. My whole heart is consecrated to you forever! 💕✨',
-      text: 'Happy Birthday to the most radiant, beautiful, and enchanting Queen Nishika! Every moment with you is poetry written in starlight. My whole heart is consecrated to you forever! 💕✨',
+      message: 'Happy Birthday to the most radiant, beautiful, and enchanting My Love Nishika! Every moment with you is poetry written in starlight. My whole heart is consecrated to you forever! 💕✨',
+      text: 'Happy Birthday to the most radiant, beautiful, and enchanting My Love Nishika! Every moment with you is poetry written in starlight. My whole heart is consecrated to you forever! 💕✨',
       color: 'gold',
       styleClass: 'sticky-gold',
       mediaType: 'photo',
@@ -4629,8 +4629,8 @@ const romanticReasons = [
       id: 'def_main_2',
       name: 'Celestial Rhapsody 🎶',
       author: 'Celestial Rhapsody 🎶',
-      message: 'A heavenly romantic birthday melody dedicated to Queen Nishika! May your 26th year be filled with divine melodies and infinite royal joy! 🎂✨',
-      text: 'A heavenly romantic birthday melody dedicated to Queen Nishika! May your 26th year be filled with divine melodies and infinite royal joy! 🎂✨',
+      message: 'A heavenly romantic birthday melody dedicated to My Love Nishika! May your 26th year be filled with divine melodies and infinite royal joy! 🎂✨',
+      text: 'A heavenly romantic birthday melody dedicated to My Love Nishika! May your 26th year be filled with divine melodies and infinite royal joy! 🎂✨',
       color: 'pink',
       styleClass: 'sticky-pink',
       mediaType: 'video',
@@ -4643,8 +4643,8 @@ const romanticReasons = [
       id: 'def_main_3',
       name: 'The Royal Court & Best Friends 🌸',
       author: 'The Royal Court & Best Friends 🌸',
-      message: 'Wishing our magnificent Queen Nishika a spectacular birthday filled with grand surprises, unending laughter, and pure happiness! 👑💖',
-      text: 'Wishing our magnificent Queen Nishika a spectacular birthday filled with grand surprises, unending laughter, and pure happiness! 👑💖',
+      message: 'Wishing our magnificent My Love Nishika a spectacular birthday filled with grand surprises, unending laughter, and pure happiness! 👑💖',
+      text: 'Wishing our magnificent My Love Nishika a spectacular birthday filled with grand surprises, unending laughter, and pure happiness! 👑💖',
       color: 'purple',
       styleClass: 'sticky-purple',
       mediaType: 'photo',
@@ -4671,8 +4671,8 @@ const romanticReasons = [
       id: 'def_main_5',
       name: 'Sunset Blessings 🍑',
       author: 'Sunset Blessings 🍑',
-      message: 'May every sunrise bring you radiant smiles and every sunset bring you peaceful serenity. Happy Birthday Queen Nishika! 🎂🥂',
-      text: 'May every sunrise bring you radiant smiles and every sunset bring you peaceful serenity. Happy Birthday Queen Nishika! 🎂🥂',
+      message: 'May every sunrise bring you radiant smiles and every sunset bring you peaceful serenity. Happy Birthday My Love Nishika! 🎂🥂',
+      text: 'May every sunrise bring you radiant smiles and every sunset bring you peaceful serenity. Happy Birthday My Love Nishika! 🎂🥂',
       color: 'peach',
       styleClass: 'sticky-peach',
       mediaType: 'photo',
@@ -5049,7 +5049,7 @@ const romanticReasons = [
         <div class="sticky-empty-box">
           <i class="fa-solid fa-sparkles"></i>
           <h3>No notes in this category yet</h3>
-          <p>Be the first to consecrate a heartfelt wish, photo, or video dedication for Queen Nishika!</p>
+          <p>Be the first to consecrate a heartfelt wish, photo, or video dedication for My Love Nishika!</p>
         </div>
       `;
       return;
@@ -5112,7 +5112,7 @@ const romanticReasons = [
             <i class="fa-solid fa-heart"></i>
             <span class="like-count">${likesCount}</span>
           </button>
-          <span class="sticky-tag">#QueenNishika2026</span>
+          <span class="sticky-tag">#MyLoveNishika2026</span>
         </div>
       `;
 
@@ -5275,7 +5275,7 @@ const romanticReasons = [
               const rawUrl = v.videoUrl || v.driveUrl || v.mediaUrl || '';
               const videoUrl = normalizeCloudImageUrl(rawUrl, true);
               const sender = v.dedicatedBy || v.author || v.name || 'Dilip 👑';
-              const caption = v.caption || v.message || 'Royal video dedication for Queen Nishika 🎬';
+              const caption = v.caption || v.message || 'Royal video dedication for My Love Nishika 🎬';
 
               cloudWishes.push({
                 id: v.id || ('gs_video_' + Math.random()),
@@ -5372,7 +5372,7 @@ const romanticReasons = [
               const rawUrl = v.videoUrl || v.driveUrl || v.mediaUrl || '';
               const videoUrl = normalizeCloudImageUrl(rawUrl, true);
               const sender = v.dedicatedBy || v.author || v.name || 'Dilip 👑';
-              const caption = v.caption || v.message || 'Royal video dedication for Queen Nishika 🎬';
+              const caption = v.caption || v.message || 'Royal video dedication for My Love Nishika 🎬';
 
               cloudWishes.push({
                 id: v.id || ('gs_video_' + Math.random()),
@@ -5524,7 +5524,7 @@ const romanticReasons = [
       if (defaultTab) defaultTab.classList.add('active');
       document.querySelectorAll('#wishBoardSection .media-content-pane').forEach(p => p.classList.remove('active'));
 
-      showToast('Note & media pinned to Queen Nishika\'s celebration board! 📌✨');
+      showToast('Note & media pinned to My Love Nishika\'s celebration board! 📌✨');
     });
   }
 
@@ -5997,7 +5997,7 @@ const romanticReasons = [
       'Forever Dilip & Nishika ✨',
       'Nishika\'s Radiant Smile 🌟',
       'Eternal Joy & Peace 🌸',
-      'Queen of My Heart 💎'
+      'Love of My Heart 💎'
     ];
 
     function resizeLanternCanvas() {
@@ -6293,7 +6293,7 @@ const romanticReasons = [
     "Nishika, you are fiercely intelligent, deeply caring, and the sweetest soul I know.",
     "Being loved by you, Nishika, is the greatest blessing my heart has ever received.",
     "You inspire me every day with your gentle strength, warm laughter, and golden heart.",
-    "Nishika, you are officially crowned the undisputed Queen of my heart, today and forever! 👑"
+    "Nishika, you are officially crowned the undisputed Love of my heart, today and forever! 👑"
   ];
 
   let currentAffirmationIdx = 0;
@@ -6330,7 +6330,7 @@ const romanticReasons = [
     { id: 'd4', title: 'Spontaneous Road Trip Adventure', desc: 'Packing a quick basket and driving towards the sunrise or a secluded scenic viewpoint.', category: 'Spontaneous Trip', time: 'Weekend', vibe: 'Adventurous' },
     { id: 'd5', title: 'Royal Pampering & Couples Spa', desc: 'A full evening of warm aromatic bubble bath, foot massage, and royal relaxation.', category: 'Royal Pampering', time: 'Evening', vibe: 'Luxury Pamper' },
     { id: 'd6', title: 'Sunset Beach Walk & Hand-in-Hand Chat', desc: 'Strolling barefoot in the gentle surf as the sky turns rose, gold, and amethyst.', category: 'Pure Romance', time: 'Golden Hour', vibe: 'Dreamy Vibe' },
-    { id: 'd7', title: 'Cook Queen\'s Favorite Dish Together', desc: 'Cooking our favorite romantic pasta or dessert while slow dancing in the kitchen.', category: 'Sweet Fun', time: 'Dinner Time', vibe: 'Sweet Fun' },
+    { id: 'd7', title: 'Cook My Love\'s Favorite Dish Together', desc: 'Cooking our favorite romantic pasta or dessert while slow dancing in the kitchen.', category: 'Sweet Fun', time: 'Dinner Time', vibe: 'Sweet Fun' },
     { id: 'd8', title: 'Slow Dance in the Dark with Fairy Lights', desc: 'Dimming all lights, turning on our acoustic playlist, and getting lost in each other\'s arms.', category: 'Intimate Romance', time: 'Late Night', vibe: 'Infinite Love' }
   ];
 
@@ -7027,7 +7027,7 @@ const romanticReasons = [
             stopAllSoundscapeTracks();
             if (soundscapeTimerBadge) soundscapeTimerBadge.classList.add('hidden');
             soundscapeTimerSelect.value = '0';
-            showToast('Sleep timer reached. Goodnight, Queen Nishika 🌙💤');
+            showToast('Sleep timer reached. Goodnight, My Love Nishika 🌙💤');
           }
         }, 1000);
       } else {
@@ -7042,11 +7042,11 @@ const romanticReasons = [
   const defaultTimeCapsules = [
     {
       id: 'cap_bday_2027',
-      title: 'A Letter to Queen Nishika on September 20, 2027',
+      title: 'A Letter to My Love Nishika on September 20, 2027',
       unlockDate: '2027-09-20T00:00:00+05:30',
       tag: '👑 Next Royal Birthday',
       desc: 'Reflecting on one full year of magic since your royal coronation day. Sealed with eternal promises.',
-      message: 'My dearest Queen Nishika,\n\nIf you are reading this today, another breathtaking year of your life has illuminated the cosmos. Over the past 365 days, my heart has loved you in ways I never thought possible. Every single sunrise with you feels like poetry. Thank you for your warmth, your radiant smile, and your gentle soul. Happy Birthday, my whole universe!\n\nWith all my love and devotion,\nForever Dilip 💖'
+      message: 'My dearest My Love Nishika,\n\nIf you are reading this today, another breathtaking year of your life has illuminated the cosmos. Over the past 365 days, my heart has loved you in ways I never thought possible. Every single sunrise with you feels like poetry. Thank you for your warmth, your radiant smile, and your gentle soul. Happy Birthday, my whole universe!\n\nWith all my love and devotion,\nForever Dilip 💖'
     },
     {
       id: 'cap_anniversary_2026',
@@ -7061,8 +7061,8 @@ const romanticReasons = [
       title: 'Valentine\'s Starlight Midnight Confession',
       unlockDate: '2027-02-14T00:00:00+05:30',
       tag: '🌹 Valentine\'s Day Special',
-      desc: 'A secret Valentine message sealed across the universe for Queen Nishika.',
-      message: 'To my forever Valentine, Nishika 🌹\n\nIn a galaxy of billions, my soul found its true north in you. You are my favorite thought in the morning and my sweetest dream at night. Happy Valentine\'s Day, my Queen!\n\nLove always,\nDilip 💖'
+      desc: 'A secret Valentine message sealed across the universe for My Love Nishika.',
+      message: 'To my forever Valentine, Nishika 🌹\n\nIn a galaxy of billions, my soul found its true north in you. You are my favorite thought in the morning and my sweetest dream at night. Happy Valentine\'s Day, my Love!\n\nLove always,\nDilip 💖'
     },
     {
       id: 'cap_newyear_2026',
@@ -7070,7 +7070,7 @@ const romanticReasons = [
       unlockDate: '2026-12-31T23:59:59+05:30',
       tag: '✨ New Year Milestone',
       desc: 'A toast to crossing into a brand-new year together in infinite love.',
-      message: 'Happy New Year, my beautiful Queen! 🥂✨\n\nAs the clock strikes midnight, my only wish for this upcoming year is to make you smile every day, hold you close through every storm, and celebrate you endlessly.\n\nDevotedly yours,\nDilip 👑💖'
+      message: 'Happy New Year, my beautiful Love! 🥂✨\n\nAs the clock strikes midnight, my only wish for this upcoming year is to make you smile every day, hold you close through every storm, and celebrate you endlessly.\n\nDevotedly yours,\nDilip 👑💖'
     }
   ];
 
@@ -7212,7 +7212,7 @@ const romanticReasons = [
       if (viewCapsuleLetterContent) viewCapsuleLetterContent.classList.remove('hidden');
       if (viewCapsuleMessageText) viewCapsuleMessageText.innerHTML = escapeHtml(cap.message).replace(/\n/g, '<br>');
       if (viewCapsuleSignature) viewCapsuleSignature.textContent = `Forever ${state.senderName} 💖`;
-      if (viewCapsuleTimestamp) viewCapsuleTimestamp.textContent = `Sealed for Queen ${state.recipientName} • Consecrated with Eternal Love`;
+      if (viewCapsuleTimestamp) viewCapsuleTimestamp.textContent = `Sealed for My Love ${state.recipientName} • Consecrated with Eternal Love`;
       audioSynth.playCelebrationFanfare();
     } else {
       if (viewCapsuleCurtain) viewCapsuleCurtain.classList.remove('hidden');
@@ -7237,7 +7237,7 @@ const romanticReasons = [
     vipCapsuleBypassBtn.addEventListener('click', () => {
       const capsules = getAllTimeCapsules();
       openViewCapsuleModal(capsules[0], true);
-      showToast('Queen Nishika Heart Key VIP Bypass Unlocked! 👑✨');
+      showToast('My Love Nishika Heart Key VIP Bypass Unlocked! 👑✨');
     });
   }
 
@@ -7337,11 +7337,11 @@ const romanticReasons = [
     },
     {
       id: 'm5',
-      title: 'Queen Nishika\'s Royal Birthday Celebration',
+      title: 'My Love Nishika\'s Royal Birthday Celebration',
       date: '2026-09-20',
       category: 'celebration',
       location: 'Eternal Love Grand Arena',
-      desc: 'Today the whole universe celebrates the most precious, radiant, and adored Queen of my heart! 👑✨'
+      desc: 'Today the whole universe celebrates the most precious, radiant, and adored Love of my heart! 👑✨'
     },
     {
       id: 'm6',
@@ -7674,6 +7674,19 @@ const romanticReasons = [
       toastEl.classList.remove('show');
     }, 3200);
   }
+
+  // --------------------------------------------------------------------------
+  // 26. AUTOMATIC CACHE & SESSION PURGE ON WINDOW/TAB CLOSE
+  // --------------------------------------------------------------------------
+  window.addEventListener('pagehide', () => {
+    try {
+      if ('caches' in window) {
+        caches.keys().then((names) => {
+          names.forEach((name) => caches.delete(name));
+        });
+      }
+    } catch (e) {}
+  });
 
   // Initialize State & UI
   applyStateToDOM();

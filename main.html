@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>Eternal Love ✨ Happy Birthday, My Queen</title>
+  <title>Eternal Love ✨ Happy Birthday, My Love</title>
   <!-- PRE-LAUNCH PRIMARY ROUTER (index.html is primary until 21 Sep 2026 23:00 IST) -->
   <script>
     (function() {
@@ -27,17 +27,21 @@
 
           let isStoredAuth = false;
           try {
-            // Purge stale permanent passcode bypass so lock screen shows reliably
+            // Strictly purge persistent localStorage tokens so session ends when tab or browser closes
+            localStorage.removeItem('eternal_love_vip_unlocked');
+            localStorage.removeItem('eternal_love_vip_session');
+            localStorage.removeItem('birthday_vip_unlocked');
+            localStorage.removeItem('queen_vip_unlocked');
+            localStorage.removeItem('queen_authenticated');
             localStorage.removeItem('eternal_love_passcode_auth');
+
+            // Strictly check sessionStorage (destroyed automatically by browser when tab/window closes)
             isStoredAuth = sessionStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
                            sessionStorage.getItem('eternal_love_vip_session') === 'authenticated_2912' ||
                            sessionStorage.getItem('eternal_love_passcode_auth') === 'authenticated_22092000' ||
                            sessionStorage.getItem('birthday_vip_unlocked') === 'true' ||
-                           localStorage.getItem('eternal_love_vip_unlocked') === 'true' ||
-                           localStorage.getItem('eternal_love_vip_session') === 'authenticated_2912' ||
-                           localStorage.getItem('birthday_vip_unlocked') === 'true' ||
-                           localStorage.getItem('queen_vip_unlocked') === 'true' ||
-                           localStorage.getItem('queen_authenticated') === 'true';
+                           sessionStorage.getItem('queen_vip_unlocked') === 'true' ||
+                           sessionStorage.getItem('queen_authenticated') === 'true';
           } catch (e) {
             isStoredAuth = false;
           }
@@ -46,6 +50,11 @@
           // route to index.html as the primary landing page!
           if (!isVipParam && !isStoredAuth) {
             window.location.replace('index.html');
+          } else if (isVipParam) {
+            try {
+              sessionStorage.setItem('eternal_love_vip_unlocked', 'true');
+              sessionStorage.setItem('eternal_love_vip_session', 'authenticated_2912');
+            } catch (e) {}
           }
         } catch (err) {
           window.location.replace('index.html');
@@ -74,7 +83,7 @@
           var feedback = document.getElementById('pagePasscodeFeedback');
           if (feedback) {
             feedback.className = 'passcode-feedback';
-            feedback.innerHTML = '✨ Enter Queen Nishika\'s Royal Birthday Passcode (22092000) to open your surprise!';
+            feedback.innerHTML = '✨ Enter My Love Nishika\'s Royal Birthday Passcode (22092000) to open your surprise!';
           }
           return;
         }
@@ -123,9 +132,14 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="alternate icon" href="favicon.svg" />
   
+  <!-- Cache Invalidation & Fresh State Directives -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
   <!-- OpenGraph / Social Sharing Meta -->
-  <meta property="og:title" content="Eternal Love ✨ Happy Birthday, My Queen" />
-  <meta property="og:description" content="A magical, animated romantic birthday celebration made especially for the queen of my heart." />
+  <meta property="og:title" content="Eternal Love ✨ Happy Birthday, My Love" />
+  <meta property="og:description" content="A magical, animated romantic birthday celebration made especially for the love of my heart." />
   <meta property="og:type" content="website" />
 
   <!-- Google Fonts for Luxury & Romantic Typography -->
@@ -136,8 +150,8 @@
   <!-- FontAwesome for Celebration & Romantic Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css" />
+  <!-- Stylesheet with Cache-Busting Versioning -->
+  <link rel="stylesheet" href="style.css?v=2.0" />
 </head>
 <body class="theme-magical">
   <!-- Interactive Background Canvas (Fireworks, Stars, Confetti & Shooting Stars) -->
@@ -157,10 +171,10 @@
       <div class="passcode-header">
         <div class="passcode-crown-badge">
           <i class="fa-solid fa-crown"></i>
-          <span>Queen Nishika's Royal Birthday 🎂</span>
+          <span>My Love Nishika's Royal Birthday 🎂</span>
         </div>
         <h1 class="passcode-card-title" id="pagePasscodeTitle">Open Birthday Surprise 🎁</h1>
-        <p class="passcode-card-subtitle">Enter Queen Nishika's 8-digit Royal Birthday Passcode (22092000) to unlock the birthday surprise! ✨</p>
+        <p class="passcode-card-subtitle">Enter My Love Nishika's 8-digit Royal Birthday Passcode (22092000) to unlock the birthday surprise! ✨</p>
       </div>
 
       <!-- Status Feedback message -->
@@ -229,7 +243,7 @@
           <span>Need a Birthday Hint?</span>
         </button>
         <div id="pagePasscodeHintBox" class="passcode-hint-box">
-           🎂 <strong>Birthday Passcode Hint:</strong> Enter Queen Nishika's Date of Birth in DDMMYYYY format (September 2000) 💕
+           🎂 <strong>Birthday Passcode Hint:</strong> Enter My Love Nishika's Date of Birth in DDMMYYYY format (September 2000) 💕
         </div>
       </div>
     </div>
@@ -240,7 +254,7 @@
     <div class="intro-content">
       <div class="floating-badge animate-pulse">
         <i class="fa-solid fa-crown pulse-heart" style="color:#ffd700;"></i>
-        <span>Welcome to Queen Nishika's Celebration ✨</span>
+        <span>Welcome to My Love Nishika's Celebration ✨</span>
       </div>
       
       <div class="gift-box-wrapper" id="giftBoxTrigger" onclick="if(typeof handleGiftBoxClick==='function'){handleGiftBoxClick(event);}else if(typeof unboxBirthdaySurprise==='function'){unboxBirthdaySurprise(false);}" title="Click or Tap to Open Your Birthday Surprise!">
@@ -256,7 +270,7 @@
             <div class="lid-ribbon"></div>
           </div>
           <div class="gift-body">
-            <div class="gift-tag-badge">For My Queen 👑</div>
+            <div class="gift-tag-badge">For My Love 💖</div>
           </div>
           <div class="gift-glow-ring"></div>
         </div>
@@ -485,7 +499,7 @@
         <div class="section-heading-center">
           <span class="badge-tag"><i class="fa-solid fa-envelope-circle-check"></i> Time-Locked Devotion</span>
           <h2 class="section-title">"Open When..." Love Envelopes 💌</h2>
-          <p class="section-desc">Six intimate letters sealed with love for Queen Nishika. Break the wax seal whenever your heart needs these words.</p>
+          <p class="section-desc">Six intimate letters sealed with love for My Love Nishika. Break the wax seal whenever your heart needs these words.</p>
         </div>
 
         <div class="open-when-grid">
@@ -517,7 +531,7 @@
               <div class="ow-body">
                 <span class="ow-tag">Open When...</span>
                 <h4 class="ow-title">You've Had A Stressful Day</h4>
-                <p class="ow-preview">"Exhale, my Queen. You work so hard and tonight the world can pause for you..."</p>
+                <p class="ow-preview">"Exhale, my Love. You work so hard and tonight the world can pause for you..."</p>
                 <button class="btn-sm btn-secondary ow-read-btn" data-letter="stressful-day">Read Letter 💌</button>
               </div>
             </div>
@@ -671,11 +685,11 @@
             </div>
             <div class="timeline-content glass-card milestone-highlight">
               <span class="milestone-badge milestone-gold-badge">Chapter 5 • September 22nd 🎂</span>
-              <h3 class="milestone-title">Celebrating The Queen of My Heart</h3>
+              <h3 class="milestone-title">Celebrating The Love of My Heart</h3>
               <p class="milestone-text">
                 Today is your birthday, and I want you to know that you are cherished, adored, and loved beyond anything words can capture. Here's to forever!
               </p>
-              <span class="milestone-tag">🎂 September 22nd — Happy Birthday, My Queen!</span>
+              <span class="milestone-tag">🎂 September 22nd — Happy Birthday, My Love!</span>
             </div>
           </div>
         </div>
@@ -816,7 +830,7 @@
                 <span class="v-spark sp-3">✨</span>
                 <span class="v-spark sp-4">💖</span>
               </div>
-              <div class="video-watermark-tag">👑 Queen Nishika's Cake Cutting Ceremony 🍰</div>
+              <div class="video-watermark-tag">👑 My Love Nishika's Cake Cutting Ceremony 🍰</div>
             </div>
 
             <!-- 3D Interactive Slicing Stage -->
@@ -921,7 +935,7 @@
                 <!-- Feeding Celebration Speech Bubble -->
                 <div class="feeding-love-bubble" id="feedingLoveBubble">
                   <span class="bubble-heart">💖</span>
-                  <p class="bubble-quote">"Here is the first sweet bite for my Queen Nishika! Happy Birthday, my love!" 🍓🎂</p>
+                  <p class="bubble-quote">"Here is the first sweet bite for my My Love Nishika! Happy Birthday, my love!" 🍓🎂</p>
                 </div>
               </div>
             </div>
@@ -1153,7 +1167,7 @@
 
               <!-- Subtitle Caption Bar -->
               <div class="cuddle-subtitles-bar" id="cuddleSubtitlesBar">
-                <span class="subtitle-quote" id="cuddleSubtitleText">"In your arms is where I always want to be... Happy Birthday, my Queen Nishika." 💖</span>
+                <span class="subtitle-quote" id="cuddleSubtitleText">"In your arms is where I always want to be... Happy Birthday, my My Love Nishika." 💖</span>
               </div>
             </div>
 
@@ -1213,7 +1227,7 @@
           <button class="jar-cat-btn" data-jar-cat="💖 Pure Romance">Pure Romance</button>
           <button class="jar-cat-btn" data-jar-cat="🥰 Cute Habits">Cute Habits</button>
           <button class="jar-cat-btn" data-jar-cat="🏡 Safe Haven">Safe Haven</button>
-          <button class="jar-cat-btn" data-jar-cat="👑 Radiant Queen">Queen Nishika</button>
+          <button class="jar-cat-btn" data-jar-cat="💖 Radiant Love">My Love Nishika</button>
           <button class="jar-cat-btn" data-jar-cat="☕ Daily Moments">Little Things</button>
           <button class="jar-cat-btn" data-jar-cat="💫 Forever Love">Forever</button>
         </div>
@@ -1427,7 +1441,7 @@
                 <i class="fa-solid fa-check"></i>
               </div>
               <div class="bucket-item-content">
-                <h4 class="bucket-item-title">Celebrate Queen Nishika's special birthday with infinite love 🎂👑</h4>
+                <h4 class="bucket-item-title">Celebrate My Love Nishika's special birthday with infinite love 🎂👑</h4>
                 <p class="bucket-item-desc">A digital kingdom handcrafted with devotion just for her today!</p>
               </div>
               <span class="bucket-stamp">CHERISHED ✨</span>
@@ -1537,7 +1551,7 @@
         <div class="glass-card music-lounge-card">
           <div class="section-heading-center">
             <span class="badge-tag"><i class="fa-solid fa-music"></i> Romantic Serenade Lounge</span>
-            <h2 class="section-title">Play & Serenade For My Queen 🎹🎸</h2>
+            <h2 class="section-title">Play & Serenade For My Love 🎹🎸</h2>
             <p class="section-desc">Interactive musical instruments handcrafted to play sweet romantic tunes, gentle acoustic chords, and heartfelt melodies.</p>
           </div>
 
@@ -1767,7 +1781,7 @@
             <div class="cassette-deck-card">
               <div class="cassette-tape" id="cassetteTape">
                 <div class="tape-header">
-                  <span class="tape-label">FOR MY QUEEN • VOL. 1</span>
+                  <span class="tape-label">FOR MY LOVE • VOL. 1</span>
                   <span class="tape-type">SIDE A • HI-FI STEREO</span>
                 </div>
                 <div class="tape-window">
@@ -1809,7 +1823,7 @@
           <div class="section-heading-center">
             <span class="badge-tag"><i class="fa-solid fa-seedling"></i> Interactive 3D Floral Studio</span>
             <h2 class="section-title">Design Your Forever Flower Bouquet 🌸💐</h2>
-            <p class="section-desc">Pick and arrange fresh blooming flowers in realistic 3D space to craft a custom eternal birthday bouquet for my Queen.</p>
+            <p class="section-desc">Pick and arrange fresh blooming flowers in realistic 3D space to craft a custom eternal birthday bouquet for my Love.</p>
           </div>
 
           <div class="bouquet-studio-layout">
@@ -1845,7 +1859,7 @@
                 <button class="flower-chip" data-flower="orchid" data-name="Golden Royal Orchid" data-emoji="🏵️">
                   <span class="flower-chip-emoji">🏵️</span>
                   <span class="flower-chip-name">Golden Orchid</span>
-                  <span class="flower-chip-tag">Queen's Elegance</span>
+                  <span class="flower-chip-tag">Love's Elegance</span>
                 </button>
                 <button class="flower-chip" data-flower="tulip" data-name="Romantic Tulip" data-emoji="🌷">
                   <span class="flower-chip-emoji">🌷</span>
@@ -1921,7 +1935,7 @@
                   <!-- Hanging Gold Foil Dedication Tag with Twine -->
                   <div class="bouquet-greeting-tag">
                     <div class="tag-eyelet"></div>
-                    <span id="bouquetTagText">To Queen Nishika 👑 Forever In Bloom</span>
+                    <span id="bouquetTagText">To My Love Nishika 👑 Forever In Bloom</span>
                   </div>
                 </div>
               </div>
@@ -2042,7 +2056,7 @@
                 <div class="polaroid-photo photo-sweet">
                   <div class="photo-art-illustration">
                     <span class="art-emoji">👑</span>
-                    <span class="art-subtext">The Birthday Queen</span>
+                    <span class="art-subtext">The Birthday Love</span>
                   </div>
                   <div class="photo-overlay-tag">Radiant Glow</div>
                   <div class="sparkle-badge">✨</div>
@@ -2101,7 +2115,7 @@
           <div class="wish-board-header">
             <div>
               <h3><i class="fa-solid fa-envelope-open-text"></i> Royal Sticky Wish Wall for <span class="recipient-name-display">Nishika</span> 💌</h3>
-              <p class="sub-text">Write a heartfelt message, attach photographs, or link celebratory videos to consecrate onto Queen Nishika's live board!</p>
+              <p class="sub-text">Write a heartfelt message, attach photographs, or link celebratory videos to consecrate onto My Love Nishika's live board!</p>
             </div>
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
               <span class="cloud-sync-chip" id="wishSyncChip" title="Synced to Google Sheets">
@@ -2122,7 +2136,7 @@
               </div>
               <div>
                 <label for="wishTextInput" class="form-group-label"><i class="fa-solid fa-envelope-heart"></i> Heartfelt Birthday Message</label>
-                <input type="text" id="wishTextInput" placeholder="Write your sweetest blessings and memories for Queen Nishika..." required class="app-input" style="width:100%;" />
+                <input type="text" id="wishTextInput" placeholder="Write your sweetest blessings and memories for My Love Nishika..." required class="app-input" style="width:100%;" />
               </div>
             </div>
 
@@ -2489,7 +2503,7 @@
                   </div>
                   <div class="frame-content">
                     <span class="scene-tag"><i class="fa-solid fa-video"></i> Scene IV • Today</span>
-                    <h3 class="scene-title">Happy Birthday To My Forever Queen, Nishika 👑</h3>
+                    <h3 class="scene-title">Happy Birthday To My Forever Love, Nishika 💖</h3>
                     <p class="scene-desc">May this year bring you all the grand blessings, boundless success, and infinite love you deserve!</p>
                   </div>
                 </div>
@@ -2785,7 +2799,7 @@
               </div>
               <div class="spotlight-middle">
                 <span class="capsule-tag-badge" id="spotlightTag">👑 Next Royal Birthday</span>
-                <h3 class="spotlight-title" id="spotlightTitle">A Letter to Queen Nishika on September 20, 2027</h3>
+                <h3 class="spotlight-title" id="spotlightTitle">A Letter to My Love Nishika on September 20, 2027</h3>
                 <p class="spotlight-desc" id="spotlightDesc">"Reflecting on one full year of magic since your royal coronation day. Sealed with eternal promises."</p>
                 <div class="capsule-countdown-grid" id="capsuleCountdownGrid">
                   <div class="capsule-time-box"><span class="c-num" id="capDays">00</span><span class="c-label">Days</span></div>
@@ -2798,8 +2812,8 @@
                 <button type="button" class="btn-primary" id="openSpotlightCapsuleBtn">
                   <i class="fa-solid fa-key"></i> <span>View Capsule</span>
                 </button>
-                <button type="button" class="btn-secondary vip-bypass-btn" id="vipCapsuleBypassBtn" title="Queen Nishika Heart Key Unlock">
-                  <i class="fa-solid fa-heart-circle-bolt"></i> <span>Queen VIP Key</span>
+                <button type="button" class="btn-secondary vip-bypass-btn" id="vipCapsuleBypassBtn" title="My Love Nishika Heart Key Unlock">
+                  <i class="fa-solid fa-heart-circle-bolt"></i> <span>Love VIP Key</span>
                 </button>
               </div>
             </div>
@@ -3080,7 +3094,7 @@
                 <span class="magnitude-label">Magnitude: 0.85 (Radiant Gold Class)</span>
               </div>
               <p class="cert-named-text">Is permanently and officially named:</p>
-              <h1 class="star-name-headline">"Nishika — The Queen Star" 👑✨</h1>
+              <h1 class="star-name-headline">"Nishika — The Star of My Love" ✨💖</h1>
               <p class="star-dedication-msg">
                 "Named with all my heart for Nishika, whose radiant presence illuminates my entire life brighter than every star in the universe."
               </p>
@@ -3165,7 +3179,7 @@
             </div>
           </div>
           <div class="revealed-wish-card">
-            <span class="wish-card-tag">Queen Nishika's Secret Birthday Wish:</span>
+            <span class="wish-card-tag">My Love Nishika's Secret Birthday Wish:</span>
             <p class="revealed-wish-text" id="vaultWishDisplay">
               "No secret wish has been sealed yet! Blow out the candles on the cake to lock in your secret wish."
             </p>
@@ -3185,7 +3199,7 @@
           <div class="instant-key-option">
             <span class="or-text">or</span>
             <button type="button" class="btn-accent" id="instantHeartKeyBtn">
-              <i class="fa-solid fa-heart"></i> Unlock with Queen's Heart Key
+              <i class="fa-solid fa-heart"></i> Unlock with Love's Heart Key
             </button>
           </div>
         </div>
@@ -3230,7 +3244,7 @@
                 <div class="h-tail-r"></div>
               </div>
               <div class="hero-tag-hanging">
-                <span id="heroTagDedication">To Queen Nishika 👑 Forever In Bloom</span>
+                <span id="heroTagDedication">To My Love Nishika 👑 Forever In Bloom</span>
               </div>
             </div>
           </div>
@@ -3258,8 +3272,8 @@
 
           <div class="royal-card-header">
             <span class="royal-crown-badge">👑</span>
-            <span class="royal-card-tag">A Royal Bouquet for the Birthday Queen</span>
-            <h2 class="royal-card-title">"For My Queen <span class="recipient-name-display">Nishika</span>, My Entire World" 🌸</h2>
+            <span class="royal-card-tag">A Royal Bouquet for the Birthday Love</span>
+            <h2 class="royal-card-title">"For My Love <span class="recipient-name-display">Nishika</span>, My Entire World" 🌸</h2>
           </div>
 
           <p class="royal-card-body">
@@ -3307,7 +3321,7 @@
           </div>
 
           <div class="gifting-status-caption" id="giftingStatusCaption">
-            🎬 Scene 1: Handcrafting and tying the eternal silk ribbon for Queen Nishika... 🎀
+            🎬 Scene 1: Handcrafting and tying the eternal silk ribbon for My Love Nishika... 🎀
           </div>
         </div>
       </div>
@@ -3568,7 +3582,7 @@
           <i class="fa-solid fa-lock-keyhole giant-curtain-lock"></i>
           <p>This capsule is sealed until its unlock date.</p>
           <button type="button" class="btn-secondary vip-bypass-btn" id="viewCapsuleVipBypassBtn">
-            <i class="fa-solid fa-heart-circle-bolt"></i> Queen VIP Heart Key Unlock
+            <i class="fa-solid fa-heart-circle-bolt"></i> Love VIP Heart Key Unlock
           </button>
         </div>
         <div class="capsule-unsealed-letter hidden" id="viewCapsuleLetterContent">
@@ -3691,6 +3705,6 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2.0"></script>
 </body>
 </html>
