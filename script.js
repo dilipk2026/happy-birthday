@@ -17,14 +17,54 @@ document.addEventListener('DOMContentLoaded', () => {
   window.escapeHtml = escapeHtml;
 
   // --------------------------------------------------------------------------
-  // 1. STATE MANAGEMENT & LOCAL STORAGE PERSISTENCE
+  // 1. STATE MANAGEMENT, CACHE INVALIDATION & LOCAL STORAGE ENGINE
   // --------------------------------------------------------------------------
-  const STORAGE_KEY = 'eternal_love_bday_state_v2';
-  let savedData = {};
+  const APP_VERSION = '2.1.0';
+  const STORAGE_KEY = `eternal_love_bday_state_v${APP_VERSION}`;
+
+  // Purge lingering Service Workers & legacy caches
   try {
-    savedData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-  } catch (e) {
-    savedData = {};
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        registrations.forEach((reg) => reg.unregister());
+      });
+    }
+  } catch (swErr) {}
+
+  // Check URL parameters early for forced reset or query overrides
+  const urlParams = new URLSearchParams(window.location.search);
+  const isResetRequested = urlParams.get('reset') === '1' || 
+                           urlParams.get('reset') === 'true' || 
+                           urlParams.get('fresh') === '1' || 
+                           urlParams.get('purge') === '1';
+
+  if (isResetRequested) {
+    try {
+      localStorage.clear();
+      sessionStorage.clear();
+      if ('caches' in window) {
+        caches.keys().then((names) => names.forEach((n) => caches.delete(n)));
+      }
+    } catch (clearErr) {}
+  } else {
+    // Purge outdated version keys from localStorage automatically
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('eternal_love_bday_state_') && k !== STORAGE_KEY) {
+          localStorage.removeItem(k);
+        }
+      }
+    } catch (e) {}
+  }
+
+  let savedData = {};
+  if (!isResetRequested) {
+    try {
+      savedData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    } catch (e) {
+      savedData = {};
+    }
   }
 
   const DEFAULT_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec';
@@ -63,13 +103,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // URL Parameters override if present
-  const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('name')) state.recipientName = decodeURIComponent(urlParams.get('name')).trim();
   if (urlParams.get('sender')) state.senderName = decodeURIComponent(urlParams.get('sender')).trim();
   if (urlParams.get('date')) state.startDate = decodeURIComponent(urlParams.get('date')).trim();
   if (urlParams.get('msg')) state.message = decodeURIComponent(urlParams.get('msg')).trim();
   if (urlParams.get('theme')) state.theme = urlParams.get('theme');
   if (urlParams.get('sheet')) state.googleSheetUrl = decodeURIComponent(urlParams.get('sheet')).trim();
+
+  // Global helper to allow cache reset from console or events
+  window.resetAppCache = function() {
+    try {
+      localStorage.clear();
+      sessionStorage.clear();
+      if ('caches' in window) {
+        caches.keys().then((names) => {
+          names.forEach((n) => caches.delete(n));
+        });
+      }
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then((regs) => {
+          regs.forEach((r) => r.unregister());
+        });
+      }
+      if (typeof showToast === 'function') {
+        showToast('Cache & state reset successfully! Reloading...');
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 400);
+    } catch (e) {
+      window.location.reload();
+    }
+  };
 
   // Async helper to convert file to Base64
   function readFileAsBase64(file) {
@@ -5643,14 +5708,31 @@ const romanticReasons = [
   // --------------------------------------------------------------------------
   // 19. MODALS & KEEPSAKE CERTIFICATE
   // --------------------------------------------------------------------------
-  function openModal(modalEl) {
+  function openModal(modalEl, pushHistory = true) {
     if (!modalEl) return;
-    modalEl.classList.add('active');
+    if (!modalEl.classList.contains('active')) {
+      modalEl.classList.add('active');
+      if (pushHistory && modalEl.id) {
+        try {
+          history.pushState({ modalId: modalEl.id }, '', '#' + modalEl.id);
+        } catch(e) {}
+      }
+    }
   }
 
-  function closeModal(modalEl) {
+  function closeModal(modalEl, fromHistory = false) {
     if (!modalEl) return;
+    const wasActive = modalEl.classList.contains('active');
     modalEl.classList.remove('active');
+    if (wasActive && !fromHistory && modalEl.id) {
+      if (window.location.hash === '#' + modalEl.id || (history.state && history.state.modalId === modalEl.id)) {
+        try {
+          history.back();
+        } catch(e) {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+      }
+    }
   }
 
   // Personalize Modal
@@ -7674,6 +7756,30 @@ const romanticReasons = [
       toastEl.classList.remove('show');
     }, 3200);
   }
+
+  // History Back & Mobile Gesture Navigation Manager (Closes open overlays instead of exiting page)
+  window.addEventListener('popstate', (e) => {
+    document.querySelectorAll('.modal-backdrop.active, .media-lightbox-overlay.active, .lightbox-modal-overlay.active').forEach((m) => {
+      closeModal(m, true);
+    });
+    const passcodeOverlay = document.getElementById('pagePasscodeOverlay');
+    if (passcodeOverlay && passcodeOverlay.style.display !== 'none' && !passcodeOverlay.classList.contains('unlocked')) {
+      passcodeOverlay.style.display = 'none';
+      passcodeOverlay.classList.remove('unlocked');
+    }
+  });
+
+  // Bfcache / Page Restoration Lifecycle Handler
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      document.querySelectorAll('.modal-backdrop.active, .media-lightbox-overlay.active, .lightbox-modal-overlay.active').forEach((m) => {
+        closeModal(m, true);
+      });
+      if (window.location.hash.startsWith('#') && window.location.hash.includes('Modal')) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    }
+  });
 
   // --------------------------------------------------------------------------
   // 26. AUTOMATIC CACHE & SESSION PURGE ON WINDOW/TAB CLOSE

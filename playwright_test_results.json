@@ -1,7 +1,7 @@
 {
-  "total": 56,
-  "passed": 56,
-  "failed": 0,
+  "total": 10,
+  "passed": 9,
+  "failed": 1,
   "suites": [
     {
       "name": "Suite 1: Static Assets & HTTP Delivery",
@@ -50,7 +50,7 @@
         {
           "testName": "Live Countdown timer elements (Days, Hours, Minutes, Seconds) render valid integers",
           "passed": true,
-          "details": "Days: 10",
+          "details": "Days: 09",
           "bugInfo": null
         },
         {
@@ -64,312 +64,32 @@
           "passed": true,
           "details": "VIP modal active",
           "bugInfo": null
-        },
-        {
-          "testName": "Virtual Keypad rejects invalid PIN \"0000\" with error feedback and shake animation",
-          "passed": true,
-          "details": "Feedback: \" Incorrect VIP PIN. Check hint for the day we first met clue 💕\"",
-          "bugInfo": null
-        },
-        {
-          "testName": "VIP Hint toggle reveals romantic clue without exposing plaintext code",
-          "passed": true,
-          "details": "Hint toggled active",
-          "bugInfo": null
-        },
-        {
-          "testName": "Virtual Keypad accepts valid VIP Anniversary PIN (2912) and routes to main celebration platform",
-          "passed": true,
-          "details": "Redirect URL: http://localhost:8089/main.html?vip=unlocked",
-          "bugInfo": null
-        },
-        {
-          "testName": "Pre-launch Wishes Submission Form (#preLaunchWishForm) exists",
-          "passed": true,
-          "details": "Form exists",
-          "bugInfo": null
-        },
-        {
-          "testName": "Submitting wish instantly renders dynamic Polaroid Sticky Note on #stickyNotesGrid with exact name",
-          "passed": true,
-          "details": "Wish rendered on sticky wall",
-          "bugInfo": null
-        },
-        {
-          "testName": "Audio Synthesizer toggle button (#soundToggleBtn) triggers ambient music without errors",
-          "passed": true,
-          "details": "Audio toggle invoked",
-          "bugInfo": null
-        },
-        {
-          "testName": "index.html executes with zero uncaught JavaScript errors or console errors",
-          "passed": true,
-          "details": "Clean console",
-          "bugInfo": null
         }
       ]
     },
     {
-      "name": "Suite 3: Gatekeeper & Launch Router",
+      "name": "FATAL",
       "tests": [
         {
-          "testName": "Direct unauthenticated request to main.html strictly redirects to index.html",
-          "passed": true,
-          "details": "Final URL: http://localhost:8089/index.html",
-          "bugInfo": null
-        },
-        {
-          "testName": "VIP URL parameter \"?vip=unlocked\" grants access and bypasses redirect",
-          "passed": true,
-          "details": "Final URL: http://localhost:8089/main.html?vip=unlocked",
-          "bugInfo": null
-        },
-        {
-          "testName": "VIP URL parameter \"?preview=true\" grants access and bypasses redirect",
-          "passed": true,
-          "details": "Final URL: http://localhost:8089/main.html?preview=true",
-          "bugInfo": null
-        },
-        {
-          "testName": "VIP URL parameter \"?passcode=22092000\" grants access and bypasses redirect",
-          "passed": true,
-          "details": "Final URL: http://localhost:8089/main.html?passcode=22092000",
-          "bugInfo": null
-        },
-        {
-          "testName": "VIP URL parameter \"?pin=2912\" grants access and bypasses redirect",
-          "passed": true,
-          "details": "Final URL: http://localhost:8089/main.html?pin=2912",
-          "bugInfo": null
-        },
-        {
-          "testName": "Stored sessionStorage VIP token bypasses router redirect on main.html",
-          "passed": true,
-          "details": "Final URL: http://localhost:8089/main.html",
-          "bugInfo": null
-        }
-      ]
-    },
-    {
-      "name": "Suite 4: Main Celebration Arena",
-      "tests": [
-        {
-          "testName": "Royal Birthday Passcode Overlay (#pagePasscodeOverlay) exists with \"Open Birthday Surprise\" interface",
-          "passed": true,
-          "details": "Passcode overlay verified",
-          "bugInfo": null
-        },
-        {
-          "testName": "Passcode Keypad rejects invalid passcode with error feedback and shake animation",
-          "passed": true,
-          "details": "Invalid passcode error state verified",
-          "bugInfo": null
-        },
-        {
-          "testName": "Passcode Hint toggle reveals romantic birthday clue (DDMMYYYY September 2000)",
-          "passed": true,
-          "details": "Hint toggle verified",
-          "bugInfo": null
-        },
-        {
-          "testName": "Passcode Keypad validates 8-digit Birthday Passcode (22092000) and unlocks celebration overlay",
-          "passed": true,
-          "details": "Passcode 22092000 accepted",
-          "bugInfo": null
-        },
-        {
-          "testName": "Intro 3D Gift Box Unboxing screen (#introOverlay) exists with \"Open My Birthday Surprise\" CTA",
-          "passed": true,
-          "details": "Intro present: true",
-          "bugInfo": null
-        },
-        {
-          "testName": "Main Celebration Arena (#mainApp) is active and revealed upon unboxing",
-          "passed": true,
-          "details": "Main app container verified",
-          "bugInfo": null
-        },
-        {
-          "testName": "Arena Stage 1: Royal Hero Banner (#heroSec) is properly structured in DOM",
-          "passed": true,
-          "details": "Element present",
-          "bugInfo": null
-        },
-        {
-          "testName": "Arena Stage 2: Interactive Birthday Cake Cutting (#cakeSec) is properly structured in DOM",
-          "passed": true,
-          "details": "Element present",
-          "bugInfo": null
-        },
-        {
-          "testName": "Arena Stage 3: 100 Reasons Why I Love You (#jarSec) is properly structured in DOM",
-          "passed": true,
-          "details": "Element present",
-          "bugInfo": null
-        },
-        {
-          "testName": "Arena Stage 4: Romantic Fortune Roulette (#rouletteSec) is properly structured in DOM",
-          "passed": true,
-          "details": "Element present",
-          "bugInfo": null
-        },
-        {
-          "testName": "Arena Stage 5: Web Audio Synthesizer & Soundscapes (#soundscapeSec) is properly structured in DOM",
-          "passed": true,
-          "details": "Element present",
-          "bugInfo": null
-        },
-        {
-          "testName": "Arena Stage 6: Romantic Time Capsule (#capsuleSec) is properly structured in DOM",
-          "passed": true,
-          "details": "Element present",
-          "bugInfo": null
-        },
-        {
-          "testName": "Arena Stage 7: Love Coupons Redemption (#couponsSec) is properly structured in DOM",
-          "passed": true,
-          "details": "Element present",
-          "bugInfo": null
-        },
-        {
-          "testName": "Arena Stage 8: Royal Love Letters (#letterSec) is properly structured in DOM",
-          "passed": true,
-          "details": "Element present",
-          "bugInfo": null
-        },
-        {
-          "testName": "Interactive Cake cutting action executes animation and sound cues smoothly",
-          "passed": true,
-          "details": "Cake interactive triggers tested",
-          "bugInfo": null
-        },
-        {
-          "testName": "Web Audio Soundscape sliders adjust procedural audio gain nodes smoothly",
-          "passed": true,
-          "details": "Volume range input dispatched",
-          "bugInfo": null
-        },
-        {
-          "testName": "main.html executes with zero uncaught JavaScript errors or console errors",
-          "passed": true,
-          "details": "Clean console",
-          "bugInfo": null
-        }
-      ]
-    },
-    {
-      "name": "Suite 5: Multi-Device Responsiveness",
-      "tests": [
-        {
-          "testName": "index.html [Compact Mobile (iPhone SE) - 320px]: 0px Horizontal Overflow",
-          "passed": true,
-          "details": "Horizontal Overflow: 0px",
-          "bugInfo": null
-        },
-        {
-          "testName": "main.html [Compact Mobile (iPhone SE) - 320px]: 0px Horizontal Overflow",
-          "passed": true,
-          "details": "Horizontal Overflow: 0px",
-          "bugInfo": null
-        },
-        {
-          "testName": "index.html [Standard Mobile (iPhone 14) - 375px]: 0px Horizontal Overflow",
-          "passed": true,
-          "details": "Horizontal Overflow: 0px",
-          "bugInfo": null
-        },
-        {
-          "testName": "main.html [Standard Mobile (iPhone 14) - 375px]: 0px Horizontal Overflow",
-          "passed": true,
-          "details": "Horizontal Overflow: 0px",
-          "bugInfo": null
-        },
-        {
-          "testName": "index.html [Tablet (iPad Mini / Air) - 768px]: 0px Horizontal Overflow",
-          "passed": true,
-          "details": "Horizontal Overflow: 0px",
-          "bugInfo": null
-        },
-        {
-          "testName": "main.html [Tablet (iPad Mini / Air) - 768px]: 0px Horizontal Overflow",
-          "passed": true,
-          "details": "Horizontal Overflow: 0px",
-          "bugInfo": null
-        },
-        {
-          "testName": "index.html [Laptop / Standard Desktop - 1280px]: 0px Horizontal Overflow",
-          "passed": true,
-          "details": "Horizontal Overflow: 0px",
-          "bugInfo": null
-        },
-        {
-          "testName": "main.html [Laptop / Standard Desktop - 1280px]: 0px Horizontal Overflow",
-          "passed": true,
-          "details": "Horizontal Overflow: 0px",
-          "bugInfo": null
-        },
-        {
-          "testName": "index.html [4K Ultra-Wide Monitor - 2560px]: 0px Horizontal Overflow",
-          "passed": true,
-          "details": "Horizontal Overflow: 0px",
-          "bugInfo": null
-        },
-        {
-          "testName": "main.html [4K Ultra-Wide Monitor - 2560px]: 0px Horizontal Overflow",
-          "passed": true,
-          "details": "Horizontal Overflow: 0px",
-          "bugInfo": null
-        }
-      ]
-    },
-    {
-      "name": "Suite 6: Video Upload & Cloud Preview",
-      "tests": [
-        {
-          "testName": "Submitting Google Drive video link on index.html renders responsive iframe video player on #stickyNotesGrid",
-          "passed": true,
-          "details": "Google Drive iframe rendered",
-          "bugInfo": null
-        },
-        {
-          "testName": "Submitting video link renders responsive video player with theater expansion on Sticky Wall",
-          "passed": true,
-          "details": "Video player and expand button present",
-          "bugInfo": null
-        },
-        {
-          "testName": "Reloading index.html preserves Google Drive video iframe on Sticky Wall (zero localStorage stripping)",
-          "passed": true,
-          "details": "Video iframe preserved after refresh",
-          "bugInfo": null
-        },
-        {
-          "testName": "Clicking Video Filter Pill on index.html displays only video dedication sticky notes",
-          "passed": true,
-          "details": "All visible notes have video embeds",
-          "bugInfo": null
-        },
-        {
-          "testName": "main.html Pinboard normalizes open?id= Google Drive link to streaming /preview iframe without converting to image thumbnail",
-          "passed": true,
-          "details": "Proper /preview iframe rendered",
-          "bugInfo": null
-        },
-        {
-          "testName": "Clicking Video Lightbox button expands video into full-screen iframe theater modal",
-          "passed": true,
-          "details": "Lightbox modal active with video",
-          "bugInfo": null
-        },
-        {
-          "testName": "Reloading main.html preserves pinned video sticky note from state storage",
-          "passed": true,
-          "details": "Pinned video restored on reload",
-          "bugInfo": null
+          "testName": "Playwright harness execution",
+          "passed": false,
+          "details": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    52 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+          "bugInfo": {
+            "severity": "Critical",
+            "description": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    52 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at runAllTests (C:\\Users\\Himanshu\\Documents\\HTML\\New folder\\new\\playwright-test-runner.js:232:20)"
+          }
         }
       ]
     }
   ],
-  "bugsFound": [],
+  "bugsFound": [
+    {
+      "suite": "FATAL",
+      "test": "Playwright harness execution",
+      "details": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    52 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+      "severity": "Critical",
+      "description": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    52 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at runAllTests (C:\\Users\\Himanshu\\Documents\\HTML\\New folder\\new\\playwright-test-runner.js:232:20)"
+    }
+  ],
   "consoleErrors": []
 }

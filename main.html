@@ -4,9 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Eternal Love ✨ Happy Birthday, My Love</title>
-  <!-- PRE-LAUNCH PRIMARY ROUTER (index.html is primary until 21 Sep 2026 23:00 IST) -->
+  <!-- PRE-LAUNCH PRIMARY ROUTER & AUTOMATIC CACHE/SERVICE WORKER PURGE -->
   <script>
     (function() {
+      // 0. Service Worker Unregister & Query Reset Handler (?reset=1, ?fresh=1, ?purge=1)
+      try {
+        const urlParamsCheck = new URLSearchParams(window.location.search || '');
+        if (urlParamsCheck.get('reset') === '1' || urlParamsCheck.get('reset') === 'true' || urlParamsCheck.get('fresh') === '1' || urlParamsCheck.get('purge') === '1') {
+          localStorage.clear();
+          sessionStorage.clear();
+          if ('caches' in window) {
+            caches.keys().then(names => names.forEach(n => caches.delete(n)));
+          }
+        }
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(regs => {
+            regs.forEach(r => r.unregister());
+          });
+        }
+      } catch(e) {}
+
       const TARGET_LAUNCH_DATE = new Date('2026-09-21T23:00:00+05:30').getTime();
       const now = Date.now();
       window.__APP_LAUNCH_CONFIG__ = {
@@ -151,7 +168,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <!-- Stylesheet with Cache-Busting Versioning -->
-  <link rel="stylesheet" href="style.css?v=2.0" />
+  <link rel="stylesheet" href="style.css?v=2.1.0" />
 </head>
 <body class="theme-magical">
   <!-- Interactive Background Canvas (Fireworks, Stars, Confetti & Shooting Stars) -->
@@ -3705,6 +3722,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=2.0"></script>
+  <script src="script.js?v=2.1.0"></script>
 </body>
 </html>

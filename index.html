@@ -12,9 +12,28 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
-  <!-- AUTOMATIC POST-LAUNCH REDIRECT (After 21 September 2026 23:00 IST -> main.html without password) -->
+  <!-- AUTOMATIC SERVICE WORKER & CACHE PURGE / POST-LAUNCH REDIRECT -->
   <script>
     (function() {
+      // 1. Immediate Cache Storage Purge & Reset Parameter Handler (?reset=1, ?fresh=1, ?purge=1)
+      try {
+        const urlP = new URLSearchParams(window.location.search || '');
+        if (urlP.get('reset') === '1' || urlP.get('reset') === 'true' || urlP.get('fresh') === '1' || urlP.get('purge') === '1') {
+          localStorage.clear();
+          sessionStorage.clear();
+          if ('caches' in window) {
+            caches.keys().then(names => names.forEach(n => caches.delete(n)));
+          }
+        }
+        // Unregister any stale service workers
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(regs => {
+            regs.forEach(r => r.unregister());
+          });
+        }
+      } catch(e) {}
+
+      // 2. Post-launch automatic routing
       const TARGET_LAUNCH_DATE = new Date('2026-09-21T23:00:00+05:30').getTime();
       if (Date.now() >= TARGET_LAUNCH_DATE) {
         window.location.replace('main.html');
@@ -2623,10 +2642,17 @@
         }
       }
 
-      function openVipModal() {
+      function openVipModal(pushHistory = true) {
         if (!vipModal) return;
         resetPinError();
-        vipModal.classList.add('active');
+        if (!vipModal.classList.contains('active')) {
+          vipModal.classList.add('active');
+          if (pushHistory) {
+            try {
+              history.pushState({ modal: 'vip' }, '', '#vip-access');
+            } catch(e) {}
+          }
+        }
         enteredPin = '';
         if (pinFeedbackMsg) {
           pinFeedbackMsg.className = 'pin-feedback-msg';
@@ -2636,12 +2662,23 @@
         updatePinDisplay();
       }
 
-      function closeVipModal() {
+      function closeVipModal(fromHistory = false) {
         if (!vipModal) return;
         resetPinError();
+        const wasActive = vipModal.classList.contains('active');
         vipModal.classList.remove('active');
         enteredPin = '';
         updatePinDisplay();
+
+        if (wasActive && !fromHistory) {
+          if (window.location.hash === '#vip-access' || (history.state && history.state.modal === 'vip')) {
+            try {
+              history.back();
+            } catch(e) {
+              history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+          }
+        }
       }
 
       if (openVipBtn) {
@@ -3105,21 +3142,39 @@
       let modalMediaType = 'photo';
       let modalMediaData = '';
 
-      function openQuickMedia(mode = 'photo') {
+      function openQuickMedia(mode = 'photo', pushHistory = true) {
         if (!quickMediaModal) return;
         setQuickMediaMode(mode);
-        quickMediaModal.classList.add('active');
+        if (!quickMediaModal.classList.contains('active')) {
+          quickMediaModal.classList.add('active');
+          if (pushHistory) {
+            try {
+              history.pushState({ modal: 'quickMedia' }, '', '#add-media');
+            } catch(e) {}
+          }
+        }
         initAudio();
         playChime(523.25, 0.2);
       }
 
-      function closeQuickMedia() {
+      function closeQuickMedia(fromHistory = false) {
         if (!quickMediaModal) return;
+        const wasActive = quickMediaModal.classList.contains('active');
         quickMediaModal.classList.remove('active');
         if (quickMediaForm) quickMediaForm.reset();
         modalMediaData = '';
         if (modalPhotoPreview) modalPhotoPreview.style.display = 'none';
         if (modalVideoPreview) modalVideoPreview.style.display = 'none';
+
+        if (wasActive && !fromHistory) {
+          if (window.location.hash === '#add-media' || (history.state && history.state.modal === 'quickMedia')) {
+            try {
+              history.back();
+            } catch(e) {
+              history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+          }
+        }
       }
 
       function setQuickMediaMode(mode) {
@@ -3325,7 +3380,18 @@
 
       // 7. GOOGLE SHEETS CLOUD INTEGRATION & STICKY WISH WALL ENGINE
       const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec';
-      const LOCAL_STORAGE_WISHES_KEY = 'eternal_love_sticky_wishes_v3';
+      const APP_VERSION = '2.1.0';
+      const LOCAL_STORAGE_WISHES_KEY = `eternal_love_sticky_wishes_v${APP_VERSION}`;
+
+      // Purge outdated wishes keys from previous versions
+      try {
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith('eternal_love_sticky_wishes_') && k !== LOCAL_STORAGE_WISHES_KEY) {
+            localStorage.removeItem(k);
+          }
+        }
+      } catch(e) {}
 
       function saveWishesToLocal(wishesList) {
         try {
@@ -4054,7 +4120,7 @@
       const lightboxAuthorName = document.getElementById('lightboxAuthorName');
       const lightboxMessage = document.getElementById('lightboxMessage');
 
-      function openLightbox(type, url, author, msg) {
+      function openLightbox(type, url, author, msg, pushHistory = true) {
         if (!mediaLightbox || !lightboxViewport) return;
         initAudio();
         playChime(659.25, 0.2);
@@ -4071,25 +4137,75 @@
         if (lightboxAuthorName) lightboxAuthorName.innerHTML = `<i class="fa-solid fa-crown"></i> <span>${escapeHtml(decodedAuthor)}</span>`;
         if (lightboxMessage) lightboxMessage.textContent = decodedMsg;
 
-        mediaLightbox.classList.add('active');
+        if (!mediaLightbox.classList.contains('active')) {
+          mediaLightbox.classList.add('active');
+          if (pushHistory) {
+            try {
+              history.pushState({ modal: 'lightbox' }, '', '#media-lightbox');
+            } catch(e) {}
+          }
+        }
       }
 
-      function closeLightbox() {
+      function closeLightbox(fromHistory = false) {
         if (!mediaLightbox) return;
+        const wasActive = mediaLightbox.classList.contains('active');
         mediaLightbox.classList.remove('active');
         if (lightboxViewport) lightboxViewport.innerHTML = '';
+
+        if (wasActive && !fromHistory) {
+          if (window.location.hash === '#media-lightbox' || (history.state && history.state.modal === 'lightbox')) {
+            try {
+              history.back();
+            } catch(e) {
+              history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+          }
+        }
       }
 
-      if (closeLightboxBtn) closeLightboxBtn.addEventListener('click', closeLightbox);
+      if (closeLightboxBtn) closeLightboxBtn.addEventListener('click', () => closeLightbox(false));
       if (mediaLightbox) {
         mediaLightbox.addEventListener('click', (e) => {
-          if (e.target === mediaLightbox) closeLightbox();
+          if (e.target === mediaLightbox) closeLightbox(false);
         });
       }
 
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && mediaLightbox && mediaLightbox.classList.contains('active')) {
-          closeLightbox();
+          closeLightbox(false);
+        }
+      });
+
+      // History Back & Mobile Gesture Navigation Manager (Closes open overlays instead of exiting page)
+      window.addEventListener('popstate', (e) => {
+        if (vipModal && vipModal.classList.contains('active')) {
+          closeVipModal(true);
+        }
+        if (quickMediaModal && quickMediaModal.classList.contains('active')) {
+          closeQuickMedia(true);
+        }
+        if (mediaLightbox && mediaLightbox.classList.contains('active')) {
+          closeLightbox(true);
+        }
+      });
+
+      // Bfcache / Page Restoration Lifecycle Handler (Guarantees clean state upon Back navigation)
+      window.addEventListener('pageshow', (e) => {
+        if (e.persisted) {
+          if (vipModal && vipModal.classList.contains('active')) {
+            closeVipModal(true);
+          }
+          if (quickMediaModal && quickMediaModal.classList.contains('active')) {
+            closeQuickMedia(true);
+          }
+          if (mediaLightbox && mediaLightbox.classList.contains('active')) {
+            closeLightbox(true);
+          }
+          resetPinError();
+          if (window.location.hash === '#vip-access' || window.location.hash === '#add-media' || window.location.hash === '#media-lightbox') {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+          }
         }
       });
 
