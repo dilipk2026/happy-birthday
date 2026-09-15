@@ -136,13 +136,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Async helper to convert file to Base64
-  function readFileAsBase64(file) {
+  // Async helper to convert file to Base64 with progress callback
+  function readFileAsBase64(file, onProgress) {
     return new Promise((resolve, reject) => {
       if (!file) return resolve('');
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (err) => reject(err);
+      reader.onprogress = (e) => {
+        if (e.lengthComputable && typeof onProgress === 'function') {
+          const pct = Math.round((e.loaded / e.total) * 100);
+          onProgress(pct, e.loaded, e.total);
+        }
+      };
+      reader.onload = () => {
+        if (typeof onProgress === 'function') onProgress(100, file.size, file.size);
+        resolve(reader.result);
+      };
+      reader.onerror = (err) => reject(new Error('Failed to read media file from device.'));
       reader.readAsDataURL(file);
     });
   }
@@ -313,6 +322,9 @@ document.addEventListener('DOMContentLoaded', () => {
         textEl.textContent = 'Saved Locally ✨';
         setTimeout(() => updateCloudSyncChips(), 3500);
       }
+      if (typeof options.onError === 'function') {
+        options.onError(new Error('No Google Sheet Webhook URL configured.'));
+      }
       return { success: false, reason: 'no_url' };
     }
 
@@ -322,6 +334,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
+      if (!navigator.onLine) {
+        throw new Error('You are currently offline. Dedication saved locally in your browser.');
+      }
+
       const enrichedPayload = {
         ...payload,
         name: payload.name || payload.author || state.senderName || 'Well-wisher',
@@ -333,14 +349,20 @@ document.addEventListener('DOMContentLoaded', () => {
         localTime: new Date().toLocaleString()
       };
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 45000); // 45s timeout for up to 30MB video uploads
+
       await fetch(url, {
         method: 'POST',
         mode: 'no-cors',
         headers: {
           'Content-Type': 'text/plain;charset=utf-8'
         },
-        body: JSON.stringify(enrichedPayload)
+        body: JSON.stringify(enrichedPayload),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (chipEl && textEl) {
         chipEl.className = 'cloud-sync-chip';
@@ -349,6 +371,11 @@ document.addEventListener('DOMContentLoaded', () => {
           updateCloudSyncChips();
         }, 4000);
       }
+
+      if (typeof options.onSuccess === 'function') {
+        options.onSuccess();
+      }
+
       return { success: true };
     } catch (err) {
       console.warn('Google Sheets cloud sync fallback to local storage:', err);
@@ -358,6 +385,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           updateCloudSyncChips();
         }, 3500);
+      }
+      if (typeof options.onError === 'function') {
+        options.onError(err);
       }
       return { success: false, error: err };
     }
@@ -4933,12 +4963,74 @@ const romanticReasons = [
     });
   }
 
-  // Video Attachment Handlers
+  // Video Attachment Handlers & Upload Progress Controller
   const mainWishVideoInput = document.getElementById('mainWishVideoInput');
   const mainWishVideoUrl = document.getElementById('mainWishVideoUrl');
   const mainVideoPreviewBox = document.getElementById('mainVideoPreviewBox');
   const mainVideoPreviewContainer = document.getElementById('mainVideoPreviewContainer');
   const mainRemoveVideoBtn = document.getElementById('mainRemoveVideoBtn');
+
+  const mainVideoUploadProgressBox = document.getElementById('mainVideoUploadProgressBox');
+  const mainVideoProgressTitle = document.getElementById('mainVideoProgressTitle');
+  const mainVideoProgressMeta = document.getElementById('mainVideoProgressMeta');
+  const mainVideoProgressPct = document.getElementById('mainVideoProgressPct');
+  const mainVideoProgressBarFill = document.getElementById('mainVideoProgressBarFill');
+  const mainVideoStep1 = document.getElementById('mainVideoStep1');
+  const mainVideoStep2 = document.getElementById('mainVideoStep2');
+  const mainVideoStep3 = document.getElementById('mainVideoStep3');
+
+  const mainVideoUploadAlert = document.getElementById('mainVideoUploadAlert');
+  const mainVideoAlertTitle = document.getElementById('mainVideoAlertTitle');
+  const mainVideoAlertMsg = document.getElementById('mainVideoAlertMsg');
+  const mainVideoAlertIcon = document.getElementById('mainVideoAlertIcon');
+  const mainVideoAlertClose = document.getElementById('mainVideoAlertClose');
+
+  function updateMainVideoProgressUI({ visible = true, title = 'Processing Video...', meta = '', pct = 0, step = 1, isSuccess = false }) {
+    if (!mainVideoUploadProgressBox) return;
+    if (!visible) {
+      mainVideoUploadProgressBox.style.display = 'none';
+      return;
+    }
+    mainVideoUploadProgressBox.style.display = 'block';
+    if (mainVideoUploadAlert && !isSuccess) mainVideoUploadAlert.style.display = 'none';
+
+    if (mainVideoProgressTitle) mainVideoProgressTitle.textContent = title;
+    if (mainVideoProgressMeta) mainVideoProgressMeta.textContent = meta;
+    if (mainVideoProgressPct) mainVideoProgressPct.textContent = `${Math.min(100, Math.max(0, Math.round(pct)))}%`;
+    if (mainVideoProgressBarFill) {
+      mainVideoProgressBarFill.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+      if (isSuccess) {
+        mainVideoProgressBarFill.style.background = 'linear-gradient(90deg, #10b981, #34d399, #10b981)';
+      } else {
+        mainVideoProgressBarFill.style.background = 'linear-gradient(90deg, #ff4081, #ff80ab, #ffd700, #ff4081)';
+      }
+    }
+
+    if (mainVideoStep1 && mainVideoStep2 && mainVideoStep3) {
+      mainVideoStep1.className = 'upload-step-item' + (step >= 1 ? (step > 1 ? ' completed' : ' active') : '');
+      mainVideoStep2.className = 'upload-step-item' + (step >= 2 ? (step > 2 ? ' completed' : ' active') : '');
+      mainVideoStep3.className = 'upload-step-item' + (step >= 3 ? (isSuccess ? ' completed' : ' active') : '');
+    }
+  }
+
+  function showMainVideoAlert({ type = 'error', title = 'Upload Issue', msg = '' }) {
+    if (!mainVideoUploadAlert) return;
+    mainVideoUploadAlert.className = `upload-status-alert ${type === 'success' ? 'is-success' : 'is-error'}`;
+    if (mainVideoAlertIcon) {
+      mainVideoAlertIcon.innerHTML = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-triangle-exclamation"></i>';
+    }
+    if (mainVideoAlertTitle) mainVideoAlertTitle.textContent = title;
+    if (mainVideoAlertMsg) mainVideoAlertMsg.textContent = msg;
+    mainVideoUploadAlert.style.display = 'flex';
+  }
+
+  function hideMainVideoAlert() {
+    if (mainVideoUploadAlert) mainVideoUploadAlert.style.display = 'none';
+  }
+
+  if (mainVideoAlertClose) {
+    mainVideoAlertClose.addEventListener('click', hideMainVideoAlert);
+  }
 
   function updateMainVideoPreview(src) {
     if (!src) {
@@ -4959,21 +5051,61 @@ const romanticReasons = [
     mainWishVideoInput.addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (file) {
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
         if (file.size > 30 * 1024 * 1024) {
-          alert('Video file is larger than 30MB. Please choose a video clip under 30MB, or paste a Google Drive / YouTube link in the URL field above.');
+          showMainVideoAlert({
+            type: 'error',
+            title: 'Video File Exceeds 30MB Limit',
+            msg: `Your selected video is ${fileSizeMB} MB. Please choose a video under 30MB, or paste a Google Drive / YouTube link in the URL field above.`
+          });
           mainWishVideoInput.value = '';
+          updateMainVideoProgressUI({ visible: false });
           return;
         }
+
+        hideMainVideoAlert();
+        updateMainVideoProgressUI({
+          visible: true,
+          title: 'Reading Video File...',
+          meta: `${file.name} • ${fileSizeMB} MB`,
+          pct: 12,
+          step: 1
+        });
+
         const videoUrl = URL.createObjectURL(file);
         updateMainVideoPreview(videoUrl);
 
         try {
-          const base64Data = await readFileAsBase64(file);
+          const base64Data = await readFileAsBase64(file, (filePct) => {
+            const mappedPct = 12 + Math.round(filePct * 0.55); // 12% to 67%
+            updateMainVideoProgressUI({
+              visible: true,
+              title: filePct < 100 ? `Reading Video (${filePct}%)...` : 'Encoding Video Stream...',
+              meta: `${file.name} • ${fileSizeMB} MB`,
+              pct: mappedPct,
+              step: filePct < 100 ? 1 : 2
+            });
+          });
+
           mainSelectedMediaData = base64Data;
           mainSelectedMediaType = 'video';
           if (mainWishVideoUrl) mainWishVideoUrl.value = '';
+
+          updateMainVideoProgressUI({
+            visible: true,
+            title: 'Video Ready for Consecration ✨',
+            meta: `${file.name} • ${fileSizeMB} MB • Ready to Pin`,
+            pct: 75,
+            step: 2
+          });
         } catch(vErr) {
           console.warn('Video encoding error:', vErr);
+          showMainVideoAlert({
+            type: 'error',
+            title: 'Video Read Failed',
+            msg: 'Unable to process the video from your device. Please try another MP4, WebM, or MOV video.'
+          });
+          updateMainVideoProgressUI({ visible: false });
         }
       }
     });
@@ -4983,6 +5115,8 @@ const romanticReasons = [
     mainWishVideoUrl.addEventListener('input', (e) => {
       const val = e.target.value.trim();
       if (val) {
+        hideMainVideoAlert();
+        updateMainVideoProgressUI({ visible: false });
         updateMainVideoPreview(val);
         if (mainWishVideoInput) mainWishVideoInput.value = '';
       }
@@ -4997,6 +5131,8 @@ const romanticReasons = [
       if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
       mainSelectedMediaData = '';
       mainSelectedMediaType = 'none';
+      hideMainVideoAlert();
+      updateMainVideoProgressUI({ visible: false });
     });
   }
 
@@ -5551,6 +5687,26 @@ const romanticReasons = [
       audioSynth.playCheerSound();
       burstConfetti(window.innerWidth / 2, window.innerHeight * 0.7, 45);
 
+      const submitBtn = document.getElementById('mainSubmitWishBtn');
+      const isVideoUpload = mainSelectedMediaType === 'video' && mainSelectedMediaData && mainSelectedMediaData.startsWith('data:video');
+
+      if (isVideoUpload) {
+        updateMainVideoProgressUI({
+          visible: true,
+          title: 'Uploading Video to Google Cloud...',
+          meta: 'Saving to Google Drive & Consecrating to Sheet...',
+          pct: 85,
+          step: 3
+        });
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = isVideoUpload 
+          ? '<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video to Drive...</span>'
+          : '<i class="fa-solid fa-spinner fa-spin"></i> <span>Pinning Blessing...</span>';
+      }
+
       // Sync wish note to Google Sheets & Drive
       sendToGoogleSheet({
         type: 'wish',
@@ -5573,7 +5729,47 @@ const romanticReasons = [
         chipElement: document.getElementById('wishSyncChip'),
         textElement: document.getElementById('wishSyncText'),
         successText: 'Wish & Media Saved to Google Sheets! 💖✨',
-        defaultText: 'Google Sheets Connected ✨'
+        defaultText: 'Google Sheets Connected ✨',
+        onSuccess: () => {
+          if (isVideoUpload) {
+            updateMainVideoProgressUI({
+              visible: true,
+              title: 'Uploaded to Google Drive & Saved! 💖',
+              meta: 'Saved to Google Sheets & Live Wall',
+              pct: 100,
+              step: 3,
+              isSuccess: true
+            });
+            showMainVideoAlert({
+              type: 'success',
+              title: 'Video Dedication Consecrated! 👑',
+              msg: 'Your video reel was successfully uploaded to Google Drive and permanently logged in Google Sheets!'
+            });
+            setTimeout(() => {
+              updateMainVideoProgressUI({ visible: false });
+            }, 4500);
+          }
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
+          }
+        },
+        onError: (err) => {
+          if (isVideoUpload) {
+            showMainVideoAlert({
+              type: 'error',
+              title: 'Cloud Sync Notice',
+              msg: 'Cloud sync encountered a network delay or timeout, but your blessing and video are safely preserved in your browser memory wall! ✨'
+            });
+            setTimeout(() => {
+              updateMainVideoProgressUI({ visible: false });
+            }, 6000);
+          }
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
+          }
+        }
       });
 
       // Reset form

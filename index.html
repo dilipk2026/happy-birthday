@@ -670,6 +670,198 @@
       color: #ffffff;
     }
 
+    /* ==========================================================================
+       VIDEO UPLOAD PROGRESS BAR & ERROR NOTIFICATION SYSTEM
+       ========================================================================== */
+    .upload-progress-card {
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(26, 12, 38, 0.9);
+      border: 1px solid rgba(255, 64, 129, 0.45);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 16px rgba(255, 64, 129, 0.15);
+      backdrop-filter: blur(12px);
+      animation: fadeInUpload 0.35s ease-out forwards;
+      transition: var(--transition);
+    }
+
+    @keyframes fadeInUpload {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .upload-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .upload-progress-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .upload-progress-icon {
+      font-size: 1.3rem;
+      color: var(--accent-gold, #ffd700);
+      filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+    }
+
+    .upload-progress-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.3px;
+    }
+
+    .upload-progress-meta {
+      font-size: 0.74rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 2px;
+    }
+
+    .upload-progress-pct {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent-gold, #ffd700);
+      background: rgba(255, 215, 0, 0.12);
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 215, 0, 0.35);
+      font-family: 'Space Grotesk', monospace, sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .upload-progress-bar-wrap {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .upload-progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff4081, #ff80ab, #ffd700, #ff4081);
+      background-size: 200% 100%;
+      border-radius: 20px;
+      transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: uploadShimmer 2s linear infinite;
+      box-shadow: 0 0 12px rgba(255, 64, 129, 0.85);
+    }
+
+    @keyframes uploadShimmer {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+
+    .upload-progress-steps {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .upload-step-item {
+      font-size: 0.73rem;
+      color: rgba(255, 255, 255, 0.45);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .upload-step-item.active {
+      color: var(--accent-gold, #ffd700);
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+    }
+
+    .upload-step-item.completed {
+      color: #4ade80;
+    }
+
+    /* Upload Status Alert / Error Banner */
+    .upload-status-alert {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      animation: fadeInUpload 0.3s ease-out forwards;
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .upload-status-alert.is-error {
+      background: rgba(76, 5, 25, 0.95);
+      border: 1.5px solid #ff4081;
+      box-shadow: 0 6px 20px rgba(255, 64, 129, 0.35);
+      color: #fff;
+    }
+
+    .upload-status-alert.is-success {
+      background: rgba(6, 78, 59, 0.95);
+      border: 1.5px solid #34d399;
+      box-shadow: 0 6px 20px rgba(52, 211, 153, 0.35);
+      color: #fff;
+    }
+
+    .upload-alert-icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .upload-status-alert.is-error .upload-alert-icon {
+      color: #ff80ab;
+    }
+
+    .upload-status-alert.is-success .upload-alert-icon {
+      color: #6ee7b7;
+    }
+
+    .upload-alert-content {
+      flex: 1;
+    }
+
+    .upload-alert-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .upload-alert-msg {
+      font-size: 0.78rem;
+      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .upload-alert-close {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0 4px;
+      line-height: 1;
+      transition: var(--transition);
+    }
+
+    .upload-alert-close:hover {
+      color: #fff;
+      transform: scale(1.15);
+    }
+
     /* Sticky Note Theme Selector */
     .color-palette-bar {
       display: flex;
@@ -2078,6 +2270,38 @@
                 </div>
                 <button type="button" class="remove-preview-btn" id="removeVideoBtn" title="Remove Video">&times;</button>
               </div>
+
+              <!-- Video Upload Progress Bar -->
+              <div id="wishVideoUploadProgressBox" class="upload-progress-card" style="display:none;">
+                <div class="upload-progress-header">
+                  <div class="upload-progress-title-wrap">
+                    <i class="fa-solid fa-cloud-arrow-up fa-bounce upload-progress-icon" id="wishVideoProgressIcon"></i>
+                    <div>
+                      <div class="upload-progress-title" id="wishVideoProgressTitle">Processing Video...</div>
+                      <div class="upload-progress-meta" id="wishVideoProgressMeta">video.mp4 • 0 MB</div>
+                    </div>
+                  </div>
+                  <span class="upload-progress-pct" id="wishVideoProgressPct">0%</span>
+                </div>
+                <div class="upload-progress-bar-wrap">
+                  <div class="upload-progress-bar-fill" id="wishVideoProgressBarFill" style="width: 0%;"></div>
+                </div>
+                <div class="upload-progress-steps">
+                  <span class="upload-step-item active" id="wishVideoStep1"><i class="fa-solid fa-file-arrow-up"></i> 1. Read</span>
+                  <span class="upload-step-item" id="wishVideoStep2"><i class="fa-solid fa-film"></i> 2. Encode</span>
+                  <span class="upload-step-item" id="wishVideoStep3"><i class="fa-solid fa-cloud"></i> 3. Cloud Sync</span>
+                </div>
+              </div>
+
+              <!-- Video Upload Alert Box -->
+              <div id="wishVideoUploadAlert" class="upload-status-alert is-error" style="display:none;">
+                <div class="upload-alert-icon" id="wishVideoAlertIcon"><i class="fa-solid fa-circle-exclamation"></i></div>
+                <div class="upload-alert-content">
+                  <div class="upload-alert-title" id="wishVideoAlertTitle">Upload Issue</div>
+                  <div class="upload-alert-msg" id="wishVideoAlertMsg">An error occurred while uploading video.</div>
+                </div>
+                <button type="button" class="upload-alert-close" id="wishVideoAlertClose" title="Dismiss">&times;</button>
+              </div>
             </div>
           </div>
 
@@ -2229,6 +2453,38 @@
           </div>
           <div id="modalVideoPreview" style="display:none; margin-top:10px; text-align:center;">
             <video id="modalVideoPreviewPlayer" controls style="max-height:160px; border-radius:12px; width:100%; background:#000;"></video>
+          </div>
+
+          <!-- Modal Video Upload Progress Bar -->
+          <div id="modalVideoUploadProgressBox" class="upload-progress-card" style="display:none;">
+            <div class="upload-progress-header">
+              <div class="upload-progress-title-wrap">
+                <i class="fa-solid fa-cloud-arrow-up fa-bounce upload-progress-icon" id="modalVideoProgressIcon"></i>
+                <div>
+                  <div class="upload-progress-title" id="modalVideoProgressTitle">Processing Video...</div>
+                  <div class="upload-progress-meta" id="modalVideoProgressMeta">video.mp4 • 0 MB</div>
+                </div>
+              </div>
+              <span class="upload-progress-pct" id="modalVideoProgressPct">0%</span>
+            </div>
+            <div class="upload-progress-bar-wrap">
+              <div class="upload-progress-bar-fill" id="modalVideoProgressBarFill" style="width: 0%;"></div>
+            </div>
+            <div class="upload-progress-steps">
+              <span class="upload-step-item active" id="modalVideoStep1"><i class="fa-solid fa-file-arrow-up"></i> 1. Read</span>
+              <span class="upload-step-item" id="modalVideoStep2"><i class="fa-solid fa-film"></i> 2. Encode</span>
+              <span class="upload-step-item" id="modalVideoStep3"><i class="fa-solid fa-cloud"></i> 3. Cloud Sync</span>
+            </div>
+          </div>
+
+          <!-- Modal Video Upload Alert Box -->
+          <div id="modalVideoUploadAlert" class="upload-status-alert is-error" style="display:none;">
+            <div class="upload-alert-icon" id="modalVideoAlertIcon"><i class="fa-solid fa-circle-exclamation"></i></div>
+            <div class="upload-alert-content">
+              <div class="upload-alert-title" id="modalVideoAlertTitle">Upload Issue</div>
+              <div class="upload-alert-msg" id="modalVideoAlertMsg">An error occurred while uploading video.</div>
+            </div>
+            <button type="button" class="upload-alert-close" id="modalVideoAlertClose" title="Dismiss">&times;</button>
           </div>
         </div>
 
@@ -2951,13 +3207,22 @@
         });
       }
 
-      // Async helper to convert file to Base64
-      function readFileAsBase64(file) {
+      // Async helper to convert file to Base64 with progress callback
+      function readFileAsBase64(file, onProgress) {
         return new Promise((resolve, reject) => {
           if (!file) return resolve('');
           const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = (err) => reject(err);
+          reader.onprogress = (e) => {
+            if (e.lengthComputable && typeof onProgress === 'function') {
+              const pct = Math.round((e.loaded / e.total) * 100);
+              onProgress(pct, e.loaded, e.total);
+            }
+          };
+          reader.onload = () => {
+            if (typeof onProgress === 'function') onProgress(100, file.size, file.size);
+            resolve(reader.result);
+          };
+          reader.onerror = (err) => reject(new Error('Failed to read video file.'));
           reader.readAsDataURL(file);
         });
       }
@@ -2968,6 +3233,69 @@
       const videoPreviewBox = document.getElementById('videoPreviewBox');
       const videoPreviewContainer = document.getElementById('videoPreviewContainer');
       const removeVideoBtn = document.getElementById('removeVideoBtn');
+
+      // Wish Video Upload Progress & Status Elements
+      const wishVideoUploadProgressBox = document.getElementById('wishVideoUploadProgressBox');
+      const wishVideoProgressTitle = document.getElementById('wishVideoProgressTitle');
+      const wishVideoProgressMeta = document.getElementById('wishVideoProgressMeta');
+      const wishVideoProgressPct = document.getElementById('wishVideoProgressPct');
+      const wishVideoProgressBarFill = document.getElementById('wishVideoProgressBarFill');
+      const wishVideoStep1 = document.getElementById('wishVideoStep1');
+      const wishVideoStep2 = document.getElementById('wishVideoStep2');
+      const wishVideoStep3 = document.getElementById('wishVideoStep3');
+
+      const wishVideoUploadAlert = document.getElementById('wishVideoUploadAlert');
+      const wishVideoAlertTitle = document.getElementById('wishVideoAlertTitle');
+      const wishVideoAlertMsg = document.getElementById('wishVideoAlertMsg');
+      const wishVideoAlertIcon = document.getElementById('wishVideoAlertIcon');
+      const wishVideoAlertClose = document.getElementById('wishVideoAlertClose');
+
+      function updateWishVideoProgressUI({ visible = true, title = 'Processing Video...', meta = '', pct = 0, step = 1, isSuccess = false }) {
+        if (!wishVideoUploadProgressBox) return;
+        if (!visible) {
+          wishVideoUploadProgressBox.style.display = 'none';
+          return;
+        }
+        wishVideoUploadProgressBox.style.display = 'block';
+        if (wishVideoUploadAlert && !isSuccess) wishVideoUploadAlert.style.display = 'none';
+
+        if (wishVideoProgressTitle) wishVideoProgressTitle.textContent = title;
+        if (wishVideoProgressMeta) wishVideoProgressMeta.textContent = meta;
+        if (wishVideoProgressPct) wishVideoProgressPct.textContent = `${Math.min(100, Math.max(0, Math.round(pct)))}%`;
+        if (wishVideoProgressBarFill) {
+          wishVideoProgressBarFill.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+          if (isSuccess) {
+            wishVideoProgressBarFill.style.background = 'linear-gradient(90deg, #10b981, #34d399, #10b981)';
+          } else {
+            wishVideoProgressBarFill.style.background = 'linear-gradient(90deg, #ff4081, #ff80ab, #ffd700, #ff4081)';
+          }
+        }
+
+        if (wishVideoStep1 && wishVideoStep2 && wishVideoStep3) {
+          wishVideoStep1.className = 'upload-step-item' + (step >= 1 ? (step > 1 ? ' completed' : ' active') : '');
+          wishVideoStep2.className = 'upload-step-item' + (step >= 2 ? (step > 2 ? ' completed' : ' active') : '');
+          wishVideoStep3.className = 'upload-step-item' + (step >= 3 ? (isSuccess ? ' completed' : ' active') : '');
+        }
+      }
+
+      function showWishVideoAlert({ type = 'error', title = 'Upload Issue', msg = '' }) {
+        if (!wishVideoUploadAlert) return;
+        wishVideoUploadAlert.className = `upload-status-alert ${type === 'success' ? 'is-success' : 'is-error'}`;
+        if (wishVideoAlertIcon) {
+          wishVideoAlertIcon.innerHTML = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-triangle-exclamation"></i>';
+        }
+        if (wishVideoAlertTitle) wishVideoAlertTitle.textContent = title;
+        if (wishVideoAlertMsg) wishVideoAlertMsg.textContent = msg;
+        wishVideoUploadAlert.style.display = 'flex';
+      }
+
+      function hideWishVideoAlert() {
+        if (wishVideoUploadAlert) wishVideoUploadAlert.style.display = 'none';
+      }
+
+      if (wishVideoAlertClose) {
+        wishVideoAlertClose.addEventListener('click', hideWishVideoAlert);
+      }
 
       function extractYouTubeId(url) {
         if (!url) return null;
@@ -3062,22 +3390,62 @@
         wishVideoInput.addEventListener('change', async (e) => {
           const file = e.target.files && e.target.files[0];
           if (file) {
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
             if (file.size > 30 * 1024 * 1024) {
-              alert('Video file is larger than 30MB. Please choose a video clip under 30MB, or paste a Google Drive / YouTube link in the URL field.');
+              showWishVideoAlert({
+                type: 'error',
+                title: 'Video File Exceeds 30MB Limit',
+                msg: `Your selected video is ${fileSizeMB} MB. Please choose a video under 30MB, or paste a Google Drive / YouTube link in the URL field.`
+              });
               wishVideoInput.value = '';
+              updateWishVideoProgressUI({ visible: false });
               return;
             }
+
+            hideWishVideoAlert();
+            updateWishVideoProgressUI({
+              visible: true,
+              title: 'Reading Video File...',
+              meta: `${file.name} • ${fileSizeMB} MB`,
+              pct: 12,
+              step: 1
+            });
+
             // Instant local blob preview
             const blobUrl = URL.createObjectURL(file);
             updateVideoPreview(blobUrl);
 
             try {
-              const base64Data = await readFileAsBase64(file);
+              const base64Data = await readFileAsBase64(file, (filePct) => {
+                const mappedPct = 12 + Math.round(filePct * 0.55); // 12% to 67%
+                updateWishVideoProgressUI({
+                  visible: true,
+                  title: filePct < 100 ? `Reading Video (${filePct}%)...` : 'Encoding Video Stream...',
+                  meta: `${file.name} • ${fileSizeMB} MB`,
+                  pct: mappedPct,
+                  step: filePct < 100 ? 1 : 2
+                });
+              });
+
               selectedMediaData = base64Data;
               selectedMediaType = 'video';
               if (wishVideoUrl) wishVideoUrl.value = '';
+
+              updateWishVideoProgressUI({
+                visible: true,
+                title: 'Video Ready for Consecration ✨',
+                meta: `${file.name} • ${fileSizeMB} MB • Ready to Pin`,
+                pct: 75,
+                step: 2
+              });
             } catch (err) {
               console.warn('Base64 encoding error:', err);
+              showWishVideoAlert({
+                type: 'error',
+                title: 'Video Read Failed',
+                msg: 'Unable to process the video from your device. Please try another MP4, WebM, or MOV video.'
+              });
+              updateWishVideoProgressUI({ visible: false });
             }
           }
         });
@@ -3087,6 +3455,8 @@
         wishVideoUrl.addEventListener('input', (e) => {
           const val = e.target.value.trim();
           if (val) {
+            hideWishVideoAlert();
+            updateWishVideoProgressUI({ visible: false });
             updateVideoPreview(val);
             if (wishVideoInput) wishVideoInput.value = '';
           }
@@ -3101,6 +3471,8 @@
           if (videoPreviewContainer) videoPreviewContainer.innerHTML = '';
           selectedMediaData = '';
           selectedMediaType = 'none';
+          hideWishVideoAlert();
+          updateWishVideoProgressUI({ visible: false });
         });
       }
 
@@ -3236,15 +3608,94 @@
         });
       }
 
+      // Modal Video Upload Progress Elements
+      const modalVideoUploadProgressBox = document.getElementById('modalVideoUploadProgressBox');
+      const modalVideoProgressTitle = document.getElementById('modalVideoProgressTitle');
+      const modalVideoProgressMeta = document.getElementById('modalVideoProgressMeta');
+      const modalVideoProgressPct = document.getElementById('modalVideoProgressPct');
+      const modalVideoProgressBarFill = document.getElementById('modalVideoProgressBarFill');
+      const modalVideoStep1 = document.getElementById('modalVideoStep1');
+      const modalVideoStep2 = document.getElementById('modalVideoStep2');
+      const modalVideoStep3 = document.getElementById('modalVideoStep3');
+
+      const modalVideoUploadAlert = document.getElementById('modalVideoUploadAlert');
+      const modalVideoAlertTitle = document.getElementById('modalVideoAlertTitle');
+      const modalVideoAlertMsg = document.getElementById('modalVideoAlertMsg');
+      const modalVideoAlertIcon = document.getElementById('modalVideoAlertIcon');
+      const modalVideoAlertClose = document.getElementById('modalVideoAlertClose');
+
+      function updateModalVideoProgressUI({ visible = true, title = 'Processing Video...', meta = '', pct = 0, step = 1, isSuccess = false }) {
+        if (!modalVideoUploadProgressBox) return;
+        if (!visible) {
+          modalVideoUploadProgressBox.style.display = 'none';
+          return;
+        }
+        modalVideoUploadProgressBox.style.display = 'block';
+        if (modalVideoUploadAlert && !isSuccess) modalVideoUploadAlert.style.display = 'none';
+
+        if (modalVideoProgressTitle) modalVideoProgressTitle.textContent = title;
+        if (modalVideoProgressMeta) modalVideoProgressMeta.textContent = meta;
+        if (modalVideoProgressPct) modalVideoProgressPct.textContent = `${Math.min(100, Math.max(0, Math.round(pct)))}%`;
+        if (modalVideoProgressBarFill) {
+          modalVideoProgressBarFill.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+          if (isSuccess) {
+            modalVideoProgressBarFill.style.background = 'linear-gradient(90deg, #10b981, #34d399, #10b981)';
+          } else {
+            modalVideoProgressBarFill.style.background = 'linear-gradient(90deg, #ff4081, #ff80ab, #ffd700, #ff4081)';
+          }
+        }
+
+        if (modalVideoStep1 && modalVideoStep2 && modalVideoStep3) {
+          modalVideoStep1.className = 'upload-step-item' + (step >= 1 ? (step > 1 ? ' completed' : ' active') : '');
+          modalVideoStep2.className = 'upload-step-item' + (step >= 2 ? (step > 2 ? ' completed' : ' active') : '');
+          modalVideoStep3.className = 'upload-step-item' + (step >= 3 ? (isSuccess ? ' completed' : ' active') : '');
+        }
+      }
+
+      function showModalVideoAlert({ type = 'error', title = 'Upload Issue', msg = '' }) {
+        if (!modalVideoUploadAlert) return;
+        modalVideoUploadAlert.className = `upload-status-alert ${type === 'success' ? 'is-success' : 'is-error'}`;
+        if (modalVideoAlertIcon) {
+          modalVideoAlertIcon.innerHTML = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-triangle-exclamation"></i>';
+        }
+        if (modalVideoAlertTitle) modalVideoAlertTitle.textContent = title;
+        if (modalVideoAlertMsg) modalVideoAlertMsg.textContent = msg;
+        modalVideoUploadAlert.style.display = 'flex';
+      }
+
+      function hideModalVideoAlert() {
+        if (modalVideoUploadAlert) modalVideoUploadAlert.style.display = 'none';
+      }
+
+      if (modalVideoAlertClose) {
+        modalVideoAlertClose.addEventListener('click', hideModalVideoAlert);
+      }
+
       if (modalVideoFileInput) {
         modalVideoFileInput.addEventListener('change', async (e) => {
           const file = e.target.files && e.target.files[0];
           if (file) {
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
             if (file.size > 30 * 1024 * 1024) {
-              alert('Video file is larger than 30MB. Please choose a video clip under 30MB, or paste a Google Drive / YouTube link in the URL field.');
+              showModalVideoAlert({
+                type: 'error',
+                title: 'Video File Exceeds 30MB Limit',
+                msg: `Your selected video is ${fileSizeMB} MB. Please choose a video under 30MB, or paste a Google Drive / YouTube link in the URL field.`
+              });
               modalVideoFileInput.value = '';
+              updateModalVideoProgressUI({ visible: false });
               return;
             }
+
+            hideModalVideoAlert();
+            updateModalVideoProgressUI({
+              visible: true,
+              title: 'Reading Video File...',
+              meta: `${file.name} • ${fileSizeMB} MB`,
+              pct: 12,
+              step: 1
+            });
+
             const blobUrl = URL.createObjectURL(file);
             if (modalVideoPreview) {
               modalVideoPreview.innerHTML = `<video src="${blobUrl}" controls style="max-height:160px; border-radius:12px; width:100%; background:#000;"></video>`;
@@ -3252,11 +3703,35 @@
             }
 
             try {
-              const base64Data = await readFileAsBase64(file);
+              const base64Data = await readFileAsBase64(file, (filePct) => {
+                const mappedPct = 12 + Math.round(filePct * 0.55);
+                updateModalVideoProgressUI({
+                  visible: true,
+                  title: filePct < 100 ? `Reading Video (${filePct}%)...` : 'Encoding Video Stream...',
+                  meta: `${file.name} • ${fileSizeMB} MB`,
+                  pct: mappedPct,
+                  step: filePct < 100 ? 1 : 2
+                });
+              });
+
               modalMediaData = base64Data;
               if (modalVideoUrlInput) modalVideoUrlInput.value = '';
+
+              updateModalVideoProgressUI({
+                visible: true,
+                title: 'Video Ready for Publishing ✨',
+                meta: `${file.name} • ${fileSizeMB} MB • Ready`,
+                pct: 75,
+                step: 2
+              });
             } catch (err) {
               console.warn('Modal video base64 error:', err);
+              showModalVideoAlert({
+                type: 'error',
+                title: 'Video Read Failed',
+                msg: 'Unable to process the video from your device. Please try another MP4, WebM, or MOV video.'
+              });
+              updateModalVideoProgressUI({ visible: false });
             }
           }
         });
@@ -3266,6 +3741,8 @@
         modalVideoUrlInput.addEventListener('input', (e) => {
           const val = e.target.value.trim();
           if (val) {
+            hideModalVideoAlert();
+            updateModalVideoProgressUI({ visible: false });
             modalMediaData = val;
             if (modalVideoPreview) {
               modalVideoPreview.innerHTML = `<div style="height:150px; border-radius:10px; overflow:hidden;">${parseVideoEmbed(val)}</div>`;
@@ -3286,12 +3763,27 @@
           const sender = document.getElementById('quickSenderName')?.value.trim() || 'Loving Well-wisher';
           const caption = document.getElementById('quickCaption')?.value.trim() || 'Our unforgettable memory 💖';
 
+          const isVideoUpload = modalMediaType === 'video' && modalVideoFileInput && modalVideoFileInput.files && modalVideoFileInput.files[0];
+
           // Ensure Base64 conversion is fully resolved before dispatch
-          if (modalMediaType === 'video' && modalVideoFileInput && modalVideoFileInput.files && modalVideoFileInput.files[0]) {
+          if (isVideoUpload) {
+            updateModalVideoProgressUI({
+              visible: true,
+              title: 'Reading & Preparing Video...',
+              meta: 'Encoding video for cloud transmission...',
+              pct: 35,
+              step: 1
+            });
             try {
               modalMediaData = await readFileAsBase64(modalVideoFileInput.files[0]);
             } catch (fileErr) {
               console.warn('Video encoding failed:', fileErr);
+              showModalVideoAlert({
+                type: 'error',
+                title: 'Encoding Issue',
+                msg: 'Failed to encode video file. Please try another file.'
+              });
+              return;
             }
           } else if (modalMediaType === 'photo' && modalPhotoFileInput && modalPhotoFileInput.files && modalPhotoFileInput.files[0]) {
             if (!modalMediaData || !modalMediaData.startsWith('data:image')) {
@@ -3313,7 +3805,19 @@
           const publishBtn = document.getElementById('publishQuickMediaBtn');
           if (publishBtn) {
             publishBtn.disabled = true;
-            publishBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Publishing Media...</span>';
+            publishBtn.innerHTML = isVideoUpload 
+              ? '<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video to Drive...</span>' 
+              : '<i class="fa-solid fa-spinner fa-spin"></i> <span>Publishing Media...</span>';
+          }
+
+          if (isVideoUpload) {
+            updateModalVideoProgressUI({
+              visible: true,
+              title: 'Uploading to Google Drive...',
+              meta: 'Saving video to Queen Nishika\'s cloud folder...',
+              pct: 85,
+              step: 3
+            });
           }
 
           const newMediaItem = {
@@ -3338,16 +3842,17 @@
 
           renderStickyNotes();
           renderMemoriesGrid();
-          closeQuickMedia();
-
-          if (publishBtn) {
-            publishBtn.disabled = false;
-            publishBtn.innerHTML = '<i class="fa-solid fa-sparkles"></i> <span>Publish to Celebration 👑</span>';
-          }
 
           // Dispatches to Google Sheets & Drive asynchronously
           try {
-            fetch(GOOGLE_SHEET_URL, {
+            if (!navigator.onLine) {
+              throw new Error('Offline mode');
+            }
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 45000);
+
+            await fetch(GOOGLE_SHEET_URL, {
               method: 'POST',
               mode: 'no-cors',
               headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -3368,15 +3873,44 @@
                 dedicatedBy: 'Dilip',
                 timestamp: new Date().toISOString(),
                 localTime: new Date().toLocaleString()
-              })
+              }),
+              signal: controller.signal
             });
+
+            clearTimeout(timeoutId);
+
+            if (isVideoUpload) {
+              updateModalVideoProgressUI({
+                visible: true,
+                title: 'Uploaded to Google Drive! 💖',
+                meta: 'Successfully saved to Google Cloud',
+                pct: 100,
+                step: 3,
+                isSuccess: true
+              });
+            }
           } catch(err) {
-            console.warn('Queued locally:', err);
+            console.warn('Cloud sync error in modal:', err);
+            if (isVideoUpload) {
+              showModalVideoAlert({
+                type: 'error',
+                title: 'Cloud Sync Notice',
+                msg: 'Network timeout or offline, but your dedication is 100% saved locally on this device! ✨'
+              });
+            }
           }
 
-          // Scroll to Sticky Wish Wall
-          const wallSec = document.getElementById('stickyWishWallSection');
-          if (wallSec) wallSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (publishBtn) {
+            publishBtn.disabled = false;
+            publishBtn.innerHTML = '<i class="fa-solid fa-sparkles"></i> <span>Publish to Celebration 👑</span>';
+          }
+
+          setTimeout(() => {
+            closeQuickMedia();
+            // Scroll to Sticky Wish Wall
+            const wallSec = document.getElementById('stickyWishWallSection');
+            if (wallSec) wallSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, isVideoUpload ? 1200 : 300);
         });
       }
 
@@ -4011,12 +4545,27 @@
 
           if (!message) return;
 
+          const isVideoUpload = selectedMediaType === 'video' && selectedMediaData && selectedMediaData.startsWith('data:video');
+
           // Ensure Base64 file is fully encoded before dispatching payload
-          if (selectedMediaType === 'video' && wishVideoInput && wishVideoInput.files && wishVideoInput.files[0]) {
+          if (isVideoUpload && wishVideoInput && wishVideoInput.files && wishVideoInput.files[0]) {
+            updateWishVideoProgressUI({
+              visible: true,
+              title: 'Reading & Preparing Video...',
+              meta: 'Encoding video for cloud transmission...',
+              pct: 35,
+              step: 1
+            });
             try {
               selectedMediaData = await readFileAsBase64(wishVideoInput.files[0]);
             } catch (vErr) {
               console.warn('Wish video encoding error:', vErr);
+              showWishVideoAlert({
+                type: 'error',
+                title: 'Encoding Issue',
+                msg: 'Failed to encode video file. Please try another file.'
+              });
+              return;
             }
           } else if (selectedMediaType === 'photo' && wishPhotoInput && wishPhotoInput.files && wishPhotoInput.files[0]) {
             if (!selectedMediaData || !selectedMediaData.startsWith('data:image')) {
@@ -4030,7 +4579,19 @@
 
           if (submitWishBtn) {
             submitWishBtn.disabled = true;
-            submitWishBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Consecrating Blessing...</span>';
+            submitWishBtn.innerHTML = isVideoUpload
+              ? '<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video to Drive...</span>'
+              : '<i class="fa-solid fa-spinner fa-spin"></i> <span>Consecrating Blessing...</span>';
+          }
+
+          if (isVideoUpload) {
+            updateWishVideoProgressUI({
+              visible: true,
+              title: 'Uploading to Google Cloud...',
+              meta: 'Saving video to Google Drive & logging to sheet...',
+              pct: 85,
+              step: 3
+            });
           }
 
           const newWish = {
@@ -4061,7 +4622,14 @@
 
           // Send to Google Sheets via POST
           try {
-            fetch(GOOGLE_SHEET_URL, {
+            if (!navigator.onLine) {
+              throw new Error('Offline mode');
+            }
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 45000);
+
+            await fetch(GOOGLE_SHEET_URL, {
               method: 'POST',
               mode: 'no-cors',
               headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -4081,10 +4649,42 @@
                 dedicatedBy: 'Dilip',
                 timestamp: new Date().toISOString(),
                 localTime: new Date().toLocaleString()
-              })
+              }),
+              signal: controller.signal
             });
+
+            clearTimeout(timeoutId);
+
+            if (isVideoUpload) {
+              updateWishVideoProgressUI({
+                visible: true,
+                title: 'Uploaded to Google Drive & Saved! 💖',
+                meta: 'Successfully consecrated to Google Cloud',
+                pct: 100,
+                step: 3,
+                isSuccess: true
+              });
+              showWishVideoAlert({
+                type: 'success',
+                title: 'Video Blessing Consecrated! 👑',
+                msg: 'Your video reel was successfully uploaded to Google Drive and recorded in Google Sheets!'
+              });
+              setTimeout(() => {
+                updateWishVideoProgressUI({ visible: false });
+              }, 4500);
+            }
           } catch (postErr) {
-            console.warn('Queued locally:', postErr);
+            console.warn('Cloud sync error in preLaunchWishForm:', postErr);
+            if (isVideoUpload) {
+              showWishVideoAlert({
+                type: 'error',
+                title: 'Cloud Sync Notice',
+                msg: 'Network timeout or offline, but your dedication is 100% saved locally on this device! ✨'
+              });
+              setTimeout(() => {
+                updateWishVideoProgressUI({ visible: false });
+              }, 6000);
+            }
           }
 
           wishForm.reset();

@@ -2206,6 +2206,38 @@
                   </div>
                   <button type="button" class="remove-preview-btn" id="mainRemoveVideoBtn" title="Remove Video">&times;</button>
                 </div>
+
+                <!-- Video Upload Progress Bar -->
+                <div id="mainVideoUploadProgressBox" class="upload-progress-card" style="display:none;">
+                  <div class="upload-progress-header">
+                    <div class="upload-progress-title-wrap">
+                      <i class="fa-solid fa-cloud-arrow-up fa-bounce upload-progress-icon" id="mainVideoProgressIcon"></i>
+                      <div>
+                        <div class="upload-progress-title" id="mainVideoProgressTitle">Processing Video...</div>
+                        <div class="upload-progress-meta" id="mainVideoProgressMeta">video.mp4 • 0 MB</div>
+                      </div>
+                    </div>
+                    <span class="upload-progress-pct" id="mainVideoProgressPct">0%</span>
+                  </div>
+                  <div class="upload-progress-bar-wrap">
+                    <div class="upload-progress-bar-fill" id="mainVideoProgressBarFill" style="width: 0%;"></div>
+                  </div>
+                  <div class="upload-progress-steps">
+                    <span class="upload-step-item active" id="mainVideoStep1"><i class="fa-solid fa-file-arrow-up"></i> 1. Read</span>
+                    <span class="upload-step-item" id="mainVideoStep2"><i class="fa-solid fa-film"></i> 2. Encode</span>
+                    <span class="upload-step-item" id="mainVideoStep3"><i class="fa-solid fa-cloud"></i> 3. Cloud Sync</span>
+                  </div>
+                </div>
+
+                <!-- Video Upload Alert Box (Error / Notice) -->
+                <div id="mainVideoUploadAlert" class="upload-status-alert is-error" style="display:none;">
+                  <div class="upload-alert-icon" id="mainVideoAlertIcon"><i class="fa-solid fa-circle-exclamation"></i></div>
+                  <div class="upload-alert-content">
+                    <div class="upload-alert-title" id="mainVideoAlertTitle">Upload Issue</div>
+                    <div class="upload-alert-msg" id="mainVideoAlertMsg">An error occurred while uploading video.</div>
+                  </div>
+                  <button type="button" class="upload-alert-close" id="mainVideoAlertClose" title="Dismiss">&times;</button>
+                </div>
               </div>
             </div>
 
