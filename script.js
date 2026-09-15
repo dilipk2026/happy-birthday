@@ -4959,8 +4959,9 @@ const romanticReasons = [
     mainWishVideoInput.addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (file) {
-        if (file.size > 25 * 1024 * 1024) {
-          alert('Video file is larger than 25MB. Please choose a smaller video clip or paste a YouTube / Google Drive link.');
+        if (file.size > 15 * 1024 * 1024) {
+          alert('Video file is larger than 15MB. For direct cloud synchronization, please choose a clip under 15MB, or paste a Google Drive / YouTube link in the URL field above.');
+          mainWishVideoInput.value = '';
           return;
         }
         const videoUrl = URL.createObjectURL(file);
