@@ -646,7 +646,148 @@ function doPost(e) {
     }
 
     // ------------------------------------------------------------------------
-    // CASE D: SECRET TIME CAPSULE WISH
+    // CASE D: CHUNKED VIDEO UPLOAD (Assembled in Drive & Logged in Sheets)
+    // ------------------------------------------------------------------------
+    else if (type === 'video_chunk') {
+      var uploadId = (data.uploadId || ('upload_' + new Date().getTime())).toString().replace(/[^a-zA-Z0-9_-]/g, '_');
+      var chunkIndex = parseInt(data.chunkIndex, 10) || 0;
+      var totalChunks = parseInt(data.totalChunks, 10) || 1;
+      var chunkData = data.chunkData || '';
+      var author = data.author || data.name || data.dedicatedBy || 'Dilip';
+      var caption = data.caption || data.message || data.title || 'Royal video dedication for Queen Nishika 🎬';
+      var mimeType = data.mimeType || 'video/mp4';
+
+      var mainFolderName = 'Eternal Love Wishes (Queen Nishika)';
+      var mainFolders = DriveApp.getFoldersByName(mainFolderName);
+      var mainFolder = mainFolders.hasNext() ? mainFolders.next() : DriveApp.createFolder(mainFolderName);
+      try {
+        mainFolder.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+      } catch (fErr) {}
+
+      var tempFolderName = '.temp_chunks';
+      var tempFolders = mainFolder.getFoldersByName(tempFolderName);
+      var tempFolder = tempFolders.hasNext() ? tempFolders.next() : mainFolder.createFolder(tempFolderName);
+
+      var sessionFolders = tempFolder.getFoldersByName(uploadId);
+      var sessionFolder = sessionFolders.hasNext() ? sessionFolders.next() : tempFolder.createFolder(uploadId);
+
+      // Save chunk part file
+      var chunkFileName = 'part_' + ('00000' + chunkIndex).slice(-5) + '.txt';
+      sessionFolder.createFile(chunkFileName, chunkData, 'text/plain');
+
+      // If this is the final chunk, assemble and finalize!
+      if (chunkIndex >= totalChunks - 1) {
+        var fullBase64 = '';
+        for (var c = 0; c < totalChunks; c++) {
+          var partName = 'part_' + ('00000' + c).slice(-5) + '.txt';
+          var partFiles = sessionFolder.getFilesByName(partName);
+          if (partFiles.hasNext()) {
+            fullBase64 += partFiles.next().getBlob().getDataAsString();
+          }
+        }
+
+        var commaIdx = fullBase64.indexOf(',');
+        var headerPart = commaIdx > 0 ? fullBase64.substring(0, commaIdx) : '';
+        var rawB64 = commaIdx > 0 ? fullBase64.substring(commaIdx + 1) : fullBase64;
+        if (rawB64.indexOf('\n') !== -1 || rawB64.indexOf('\r') !== -1 || rawB64.indexOf(' ') !== -1) {
+          rawB64 = rawB64.replace(/[\r\n\s]+/g, '');
+        }
+
+        if (headerPart.indexOf('data:') === 0 && headerPart.indexOf(';') > 5) {
+          mimeType = headerPart.substring(5, headerPart.indexOf(';'));
+        }
+
+        var ext = '.mp4';
+        if (mimeType.indexOf('webm') !== -1) ext = '.webm';
+        else if (mimeType.indexOf('ogg') !== -1) ext = '.ogg';
+        else if (mimeType.indexOf('quicktime') !== -1 || mimeType.indexOf('mov') !== -1) ext = '.mov';
+        else if (mimeType.indexOf('m4v') !== -1) ext = '.m4v';
+        else if (mimeType.indexOf('x-matroska') !== -1 || mimeType.indexOf('mkv') !== -1) ext = '.mkv';
+
+        var dateFormatted = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || 'GMT+0530', 'yyyy-MM-dd_HH-mm-ss');
+        var safeAuthor = (author || 'Guest').toString().replace(/[^a-zA-Z0-9_-]/g, '_');
+        var fileName = 'Video_' + safeAuthor + '_' + dateFormatted + ext;
+
+        var decodedBytes = Utilities.base64Decode(rawB64);
+        var blob = Utilities.newBlob(decodedBytes, mimeType, fileName);
+        var finalFile = mainFolder.createFile(blob);
+
+        try {
+          finalFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+        } catch (shareErr) {}
+
+        var fileId = finalFile.getId();
+        var streamUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
+
+        // Log in Videos sheet
+        var videoSheet = ss.getSheetByName('Videos') || ss.insertSheet('Videos');
+        if (videoSheet.getLastRow() === 0) {
+          videoSheet.appendRow(['Timestamp', 'Local Time', 'Celebrant', 'Dedicated By', 'Video Caption', 'Moment Tag', 'Video Link / Stream URL']);
+          var vHeader = videoSheet.getRange(1, 1, 1, 7);
+          vHeader.setFontWeight('bold').setFontFamily('Arial').setFontColor('#831843').setBackground('#fce7f3').setHorizontalAlignment('center');
+          videoSheet.setFrozenRows(1);
+        }
+        videoSheet.appendRow([
+          new Date(),
+          data.localTime || new Date().toLocaleString(),
+          data.celebrant || 'Nishika',
+          author,
+          caption,
+          data.tag || 'Video Reel 🎬',
+          streamUrl
+        ]);
+
+        // Log in Wishes sheet for live Sticky Wall visibility
+        var wishSheet = ss.getSheetByName('Wishes') || ss.insertSheet('Wishes');
+        if (wishSheet.getLastRow() === 0 || wishSheet.getLastColumn() < 10) {
+          var headers = [
+            'Timestamp', 'Local Time', 'Celebrant', 'Dedicated By',
+            'Author / Sender', 'Heartfelt Message', 'Sticky Note Style',
+            'Media Type', 'Media URL', 'Likes Count'
+          ];
+          wishSheet.getRange(1, 1, 1, 10).setValues([headers]);
+          var wHeader = wishSheet.getRange(1, 1, 1, 10);
+          wHeader.setFontWeight('bold').setFontFamily('Arial').setFontColor('#831843').setBackground('#fce7f3').setHorizontalAlignment('center');
+          wishSheet.setFrozenRows(1);
+        }
+
+        wishSheet.appendRow([
+          new Date(),
+          data.localTime || new Date().toLocaleString(),
+          data.celebrant || 'Nishika',
+          author,
+          author,
+          caption,
+          data.color || 'gold',
+          'video',
+          streamUrl,
+          1
+        ]);
+
+        // Clean up temporary chunks folder
+        try {
+          sessionFolder.setTrashed(true);
+        } catch(trashErr) {}
+
+        return ContentService.createTextOutput(JSON.stringify({
+          status: 'success',
+          type: 'video_assembled',
+          mediaUrl: streamUrl,
+          fileUrl: finalFile.getUrl(),
+          message: 'Chunked video assembled, saved to Google Drive, and logged in Google Sheets!'
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+
+      return ContentService.createTextOutput(JSON.stringify({
+        status: 'success',
+        type: 'chunk_received',
+        chunkIndex: chunkIndex,
+        totalChunks: totalChunks
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ------------------------------------------------------------------------
+    // CASE E: SECRET TIME CAPSULE WISH
     // ------------------------------------------------------------------------
     else if (type === 'secret_wish') {
       var sheet = ss.getSheetByName('Secret Wishes') || ss.insertSheet('Secret Wishes');

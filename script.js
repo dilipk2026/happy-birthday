@@ -394,6 +394,120 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   window.sendToGoogleSheet = sendToGoogleSheet;
 
+  // Chunked Video Uploader to Bypass Google Apps Script Payload Limits
+  async function uploadVideoChunks({
+    url,
+    base64Data,
+    author,
+    caption,
+    celebrant = 'Nishika',
+    dedicatedBy = 'Dilip',
+    color = 'gold',
+    tag = 'Video Reel 🎬',
+    onProgress,
+    onSuccess,
+    onError
+  }) {
+    const targetUrl = url || state.googleSheetUrl || localStorage.getItem('eternal_love_sheet_url') || DEFAULT_GOOGLE_SHEET_URL;
+    if (!targetUrl || !targetUrl.startsWith('http')) {
+      if (typeof onError === 'function') onError(new Error('No Google Sheet Webhook URL configured'));
+      return { success: false, reason: 'no_url' };
+    }
+
+    const CHUNK_SIZE = 1.2 * 1024 * 1024; // 1.2 MB chunks (safe for Google Apps Script front-end limits)
+    const totalChars = base64Data.length;
+    const totalChunks = Math.max(1, Math.ceil(totalChars / CHUNK_SIZE));
+    const uploadId = 'up_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+
+    let mimeType = 'video/mp4';
+    if (base64Data.startsWith('data:')) {
+      const semi = base64Data.indexOf(';');
+      if (semi > 5) mimeType = base64Data.substring(5, semi);
+    }
+
+    try {
+      for (let i = 0; i < totalChunks; i++) {
+        if (!navigator.onLine) {
+          throw new Error('Device is offline');
+        }
+
+        const start = i * CHUNK_SIZE;
+        const end = Math.min(totalChars, start + CHUNK_SIZE);
+        const chunkSlice = base64Data.substring(start, end);
+
+        const chunkPayload = {
+          type: 'video_chunk',
+          uploadId: uploadId,
+          chunkIndex: i,
+          totalChunks: totalChunks,
+          chunkData: chunkSlice,
+          mimeType: mimeType,
+          author: author,
+          name: author,
+          caption: caption,
+          message: caption,
+          text: caption,
+          celebrant: celebrant,
+          dedicatedBy: dedicatedBy,
+          color: color,
+          tag: tag,
+          timestamp: new Date().toISOString(),
+          localTime: new Date().toLocaleString()
+        };
+
+        const pct = Math.round(((i + 1) / totalChunks) * 100);
+        if (typeof onProgress === 'function') {
+          onProgress(pct, i + 1, totalChunks);
+        }
+
+        // Send with up to 3 automatic retries
+        let sent = false;
+        let lastErr = null;
+        for (let attempt = 1; attempt <= 3; attempt++) {
+          try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 35000);
+
+            await fetch(targetUrl, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify(chunkPayload),
+              signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+            sent = true;
+            break;
+          } catch (fetchErr) {
+            lastErr = fetchErr;
+            await new Promise(r => setTimeout(r, 600 * attempt));
+          }
+        }
+
+        if (!sent) {
+          throw lastErr || new Error(`Failed to upload chunk ${i + 1} of ${totalChunks}`);
+        }
+
+        if (i < totalChunks - 1) {
+          await new Promise(r => setTimeout(r, 120));
+        }
+      }
+
+      if (typeof onSuccess === 'function') {
+        onSuccess();
+      }
+      return { success: true };
+    } catch (err) {
+      console.warn('Chunked video upload error:', err);
+      if (typeof onError === 'function') {
+        onError(err);
+      }
+      return { success: false, error: err };
+    }
+  }
+  window.uploadVideoChunks = uploadVideoChunks;
+
   // --------------------------------------------------------------------------
   // 2. SCROLL REVEAL OBSERVER (INTERSECTION OBSERVER) & MOBILE GUARANTEE
   // --------------------------------------------------------------------------
@@ -5707,31 +5821,25 @@ const romanticReasons = [
           : '<i class="fa-solid fa-spinner fa-spin"></i> <span>Pinning Blessing...</span>';
       }
 
-      // Sync wish note to Google Sheets & Drive
-      sendToGoogleSheet({
-        type: 'wish',
-        name: author,
-        author: author,
-        message: text,
-        text: text,
-        color: mainSelectedTheme,
-        styleClass: styleThemeClass,
-        mediaType: mainSelectedMediaType,
-        mediaData: mainSelectedMediaData,
-        mediaUrl: mainSelectedMediaData,
-        dataUrl: mainSelectedMediaData,
-        videoUrl: mainSelectedMediaData,
-        celebrant: state.recipientName || 'Nishika',
-        dedicatedBy: state.senderName || 'Dilip',
-        timestamp: new Date().toISOString(),
-        localTime: new Date().toLocaleString()
-      }, {
-        chipElement: document.getElementById('wishSyncChip'),
-        textElement: document.getElementById('wishSyncText'),
-        successText: 'Wish & Media Saved to Google Sheets! 💖✨',
-        defaultText: 'Google Sheets Connected ✨',
-        onSuccess: () => {
-          if (isVideoUpload) {
+      if (isVideoUpload) {
+        uploadVideoChunks({
+          base64Data: mainSelectedMediaData,
+          author: author,
+          caption: text,
+          celebrant: state.recipientName || 'Nishika',
+          dedicatedBy: state.senderName || 'Dilip',
+          color: mainSelectedTheme,
+          tag: 'Video Reel 🎬',
+          onProgress: (pct, currentChunk, totalChunks) => {
+            updateMainVideoProgressUI({
+              visible: true,
+              title: currentChunk < totalChunks ? `Uploading Video (Part ${currentChunk}/${totalChunks})...` : 'Finalizing & Saving to Drive...',
+              meta: `Transmitting chunks securely to Google Drive (${pct}%)...`,
+              pct: Math.min(98, Math.max(10, pct)),
+              step: 3
+            });
+          },
+          onSuccess: () => {
             updateMainVideoProgressUI({
               visible: true,
               title: 'Uploaded to Google Drive & Saved! 💖',
@@ -5748,14 +5856,12 @@ const romanticReasons = [
             setTimeout(() => {
               updateMainVideoProgressUI({ visible: false });
             }, 4500);
-          }
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
-          }
-        },
-        onError: (err) => {
-          if (isVideoUpload) {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
+            }
+          },
+          onError: (err) => {
             showMainVideoAlert({
               type: 'error',
               title: 'Cloud Sync Notice',
@@ -5764,13 +5870,50 @@ const romanticReasons = [
             setTimeout(() => {
               updateMainVideoProgressUI({ visible: false });
             }, 6000);
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
+            }
           }
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
+        });
+      } else {
+        // Lightweight standard post for text, photos, or video links
+        sendToGoogleSheet({
+          type: 'wish',
+          name: author,
+          author: author,
+          message: text,
+          text: text,
+          color: mainSelectedTheme,
+          styleClass: styleThemeClass,
+          mediaType: mainSelectedMediaType,
+          mediaData: mainSelectedMediaData,
+          mediaUrl: mainSelectedMediaData,
+          dataUrl: mainSelectedMediaData,
+          videoUrl: mainSelectedMediaData,
+          celebrant: state.recipientName || 'Nishika',
+          dedicatedBy: state.senderName || 'Dilip',
+          timestamp: new Date().toISOString(),
+          localTime: new Date().toLocaleString()
+        }, {
+          chipElement: document.getElementById('wishSyncChip'),
+          textElement: document.getElementById('wishSyncText'),
+          successText: 'Wish & Media Saved to Google Sheets! 💖✨',
+          defaultText: 'Google Sheets Connected ✨',
+          onSuccess: () => {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
+            }
+          },
+          onError: () => {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
+            }
           }
-        }
-      });
+        });
+      }
 
       // Reset form
       wishForm.reset();
