@@ -50,7 +50,7 @@
         {
           "testName": "Live Countdown timer elements (Days, Hours, Minutes, Seconds) render valid integers",
           "passed": true,
-          "details": "Days: 09",
+          "details": "Days: 06",
           "bugInfo": null
         },
         {

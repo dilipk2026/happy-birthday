@@ -12627,3 +12627,348 @@ img, video, canvas, svg, iframe {
     box-sizing: border-box !important;
   }
 }
+
+/* ==========================================================================
+   10. ULTRA-COMPREHENSIVE RESPONSIVE SUITE & MOBILE TOUCH OPTIMIZATIONS
+   ========================================================================== */
+
+/* Universal Mobile Inputs & Touch Target Standards */
+@media (max-width: 768px) {
+  /* Prevent automatic iOS zoom on form inputs */
+  input[type="text"],
+  input[type="url"],
+  input[type="password"],
+  input[type="number"],
+  input[type="email"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important;
+    touch-action: manipulation;
+  }
+
+  /* Universal Touch Targets for buttons */
+  button,
+  .btn,
+  .nav-btn,
+  .media-tab-btn,
+  .filter-pill,
+  .pk-btn,
+  .keypad-btn,
+  .theme-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Sticky Floating Player Safe Area Placement */
+  .music-player-pill,
+  #floatingMusicPlayer,
+  .floating-audio-widget {
+    bottom: max(14px, env(safe-area-inset-bottom)) !important;
+    right: max(14px, env(safe-area-inset-right)) !important;
+    max-width: calc(100vw - 28px) !important;
+    z-index: 9999 !important;
+  }
+}
+
+/* Modals & Dialogs Master Responsive Engine */
+.modal,
+.modal-backdrop,
+.modal-overlay,
+.page-passcode-overlay,
+.vip-modal-overlay {
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal-dialog,
+.modal-box,
+.modal-content,
+.page-passcode-card,
+.vip-modal-box,
+.lightbox-box {
+  width: min(95vw, 560px) !important;
+  max-width: 100% !important;
+  max-height: min(88vh, 760px) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  box-sizing: border-box !important;
+  margin: auto !important;
+}
+
+/* Video Upload Progress Card & Error Alert Responsive Styling */
+@media (max-width: 600px) {
+  .upload-progress-card {
+    padding: 12px 14px;
+    margin-top: 10px;
+    border-radius: 12px;
+  }
+
+  .upload-progress-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .upload-progress-title-wrap {
+    flex: 1 1 180px;
+    min-width: 0;
+  }
+
+  .upload-progress-title {
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .upload-progress-meta {
+    font-size: 0.7rem;
+  }
+
+  .upload-progress-pct {
+    font-size: 0.82rem;
+    padding: 2px 8px;
+  }
+
+  .upload-progress-steps {
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: space-between;
+    padding-top: 6px;
+    margin-top: 8px;
+  }
+
+  .upload-step-item {
+    font-size: 0.68rem;
+    gap: 4px;
+  }
+
+  .upload-status-alert {
+    padding: 10px 12px;
+    gap: 8px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+  }
+
+  .upload-alert-title {
+    font-size: 0.82rem;
+  }
+
+  .upload-alert-msg {
+    font-size: 0.74rem;
+  }
+}
+
+/* Vintage Tape Recorder & Cassette Deck Mobile Polish */
+@media (max-width: 600px) {
+  .tape-recorder-card,
+  .tape-player-wrapper,
+  #vintageMixtape,
+  #tapeView {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 14px 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .cassette-tape,
+  .tape-deck-body {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    padding: 12px 8px !important;
+  }
+
+  .tape-spools-wrap {
+    gap: 16px !important;
+  }
+
+  .tape-spool {
+    width: clamp(48px, 12vw, 68px) !important;
+    height: clamp(48px, 12vw, 68px) !important;
+  }
+
+  .tape-controls-bar {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    justify-content: center !important;
+  }
+
+  .tape-control-btn {
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    min-height: 38px !important;
+  }
+
+  .tape-track-title {
+    font-size: clamp(0.85rem, 3.2vw, 1.05rem) !important;
+    max-width: 100% !important;
+    text-align: center !important;
+  }
+}
+
+/* Interactive Cake Cutting Stage Mobile Scaling */
+@media (max-width: 600px) {
+  .cake-cutting-cinema,
+  .cake-stage-container,
+  #cakeCutStage3D {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .cake-container,
+  .cake-3d-model {
+    transform: scale(clamp(0.75, 1.8vw + 0.55, 0.95)) !important;
+    transform-origin: center center !important;
+    margin: 10px auto !important;
+  }
+
+  .cake-action-btns-wrap,
+  .cake-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .cake-action-btn {
+    flex: 1 1 140px !important;
+    max-width: 220px !important;
+    padding: 10px 14px !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+/* Fortune Roulette Wheel Mobile Scaling */
+@media (max-width: 600px) {
+  .roulette-outer-rim {
+    width: min(340px, 86vw) !important;
+    height: min(340px, 86vw) !important;
+    padding: 8px !important;
+    margin: 10px auto !important;
+  }
+
+  #fortuneWheelCanvas,
+  #rouletteWheel {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .roulette-spin-btn-wrap {
+    margin-top: 14px !important;
+  }
+
+  .spin-wheel-btn {
+    padding: 12px 28px !important;
+    font-size: 0.95rem !important;
+    min-height: 44px !important;
+  }
+}
+
+/* Love Coupons & 100 Reasons Jar Mobile Polish */
+@media (max-width: 600px) {
+  .coupons-grid,
+  .reasons-jar-grid,
+  .bucket-list-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    width: 100% !important;
+  }
+
+  .coupon-card {
+    padding: 16px 14px !important;
+  }
+
+  .reason-display-card {
+    padding: 18px 14px !important;
+    font-size: 0.95rem !important;
+  }
+}
+
+/* Pre-Launch Countdown & Header Mobile Polish (<= 380px) */
+@media (max-width: 380px) {
+  .header-content {
+    padding: 10px 12px !important;
+    gap: 6px !important;
+  }
+
+  .brand-logo {
+    font-size: 0.9rem !important;
+  }
+
+  .nav-btn {
+    padding: 6px 8px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .countdown-container {
+    gap: 4px !important;
+  }
+
+  .count-box {
+    min-width: 52px !important;
+    padding: 6px 3px !important;
+  }
+
+  .count-box .num {
+    font-size: 1.2rem !important;
+  }
+
+  .count-box .label {
+    font-size: 0.58rem !important;
+  }
+
+  .media-tab-btns {
+    gap: 4px !important;
+  }
+
+  .media-tab-btn {
+    padding: 6px 8px !important;
+    font-size: 0.72rem !important;
+  }
+}
+
+/* Landscape Mode for Low-Height Screens (<= 540px) */
+@media (max-height: 540px) and (orientation: landscape) {
+  .modal-dialog,
+  .modal-box,
+  .page-passcode-card,
+  .vip-modal-box {
+    max-height: 88vh !important;
+    padding: 12px 16px !important;
+    margin: 8px auto !important;
+  }
+
+  .modal-header,
+  .passcode-header,
+  .vip-modal-header {
+    margin-bottom: 6px !important;
+    padding-bottom: 4px !important;
+  }
+
+  .modal-title,
+  .passcode-title {
+    font-size: 1rem !important;
+  }
+
+  .passcode-keypad,
+  .keypad-grid {
+    gap: 4px !important;
+    margin-top: 8px !important;
+  }
+
+  .pk-btn,
+  .keypad-btn {
+    height: 34px !important;
+    font-size: 0.95rem !important;
+  }
+}
+
