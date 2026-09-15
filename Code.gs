@@ -81,7 +81,9 @@ function saveBase64ToDrive(base64Uri, fileNamePrefix, isVideoFile) {
     var commaIdx = base64Uri.indexOf(',');
     var headerPart = commaIdx > 0 ? base64Uri.substring(0, commaIdx) : '';
     var rawBase64 = commaIdx > 0 ? base64Uri.substring(commaIdx + 1) : base64Uri;
-    rawBase64 = rawBase64.replace(/[\r\n\s]+/g, '');
+    if (rawBase64.indexOf('\n') !== -1 || rawBase64.indexOf('\r') !== -1 || rawBase64.indexOf(' ') !== -1) {
+      rawBase64 = rawBase64.replace(/[\r\n\s]+/g, '');
+    }
 
     var mimeType = isVideoFile ? 'video/mp4' : 'image/jpeg';
     if (headerPart.indexOf('data:') === 0 && headerPart.indexOf(';') > 5) {
