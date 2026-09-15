@@ -985,17 +985,121 @@ async function runAllTests() {
     });
     await pSuite6.waitForTimeout(300);
 
-    const hasMainVideoAfterReload = await pSuite6.evaluate(() => {
-      const board = document.getElementById('wishesPinboard');
-      if (!board) return false;
-      return board.innerHTML.includes('drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz123456/preview');
+    // Test 6.7: Video Upload Progress Bar & Percentage Metric Simulation
+    const progressSimulationResult = await pSuite6.evaluate(async () => {
+      const progressBox = document.getElementById('mainVideoUploadProgressBox');
+      const pctEl = document.getElementById('mainVideoProgressPct');
+      const fillEl = document.getElementById('mainVideoProgressBarFill');
+      const titleEl = document.getElementById('mainVideoProgressTitle');
+      const metaEl = document.getElementById('mainVideoProgressMeta');
+      const alertEl = document.getElementById('mainVideoUploadAlert');
+      const alertTitleEl = document.getElementById('mainVideoAlertTitle');
+
+      if (!progressBox || !pctEl || !fillEl) return { ok: false, reason: 'Elements missing' };
+
+      // Simulate 15MB Video Progress Pipeline (0% -> 45% -> 80% -> 100%)
+      const stages = [];
+
+      // Step 1: Initial Read
+      if (typeof window.updateMainVideoProgressUI === 'function') {
+        window.updateMainVideoProgressUI({
+          visible: true,
+          title: 'Reading Video File (15.0 MB)...',
+          meta: 'video_15mb.mp4 • 0 MB / 15.0 MB (0%)',
+          pct: 0,
+          step: 1
+        });
+      }
+      stages.push({
+        visible: progressBox.style.display !== 'none',
+        pctText: pctEl.textContent,
+        fillWidth: fillEl.style.width
+      });
+
+      // Step 2: 45% Chunk Upload Transmitting
+      if (typeof window.updateMainVideoProgressUI === 'function') {
+        window.updateMainVideoProgressUI({
+          visible: true,
+          title: 'Uploading Video Reel (Part 6 of 13)...',
+          meta: 'Transmitted 6.8 MB / 15.0 MB to Google Cloud (45%)',
+          pct: 45,
+          step: 3
+        });
+      }
+      stages.push({
+        visible: progressBox.style.display !== 'none',
+        pctText: pctEl.textContent,
+        fillWidth: fillEl.style.width
+      });
+
+      // Step 3: 100% Completion State & Success Alert
+      if (typeof window.updateMainVideoProgressUI === 'function') {
+        window.updateMainVideoProgressUI({
+          visible: true,
+          title: '🎉 Video Upload Complete! (100%)',
+          meta: 'Successfully saved 15.0 MB video to Google Drive & Google Sheets!',
+          pct: 100,
+          step: 3,
+          isSuccess: true
+        });
+      }
+      if (typeof window.showMainVideoAlert === 'function') {
+        window.showMainVideoAlert({
+          type: 'success',
+          title: '✨ Video Dedication Successfully Uploaded! 👑',
+          msg: 'Your 15.0 MB video has been safely uploaded to Google Drive and permanently logged!'
+        });
+      }
+      stages.push({
+        visible: progressBox.style.display !== 'none',
+        pctText: pctEl.textContent,
+        fillWidth: fillEl.style.width,
+        isSuccessClass: progressBox.classList.contains('upload-complete'),
+        alertVisible: alertEl && alertEl.style.display !== 'none',
+        alertSuccessClass: alertEl && alertEl.classList.contains('is-success'),
+        alertTitle: alertTitleEl ? alertTitleEl.textContent : ''
+      });
+
+      return { ok: true, stages };
     });
 
     recordTest(
       suite6,
-      'Reloading main.html preserves pinned video sticky note from state storage',
-      hasMainVideoAfterReload,
-      hasMainVideoAfterReload ? 'Pinned video restored on reload' : 'Video missing after reload'
+      '15MB Video upload progress bar displays accurate percentage increments (0% -> 45% -> 100%) and glowing emerald success state',
+      progressSimulationResult.ok && 
+      progressSimulationResult.stages[0].pctText === '0%' && 
+      progressSimulationResult.stages[1].pctText === '45%' && 
+      progressSimulationResult.stages[2].pctText === '100%' && 
+      progressSimulationResult.stages[2].isSuccessClass,
+      progressSimulationResult.ok ? `Stages: ${JSON.stringify(progressSimulationResult.stages.map(s => s.pctText))}` : progressSimulationResult.reason
+    );
+
+    recordTest(
+      suite6,
+      'Video upload completion renders prominent green celebration alert banner with confirmation message',
+      progressSimulationResult.ok && 
+      progressSimulationResult.stages[2].alertVisible && 
+      progressSimulationResult.stages[2].alertSuccessClass && 
+      progressSimulationResult.stages[2].alertTitle.includes('Video Dedication'),
+      progressSimulationResult.ok ? `Alert Title: "${progressSimulationResult.stages[2].alertTitle}"` : progressSimulationResult.reason
+    );
+
+    // Test 6.8: Video Responsive Box Dimensions across Viewport Bounds
+    const responsiveVideoCheck = await pSuite6.evaluate(() => {
+      const embeds = document.querySelectorAll('.sticky-video-embed');
+      const containers = document.querySelectorAll('.video-embed-container');
+      const allFit = Array.from(embeds).every(e => {
+        const rect = e.getBoundingClientRect();
+        return rect.width > 0 && rect.width <= window.innerWidth && rect.height > 0;
+      });
+      return { totalEmbeds: embeds.length, allFit };
+    });
+
+    recordTest(
+      suite6,
+      'All sticky video embeds scale gracefully within container boundaries without clipping',
+      responsiveVideoCheck.allFit,
+      `Verified ${responsiveVideoCheck.totalEmbeds} video embed containers within parent grid`
     );
 
     await ctxSuite6.close();

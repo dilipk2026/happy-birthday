@@ -414,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return { success: false, reason: 'no_url' };
     }
 
-    const CHUNK_SIZE = 1.2 * 1024 * 1024; // 1.2 MB chunks (safe for Google Apps Script front-end limits)
+    const CHUNK_SIZE = 1.0 * 1024 * 1024; // 1.0 MB chunks for optimal Apps Script upload reliability
     const totalChars = base64Data.length;
     const totalChunks = Math.max(1, Math.ceil(totalChars / CHUNK_SIZE));
     const uploadId = 'up_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const pct = Math.round(((i + 1) / totalChunks) * 100);
         if (typeof onProgress === 'function') {
-          onProgress(pct, i + 1, totalChunks);
+          onProgress(pct, i + 1, totalChunks, end, totalChars);
         }
 
         // Send with up to 3 automatic retries
@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let attempt = 1; attempt <= 3; attempt++) {
           try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 35000);
+            const timeoutId = setTimeout(() => controller.abort(), 45000);
 
             await fetch(targetUrl, {
               method: 'POST',
@@ -490,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (i < totalChunks - 1) {
-          await new Promise(r => setTimeout(r, 120));
+          await new Promise(r => setTimeout(r, 80));
         }
       }
 
@@ -5099,31 +5099,51 @@ const romanticReasons = [
   const mainVideoAlertIcon = document.getElementById('mainVideoAlertIcon');
   const mainVideoAlertClose = document.getElementById('mainVideoAlertClose');
 
-  function updateMainVideoProgressUI({ visible = true, title = 'Processing Video...', meta = '', pct = 0, step = 1, isSuccess = false }) {
+  let mainSelectedVideoFile = null;
+  let isVideoEncodingInProgress = false;
+
+  function updateMainVideoProgressUI({
+    visible = true,
+    title = 'Processing Video...',
+    meta = '',
+    pct = 0,
+    step = 1,
+    isSuccess = false
+  }) {
     if (!mainVideoUploadProgressBox) return;
     if (!visible) {
       mainVideoUploadProgressBox.style.display = 'none';
+      mainVideoUploadProgressBox.classList.remove('upload-complete');
       return;
     }
     mainVideoUploadProgressBox.style.display = 'block';
+    if (isSuccess) {
+      mainVideoUploadProgressBox.classList.add('upload-complete');
+    } else {
+      mainVideoUploadProgressBox.classList.remove('upload-complete');
+    }
+
     if (mainVideoUploadAlert && !isSuccess) mainVideoUploadAlert.style.display = 'none';
 
     if (mainVideoProgressTitle) mainVideoProgressTitle.textContent = title;
     if (mainVideoProgressMeta) mainVideoProgressMeta.textContent = meta;
-    if (mainVideoProgressPct) mainVideoProgressPct.textContent = `${Math.min(100, Math.max(0, Math.round(pct)))}%`;
+    
+    const roundedPct = Math.min(100, Math.max(0, Math.round(pct)));
+    if (mainVideoProgressPct) mainVideoProgressPct.textContent = `${roundedPct}%`;
+    
     if (mainVideoProgressBarFill) {
-      mainVideoProgressBarFill.style.width = `${Math.min(100, Math.max(0, pct))}%`;
-      if (isSuccess) {
-        mainVideoProgressBarFill.style.background = 'linear-gradient(90deg, #10b981, #34d399, #10b981)';
+      mainVideoProgressBarFill.style.width = `${roundedPct}%`;
+      if (isSuccess || roundedPct >= 100) {
+        mainVideoProgressBarFill.classList.add('success');
       } else {
-        mainVideoProgressBarFill.style.background = 'linear-gradient(90deg, #ff4081, #ff80ab, #ffd700, #ff4081)';
+        mainVideoProgressBarFill.classList.remove('success');
       }
     }
 
     if (mainVideoStep1 && mainVideoStep2 && mainVideoStep3) {
-      mainVideoStep1.className = 'upload-step-item' + (step >= 1 ? (step > 1 ? ' completed' : ' active') : '');
-      mainVideoStep2.className = 'upload-step-item' + (step >= 2 ? (step > 2 ? ' completed' : ' active') : '');
-      mainVideoStep3.className = 'upload-step-item' + (step >= 3 ? (isSuccess ? ' completed' : ' active') : '');
+      mainVideoStep1.className = 'upload-step-item' + (step >= 1 ? (step > 1 || isSuccess ? ' completed' : ' active') : '');
+      mainVideoStep2.className = 'upload-step-item' + (step >= 2 ? (step > 2 || isSuccess ? ' completed' : ' active') : '');
+      mainVideoStep3.className = 'upload-step-item' + (step >= 3 ? (isSuccess || roundedPct >= 100 ? ' completed' : ' active') : '');
     }
   }
 
@@ -5163,8 +5183,9 @@ const romanticReasons = [
 
   if (mainWishVideoInput) {
     mainWishVideoInput.addEventListener('change', async (e) => {
-      const file = e.target.files[0];
+      const file = e.target.files && e.target.files[0];
       if (file) {
+        mainSelectedVideoFile = file;
         const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
         if (file.size > 30 * 1024 * 1024) {
           showMainVideoAlert({
@@ -5178,11 +5199,12 @@ const romanticReasons = [
         }
 
         hideMainVideoAlert();
+        isVideoEncodingInProgress = true;
         updateMainVideoProgressUI({
           visible: true,
-          title: 'Reading Video File...',
-          meta: `${file.name} • ${fileSizeMB} MB`,
-          pct: 12,
+          title: `Reading Video File (${fileSizeMB} MB)...`,
+          meta: `Preparing ${file.name} for high-speed transmission...`,
+          pct: 15,
           step: 1
         });
 
@@ -5190,12 +5212,13 @@ const romanticReasons = [
         updateMainVideoPreview(videoUrl);
 
         try {
-          const base64Data = await readFileAsBase64(file, (filePct) => {
-            const mappedPct = 12 + Math.round(filePct * 0.55); // 12% to 67%
+          const base64Data = await readFileAsBase64(file, (filePct, loaded, total) => {
+            const mappedPct = Math.min(95, 15 + Math.round(filePct * 0.8));
+            const loadedMB = loaded ? (loaded / (1024 * 1024)).toFixed(1) : ((file.size * filePct / 100) / (1024 * 1024)).toFixed(1);
             updateMainVideoProgressUI({
               visible: true,
               title: filePct < 100 ? `Reading Video (${filePct}%)...` : 'Encoding Video Stream...',
-              meta: `${file.name} • ${fileSizeMB} MB`,
+              meta: `${file.name} • ${loadedMB} MB / ${fileSizeMB} MB (${filePct}%)`,
               pct: mappedPct,
               step: filePct < 100 ? 1 : 2
             });
@@ -5203,17 +5226,19 @@ const romanticReasons = [
 
           mainSelectedMediaData = base64Data;
           mainSelectedMediaType = 'video';
+          isVideoEncodingInProgress = false;
           if (mainWishVideoUrl) mainWishVideoUrl.value = '';
 
           updateMainVideoProgressUI({
             visible: true,
-            title: 'Video Ready for Consecration ✨',
-            meta: `${file.name} • ${fileSizeMB} MB • Ready to Pin`,
-            pct: 75,
+            title: 'Video Ready to Upload & Pin ✨',
+            meta: `${file.name} • ${fileSizeMB} MB • Encoded & Ready to Consecrate`,
+            pct: 100,
             step: 2
           });
         } catch(vErr) {
           console.warn('Video encoding error:', vErr);
+          isVideoEncodingInProgress = false;
           showMainVideoAlert({
             type: 'error',
             title: 'Video Read Failed',
@@ -5245,9 +5270,12 @@ const romanticReasons = [
       if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
       mainSelectedMediaData = '';
       mainSelectedMediaType = 'none';
+      mainSelectedVideoFile = null;
+      isVideoEncodingInProgress = false;
       hideMainVideoAlert();
       updateMainVideoProgressUI({ visible: false });
     });
+  }
   }
 
   // Theme Color Swatches Picker
@@ -5755,10 +5783,32 @@ const romanticReasons = [
       const text = wishTextInput ? wishTextInput.value.trim() : '';
       if (!text) return;
 
+      const submitBtn = document.getElementById('mainSubmitWishBtn');
+      const hasVideoFile = (mainWishVideoInput && mainWishVideoInput.files && mainWishVideoInput.files[0]) || mainSelectedVideoFile;
+      const isVideoUpload = (mainSelectedMediaType === 'video') && (hasVideoFile || (mainSelectedMediaData && mainSelectedMediaData.startsWith('data:video')));
+
+      if (isVideoUpload && isVideoEncodingInProgress) {
+        showMainVideoAlert({
+          type: 'error',
+          title: 'Encoding in Progress',
+          msg: 'Please wait a moment while your video finishes preparing, then click Pin Note.'
+        });
+        return;
+      }
+
       // Ensure Base64 file is fully encoded before dispatching payload
-      if (mainSelectedMediaType === 'video' && mainWishVideoInput && mainWishVideoInput.files && mainWishVideoInput.files[0]) {
+      if (isVideoUpload && (!mainSelectedMediaData || !mainSelectedMediaData.startsWith('data:video')) && hasVideoFile) {
+        const fileObj = (mainWishVideoInput && mainWishVideoInput.files && mainWishVideoInput.files[0]) || mainSelectedVideoFile;
+        const fileSizeMB = (fileObj.size / (1024 * 1024)).toFixed(1);
+        updateMainVideoProgressUI({
+          visible: true,
+          title: `Encoding Video (${fileSizeMB} MB)...`,
+          meta: 'Preparing stream for cloud upload...',
+          pct: 20,
+          step: 2
+        });
         try {
-          mainSelectedMediaData = await readFileAsBase64(mainWishVideoInput.files[0]);
+          mainSelectedMediaData = await readFileAsBase64(fileObj);
         } catch (vErr) {
           console.warn('Main wish video encoding error:', vErr);
         }
@@ -5801,27 +5851,35 @@ const romanticReasons = [
       audioSynth.playCheerSound();
       burstConfetti(window.innerWidth / 2, window.innerHeight * 0.7, 45);
 
-      const submitBtn = document.getElementById('mainSubmitWishBtn');
-      const isVideoUpload = mainSelectedMediaType === 'video' && mainSelectedMediaData && mainSelectedMediaData.startsWith('data:video');
-
       if (isVideoUpload) {
+        const fileObj = (mainWishVideoInput && mainWishVideoInput.files && mainWishVideoInput.files[0]) || mainSelectedVideoFile;
+        const fileSizeMB = fileObj ? (fileObj.size / (1024 * 1024)).toFixed(1) : ((mainSelectedMediaData.length * 0.75) / (1024 * 1024)).toFixed(1);
+
+        // Keep the video tab and upload progress card active and locked in view
+        const videoTabBtn = document.querySelector('.media-tab-btn[data-tab="mainTabVideo"]');
+        if (videoTabBtn) {
+          mainMediaTabBtns.forEach(b => b.classList.remove('active'));
+          videoTabBtn.classList.add('active');
+        }
+        const videoPane = document.getElementById('mainTabVideo');
+        if (videoPane) {
+          document.querySelectorAll('#wishBoardSection .media-content-pane').forEach(p => p.classList.remove('active'));
+          videoPane.classList.add('active');
+        }
+
         updateMainVideoProgressUI({
           visible: true,
-          title: 'Uploading Video to Google Cloud...',
-          meta: 'Saving to Google Drive & Consecrating to Sheet...',
-          pct: 85,
+          title: `Uploading Video (${fileSizeMB} MB) to Google Drive...`,
+          meta: `Initiating high-speed chunk transmission...`,
+          pct: 4,
           step: 3
         });
-      }
 
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = isVideoUpload 
-          ? '<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video to Drive...</span>'
-          : '<i class="fa-solid fa-spinner fa-spin"></i> <span>Pinning Blessing...</span>';
-      }
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video (${fileSizeMB} MB)... (0%)</span>`;
+        }
 
-      if (isVideoUpload) {
         uploadVideoChunks({
           base64Data: mainSelectedMediaData,
           author: author,
@@ -5830,36 +5888,67 @@ const romanticReasons = [
           dedicatedBy: state.senderName || 'Dilip',
           color: mainSelectedTheme,
           tag: 'Video Reel 🎬',
-          onProgress: (pct, currentChunk, totalChunks) => {
+          onProgress: (pct, currentChunk, totalChunks, endBytes, totalBytes) => {
+            const transMB = ((endBytes * 0.75) / (1024 * 1024)).toFixed(1);
+            const totMB = ((totalBytes * 0.75) / (1024 * 1024)).toFixed(1);
             updateMainVideoProgressUI({
               visible: true,
-              title: currentChunk < totalChunks ? `Uploading Video (Part ${currentChunk}/${totalChunks})...` : 'Finalizing & Saving to Drive...',
-              meta: `Transmitting chunks securely to Google Drive (${pct}%)...`,
-              pct: Math.min(98, Math.max(10, pct)),
+              title: currentChunk < totalChunks 
+                ? `Uploading Video (Part ${currentChunk} of ${totalChunks})...` 
+                : 'Finalizing Video & Saving to Google Drive...',
+              meta: `Transmitted ${transMB} MB / ${totMB} MB to Google Cloud (${pct}%)`,
+              pct: Math.min(100, Math.max(4, pct)),
               step: 3
             });
+
+            if (submitBtn) {
+              submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video (${pct}% • Part ${currentChunk}/${totalChunks})...</span>`;
+            }
           },
           onSuccess: () => {
             updateMainVideoProgressUI({
               visible: true,
-              title: 'Uploaded to Google Drive & Saved! 💖',
-              meta: 'Saved to Google Sheets & Live Wall',
+              title: '🎉 Video Upload Complete! (100%)',
+              meta: `Successfully saved ${fileSizeMB} MB video to Google Drive & Google Sheets!`,
               pct: 100,
               step: 3,
               isSuccess: true
             });
+
             showMainVideoAlert({
               type: 'success',
-              title: 'Video Dedication Consecrated! 👑',
-              msg: 'Your video reel was successfully uploaded to Google Drive and permanently logged in Google Sheets!'
+              title: '✨ Video Dedication Successfully Uploaded! 👑',
+              msg: `Your ${fileSizeMB} MB video has been safely uploaded to Google Drive and permanently logged in Google Sheets & the live wall!`
             });
-            setTimeout(() => {
-              updateMainVideoProgressUI({ visible: false });
-            }, 4500);
+
+            if (typeof showToast === 'function') {
+              showToast(`🎉 Video upload complete! (${fileSizeMB} MB saved to Google Drive) 🎬✨`);
+            }
+
             if (submitBtn) {
               submitBtn.disabled = false;
-              submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
+              submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Consecrated Successfully! ✨</span>';
             }
+
+            // Gracefully reset after the user has seen the complete 100% success state
+            setTimeout(() => {
+              updateMainVideoProgressUI({ visible: false });
+              hideMainVideoAlert();
+              wishForm.reset();
+              mainSelectedMediaData = '';
+              mainSelectedMediaType = 'none';
+              mainSelectedVideoFile = null;
+              if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'none';
+              if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
+              mainMediaTabBtns.forEach(b => b.classList.remove('active'));
+              const defaultTab = document.querySelector('.media-tab-btn[data-tab="mainTabNone"]');
+              if (defaultTab) defaultTab.classList.add('active');
+              document.querySelectorAll('#wishBoardSection .media-content-pane').forEach(p => p.classList.remove('active'));
+
+              if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
+              }
+            }, 4500);
           },
           onError: (err) => {
             showMainVideoAlert({
@@ -5877,7 +5966,12 @@ const romanticReasons = [
           }
         });
       } else {
-        // Lightweight standard post for text, photos, or video links
+        // Standard post for text or photo
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Pinning Blessing...</span>';
+        }
+
         sendToGoogleSheet({
           type: 'wish',
           name: author,
@@ -5898,7 +5992,7 @@ const romanticReasons = [
         }, {
           chipElement: document.getElementById('wishSyncChip'),
           textElement: document.getElementById('wishSyncText'),
-          successText: 'Wish & Media Saved to Google Sheets! 💖✨',
+          successText: 'Wish Saved to Google Sheets! 💖✨',
           defaultText: 'Google Sheets Connected ✨',
           onSuccess: () => {
             if (submitBtn) {
@@ -5913,23 +6007,23 @@ const romanticReasons = [
             }
           }
         });
+
+        // Reset form for standard text/photo
+        wishForm.reset();
+        mainSelectedMediaData = '';
+        mainSelectedMediaType = 'none';
+        if (mainPhotoPreviewBox) mainPhotoPreviewBox.style.display = 'none';
+        if (mainPhotoPreviewImg) mainPhotoPreviewImg.src = '';
+        if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'none';
+        if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
+
+        mainMediaTabBtns.forEach(b => b.classList.remove('active'));
+        const defaultTab = document.querySelector('.media-tab-btn[data-tab="mainTabNone"]');
+        if (defaultTab) defaultTab.classList.add('active');
+        document.querySelectorAll('#wishBoardSection .media-content-pane').forEach(p => p.classList.remove('active'));
+
+        showToast('Note pinned to My Love Nishika\'s celebration board! 📌✨');
       }
-
-      // Reset form
-      wishForm.reset();
-      mainSelectedMediaData = '';
-      mainSelectedMediaType = 'none';
-      if (mainPhotoPreviewBox) mainPhotoPreviewBox.style.display = 'none';
-      if (mainPhotoPreviewImg) mainPhotoPreviewImg.src = '';
-      if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'none';
-      if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
-
-      mainMediaTabBtns.forEach(b => b.classList.remove('active'));
-      const defaultTab = document.querySelector('.media-tab-btn[data-tab="mainTabNone"]');
-      if (defaultTab) defaultTab.classList.add('active');
-      document.querySelectorAll('#wishBoardSection .media-content-pane').forEach(p => p.classList.remove('active'));
-
-      showToast('Note & media pinned to My Love Nishika\'s celebration board! 📌✨');
     });
   }
 
