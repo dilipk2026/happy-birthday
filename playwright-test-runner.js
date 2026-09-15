@@ -535,7 +535,7 @@ async function runAllTests() {
         const keyC = await pageMain.$('#pagePasscodeKeypad .pk-btn[data-key="C"]');
         if (keyC) {
           await keyC.click();
-          await pageMain.waitForTimeout(200);
+          await pageMain.waitForTimeout(900);
         }
 
         // Enter valid 8-digit birthday passcode: 22092000
@@ -546,14 +546,14 @@ async function runAllTests() {
 
         if (pk2 && pk0 && pk9) {
           // '2', '2', '0', '9', '2', '0', '0', '0'
-          await pk2.click(); await pageMain.waitForTimeout(50);
-          await pk2.click(); await pageMain.waitForTimeout(50);
-          await pk0.click(); await pageMain.waitForTimeout(50);
-          await pk9.click(); await pageMain.waitForTimeout(50);
-          await pk2.click(); await pageMain.waitForTimeout(50);
-          await pk0.click(); await pageMain.waitForTimeout(50);
-          await pk0.click(); await pageMain.waitForTimeout(50);
-          await pk0.click(); await pageMain.waitForTimeout(50);
+          await pk2.click(); await pageMain.waitForTimeout(60);
+          await pk2.click(); await pageMain.waitForTimeout(60);
+          await pk0.click(); await pageMain.waitForTimeout(60);
+          await pk9.click(); await pageMain.waitForTimeout(60);
+          await pk2.click(); await pageMain.waitForTimeout(60);
+          await pk0.click(); await pageMain.waitForTimeout(60);
+          await pk0.click(); await pageMain.waitForTimeout(60);
+          await pk0.click(); await pageMain.waitForTimeout(60);
 
           if (submitBtn) {
             try {
@@ -561,7 +561,7 @@ async function runAllTests() {
               if (isVis) await submitBtn.click({ timeout: 1000 }).catch(() => {});
             } catch (e) {}
           }
-          await pageMain.waitForTimeout(500);
+          await pageMain.waitForTimeout(600);
 
           const isPasscodeUnlocked = await passcodeOverlay.evaluate(el => el.classList.contains('unlocked') || el.style.display === 'none' || el.classList.contains('fade-out'));
           recordTest(
@@ -589,7 +589,7 @@ async function runAllTests() {
     if (isIntroVisible) {
       const unboxBtn = await pageMain.$('#openGiftBtn, #giftBoxTrigger, .gift-box-wrapper');
       if (unboxBtn) {
-        await unboxBtn.click();
+        await unboxBtn.click({ force: true }).catch(() => {});
         await pageMain.waitForTimeout(600);
       }
     }

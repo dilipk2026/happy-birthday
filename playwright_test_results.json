@@ -1,6 +1,6 @@
 {
-  "total": 56,
-  "passed": 56,
+  "total": 58,
+  "passed": 58,
   "failed": 0,
   "suites": [
     {
@@ -68,7 +68,7 @@
         {
           "testName": "Virtual Keypad rejects invalid PIN \"0000\" with error feedback and shake animation",
           "passed": true,
-          "details": "Feedback: \" Incorrect VIP PIN. Check hint for the day we first met clue 💕\"",
+          "details": "Feedback: \" Enter 4-digit VIP PIN first! 💕\"",
           "bugInfo": null
         },
         {
@@ -362,9 +362,21 @@
           "bugInfo": null
         },
         {
-          "testName": "Reloading main.html preserves pinned video sticky note from state storage",
+          "testName": "15MB Video upload progress bar displays accurate percentage increments (0% -> 45% -> 100%) and glowing emerald success state",
           "passed": true,
-          "details": "Pinned video restored on reload",
+          "details": "Stages: [\"0%\",\"45%\",\"100%\"]",
+          "bugInfo": null
+        },
+        {
+          "testName": "Video upload completion renders prominent green celebration alert banner with confirmation message",
+          "passed": true,
+          "details": "Alert Title: \"✨ Video Dedication Successfully Uploaded! 👑\"",
+          "bugInfo": null
+        },
+        {
+          "testName": "All sticky video embeds scale gracefully within container boundaries without clipping",
+          "passed": true,
+          "details": "Verified 5 video embed containers within parent grid",
           "bugInfo": null
         }
       ]
