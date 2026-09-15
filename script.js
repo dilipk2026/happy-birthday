@@ -136,7 +136,67 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Async helper to convert file to Base64 with progress callback
+  // Video MIME type and Codec format helper
+  function getMimeTypeForVideoFile(file) {
+    if (!file) return 'video/mp4';
+    if (file.type && file.type.startsWith('video/')) return file.type;
+    const name = (typeof file === 'string' ? file : (file.name || '')).toLowerCase();
+    if (name.endsWith('.mp4') || name.endsWith('.m4v')) return 'video/mp4';
+    if (name.endsWith('.webm')) return 'video/webm';
+    if (name.endsWith('.mov') || name.endsWith('.qt')) return 'video/quicktime';
+    if (name.endsWith('.mkv')) return 'video/x-matroska';
+    if (name.endsWith('.avi')) return 'video/x-msvideo';
+    if (name.endsWith('.wmv')) return 'video/x-ms-wmv';
+    if (name.endsWith('.3gp')) return 'video/3gpp';
+    if (name.endsWith('.3g2')) return 'video/3gpp2';
+    if (name.endsWith('.ogv') || name.endsWith('.ogg')) return 'video/ogg';
+    if (name.endsWith('.flv')) return 'video/x-flv';
+    if (name.endsWith('.ts') || name.endsWith('.mts') || name.endsWith('.m2ts')) return 'video/mp2t';
+    return 'video/mp4';
+  }
+  window.getMimeTypeForVideoFile = getMimeTypeForVideoFile;
+
+  function getVideoCodecInfo(mimeType, urlOrName) {
+    const cleanMime = (mimeType || '').toLowerCase();
+    const cleanUrl = (urlOrName || '').toLowerCase();
+    if (cleanMime.includes('webm') || cleanUrl.includes('.webm')) {
+      return { format: 'WebM', codec: 'VP8 / VP9 / AV1', ext: '.webm' };
+    }
+    if (cleanMime.includes('quicktime') || cleanMime.includes('mov') || cleanUrl.includes('.mov') || cleanUrl.includes('.qt')) {
+      return { format: 'QuickTime MOV', codec: 'Apple ProRes / H.264 / HEVC', ext: '.mov' };
+    }
+    if (cleanMime.includes('matroska') || cleanMime.includes('mkv') || cleanUrl.includes('.mkv')) {
+      return { format: 'Matroska MKV', codec: 'H.264 / HEVC / VP9 / AV1', ext: '.mkv' };
+    }
+    if (cleanMime.includes('msvideo') || cleanMime.includes('avi') || cleanUrl.includes('.avi')) {
+      return { format: 'AVI', codec: 'MPEG-4 / DivX / XviD', ext: '.avi' };
+    }
+    if (cleanMime.includes('ms-wmv') || cleanMime.includes('wmv') || cleanUrl.includes('.wmv')) {
+      return { format: 'Windows Media', codec: 'WMV9 / VC-1', ext: '.wmv' };
+    }
+    if (cleanMime.includes('3gpp2') || cleanUrl.includes('.3g2')) {
+      return { format: '3GPP2 Mobile', codec: 'H.263 / MPEG-4', ext: '.3g2' };
+    }
+    if (cleanMime.includes('3gpp') || cleanUrl.includes('.3gp')) {
+      return { format: '3GPP Mobile', codec: 'H.263 / H.264', ext: '.3gp' };
+    }
+    if (cleanMime.includes('ogg') || cleanMime.includes('ogv') || cleanUrl.includes('.ogv') || cleanUrl.includes('.ogg')) {
+      return { format: 'Ogg Video', codec: 'Theora / Vorbis', ext: '.ogv' };
+    }
+    if (cleanMime.includes('m4v') || cleanUrl.includes('.m4v')) {
+      return { format: 'Apple M4V', codec: 'H.264 / AAC', ext: '.m4v' };
+    }
+    if (cleanMime.includes('flv') || cleanUrl.includes('.flv')) {
+      return { format: 'Flash Video', codec: 'Sorenson Spark / VP6', ext: '.flv' };
+    }
+    if (cleanMime.includes('mp2t') || cleanUrl.includes('.ts') || cleanUrl.includes('.mts') || cleanUrl.includes('.m2ts')) {
+      return { format: 'MPEG-TS', codec: 'MPEG-2 / H.264 / HEVC', ext: '.ts' };
+    }
+    return { format: 'MP4 Video', codec: 'H.264 (AVC) / H.265 (HEVC) / AV1', ext: '.mp4' };
+  }
+  window.getVideoCodecInfo = getVideoCodecInfo;
+
+  // Async helper to convert file to Base64 with progress callback and MIME normalization
   function readFileAsBase64(file, onProgress) {
     return new Promise((resolve, reject) => {
       if (!file) return resolve('');
@@ -149,9 +209,20 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       reader.onload = () => {
         if (typeof onProgress === 'function') onProgress(100, file.size, file.size);
-        resolve(reader.result);
+        let result = reader.result || '';
+        // If MIME was empty or generic octet-stream, inject inferred MIME type into data URL header
+        if (file.name && (file.type === '' || file.type === 'application/octet-stream' || !result.startsWith('data:video/'))) {
+          const detectedMime = getMimeTypeForVideoFile(file);
+          if (detectedMime && detectedMime.startsWith('video/')) {
+            const comma = result.indexOf(',');
+            if (comma !== -1) {
+              result = `data:${detectedMime};base64,${result.substring(comma + 1)}`;
+            }
+          }
+        }
+        resolve(result);
       };
-      reader.onerror = (err) => reject(new Error('Failed to read media file from device.'));
+      reader.onerror = () => reject(new Error('Failed to read media file from device.'));
       reader.readAsDataURL(file);
     });
   }
@@ -424,6 +495,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (base64Data.startsWith('data:')) {
       const semi = base64Data.indexOf(';');
       if (semi > 5) mimeType = base64Data.substring(5, semi);
+    } else if (typeof fileName === 'string' && fileName) {
+      mimeType = getMimeTypeForVideoFile(fileName);
     }
 
     let completedChunks = 0;
@@ -5023,8 +5096,24 @@ const romanticReasons = [
       }
     }
 
-    // 4. Direct MP4 / WebM / Blob Video / Base64 Data URL
-    return `<video src="${clean}" controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="width:100%; height:100%; min-height:160px; max-height:400px; object-fit:contain; border-radius:10px; background:#000;"></video>`;
+    // 4. Direct MP4 / WebM / QuickTime MOV / MKV / AVI / WMV / 3GP / OGG / Base64 Data URL
+    let videoMime = 'video/mp4';
+    if (clean.startsWith('data:')) {
+      const semi = clean.indexOf(';');
+      if (semi > 5) videoMime = clean.substring(5, semi);
+    } else {
+      videoMime = getMimeTypeForVideoFile(clean);
+    }
+
+    return `
+      <div class="video-embed-container" style="position:relative; width:100%; height:100%; min-height:160px; max-height:400px; border-radius:10px; overflow:hidden; background:#000;">
+        <video controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="width:100%; height:100%; min-height:160px; max-height:400px; object-fit:contain; border-radius:10px; background:#000; display:block;">
+          <source src="${clean}" type="${videoMime}">
+          <source src="${clean}">
+          Your browser does not support playing this ${videoMime} video codec directly. <a href="${clean}" download="video" target="_blank" style="color:var(--primary, #ff4081);">Download Video</a>
+        </video>
+      </div>
+    `;
   }
   window.parseGasVideoEmbed = parseGasVideoEmbed;
 
@@ -5339,7 +5428,7 @@ const romanticReasons = [
     if (type === 'photo') return true;
     const url = (w.mediaUrl || w.mediaData || '').toLowerCase();
     if (!url) return false;
-    if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com') || url.includes('/preview') || /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url) || url.startsWith('data:video')) {
+    if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com') || url.includes('/preview') || /\.(mp4|webm|ogg|ogv|mov|qt|m4v|avi|mkv|wmv|3gp|3g2|flv|ts|mts|m2ts)(\?.*)?$/i.test(url) || url.startsWith('data:video')) {
       return false;
     }
     return url.startsWith('data:image') ||
@@ -5361,7 +5450,7 @@ const romanticReasons = [
            url.includes('vimeo.com') ||
            url.includes('/preview') ||
            url.startsWith('data:video') ||
-           /\.(mp4|webm|ogg|mov|m4v|avi|mkv)(\?.*)?$/i.test(url);
+           /\.(mp4|webm|ogg|ogv|mov|qt|m4v|avi|mkv|wmv|3gp|3g2|flv|ts|mts|m2ts)(\?.*)?$/i.test(url);
   }
 
   // Universal Media URL Normalizer (Keeps Video stream links intact and converts Photos to fast CDN thumbnails)
@@ -5383,7 +5472,7 @@ const romanticReasons = [
     }
 
     if (driveId) {
-      if (isVideo || url.includes('/preview') || url.match(/\.(mp4|webm|mov|m4v)/i)) {
+      if (isVideo || url.includes('/preview') || url.match(/\.(mp4|webm|mov|qt|m4v|ogg|ogv|avi|mkv|wmv|3gp|3g2|flv|ts|mts|m2ts)/i)) {
         return `https://drive.google.com/file/d/${driveId}/preview`;
       }
       return `https://lh3.googleusercontent.com/d/${driveId}`;

@@ -1,6 +1,6 @@
 # 11. Maintenance, Operations & Rollover Runbook
 
-> **Status**: `[VERIFIED]` • Production Baseline v3.0.0  
+> **Status**: `[VERIFIED]` • Production Baseline v3.1.0  
 > **Maintenance Cycle**: Annual Birthday Rollover & Cloud Quota Audits  
 
 ---

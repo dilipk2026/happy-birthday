@@ -1,6 +1,6 @@
 # 08. Installation, Local Setup & Developer Guide
 
-> **Status**: `[VERIFIED]` • Production Baseline v3.0.0  
+> **Status**: `[VERIFIED]` • Production Baseline v3.1.0  
 > **Repository**: `https://github.com/dilipk2026/happy-birthday.git`  
 > **Runtime Prerequisites**: Zero compilation build tools required; native static browser execution.  
 
@@ -49,7 +49,7 @@ npx -y http-server . -p 8080 -c-1
 
 ## 3. Automated QA Testing Harness Setup
 
-To execute the 56 automated end-to-end tests locally:
+To execute the 58 automated end-to-end tests locally:
 
 ### Step 1: Install Playwright Dependency
 ```bash
@@ -73,13 +73,13 @@ node playwright-test-runner.js
 🛡️ SUITE 3: Security, Gatekeeper & Launch Router (6/6 PASS)
 👑 SUITE 4: Main Celebration Arena (17/17 PASS)
 📱 SUITE 5: Multi-Device Responsive Matrix (10/10 PASS)
-🎬 SUITE 6: Video Upload & Cloud Preview (8/8 PASS)
+🎬 SUITE 6: Video Upload & Cloud Preview (10/10 PASS)
 
 ================================================================
 📊 PLAYWRIGHT QA TEST EXECUTION SUMMARY
 ================================================================
-Total Tests Run : 56
-Passed          : 56 (100%)
+Total Tests Run : 58
+Passed          : 58 (100%)
 Failed          : 0
 Bugs/Issues     : 0
 Console Errors  : 0
@@ -112,4 +112,4 @@ By default, the platform is pre-configured with the production Google Apps Scrip
 | **Pre-Launch Portal** | Open `http://localhost:8080/index.html` | Countdown timer ticks, particle stars float | `[VERIFIED]` |
 | **VIP Unlock PIN** | Enter `2912` in VIP Keypad Modal | Chime plays, redirects to `main.html?vip=unlocked` | `[VERIFIED]` |
 | **3D Unboxing** | Enter `22092000` on `main.html` | Fanfare plays, confetti bursts, lid opens | `[VERIFIED]` |
-| **Automated Tests** | `node playwright-test-runner.js` | 56/56 tests pass with 0 errors | `[VERIFIED]` |
+| **Automated Tests** | `node playwright-test-runner.js` | 58/58 tests pass with 0 errors | `[VERIFIED]` |

@@ -93,11 +93,18 @@ function saveBase64ToDrive(base64Uri, fileNamePrefix, isVideoFile) {
     var dateFormatted = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || 'GMT+0530', 'yyyy-MM-dd_HH-mm-ss');
     var ext = '.mp4';
     if (isVideoFile) {
-      if (mimeType.indexOf('webm') !== -1) ext = '.webm';
-      else if (mimeType.indexOf('ogg') !== -1) ext = '.ogg';
-      else if (mimeType.indexOf('quicktime') !== -1 || mimeType.indexOf('mov') !== -1) ext = '.mov';
-      else if (mimeType.indexOf('m4v') !== -1) ext = '.m4v';
-      else if (mimeType.indexOf('x-matroska') !== -1 || mimeType.indexOf('mkv') !== -1) ext = '.mkv';
+      var lowMime = (mimeType || '').toLowerCase();
+      if (lowMime.indexOf('webm') !== -1) ext = '.webm';
+      else if (lowMime.indexOf('ogg') !== -1 || lowMime.indexOf('ogv') !== -1) ext = '.ogv';
+      else if (lowMime.indexOf('quicktime') !== -1 || lowMime.indexOf('mov') !== -1 || lowMime.indexOf('qt') !== -1) ext = '.mov';
+      else if (lowMime.indexOf('x-matroska') !== -1 || lowMime.indexOf('mkv') !== -1 || lowMime.indexOf('matroska') !== -1) ext = '.mkv';
+      else if (lowMime.indexOf('msvideo') !== -1 || lowMime.indexOf('avi') !== -1) ext = '.avi';
+      else if (lowMime.indexOf('ms-wmv') !== -1 || lowMime.indexOf('wmv') !== -1 || lowMime.indexOf('asf') !== -1) ext = '.wmv';
+      else if (lowMime.indexOf('3gpp2') !== -1 || lowMime.indexOf('3g2') !== -1) ext = '.3g2';
+      else if (lowMime.indexOf('3gpp') !== -1 || lowMime.indexOf('3gp') !== -1) ext = '.3gp';
+      else if (lowMime.indexOf('m4v') !== -1) ext = '.m4v';
+      else if (lowMime.indexOf('flv') !== -1) ext = '.flv';
+      else if (lowMime.indexOf('mp2t') !== -1 || lowMime.indexOf('ts') !== -1) ext = '.ts';
       else ext = '.mp4';
     } else {
       if (mimeType.indexOf('png') !== -1) ext = '.png';
@@ -698,11 +705,19 @@ function doPost(e) {
         }
 
         var ext = '.mp4';
-        if (mimeType.indexOf('webm') !== -1) ext = '.webm';
-        else if (mimeType.indexOf('ogg') !== -1) ext = '.ogg';
-        else if (mimeType.indexOf('quicktime') !== -1 || mimeType.indexOf('mov') !== -1) ext = '.mov';
-        else if (mimeType.indexOf('m4v') !== -1) ext = '.m4v';
-        else if (mimeType.indexOf('x-matroska') !== -1 || mimeType.indexOf('mkv') !== -1) ext = '.mkv';
+        var lowMime = (mimeType || '').toLowerCase();
+        if (lowMime.indexOf('webm') !== -1) ext = '.webm';
+        else if (lowMime.indexOf('ogg') !== -1 || lowMime.indexOf('ogv') !== -1) ext = '.ogv';
+        else if (lowMime.indexOf('quicktime') !== -1 || lowMime.indexOf('mov') !== -1 || lowMime.indexOf('qt') !== -1) ext = '.mov';
+        else if (lowMime.indexOf('x-matroska') !== -1 || lowMime.indexOf('mkv') !== -1 || lowMime.indexOf('matroska') !== -1) ext = '.mkv';
+        else if (lowMime.indexOf('msvideo') !== -1 || lowMime.indexOf('avi') !== -1) ext = '.avi';
+        else if (lowMime.indexOf('ms-wmv') !== -1 || lowMime.indexOf('wmv') !== -1 || lowMime.indexOf('asf') !== -1) ext = '.wmv';
+        else if (lowMime.indexOf('3gpp2') !== -1 || lowMime.indexOf('3g2') !== -1) ext = '.3g2';
+        else if (lowMime.indexOf('3gpp') !== -1 || lowMime.indexOf('3gp') !== -1) ext = '.3gp';
+        else if (lowMime.indexOf('m4v') !== -1) ext = '.m4v';
+        else if (lowMime.indexOf('flv') !== -1) ext = '.flv';
+        else if (lowMime.indexOf('mp2t') !== -1 || lowMime.indexOf('ts') !== -1) ext = '.ts';
+        else ext = '.mp4';
 
         var dateFormatted = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || 'GMT+0530', 'yyyy-MM-dd_HH-mm-ss');
         var safeAuthor = (author || 'Guest').toString().replace(/[^a-zA-Z0-9_-]/g, '_');

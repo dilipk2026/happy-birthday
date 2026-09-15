@@ -1,8 +1,8 @@
 # 16. Requirements Traceability Matrix (RTM)
 
-> **Status**: `[VERIFIED]` • 100% Requirements Covered  
+> **Status**: `[VERIFIED]` • 100% Requirements Covered (v3.1.0)  
 > **Test Harness**: Automated Playwright QA Test Suite (`playwright-test-runner.js`)  
-> **Overall Verification Status**: 🟢 **56 / 56 Tests Passed (100%)**  
+> **Overall Verification Status**: 🟢 **58 / 58 Tests Passed (100%)**  
 
 ---
 
@@ -24,6 +24,9 @@
 | **`FR-012`** | Web Audio API Soundscape & Synthesizer | `script.js` (lines 1450-1850) | `TC-2.10`, `TC-4.11`, `TC-4.16` | Suite 2 & Suite 4 | 🟢 **PASS** | `None` |
 | **`FR-013`** | Redeemable Love Coupons System | `script.js` (lines 3100-3250) | `TC-4.13` | Suite 4: Main Celebration Arena | 🟢 **PASS** | `None` |
 | **`FR-014`** | Celestial Time Capsule Vault | `script.js` (lines 3500-3650) | `TC-4.12` | Suite 4: Main Celebration Arena | 🟢 **PASS** | `None` |
+| **`FR-015`** | High-Speed 3.5MB Parallel Chunk Video Stream | `script.js`, `index.html`, `Code.gs` | `TC-6.7`, `TC-57` | Suite 6: Video & Cloud Preview | 🟢 **PASS** | `None` |
+| **`FR-016`** | Live Progress Bar & Celebration Alert Banner | `script.js`, `index.html`, `style.css` | `TC-6.8`, `TC-58` | Suite 6: Video & Cloud Preview | 🟢 **PASS** | `None` |
+| **`FR-017`** | Multi-Device Responsive Video Sizing | `style.css` (`clamp(140px, 46vw, 195px)`) | `TC-6.9` | Suite 6: Video & Cloud Preview | 🟢 **PASS** | `None` |
 
 ---
 

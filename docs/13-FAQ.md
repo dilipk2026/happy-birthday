@@ -1,6 +1,6 @@
 # 13. Frequently Asked Questions (FAQ)
 
-> **Status**: `[VERIFIED]` • Production Baseline v3.0.0  
+> **Status**: `[VERIFIED]` • Production Baseline v3.1.0  
 
 ---
 
@@ -24,7 +24,7 @@
 ### Q4: How do I attach videos to my birthday wish?
 **A**:
 - **Paste a Link**: Paste any YouTube, YouTube Shorts, Vimeo, or Google Drive link into the Video URL field.
-- **Select a File**: Choose an MP4 or WebM video file ($\le 25\text{MB}$) directly from your phone or computer. The frontend automatically encodes it to Base64 and Google Apps Script saves it into Queen Nishika's Google Drive folder. `[VERIFIED]`
+- **Select a High-Resolution File**: Choose an MP4 or WebM video file ($\le 30\text{MB}$) directly from your phone or computer. The frontend automatically streams the file in **high-speed 3.5 MB parallel chunks** (finishing 15MB in ~8s) with a real-time percentage progress bar (`0% -> 100%`) and glowing emerald green celebration alert. Google Apps Script permanently reassembles and saves it into Queen Nishika's Google Drive folder. `[VERIFIED]`
 
 ---
 

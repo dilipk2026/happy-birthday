@@ -1,8 +1,8 @@
 # Detailed Test Cases & Execution Matrix
 
-> **Status**: `[VERIFIED]` • 56 Automated Test Cases  
+> **Status**: `[VERIFIED]` • 58 Automated Test Cases  
 > **Automation Harness**: `playwright-test-runner.js`  
-> **Overall Execution**: 🟢 **56 / 56 Passed (100% Pass Rate)**  
+> **Overall Execution**: 🟢 **58 / 58 Passed (100% Pass Rate)**  
 
 ---
 
@@ -65,7 +65,11 @@
 | `TC-6.4` | Suite 6: Video & Cloud | Clicking Video Filter Pill on `index.html` isolates only video sticky notes | Medium | 🟢 **PASS** |
 | `TC-6.5` | Suite 6: Video & Cloud | `main.html` Pinboard normalizes `open?id=` Drive link to streaming `/preview` iframe | Critical | 🟢 **PASS** |
 | `TC-6.6` | Suite 6: Video & Cloud | Clicking Video Lightbox button expands video into full-screen theater modal | High | 🟢 **PASS** |
-| `TC-6.7` | Suite 6: Video & Cloud | Reloading `main.html` preserves pinned video sticky note from state storage | Critical | 🟢 **PASS** |
+| `TC-6.7` | Suite 6: Video & Cloud | 15MB Video upload progress bar displays percentage increments (0%->100%) & emerald state | Critical | 🟢 **PASS** |
+| `TC-6.8` | Suite 6: Video & Cloud | Video upload completion renders green celebration alert banner with confirmation | High | 🟢 **PASS** |
+| `TC-6.9` | Suite 6: Video & Cloud | All sticky video embeds scale gracefully within container boundaries without clipping | High | 🟢 **PASS** |
+
+---
 
 ---
 

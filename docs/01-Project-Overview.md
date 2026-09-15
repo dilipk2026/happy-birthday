@@ -1,7 +1,7 @@
-# 01. Project Overview & Business Case
+# 01. Project Overview & Executive Summary
 
-> **Document Status**: `[VERIFIED]` • Production Baseline v3.0.0  
-> **Repository**: `dilipk2026/happy-birthday`  
+> **Document Status**: `[VERIFIED]` • Production Baseline v3.1.0  
+> **Celebration Date**: September 22, 2026 (Queen Nishika's Royal Birthday)  
 > **Target Celebrant**: Queen Nishika 👑  
 > **Author / Project Sponsor**: Dilip 💖  
 

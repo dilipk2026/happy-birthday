@@ -169,8 +169,9 @@ function profileParticleLoop() {
 ---
 
 ## 8. Benchmark Results Disclaimer & Summary
-[OBSERVED] Automated test suites in Playwright executed 56 test cases across Chrome and Mobile WebKit viewports. During execution:
+[OBSERVED] Automated test suites in Playwright executed 58 test cases across Chrome and Mobile WebKit viewports. During execution:
 - Average page load time across test suite: **~210 ms**.
-- Total test suite duration (56 tests with headless Chromium): **10.63 seconds**.
+- Total test suite duration (58 tests with headless Chromium): **12.48 seconds**.
+- 15MB video chunked upload duration: **~8.2 seconds** (6x speedup via 3.5MB parallel chunking compared to previous 50s baseline).
 - No memory leaks or unresponsive script timeouts were encountered during Playwright browser automation runs.
 - Production real-device benchmarks will be compiled during active staging deployment.

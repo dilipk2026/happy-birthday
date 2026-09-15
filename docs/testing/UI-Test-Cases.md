@@ -1,6 +1,6 @@
 # UI, Visual & Responsive Matrix Test Cases
 
-> **Status**: `[VERIFIED]` • Production Baseline v3.0.0  
+> **Status**: `[VERIFIED]` • Production Baseline v3.1.0  
 > **Testing Scope**: UI Components, Multi-Device Responsive Matrix, CSS 3D Animations & Modals  
 
 ---
@@ -24,3 +24,5 @@
 | **`UI-13`** | Fortune Roulette Wheel | Spin wheel button | Wheel rotates with deceleration physics, ticker ticks on pins | 🟢 **PASS** |
 | **`UI-14`** | Full-Screen Lightbox | Click video expand button | `#mediaLightboxModal` activates with responsive video player | 🟢 **PASS** |
 | **`UI-15`** | Keyboard Cheat Sheet | Press <kbd>?</kbd> key | Modal opens showing two-column list of all hotkeys | 🟢 **PASS** |
+| **`UI-16`** | Video Upload Progress Bar | Upload 15MB MP4 video | Progress bar card shows smooth width transition (`0% -> 100%`) with dynamic byte counter | 🟢 **PASS** |
+| **`UI-17`** | Video Upload Complete Alert | Upload reaches 100% | Progress bar pulses emerald green (`.upload-complete`), renders royal green celebration alert | 🟢 **PASS** |

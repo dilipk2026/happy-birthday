@@ -1,6 +1,6 @@
 # 05. API & Backend Webhook Documentation
 
-> **Status**: `[VERIFIED]` • Production Baseline v3.0.0  
+> **Status**: `[VERIFIED]` • Production Baseline v3.1.0  
 > **Backend Implementation**: Google Apps Script (`Code.gs`)  
 > **Production Webhook URL**: `https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec`  
 
@@ -47,6 +47,7 @@ sequenceDiagram
 | `GET` | `/exec` (or `?action=getWishes`) | None (Public) | Ingests all wishes, photos, and videos | `application/json` or JSONP |
 | `GET` | `/exec?action=ping` | None (Public) | Health check & diagnostic status | `application/json` |
 | `POST` | `/exec` | None (Public) | Submits wish, photo, or video dedication | `application/json` |
+| `POST` | `/exec` (`type: "uploadVideoChunk"`) | None (Public) | High-speed 3.5MB parallel chunk ingestion | `application/json` |
 
 ---
 
@@ -159,9 +160,56 @@ gas_main_jsonp_123({
 {
   "status": "online",
   "app": "Eternal Love — Queen Nishika Celebration API",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "timestamp": "2026-09-22T00:00:00.000Z",
   "spreadsheet": "Eternal Love — Queen Nishika Celebration Wishes",
   "folder": "Eternal Love Wishes (Queen Nishika)"
+}
+```
+
+---
+
+### 3.4 `POST /exec` (High-Speed Chunked Video Upload Pipeline)
+
+- **Description**: Ingests high-resolution video files split into **3.5 MB** (`3,670,016` bytes) Base64 chunks transmitted concurrently in parallel pairs (concurrency: 2). Non-final chunks are cached as temporary parts in `.temp_chunks/<uploadId>/`, and the final chunk reassembles the binary file, moves it to Google Drive, and appends the dedication row to Google Sheets.
+- **Headers**: `Content-Type: text/plain;charset=utf-8` (used with `fetch()`).
+- **Request Body Schema**:
+  | Field | Type | Required | Description |
+  | :--- | :--- | :--- | :--- |
+  | `type` | `string` | Yes | Must be `"uploadVideoChunk"`. |
+  | `uploadId` | `string` | Yes | Unique session identifier (e.g., `chunk_1725940000_12345`). |
+  | `chunkIndex` | `number` | Yes | Zero-based index of current chunk (`0`, `1`, `2`, ...). |
+  | `totalChunks` | `number` | Yes | Total number of chunks in the video payload. |
+  | `fileName` | `string` | Yes | Original file name (e.g., `queen_nishika_birthday.mp4`). |
+  | `mimeType` | `string` | Yes | MIME type (`video/mp4`, `video/webm`, `video/quicktime`). |
+  | `chunkBase64` | `string` | Yes | Base64 string slice of the video file chunk. |
+  | `isFinalChunk`| `boolean`| Yes | `true` for last chunk (`chunkIndex === totalChunks - 1`), `false` otherwise. |
+  | `author` | `string` | Optional | Dedicator name (appended on final chunk). |
+  | `message` | `string` | Optional | Dedication caption text (appended on final chunk). |
+
+#### Example Request Body (Non-Final Chunk):
+```json
+{
+  "type": "uploadVideoChunk",
+  "uploadId": "vid_chunk_1725940000_abc123",
+  "chunkIndex": 0,
+  "totalChunks": 5,
+  "fileName": "royal_tribute.mp4",
+  "mimeType": "video/mp4",
+  "chunkBase64": "AAAAHGZ0eXBtcDQyAAAAAG1wNDJpc29tYXZjMQ...",
+  "isFinalChunk": false
+}
+```
+
+#### Example Final Chunk Response:
+```json
+{
+  "status": "success",
+  "chunkIndex": 4,
+  "isFinal": true,
+  "fileId": "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
+  "driveUrl": "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/preview",
+  "mediaUrl": "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/preview",
+  "message": "Video dedication successfully assembled and consecrated into Queen Nishika's Google Drive!"
 }
 ```

@@ -78,7 +78,7 @@
 |                          UAT SIGN-OFF RECORD                                |
 +-----------------------+-----------------------------------------------------+
 | Product Name          | Eternal Love — Queen Nishika Birthday Portal        |
-| Release Version       | v3.0.0 (Production Master)                          |
+| Release Version       | v3.1.0 (Production Master)                          |
 | Target Milestone Date | September 21-22, 2026                               |
 | Acceptance Result     | ACCEPTED & APPROVED FOR CELEBRATION DISPATCH        |
 | Stakeholder Approval  | Dilip (Lead Creator) & Queen Nishika (Celebrant)    |

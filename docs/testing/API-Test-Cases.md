@@ -1,6 +1,6 @@
 # API, Webhook & Cloud Sync Test Cases
 
-> **Status**: `[VERIFIED]` • Production Baseline v3.0.0  
+> **Status**: `[VERIFIED]` • Production Baseline v3.1.0  
 > **Target Interface**: Google Apps Script (`Code.gs`) Webhook & JSONP API  
 
 ---
@@ -19,6 +19,7 @@
 | **`API-08`** | `GET` | `/exec?action=getPhotos` | Retrieve photo dedications | Returns array of photo items with author and captions | 🟢 **PASS** |
 | **`API-09`** | `GET` | `/exec?action=getVideos` | Retrieve video dedications | Returns array of video items with `/preview` endpoints | 🟢 **PASS** |
 | **`API-10`** | `GET` | `/exec` (invalid blob URL in Sheet) | Stale `blob:` reference in row | Filters out dead `blob:` string and returns empty/clean mediaUrl | 🟢 **PASS** |
+| **`API-11`** | `POST` | `/exec` (`type: "uploadVideoChunk"`) | 3.5MB parallel chunk slice transmission | Caches chunk part, final chunk reassembles MP4 and saves to Drive | 🟢 **PASS** |
 
 ---
 
@@ -40,4 +41,25 @@
   2. Creates binary file in Google Drive folder `"Eternal Love Wishes (Queen Nishika)"`.
   3. Sets public view permission (`Access.ANYONE_WITH_LINK`, `Permission.VIEW`).
   4. Returns `driveUrl: "https://drive.google.com/file/d/<ID>/preview"`.
+- **Status**: 🟢 **PASS** `[VERIFIED]`
+
+### `API-11`: High-Speed 3.5MB Chunked Video Ingestion
+- **Method**: `POST`
+- **Payload**:
+  ```json
+  {
+    "type": "uploadVideoChunk",
+    "uploadId": "vid_chunk_test_123",
+    "chunkIndex": 0,
+    "totalChunks": 5,
+    "fileName": "queen_tribute.mp4",
+    "mimeType": "video/mp4",
+    "chunkBase64": "AAAAHGZ0eXBtcDQy...",
+    "isFinalChunk": false
+  }
+  ```
+- **Expected Result**:
+  1. Writes part to `.temp_chunks/vid_chunk_test_123/part_00000.txt`.
+  2. Returns `{ status: "success", chunkIndex: 0, isFinal: false }`.
+  3. On final chunk, concatenates parts, creates MP4 in Google Drive, logs row to Google Sheets, and deletes temporary folder.
 - **Status**: 🟢 **PASS** `[VERIFIED]`

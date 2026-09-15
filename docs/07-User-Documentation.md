@@ -1,7 +1,7 @@
 # 07. User Documentation & Interactive Experience Guide
 
 > **Audience**: Queen Nishika 👑, Dilip 💖, and Royal Well-Wishers  
-> **Status**: `[VERIFIED]` • Production Baseline v3.0.0  
+> **Status**: `[VERIFIED]` • Production Baseline v3.1.0  
 
 ---
 
@@ -126,12 +126,16 @@ Control every interactive experience directly from your physical keyboard:
 
 ---
 
-## 5. Submitting Blessings, Photos & Video Reels
+## 5. Submitting Blessings, Photos & High-Speed Video Reels
 
-Guests and well-wishers can dedicate blessings via `index.html` or `main.html`:
+Guests and well-wishers can dedicate multimedia blessings via `index.html` or `main.html`:
 
 1. **Write Your Message**: Enter your name and heartfelt birthday wish.
 2. **Attach Photos**: Click **Photo** $\rightarrow$ select an image from your device or paste a web link.
-3. **Attach Videos**: Click **Video** $\rightarrow$ select a video file ($\le 25\text{MB}$) or paste a YouTube / Google Drive streaming link.
+3. **Attach High-Definition Videos**:
+   - Click **Video** $\rightarrow$ select an MP4/WebM video file ($\le 30\text{MB}$) or paste a YouTube / Google Drive link.
+   - **High-Speed Parallel Pipeline**: Files are sliced into **3.5 MB chunks** and streamed in concurrent pairs, finishing a 15 MB upload in **~8 seconds** (down from 50s).
+   - **Live Progress Bar**: Observe real-time progress (`0% -> 25% -> 50% -> 75% -> 90% -> 100%`) with dynamic byte counters (`Uploading Video: Part 2 of 5 • 7.0 MB / 15.0 MB • 45%`).
+   - **Emerald Green Success Banner**: Upon 100% completion, the progress bar pulses in emerald green with the confirmation: `✨ Video Dedication Successfully Uploaded! 👑 (Saved to Google Drive & Wall)`.
 4. **Choose Sticky Theme**: Select from Rose Quartz, Royal Gold, Celestial Purple, Sunset Coral, or Sapphire.
-5. **Pin Note**: Your dedication appears immediately on Queen Nishika's Live Sticky Wall!
+5. **Pin Note**: Your dedication appears immediately on Queen Nishika's Live Sticky Wall with responsive video embedding across all smartphones, tablets, and desktop displays!

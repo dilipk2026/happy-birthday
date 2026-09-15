@@ -1,6 +1,6 @@
 # 06. Database & Cloud Storage Schema Documentation
 
-> **Status**: `[VERIFIED]` • Production Baseline v3.0.0  
+> **Status**: `[VERIFIED]` • Production Baseline v3.1.0  
 > **Storage Layers**: Google Sheets Tabular Store + Google Drive Blob Store + Client LocalStorage  
 
 ---

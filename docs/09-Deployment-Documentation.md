@@ -1,6 +1,6 @@
 # 09. Production Deployment Guide
 
-> **Status**: `[VERIFIED]` • Production Baseline v3.0.0  
+> **Status**: `[VERIFIED]` • Production Baseline v3.1.0  
 > **Production Targets**: GitHub Pages (Frontend CDN) + Google Cloud Apps Script (Backend)  
 > **Target Production URL**: `https://dilipk2026.github.io/happy-birthday/`  
 
@@ -43,7 +43,7 @@ Ensure `.nojekyll` exists in the repository root. This prevents GitHub Pages fro
 ### Step 2: Push to Main Branch
 ```bash
 git add .
-git commit -m "feat: Production deployment v3.0.0 with full video cloud preview"
+git commit -m "feat: Production deployment v3.1.0 with high-speed video chunking & responsive embeds 👑"
 git push origin main
 ```
 
@@ -67,7 +67,7 @@ To deploy or update `Code.gs` in Google Apps Script:
 3. Overwrite the editor content with the contents of [`Code.gs`](../Code.gs).
 4. Click **Deploy** $\rightarrow$ **Manage Deployments**.
 5. Click **Edit** (Pencil icon) on the active deployment.
-6. Select **Version** $\rightarrow$ **New version**, enter description `"Production v3.0.0 - Full Video Stream & Base64 Ingestion"`.
+6. Select **Version** $\rightarrow$ **New version**, enter description `"Production v3.1.0 - High-Speed 3.5MB Video Chunking & Base64 Ingestion"`.
 7. Ensure:
    - **Execute as**: `Me (your Google account)`
    - **Who has access**: `Anyone`

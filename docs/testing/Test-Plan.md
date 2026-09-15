@@ -1,6 +1,6 @@
 # Master QA Test Plan
 
-> **Status**: `[VERIFIED]` • Production Baseline v3.0.0  
+> **Status**: `[VERIFIED]` • Production Baseline v3.1.0  
 > **Test Harness**: `playwright-test-runner.js`  
 > **Target System**: Eternal Love (`index.html`, `main.html`, `script.js`, `style.css`, `Code.gs`)  
 

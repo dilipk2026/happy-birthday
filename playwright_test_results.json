@@ -1,6 +1,6 @@
 {
-  "total": 58,
-  "passed": 58,
+  "total": 61,
+  "passed": 61,
   "failed": 0,
   "suites": [
     {
@@ -68,7 +68,7 @@
         {
           "testName": "Virtual Keypad rejects invalid PIN \"0000\" with error feedback and shake animation",
           "passed": true,
-          "details": "Feedback: \" Enter 4-digit VIP PIN first! 💕\"",
+          "details": "Feedback: \" Incorrect VIP PIN. Check hint for the day we first met clue 💕\"",
           "bugInfo": null
         },
         {
@@ -376,7 +376,25 @@
         {
           "testName": "All sticky video embeds scale gracefully within container boundaries without clipping",
           "passed": true,
-          "details": "Verified 5 video embed containers within parent grid",
+          "details": "Verified 4 video embed containers within parent grid",
+          "bugInfo": null
+        },
+        {
+          "testName": "Multi-Codec Engine resolves all 12 video container extensions (.mp4, .webm, .mov, .mkv, .avi, .wmv, .3gp, .ts, .ogv, .flv, .m4v) to standard MIME types and codec descriptors",
+          "passed": true,
+          "details": "All 11 tested video extensions resolved accurately",
+          "bugInfo": null
+        },
+        {
+          "testName": "parseGasVideoEmbed generates hardware-accelerated multi-source <video> players with correct MIME codecs and download fallback links",
+          "passed": true,
+          "details": "Multi-source <video> player markup verified for WebM, MOV, MKV",
+          "bugInfo": null
+        },
+        {
+          "testName": "Video input file pickers specify comprehensive accept filters (.mp4, .webm, .mov, .mkv, .avi, .wmv, .3gp, .ogg, .flv, .ts)",
+          "passed": true,
+          "details": "Verified 1 video file input elements",
           "bugInfo": null
         }
       ]

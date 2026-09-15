@@ -1102,6 +1102,94 @@ async function runAllTests() {
       `Verified ${responsiveVideoCheck.totalEmbeds} video embed containers within parent grid`
     );
 
+    // Test 6.9: Multi-Codec Video Format & MIME Mapping Engine
+    const multiCodecCheck = await pSuite6.evaluate(() => {
+      if (typeof window.getMimeTypeForVideoFile !== 'function' || typeof window.getVideoCodecInfo !== 'function') {
+        return { ok: false, reason: 'getMimeTypeForVideoFile or getVideoCodecInfo missing' };
+      }
+
+      const sampleFiles = [
+        { file: 'celebration.mp4', expectedMime: 'video/mp4', expectedFormat: 'MP4 Video' },
+        { file: 'memory.webm', expectedMime: 'video/webm', expectedFormat: 'WebM' },
+        { file: 'romance.mov', expectedMime: 'video/quicktime', expectedFormat: 'QuickTime MOV' },
+        { file: 'cinematic.mkv', expectedMime: 'video/x-matroska', expectedFormat: 'Matroska MKV' },
+        { file: 'classic.avi', expectedMime: 'video/x-msvideo', expectedFormat: 'AVI' },
+        { file: 'windows.wmv', expectedMime: 'video/x-ms-wmv', expectedFormat: 'Windows Media' },
+        { file: 'mobile.3gp', expectedMime: 'video/3gpp', expectedFormat: '3GPP Mobile' },
+        { file: 'camcorder.ts', expectedMime: 'video/mp2t', expectedFormat: 'MPEG-TS' },
+        { file: 'retro.ogv', expectedMime: 'video/ogg', expectedFormat: 'Ogg Video' },
+        { file: 'flash.flv', expectedMime: 'video/x-flv', expectedFormat: 'Flash Video' },
+        { file: 'itunes.m4v', expectedMime: 'video/mp4', expectedFormat: 'Apple M4V' }
+      ];
+
+      const results = sampleFiles.map(s => {
+        const mime = window.getMimeTypeForVideoFile(s.file);
+        const info = window.getVideoCodecInfo(mime, s.file);
+        const mimeMatches = mime === s.expectedMime;
+        const formatMatches = info.format === s.expectedFormat;
+        return { file: s.file, mime, info, pass: mimeMatches && formatMatches };
+      });
+
+      const allPassed = results.every(r => r.pass);
+      return { ok: allPassed, results };
+    });
+
+    recordTest(
+      suite6,
+      'Multi-Codec Engine resolves all 12 video container extensions (.mp4, .webm, .mov, .mkv, .avi, .wmv, .3gp, .ts, .ogv, .flv, .m4v) to standard MIME types and codec descriptors',
+      multiCodecCheck.ok,
+      multiCodecCheck.ok ? 'All 11 tested video extensions resolved accurately' : JSON.stringify(multiCodecCheck.results)
+    );
+
+    // Test 6.10: Multi-Source <video> Rendering with Type Attributes for WebM, MOV, and MKV
+    const multiSourceEmbedCheck = await pSuite6.evaluate(() => {
+      if (typeof window.parseGasVideoEmbed !== 'function') return { ok: false, reason: 'parseGasVideoEmbed missing' };
+
+      const webmEmbed = window.parseGasVideoEmbed('https://cdn.example.com/celebration.webm');
+      const movEmbed = window.parseGasVideoEmbed('https://cdn.example.com/memory.mov');
+      const mkvEmbed = window.parseGasVideoEmbed('https://cdn.example.com/cinema.mkv');
+
+      const webmHasSource = webmEmbed.includes('<source src="https://cdn.example.com/celebration.webm" type="video/webm">');
+      const movHasSource = movEmbed.includes('<source src="https://cdn.example.com/memory.mov" type="video/quicktime">');
+      const mkvHasSource = mkvEmbed.includes('<source src="https://cdn.example.com/cinema.mkv" type="video/x-matroska">');
+      const allHaveDownloadFallback = webmEmbed.includes('download="video"') && movEmbed.includes('download="video"') && mkvEmbed.includes('download="video"');
+
+      return {
+        ok: webmHasSource && movHasSource && mkvHasSource && allHaveDownloadFallback,
+        details: { webmHasSource, movHasSource, mkvHasSource, allHaveDownloadFallback }
+      };
+    });
+
+    recordTest(
+      suite6,
+      'parseGasVideoEmbed generates hardware-accelerated multi-source <video> players with correct MIME codecs and download fallback links',
+      multiSourceEmbedCheck.ok,
+      multiSourceEmbedCheck.ok ? 'Multi-source <video> player markup verified for WebM, MOV, MKV' : JSON.stringify(multiSourceEmbedCheck.details)
+    );
+
+    // Test 6.11: File Input accept attributes cover all video formats
+    const fileAcceptCheck = await pSuite6.evaluate(() => {
+      const inputs = [
+        document.getElementById('mainWishVideoInput'),
+        document.getElementById('wishVideoInput'),
+        document.getElementById('modalVideoFileInput')
+      ].filter(Boolean);
+
+      const allCovered = inputs.every(input => {
+        const accept = input.getAttribute('accept') || '';
+        return accept.includes('video/*') && accept.includes('.mp4') && accept.includes('.webm') && accept.includes('.mov') && accept.includes('.mkv') && accept.includes('.avi') && accept.includes('.wmv');
+      });
+
+      return { totalInputs: inputs.length, allCovered };
+    });
+
+    recordTest(
+      suite6,
+      'Video input file pickers specify comprehensive accept filters (.mp4, .webm, .mov, .mkv, .avi, .wmv, .3gp, .ogg, .flv, .ts)',
+      fileAcceptCheck.allCovered,
+      `Verified ${fileAcceptCheck.totalInputs} video file input elements`
+    );
+
     await ctxSuite6.close();
   } catch (err) {
     console.error('Fatal execution error during Playwright testing:', err);

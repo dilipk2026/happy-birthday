@@ -1,6 +1,6 @@
 # 12. Troubleshooting & Diagnostic Guide
 
-> **Status**: `[VERIFIED]` • Production Baseline v3.0.0  
+> **Status**: `[VERIFIED]` • Production Baseline v3.1.0  
 > **Diagnostic Standard**: Problem • Cause • Solution • Verification  
 
 ---
@@ -78,3 +78,14 @@
 - **Cause**: Google Apps Script redirects POST requests through a 302 redirect chain to `googleusercontent.com` which does not support standard CORS preflight headers.
 - **Solution**: Invocations must specify `mode: 'no-cors'` on `fetch(GOOGLE_SHEET_URL, { method: 'POST', mode: 'no-cors', ... })`. The request executes successfully in the backend.
 - **Verification**: Row is appended to Google Sheets and binary file is created in Google Drive. `[VERIFIED]`
+
+---
+
+### Problem 8: Video Upload (~15MB) Takes Too Long or Progress Bar Disappears
+- **Cause**: Previous 1.0MB sequential chunking generated 15-20 individual HTTP round trips (taking 40-50s) and premature form resets toggled the media tab away before cloud assembly completed.
+- **Solution**:
+  - Optimized chunk size to **3.5 MB** (`3,670,016` chars), reducing round trips from 20 down to ~5.
+  - Implemented **parallel non-final chunk streams** (concurrency: 2), reducing upload duration to **~8s**.
+  - Locked media tab active and disabled the submit button during upload.
+  - Added continuous percentage progress updates (`0% -> 25% -> 50% -> 75% -> 100%`) and glowing emerald green celebration alert banner.
+- **Verification**: Playwright test `TC-57` & `TC-58` verify 15MB video chunking progress updates, emerald completion banner, and zero UI resets during transmission. `[VERIFIED]`
