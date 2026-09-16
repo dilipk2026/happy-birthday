@@ -541,6 +541,452 @@
       resize: vertical;
     }
 
+    /* Wish Generator & Manual Entry Controls */
+    .wish-generator-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .wish-header-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .wish-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .wish-action-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.3px;
+      user-select: none;
+    }
+
+    .wish-action-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
+    }
+
+    .wish-action-btn.primary-magic {
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.35), rgba(255, 215, 0, 0.35));
+      border-color: rgba(255, 215, 0, 0.6);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      animation: magicPulseGlow 3s infinite alternate;
+    }
+
+    .wish-action-btn.primary-magic:hover {
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.6), rgba(255, 215, 0, 0.6));
+      border-color: #ffd700;
+      box-shadow: 0 0 18px rgba(255, 215, 0, 0.5);
+    }
+
+    @keyframes magicPulseGlow {
+      0% { box-shadow: 0 0 6px rgba(255, 215, 0, 0.2); }
+      100% { box-shadow: 0 0 16px rgba(255, 64, 129, 0.45), 0 0 8px rgba(255, 215, 0, 0.4); }
+    }
+
+    .wish-mood-chips {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 4px 2px 6px 2px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .wish-mood-chips::-webkit-scrollbar {
+      display: none;
+    }
+
+    .wish-mood-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.85);
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .wish-mood-chip:hover {
+      background: rgba(255, 64, 129, 0.18);
+      border-color: rgba(255, 64, 129, 0.5);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .wish-mood-chip.active {
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.35), rgba(157, 78, 221, 0.35));
+      border-color: #ff4081;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(255, 64, 129, 0.35);
+    }
+
+    .wish-text-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .wish-field-glow {
+      animation: wishFillGlow 0.8s ease-out;
+    }
+
+    @keyframes wishFillGlow {
+      0% {
+        box-shadow: 0 0 0 rgba(255, 215, 0, 0);
+        border-color: rgba(255, 215, 0, 0.8);
+      }
+      50% {
+        box-shadow: 0 0 22px rgba(255, 215, 0, 0.6), 0 0 10px rgba(255, 64, 129, 0.5);
+        border-color: #ffd700;
+        transform: scale(1.003);
+      }
+      100% {
+        box-shadow: 0 0 0 rgba(255, 215, 0, 0);
+        border-color: var(--glass-border);
+        transform: scale(1);
+      }
+    }
+
+    .wish-input-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .wish-emoji-bar {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .wish-emoji-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-right: 2px;
+    }
+
+    .wish-emoji-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      padding: 2px 6px;
+      cursor: pointer;
+      line-height: 1.2;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .wish-emoji-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.22);
+    }
+
+    .wish-emoji-btn:active {
+      transform: scale(0.95);
+    }
+
+    .wish-char-counter {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+      margin-left: auto;
+    }
+
+    .wish-char-counter.limit-near {
+      color: #ffaa00;
+      font-weight: 600;
+    }
+
+    .wish-char-counter.limit-reached {
+      color: #ff4081;
+      font-weight: 700;
+    }
+
+    /* Wish Library Modal */
+    .wish-library-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(6, 3, 14, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .wish-library-overlay.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .wish-library-card {
+      width: min(92vw, 680px);
+      max-height: 85vh;
+      background: rgba(18, 10, 32, 0.95);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 64, 129, 0.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.92);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .wish-library-overlay.active .wish-library-card {
+      transform: scale(1);
+    }
+
+    .wish-library-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .wish-library-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-title);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      margin: 0;
+    }
+
+    .wish-library-close-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .wish-library-close-btn:hover {
+      background: rgba(255, 64, 129, 0.3);
+      border-color: #ff4081;
+      transform: rotate(90deg);
+    }
+
+    .wish-library-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 12px 20px 8px;
+      overflow-x: auto;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      scrollbar-width: none;
+    }
+    .wish-library-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .wish-lib-tab {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .wish-lib-tab:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .wish-lib-tab.active {
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.4), rgba(255, 215, 0, 0.3));
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+
+    .wish-library-search-box {
+      padding: 10px 20px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .wish-lib-search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 8px 14px;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .wish-lib-search-input:focus {
+      border-color: var(--accent-gold);
+    }
+
+    .wish-library-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 52vh;
+    }
+
+    .wish-item-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .wish-item-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 215, 0, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    }
+
+    .wish-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .wish-item-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(255, 64, 129, 0.2);
+      color: #ff7597;
+      border: 1px solid rgba(255, 64, 129, 0.3);
+    }
+
+    .wish-item-tag.tag-royal { background: rgba(255, 215, 0, 0.2); color: #ffd700; border-color: rgba(255, 215, 0, 0.3); }
+    .wish-item-tag.tag-blessing { background: rgba(16, 185, 129, 0.2); color: #34d399; border-color: rgba(16, 185, 129, 0.3); }
+    .wish-item-tag.tag-celestial { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
+    .wish-item-tag.tag-joyful { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border-color: rgba(245, 158, 11, 0.3); }
+    .wish-item-tag.tag-short { background: rgba(192, 132, 252, 0.2); color: #c084fc; border-color: rgba(192, 132, 252, 0.3); }
+
+    .wish-item-text {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.92);
+      margin: 0;
+      font-style: italic;
+    }
+
+    .wish-item-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .wish-use-btn {
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.4), rgba(255, 215, 0, 0.4));
+      border: 1px solid var(--accent-gold);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .wish-use-btn:hover {
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.8), rgba(255, 215, 0, 0.8));
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .wish-copy-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.76rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+    .wish-copy-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
     /* Media Attachment Selector Tabs */
     .media-attach-bar {
       display: flex;
@@ -2617,9 +3063,65 @@
             <input type="text" id="guestName" class="input-field" placeholder="e.g. Dilip, Loving Friend, Royal Family..." required maxlength="60" />
           </div>
 
-          <div>
-            <label for="guestWish" class="form-group-label"><i class="fa-solid fa-envelope-heart"></i> Heartfelt Birthday Message</label>
-            <textarea id="guestWish" class="input-field textarea-field" placeholder="Write your sweetest wishes, blessings, memories, and love for My Love Nishika..." required maxlength="600"></textarea>
+          <div class="wish-generator-container">
+            <div class="wish-header-toolbar">
+              <label for="guestWish" class="form-group-label" style="margin-bottom:0;"><i class="fa-solid fa-envelope-heart"></i> Heartfelt Birthday Message</label>
+              <div class="wish-actions-group">
+                <button type="button" class="wish-action-btn primary-magic" id="btnAutoGenerateWish" title="Generate a sweet customized wish with one click">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Auto Generate</span>
+                </button>
+                <button type="button" class="wish-action-btn" id="btnSurpriseWish" title="Surprise with a random wish">
+                  <i class="fa-solid fa-dice"></i> <span>Surprise</span>
+                </button>
+                <button type="button" class="wish-action-btn" id="btnWishLibrary" title="Browse our full collection of 30+ birthday wishes">
+                  <i class="fa-solid fa-book-bookmark"></i> <span>Wish Library</span>
+                </button>
+                <button type="button" class="wish-action-btn" id="btnManualWish" title="Write your own custom message">
+                  <i class="fa-solid fa-pen-nib"></i> <span>Write Manually</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Mood / Tone Selector Chips -->
+            <div class="wish-mood-chips" id="wishMoodChips">
+              <span style="font-size:0.72rem; color:var(--text-muted); margin-right:2px; font-weight:600;"><i class="fa-solid fa-sliders"></i> Mood:</span>
+              <button type="button" class="wish-mood-chip active" data-mood="all"><i class="fa-solid fa-sparkles"></i> All</button>
+              <button type="button" class="wish-mood-chip" data-mood="romantic"><i class="fa-solid fa-heart"></i> 💖 Romantic</button>
+              <button type="button" class="wish-mood-chip" data-mood="royal"><i class="fa-solid fa-crown"></i> 👑 Royal</button>
+              <button type="button" class="wish-mood-chip" data-mood="blessing"><i class="fa-solid fa-hand-holding-heart"></i> ✨ Blessings</button>
+              <button type="button" class="wish-mood-chip" data-mood="celestial"><i class="fa-solid fa-moon"></i> 🌟 Celestial</button>
+              <button type="button" class="wish-mood-chip" data-mood="joyful"><i class="fa-solid fa-cake-candles"></i> 🎉 Joyful</button>
+              <button type="button" class="wish-mood-chip" data-mood="short"><i class="fa-solid fa-feather"></i> 💫 Short & Sweet</button>
+            </div>
+
+            <div class="wish-text-wrapper">
+              <textarea id="guestWish" class="input-field textarea-field" placeholder="Write your sweetest wishes, blessings, memories, and love for My Love Nishika..." required maxlength="600"></textarea>
+            </div>
+
+            <div class="wish-input-footer">
+              <!-- Quick Emoji Bar -->
+              <div class="wish-emoji-bar" id="wishEmojiBar">
+                <span class="wish-emoji-label"><i class="fa-solid fa-icons"></i> Add:</span>
+                <button type="button" class="wish-emoji-btn" data-emoji="💖" title="Insert 💖">💖</button>
+                <button type="button" class="wish-emoji-btn" data-emoji="🎂" title="Insert 🎂">🎂</button>
+                <button type="button" class="wish-emoji-btn" data-emoji="👑" title="Insert 👑">👑</button>
+                <button type="button" class="wish-emoji-btn" data-emoji="✨" title="Insert ✨">✨</button>
+                <button type="button" class="wish-emoji-btn" data-emoji="🌸" title="Insert 🌸">🌸</button>
+                <button type="button" class="wish-emoji-btn" data-emoji="🥂" title="Insert 🥂">🥂</button>
+                <button type="button" class="wish-emoji-btn" data-emoji="🎉" title="Insert 🎉">🎉</button>
+                <button type="button" class="wish-emoji-btn" data-emoji="💫" title="Insert 💫">💫</button>
+                <button type="button" class="wish-emoji-btn" data-emoji="🌹" title="Insert 🌹">🌹</button>
+                <button type="button" class="wish-emoji-btn" data-emoji="💌" title="Insert 💌">💌</button>
+              </div>
+
+              <!-- Character Counter & Quick Clear -->
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button type="button" class="wish-action-btn" id="btnClearWishText" style="padding:2px 8px; font-size:0.7rem;" title="Clear message text">
+                  <i class="fa-solid fa-xmark"></i> Clear
+                </button>
+                <span class="wish-char-counter" id="guestWishCharCounter">0 / 600</span>
+              </div>
+            </div>
           </div>
 
           <!-- Media Attachment Bar -->
@@ -2990,6 +3492,31 @@
         <div id="vipHintText" class="vip-hint-text">
           💖 <strong>VIP Hint:</strong> Enter the special 4-digit date of the day we first met in DDMM format ✨
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WISH LIBRARY MODAL -->
+  <div class="wish-library-overlay" id="wishLibraryModal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="wishLibraryTitle" aria-hidden="true">
+    <div class="wish-library-card">
+      <div class="wish-library-header">
+        <h4 class="wish-library-title" id="wishLibraryTitle"><i class="fa-solid fa-book-bookmark"></i> Royal Birthday Wishes Library</h4>
+        <button type="button" class="wish-library-close-btn" id="closeWishLibraryBtn" aria-label="Close Wish Library" title="Close (Esc)">&times;</button>
+      </div>
+      <div class="wish-library-tabs" id="wishLibTabs">
+        <button type="button" class="wish-lib-tab active" data-tab-mood="all"><i class="fa-solid fa-sparkles"></i> All Wishes</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="romantic"><i class="fa-solid fa-heart"></i> 💖 Romantic</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="royal"><i class="fa-solid fa-crown"></i> 👑 Royal</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="blessing"><i class="fa-solid fa-hand-holding-heart"></i> ✨ Blessings</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="celestial"><i class="fa-solid fa-moon"></i> 🌟 Celestial</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="joyful"><i class="fa-solid fa-cake-candles"></i> 🎉 Joyful</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="short"><i class="fa-solid fa-feather"></i> 💫 Short & Sweet</button>
+      </div>
+      <div class="wish-library-search-box">
+        <input type="text" id="wishLibSearchInput" class="wish-lib-search-input" placeholder="🔍 Search wishes by keyword (e.g. starlight, queen, eternity, smile)..." />
+      </div>
+      <div class="wish-library-list" id="wishLibraryList">
+        <!-- Rendered dynamically -->
       </div>
     </div>
   </div>
@@ -5301,6 +5828,316 @@
 
       if (syncWishesBtn) syncWishesBtn.addEventListener('click', fetchWishesFromCloud);
       fetchWishesFromCloud();
+
+      // ----------------------------------------------------------------------
+      // 7B. AUTO-GENERATE WISHES & MANUAL ENTRY ENGINE (Pre-Launch Index)
+      // ----------------------------------------------------------------------
+      const WISH_TEMPLATES_LIBRARY = [
+        // ROMANTIC & DEVOTION
+        { id: 'w_rom_1', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'Happy Birthday to the queen of my heart, My Love Nishika! Every second with you is stardust and pure bliss. I love you beyond words and eternity! 💕✨' },
+        { id: 'w_rom_2', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'To the one who makes my world infinite and beautiful: Happy Birthday, Nishika! You are my greatest miracle, my forever love, and my endless joy. 🌹👑' },
+        { id: 'w_rom_3', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'Happy Birthday My Love Nishika! In your smile I found my home, and in your eyes I found my universe. May your year be as dazzling as your soul. 💫💖' },
+        { id: 'w_rom_4', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'Celebrating the most extraordinary soul in the galaxy! Happy Birthday, Nishika. Every heartbeat sings your name with infinite devotion. 💖✨' },
+        { id: 'w_rom_5', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'To my beloved Nishika, Happy Birthday! Meeting you was destiny, loving you is my honor, and celebrating you is pure joy. Forever and always. 🥂💍' },
+        { id: 'w_rom_6', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'You are the gentle moonlight in my darkest night and the sweetest melody in my heart. Happy Birthday, my eternal love Nishika! 🌙💕' },
+        
+        // ROYAL & MAJESTIC
+        { id: 'w_roy_1', category: 'royal', categoryName: 'Royal & Majestic', tagClass: 'tag-royal', text: 'All hail Queen Nishika on her royal birthday! May your kingdom of dreams flourish with majesty, elegance, and endless golden moments. 👑✨' },
+        { id: 'w_roy_2', category: 'royal', categoryName: 'Royal & Majestic', tagClass: 'tag-royal', text: 'A crown of starlight for the most enchanting queen! Happy Birthday, My Love Nishika. Shine bright and rule every tomorrow with grace! 👑💖' },
+        { id: 'w_roy_3', category: 'royal', categoryName: 'Royal & Majestic', tagClass: 'tag-royal', text: 'To royal majesty and endless charm: Happy Birthday Queen Nishika! May every aspiration turn into glorious triumph this year! 🌟👑' },
+        { id: 'w_roy_4', category: 'royal', categoryName: 'Royal & Majestic', tagClass: 'tag-royal', text: 'Happy Birthday to royalty itself! Nishika, may your special day be filled with royal splendor, laughter, and timeless celebrations! 🏰✨' },
+        { id: 'w_roy_5', category: 'royal', categoryName: 'Royal & Majestic', tagClass: 'tag-royal', text: 'Royal blessings and eternal happiness to our radiant Queen Nishika! You wear kindness like a golden crown. Happy Birthday! 👑🌸' },
+
+        // HEARTFELT BLESSINGS
+        { id: 'w_bls_1', category: 'blessing', categoryName: 'Heartfelt Blessings', tagClass: 'tag-blessing', text: 'Wishing you a birthday blessed with radiant health, unbounded happiness, and every precious dream fulfilled! Happy Birthday Nishika! 🌸🎂' },
+        { id: 'w_bls_2', category: 'blessing', categoryName: 'Heartfelt Blessings', tagClass: 'tag-blessing', text: 'May your 26th year blossom with wondrous adventures, unconditional love, and peaceful sunshine every single day. Happy Birthday, Nishika! 🌻✨' },
+        { id: 'w_bls_3', category: 'blessing', categoryName: 'Heartfelt Blessings', tagClass: 'tag-blessing', text: 'Sending ocean-deep blessings, golden sunshine, and sweet memories on your birthday, dear Nishika! Have the most magical year ahead! 🌈💖' },
+        { id: 'w_bls_4', category: 'blessing', categoryName: 'Heartfelt Blessings', tagClass: 'tag-blessing', text: 'May the universe guard your steps, shower you with peace, and fill your heart with overwhelming bliss. Happy Birthday, dearest Nishika! 🕊️✨' },
+        { id: 'w_bls_5', category: 'blessing', categoryName: 'Heartfelt Blessings', tagClass: 'tag-blessing', text: 'Praying that every day of this new chapter brings you boundless reasons to smile, celebrate, and feel cherished. Happy Birthday Nishika! 💖🙏' },
+
+        // CELESTIAL & POETIC
+        { id: 'w_cel_1', category: 'celestial', categoryName: 'Celestial & Poetic', tagClass: 'tag-celestial', text: 'Like the rarest constellation across the midnight sky, your light illuminates everything. Happy Celestial Birthday, My Love Nishika! 🌌✨' },
+        { id: 'w_cel_2', category: 'celestial', categoryName: 'Celestial & Poetic', tagClass: 'tag-celestial', text: 'A poem written by the stars, a melody played by the wind—that is the beauty of your soul. Happy Birthday, Nishika! 🌙🎶' },
+        { id: 'w_cel_3', category: 'celestial', categoryName: 'Celestial & Poetic', tagClass: 'tag-celestial', text: 'Wishing you a universe of wonder and galaxies of love on your special day. Shine on, enchanting Nishika! 🪐💖' },
+        { id: 'w_cel_4', category: 'celestial', categoryName: 'Celestial & Poetic', tagClass: 'tag-celestial', text: 'Time pauses to celebrate the moment you graced this world. Happy Birthday to a truly timeless, celestial soul, Nishika! ⏳✨' },
+
+        // JOYFUL & CHEERFUL
+        { id: 'w_joy_1', category: 'joyful', categoryName: 'Joyful & Cheerful', tagClass: 'tag-joyful', text: 'Happy Birthday Nishika! May your day be filled with sweet cake, loud laughter, sparkling confetti, and zero worries! 🎂🎈🎉' },
+        { id: 'w_joy_2', category: 'joyful', categoryName: 'Joyful & Cheerful', tagClass: 'tag-joyful', text: 'Cheers to another year of being fabulous, radiant, and absolutely iconic! Have the best birthday party ever, Nishika! 🥂🥳✨' },
+        { id: 'w_joy_3', category: 'joyful', categoryName: 'Joyful & Cheerful', tagClass: 'tag-joyful', text: 'Warning: Extreme levels of cuteness, sweetness, and celebration ahead! Happy Birthday to the most wonderful Nishika! 💃🎉🎁' },
+        { id: 'w_joy_4', category: 'joyful', categoryName: 'Joyful & Cheerful', tagClass: 'tag-joyful', text: 'Let the music play, the lights dance, and the cake disappear! Happy Birthday to the life of every celebration, Nishika! 🍰🎉💖' },
+
+        // SHORT & SWEET
+        { id: 'w_sht_1', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Happy Birthday My Love Nishika! You mean everything to me. 💖✨' },
+        { id: 'w_sht_2', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'To endless love, laughter, and starlight. Happy Birthday Nishika! 🌸💫' },
+        { id: 'w_sht_3', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Wishing the sweetest birthday to the most wonderful soul! 🎂💕' },
+        { id: 'w_sht_4', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Forever celebrating you, today and every day. Happy Birthday! 👑✨' },
+        { id: 'w_sht_5', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'May your special day be as gorgeous and radiant as your smile! 🌹✨' }
+      ];
+
+      const guestWishInput = document.getElementById('guestWish');
+      const guestWishCharCounter = document.getElementById('guestWishCharCounter');
+      const btnAutoGenerateWish = document.getElementById('btnAutoGenerateWish');
+      const btnSurpriseWish = document.getElementById('btnSurpriseWish');
+      const btnWishLibrary = document.getElementById('btnWishLibrary');
+      const btnManualWish = document.getElementById('btnManualWish');
+      const btnClearWishText = document.getElementById('btnClearWishText');
+      const wishMoodChips = document.getElementById('wishMoodChips');
+      const wishEmojiBar = document.getElementById('wishEmojiBar');
+
+      let currentSelectedMood = 'all';
+      let lastGeneratedIndex = -1;
+
+      function updateWishCharCount() {
+        if (!guestWishInput || !guestWishCharCounter) return;
+        const len = guestWishInput.value.length;
+        const max = guestWishInput.getAttribute('maxlength') || 600;
+        guestWishCharCounter.textContent = `${len} / ${max}`;
+        if (len >= max) {
+          guestWishCharCounter.className = 'wish-char-counter limit-reached';
+        } else if (len >= max * 0.85) {
+          guestWishCharCounter.className = 'wish-char-counter limit-near';
+        } else {
+          guestWishCharCounter.className = 'wish-char-counter';
+        }
+      }
+
+      if (guestWishInput) {
+        guestWishInput.addEventListener('input', updateWishCharCount);
+        updateWishCharCount();
+      }
+
+      function applyGeneratedWishText(text) {
+        if (!guestWishInput) return;
+        guestWishInput.value = text;
+        guestWishInput.classList.remove('wish-field-glow');
+        void guestWishInput.offsetWidth; // Force reflow
+        guestWishInput.classList.add('wish-field-glow');
+        updateWishCharCount();
+        initAudio();
+        playChime(659.25, 0.25);
+      }
+
+      function generateWishByMood(mood = 'all') {
+        const pool = mood === 'all' ? WISH_TEMPLATES_LIBRARY : WISH_TEMPLATES_LIBRARY.filter(w => w.category === mood);
+        if (!pool.length) return;
+        let nextIdx = Math.floor(Math.random() * pool.length);
+        if (pool.length > 1 && nextIdx === lastGeneratedIndex) {
+          nextIdx = (nextIdx + 1) % pool.length;
+        }
+        lastGeneratedIndex = nextIdx;
+        applyGeneratedWishText(pool[nextIdx].text);
+      }
+
+      if (btnAutoGenerateWish) {
+        btnAutoGenerateWish.addEventListener('click', () => {
+          generateWishByMood(currentSelectedMood);
+        });
+      }
+
+      if (btnSurpriseWish) {
+        btnSurpriseWish.addEventListener('click', () => {
+          generateWishByMood('all');
+        });
+      }
+
+      if (btnManualWish) {
+        btnManualWish.addEventListener('click', () => {
+          if (guestWishInput) {
+            guestWishInput.focus();
+            guestWishInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            guestWishInput.classList.remove('wish-field-glow');
+            void guestWishInput.offsetWidth;
+            guestWishInput.classList.add('wish-field-glow');
+          }
+        });
+      }
+
+      if (btnClearWishText) {
+        btnClearWishText.addEventListener('click', () => {
+          if (guestWishInput) {
+            guestWishInput.value = '';
+            updateWishCharCount();
+            guestWishInput.focus();
+          }
+        });
+      }
+
+      // Mood Chips Selector
+      if (wishMoodChips) {
+        wishMoodChips.addEventListener('click', (e) => {
+          const chip = e.target.closest('.wish-mood-chip');
+          if (!chip) return;
+          wishMoodChips.querySelectorAll('.wish-mood-chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          currentSelectedMood = chip.dataset.mood || 'all';
+          generateWishByMood(currentSelectedMood);
+        });
+      }
+
+      // Emoji Inserter Helper
+      if (wishEmojiBar && guestWishInput) {
+        wishEmojiBar.addEventListener('click', (e) => {
+          const btn = e.target.closest('.wish-emoji-btn');
+          if (!btn) return;
+          const emoji = btn.dataset.emoji || btn.textContent.trim();
+          const start = guestWishInput.selectionStart || guestWishInput.value.length;
+          const end = guestWishInput.selectionEnd || guestWishInput.value.length;
+          const val = guestWishInput.value;
+          guestWishInput.value = val.substring(0, start) + emoji + val.substring(end);
+          guestWishInput.selectionStart = guestWishInput.selectionEnd = start + emoji.length;
+          guestWishInput.focus();
+          updateWishCharCount();
+          initAudio();
+          playChime(783.99, 0.15);
+        });
+      }
+
+      // ----------------------------------------------------------------------
+      // WISH LIBRARY MODAL ENGINE (Pre-Launch Index)
+      // ----------------------------------------------------------------------
+      const wishLibraryModal = document.getElementById('wishLibraryModal');
+      const closeWishLibraryBtn = document.getElementById('closeWishLibraryBtn');
+      const wishLibTabs = document.getElementById('wishLibTabs');
+      const wishLibSearchInput = document.getElementById('wishLibSearchInput');
+      const wishLibraryList = document.getElementById('wishLibraryList');
+
+      let currentLibMood = 'all';
+      let libSearchQuery = '';
+
+      function renderWishLibraryCards() {
+        if (!wishLibraryList) return;
+        let filtered = WISH_TEMPLATES_LIBRARY;
+        if (currentLibMood !== 'all') {
+          filtered = filtered.filter(w => w.category === currentLibMood);
+        }
+        if (libSearchQuery) {
+          const q = libSearchQuery.toLowerCase();
+          filtered = filtered.filter(w => w.text.toLowerCase().includes(q) || w.categoryName.toLowerCase().includes(q));
+        }
+
+        if (filtered.length === 0) {
+          wishLibraryList.innerHTML = `
+            <div style="text-align:center; padding:30px 10px; color:var(--text-muted);">
+              <i class="fa-solid fa-heart-crack" style="font-size:2rem; color:var(--accent-gold); opacity:0.5; margin-bottom:10px; display:block;"></i>
+              <p>No matching birthday wishes found. Try another keyword or mood!</p>
+            </div>
+          `;
+          return;
+        }
+
+        wishLibraryList.innerHTML = filtered.map(item => `
+          <div class="wish-item-card">
+            <div class="wish-item-header">
+              <span class="wish-item-tag ${item.tagClass}">${item.categoryName}</span>
+            </div>
+            <p class="wish-item-text">"${escapeHtml(item.text)}"</p>
+            <div class="wish-item-actions">
+              <button type="button" class="wish-copy-btn" data-copy-text="${escapeHtml(item.text)}" title="Copy wish to clipboard">
+                <i class="fa-solid fa-copy"></i> Copy
+              </button>
+              <button type="button" class="wish-use-btn" data-use-text="${escapeHtml(item.text)}" title="Insert wish into your message">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Use This Wish
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function openWishLibraryModal() {
+        if (!wishLibraryModal) return;
+        wishLibraryModal.style.display = 'flex';
+        requestAnimationFrame(() => {
+          wishLibraryModal.classList.add('active');
+          wishLibraryModal.setAttribute('aria-hidden', 'false');
+        });
+        currentLibMood = 'all';
+        libSearchQuery = '';
+        if (wishLibSearchInput) wishLibSearchInput.value = '';
+        if (wishLibTabs) {
+          wishLibTabs.querySelectorAll('.wish-lib-tab').forEach(t => {
+            t.classList.toggle('active', t.dataset.tabMood === 'all');
+          });
+        }
+        renderWishLibraryCards();
+        initAudio();
+        playChime(523.25, 0.3);
+      }
+
+      function closeWishLibraryModal() {
+        if (!wishLibraryModal) return;
+        wishLibraryModal.classList.remove('active');
+        wishLibraryModal.setAttribute('aria-hidden', 'true');
+        setTimeout(() => {
+          if (!wishLibraryModal.classList.contains('active')) {
+            wishLibraryModal.style.display = 'none';
+          }
+        }, 300);
+      }
+
+      if (btnWishLibrary) btnWishLibrary.addEventListener('click', openWishLibraryModal);
+      if (closeWishLibraryBtn) closeWishLibraryBtn.addEventListener('click', closeWishLibraryModal);
+
+      if (wishLibraryModal) {
+        wishLibraryModal.addEventListener('click', (e) => {
+          if (e.target === wishLibraryModal) closeWishLibraryModal();
+        });
+      }
+
+      if (wishLibTabs) {
+        wishLibTabs.addEventListener('click', (e) => {
+          const tab = e.target.closest('.wish-lib-tab');
+          if (!tab) return;
+          wishLibTabs.querySelectorAll('.wish-lib-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentLibMood = tab.dataset.tabMood || 'all';
+          renderWishLibraryCards();
+        });
+      }
+
+      if (wishLibSearchInput) {
+        wishLibSearchInput.addEventListener('input', (e) => {
+          libSearchQuery = e.target.value.trim();
+          renderWishLibraryCards();
+        });
+      }
+
+      if (wishLibraryList) {
+        wishLibraryList.addEventListener('click', (e) => {
+          const useBtn = e.target.closest('.wish-use-btn');
+          if (useBtn) {
+            const text = useBtn.getAttribute('data-use-text');
+            if (text) {
+              applyGeneratedWishText(text);
+              closeWishLibraryModal();
+              if (guestWishInput) {
+                guestWishInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }
+            return;
+          }
+
+          const copyBtn = e.target.closest('.wish-copy-btn');
+          if (copyBtn) {
+            const text = copyBtn.getAttribute('data-copy-text');
+            if (text) {
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                  const orig = copyBtn.innerHTML;
+                  copyBtn.innerHTML = '<i class="fa-solid fa-check" style="color:#34d399;"></i> Copied!';
+                  setTimeout(() => { copyBtn.innerHTML = orig; }, 1800);
+                }).catch(() => {
+                  applyGeneratedWishText(text);
+                  closeWishLibraryModal();
+                });
+              } else {
+                applyGeneratedWishText(text);
+                closeWishLibraryModal();
+              }
+            }
+          }
+        });
+      }
 
       // 8. FORM SUBMISSION (Syncs to Google Sheets + Updates Wall & Memories in Real-Time)
       const wishForm = document.getElementById('preLaunchWishForm');

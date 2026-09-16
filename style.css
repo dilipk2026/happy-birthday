@@ -8387,10 +8387,55 @@ h1, h2, h3, h4 {
   .claw-controls-panel { flex-wrap: wrap; }
   .claw-drop-btn { order: 3; width: 100%; margin-top: 8px; }
   
-  .keepsake-dialog, .star-registry-dialog { padding: 12px; }
-  .keepsake-inner, .star-cert-inner { padding: 16px 12px; }
+  /* Modals & Certificate Dialogs Mobile Scaling */
+  .keepsake-dialog, .star-registry-dialog { padding: 10px; max-width: 100%; width: 100%; box-sizing: border-box; }
+  .keepsake-card-preview, .star-certificate-preview { padding: 10px; width: 100%; box-sizing: border-box; }
+  .keepsake-border, .star-cert-border { padding: 16px 12px; }
+  .keepsake-header h2 { font-size: 1.3rem; }
+  .keepsake-subtitle { font-size: 1.05rem; }
+  .keepsake-recipient { font-size: 1.8rem; }
+  .keepsake-statement { font-size: 0.88rem; line-height: 1.45; }
+  .keepsake-footer, .star-cert-footer { flex-direction: row; gap: 8px; margin-top: 12px; padding-top: 10px; }
+  .keepsake-sign, .star-sign-name { font-size: 1.4rem; }
+  .keepsake-gold-seal, .star-gold-badge { width: 60px; height: 60px; font-size: 0.52rem; flex-shrink: 0; }
+  
+  .star-cert-header h2 { font-size: 1.25rem; }
+  .star-coordinates-box { padding: 6px 8px; font-size: 0.72rem; }
+  .coord-label, .magnitude-label { font-size: 0.72rem; }
   .star-name-headline { font-size: 1.4rem; }
-  .star-dedication-msg { font-size: 1.1rem; }
+  .star-dedication-msg { font-size: 0.92rem; line-height: 1.45; padding: 8px 10px; }
+
+  .modal-action-bar {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .modal-action-bar button {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    min-height: 42px;
+  }
+
+  /* Wish Generator & Library Mobile Scaling */
+  .wish-generator-toolbar { gap: 5px; width: 100%; flex-wrap: wrap; }
+  .wish-action-btn { font-size: 0.74rem; padding: 5px 9px; }
+  .wish-mood-chips { padding: 3px 0 6px; gap: 5px; width: 100%; }
+  .wish-mood-chip { font-size: 0.72rem; padding: 4px 8px; }
+  .wish-input-footer { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .wish-char-counter { margin-left: 0; align-self: flex-end; }
+  .wish-library-card { width: calc(100vw - 16px); max-height: 88dvh; border-radius: 16px; margin: auto; }
+  .wish-library-header { padding: 12px 14px; }
+  .wish-library-title { font-size: 1rem; }
+  .wish-library-tabs { padding: 8px 12px 6px; gap: 4px; }
+  .wish-lib-tab { font-size: 0.72rem; padding: 4px 10px; }
+  .wish-library-search-box { padding: 8px 12px; }
+  .wish-library-list { padding: 8px 12px; max-height: 48vh; gap: 8px; }
+  .wish-item-card { padding: 10px 12px; }
+  .wish-item-actions { flex-direction: column; width: 100%; gap: 6px; }
+  .wish-item-actions .btn-primary, .wish-item-actions .btn-secondary { width: 100%; justify-content: center; font-size: 0.76rem; padding: 6px 10px; }
 
   /* 3D Bouquet & Gifting Mobile Optimization */
   .bouquet-display-stage { width: 100%; max-width: 100%; overflow: hidden; box-sizing: border-box; }
@@ -8502,6 +8547,10 @@ h1, h2, h3, h4 {
   .bouquet-presentation-wrapper { transform: scale(0.75); }
   
   .modal-dialog { padding: 14px 8px; width: calc(100% - 12px); }
+  .keepsake-recipient { font-size: 1.55rem; }
+  .keepsake-gold-seal, .star-gold-badge { width: 50px; height: 50px; font-size: 0.45rem; }
+  .star-name-headline { font-size: 1.2rem; }
+  .wish-action-btn { font-size: 0.7rem; padding: 4px 7px; }
 }
 
 /* 5. Ultra-Wide 4K Screens (>= 2000px) */
@@ -8509,11 +8558,440 @@ h1, h2, h3, h4 {
   .content-container, .app-header { max-width: 1440px; }
 }
 
-/* 6. High-Resolution Print Styles */
+/* 6. High-Resolution Print Styles (Strict Single-Page Certificate Isolation) */
 @media print {
-  body * { visibility: hidden; }
-  #keepsakeCardPrint, #keepsakeCardPrint *, #starCertPrint, #starCertPrint * { visibility: visible; }
-  #keepsakeCardPrint, #starCertPrint { position: absolute; left: 0; top: 0; width: 100%; }
+  @page {
+    margin: 6mm 8mm;
+    size: A4 portrait;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #111827 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide absolutely everything on the website during print by default */
+  #mainApp,
+  #particleCanvas,
+  #confettiCanvas,
+  .ambient-glow,
+  .app-nav-bar,
+  .app-footer,
+  .coming-footer,
+  .music-player-bar,
+  .modal-backdrop:not(#keepsakeModal):not(#starModal),
+  .modal-sparkle-header,
+  .modal-action-bar,
+  .modal-close-btn,
+  .quick-media-overlay,
+  .wish-library-overlay,
+  .media-hover-popout-overlay,
+  .media-lightbox-overlay,
+  #introOverlay,
+  #pagePasscodeOverlay,
+  .toast-notification,
+  .reveal-on-scroll {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Deterministic Certificate Toggle */
+  body.print-star-active #starModal {
+    display: block !important;
+    visibility: visible !important;
+  }
+  body.print-star-active #keepsakeModal {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  body.print-keepsake-active #keepsakeModal,
+  body:not(.print-star-active) #keepsakeModal {
+    display: block !important;
+    visibility: visible !important;
+  }
+  body:not(.print-star-active) #starModal {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Modal Backdrop Container Reset for Print */
+  .modal-backdrop,
+  .modal-backdrop.active,
+  #keepsakeModal,
+  #starModal {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: visible !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  .modal-dialog,
+  .keepsake-dialog,
+  .star-registry-dialog,
+  .glass-card,
+  #keepsakeModal .modal-dialog,
+  #starModal .modal-dialog {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  /* ==========================================================================
+     KEEPSAKE CARD PRINT LAYOUT (100% SINGLE A4 PAGE FIT)
+     ========================================================================== */
+  #keepsakeCardPrint {
+    display: block !important;
+    visibility: visible !important;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 680px !important;
+    margin: 0 auto !important;
+    background: #fdfbf7 !important;
+    color: #1a0f2e !important;
+    padding: 14px !important;
+    border-radius: 16px !important;
+    box-shadow: none !important;
+    border: 1px solid #d97706 !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+    box-sizing: border-box !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #keepsakeCardPrint * {
+    box-sizing: border-box !important;
+  }
+
+  #keepsakeCardPrint .keepsake-border {
+    border: 4px double #d97706 !important;
+    border-radius: 12px !important;
+    padding: 24px 28px !important;
+    background: radial-gradient(circle, #ffffff 60%, #fef3c7 100%) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #keepsakeCardPrint .keepsake-inner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    text-align: center !important;
+  }
+
+  #keepsakeCardPrint .keepsake-crown {
+    font-size: 2.4rem !important;
+    line-height: 1 !important;
+    display: block !important;
+  }
+
+  #keepsakeCardPrint .keepsake-header h2 {
+    font-family: 'Cinzel', serif !important;
+    font-size: 1.65rem !important;
+    color: #9f1239 !important;
+    margin: 2px 0 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  #keepsakeCardPrint .keepsake-subtitle {
+    font-family: 'Dancing Script', cursive !important;
+    font-size: 1.3rem !important;
+    color: #b45309 !important;
+    margin: 0 !important;
+  }
+
+  #keepsakeCardPrint .keepsake-certifies {
+    font-size: 0.88rem !important;
+    color: #64748b !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.12em !important;
+    margin: 8px 0 2px !important;
+  }
+
+  #keepsakeCardPrint .keepsake-recipient {
+    font-family: 'Cinzel', serif !important;
+    font-size: 2.4rem !important;
+    color: #be123c !important;
+    margin: 4px 0 6px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  #keepsakeCardPrint .keepsake-statement {
+    font-size: 0.98rem !important;
+    line-height: 1.6 !important;
+    color: #334155 !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+  }
+
+  #keepsakeCardPrint .keepsake-footer {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: 16px !important;
+    border-top: 1px solid #e2e8f0 !important;
+    padding-top: 14px !important;
+  }
+
+  #keepsakeCardPrint .keepsake-signature-box {
+    text-align: left !important;
+  }
+
+  #keepsakeCardPrint .keepsake-sign {
+    font-family: 'Dancing Script', cursive !important;
+    font-size: 1.7rem !important;
+    color: #be123c !important;
+    display: block !important;
+    line-height: 1.2 !important;
+  }
+
+  #keepsakeCardPrint .keepsake-sign-label {
+    font-size: 0.75rem !important;
+    color: #64748b !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  #keepsakeCardPrint .keepsake-gold-seal {
+    width: 74px !important;
+    height: 74px !important;
+    background: radial-gradient(circle, #fde047 0%, #d97706 100%) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-size: 0.58rem !important;
+    font-weight: 900 !important;
+    line-height: 1.25 !important;
+    color: #451a03 !important;
+    box-shadow: 0 4px 10px rgba(217, 119, 6, 0.4) !important;
+    border: 2px dashed #78350f !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* ==========================================================================
+     STAR REGISTRY CERTIFICATE PRINT LAYOUT (100% SINGLE A4 PAGE FIT)
+     ========================================================================== */
+  #starCertPrint {
+    display: block !important;
+    visibility: visible !important;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 680px !important;
+    margin: 0 auto !important;
+    background: radial-gradient(circle at center, #1c0c33 0%, #0c0418 100%) !important;
+    color: #ffffff !important;
+    border: 3px solid #d97706 !important;
+    border-radius: 16px !important;
+    padding: 16px !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+    box-sizing: border-box !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #starCertPrint * {
+    box-sizing: border-box !important;
+  }
+
+  #starCertPrint .star-cert-border {
+    border: 2px dashed rgba(251, 191, 36, 0.8) !important;
+    border-radius: 12px !important;
+    padding: 20px 24px !important;
+    background: rgba(0, 0, 0, 0.35) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #starCertPrint .star-cert-inner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-align: center !important;
+  }
+
+  #starCertPrint .star-icon-gold {
+    font-size: 1.6rem !important;
+    color: #ffd700 !important;
+    display: block !important;
+    line-height: 1 !important;
+  }
+
+  #starCertPrint h2 {
+    font-family: 'Cinzel', serif !important;
+    font-size: 1.55rem !important;
+    color: #ffd700 !important;
+    margin: 2px 0 !important;
+    letter-spacing: 0.05em !important;
+    font-weight: 700 !important;
+  }
+
+  #starCertPrint .star-cert-subtitle {
+    font-size: 0.85rem !important;
+    color: #cbd5e1 !important;
+    margin: 0 0 6px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  #starCertPrint .cert-deed {
+    font-size: 0.85rem !important;
+    color: #94a3b8 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    margin: 4px 0 2px !important;
+  }
+
+  #starCertPrint .star-coordinates-box {
+    background: rgba(251, 191, 36, 0.15) !important;
+    border: 1px solid rgba(251, 191, 36, 0.5) !important;
+    border-radius: 8px !important;
+    padding: 6px 14px !important;
+    margin: 4px 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #starCertPrint .coord-label,
+  #starCertPrint .magnitude-label {
+    font-size: 0.8rem !important;
+    color: #fef08a !important;
+    font-family: monospace !important;
+    line-height: 1.3 !important;
+  }
+
+  #starCertPrint .cert-named-text {
+    font-size: 0.88rem !important;
+    color: #cbd5e1 !important;
+    margin: 6px 0 2px !important;
+  }
+
+  #starCertPrint .star-name-headline {
+    font-family: 'Cinzel', serif !important;
+    font-size: 1.95rem !important;
+    color: #ffffff !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6) !important;
+    margin: 4px 0 6px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  #starCertPrint .star-dedication-msg {
+    font-size: 0.95rem !important;
+    font-style: italic !important;
+    color: #ffd700 !important;
+    line-height: 1.5 !important;
+    padding: 10px 16px !important;
+    background: rgba(251, 191, 36, 0.12) !important;
+    border-radius: 8px !important;
+    border-left: 3px solid #ffd700 !important;
+    max-width: 520px !important;
+    margin: 4px auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #starCertPrint .star-cert-footer {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: 14px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding-top: 12px !important;
+  }
+
+  #starCertPrint .star-sign-box {
+    text-align: left !important;
+  }
+
+  #starCertPrint .star-sign-name {
+    font-family: 'Dancing Script', cursive !important;
+    font-size: 1.7rem !important;
+    color: #ffd700 !important;
+    display: block !important;
+    line-height: 1.2 !important;
+  }
+
+  #starCertPrint .star-sign-title {
+    font-size: 0.75rem !important;
+    color: #94a3b8 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  #starCertPrint .star-gold-badge {
+    width: 74px !important;
+    height: 74px !important;
+    background: radial-gradient(circle, #fde047 0%, #d97706 100%) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-size: 0.58rem !important;
+    font-weight: 900 !important;
+    line-height: 1.25 !important;
+    color: #451a03 !important;
+    box-shadow: 0 4px 10px rgba(217, 119, 6, 0.4) !important;
+    border: 2px dashed #78350f !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }
 
 /* ==========================================================================
@@ -13524,4 +14002,453 @@ img, video, canvas, svg, iframe {
     max-width: 920px !important;
   }
 }
+
+/* ==========================================================================
+   AUTO-GENERATE WISHES & MANUAL ENTRY CONTROLS
+   ========================================================================== */
+.wish-generator-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.wish-header-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.wish-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.wish-action-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.3px;
+  user-select: none;
+}
+
+.wish-action-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--accent-gold, #ffd700);
+  color: var(--accent-gold, #ffd700);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
+}
+
+.wish-action-btn.primary-magic {
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.35), rgba(255, 215, 0, 0.35));
+  border-color: rgba(255, 215, 0, 0.6);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  animation: magicPulseGlow 3s infinite alternate;
+}
+
+.wish-action-btn.primary-magic:hover {
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.6), rgba(255, 215, 0, 0.6));
+  border-color: #ffd700;
+  box-shadow: 0 0 18px rgba(255, 215, 0, 0.5);
+}
+
+@keyframes magicPulseGlow {
+  0% { box-shadow: 0 0 6px rgba(255, 215, 0, 0.2); }
+  100% { box-shadow: 0 0 16px rgba(255, 64, 129, 0.45), 0 0 8px rgba(255, 215, 0, 0.4); }
+}
+
+.wish-mood-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 2px 6px 2px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.wish-mood-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.wish-mood-chip {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.wish-mood-chip:hover {
+  background: rgba(255, 64, 129, 0.18);
+  border-color: rgba(255, 64, 129, 0.5);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.wish-mood-chip.active {
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.35), rgba(157, 78, 221, 0.35));
+  border-color: #ff4081;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.35);
+}
+
+.wish-text-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.wish-field-glow {
+  animation: wishFillGlow 0.8s ease-out;
+}
+
+@keyframes wishFillGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(255, 215, 0, 0);
+    border-color: rgba(255, 215, 0, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(255, 215, 0, 0.6), 0 0 10px rgba(255, 64, 129, 0.5);
+    border-color: #ffd700;
+    transform: scale(1.003);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(255, 215, 0, 0);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: scale(1);
+  }
+}
+
+.wish-input-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: var(--text-muted, #aaa);
+}
+
+.wish-emoji-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.wish-emoji-label {
+  font-size: 0.72rem;
+  color: var(--text-muted, #888);
+  margin-right: 2px;
+}
+
+.wish-emoji-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  padding: 2px 6px;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.wish-emoji-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.22);
+}
+
+.wish-emoji-btn:active {
+  transform: scale(0.95);
+}
+
+.wish-char-counter {
+  font-size: 0.75rem;
+  color: var(--text-muted, #999);
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+.wish-char-counter.limit-near {
+  color: #ffaa00;
+  font-weight: 600;
+}
+
+.wish-char-counter.limit-reached {
+  color: #ff4081;
+  font-weight: 700;
+}
+
+/* Wish Library Modal */
+.wish-library-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(6, 3, 14, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.wish-library-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.wish-library-card {
+  width: min(92vw, 680px);
+  max-height: 85vh;
+  background: rgba(18, 10, 32, 0.92);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 64, 129, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.92);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.wish-library-overlay.active .wish-library-card {
+  transform: scale(1);
+}
+
+.wish-library-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.wish-library-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-gold, #ffd700);
+  margin: 0;
+}
+
+.wish-library-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.wish-library-close-btn:hover {
+  background: rgba(255, 64, 129, 0.3);
+  border-color: #ff4081;
+  transform: rotate(90deg);
+}
+
+.wish-library-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px 20px 8px;
+  overflow-x: auto;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  scrollbar-width: none;
+}
+.wish-library-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.wish-lib-tab {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted, #ccc);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.wish-lib-tab:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.wish-lib-tab.active {
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.4), rgba(255, 215, 0, 0.3));
+  border-color: var(--accent-gold, #ffd700);
+  color: var(--accent-gold, #ffd700);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.wish-library-search-box {
+  padding: 10px 20px;
+  display: flex;
+  gap: 8px;
+}
+
+.wish-lib-search-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 8px 14px;
+  color: #fff;
+  font-size: 0.85rem;
+  outline: none;
+}
+.wish-lib-search-input:focus {
+  border-color: var(--accent-gold, #ffd700);
+}
+
+.wish-library-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 52vh;
+}
+
+.wish-item-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.wish-item-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 215, 0, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.wish-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.wish-item-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(255, 64, 129, 0.2);
+  color: #ff7597;
+  border: 1px solid rgba(255, 64, 129, 0.3);
+}
+
+.wish-item-tag.tag-royal { background: rgba(255, 215, 0, 0.2); color: #ffd700; border-color: rgba(255, 215, 0, 0.3); }
+.wish-item-tag.tag-blessing { background: rgba(16, 185, 129, 0.2); color: #34d399; border-color: rgba(16, 185, 129, 0.3); }
+.wish-item-tag.tag-celestial { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
+.wish-item-tag.tag-joyful { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border-color: rgba(245, 158, 11, 0.3); }
+.wish-item-tag.tag-short { background: rgba(192, 132, 252, 0.2); color: #c084fc; border-color: rgba(192, 132, 252, 0.3); }
+
+.wish-item-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0;
+  font-style: italic;
+}
+
+.wish-item-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.wish-use-btn {
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.4), rgba(255, 215, 0, 0.4));
+  border: 1px solid var(--accent-gold, #ffd700);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.wish-use-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.8), rgba(255, 215, 0, 0.8));
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.wish-copy-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.76rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+.wish-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
 

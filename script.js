@@ -5926,6 +5926,318 @@ const romanticReasons = [
   if (syncWishesBtn) syncWishesBtn.addEventListener('click', fetchCloudWishes);
   fetchCloudWishes();
 
+  // --------------------------------------------------------------------------
+  // AUTO-GENERATE WISHES & MANUAL ENTRY ENGINE (Main Arena)
+  // --------------------------------------------------------------------------
+  const MAIN_WISH_TEMPLATES_LIBRARY = [
+    // ROMANTIC & DEVOTION
+    { id: 'w_rom_1', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'Happy Birthday to the queen of my heart, My Love Nishika! Every second with you is stardust and pure bliss. I love you beyond words and eternity! 💕✨' },
+    { id: 'w_rom_2', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'To the one who makes my world infinite and beautiful: Happy Birthday, Nishika! You are my greatest miracle, my forever love, and my endless joy. 🌹👑' },
+    { id: 'w_rom_3', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'Happy Birthday My Love Nishika! In your smile I found my home, and in your eyes I found my universe. May your year be as dazzling as your soul. 💫💖' },
+    { id: 'w_rom_4', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'Celebrating the most extraordinary soul in the galaxy! Happy Birthday, Nishika. Every heartbeat sings your name with infinite devotion. 💖✨' },
+    { id: 'w_rom_5', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'To my beloved Nishika, Happy Birthday! Meeting you was destiny, loving you is my honor, and celebrating you is pure joy. Forever and always. 🥂💍' },
+    { id: 'w_rom_6', category: 'romantic', categoryName: 'Romantic & Devotion', tagClass: 'tag-romantic', text: 'You are the gentle moonlight in my darkest night and the sweetest melody in my heart. Happy Birthday, my eternal love Nishika! 🌙💕' },
+    
+    // ROYAL & MAJESTIC
+    { id: 'w_roy_1', category: 'royal', categoryName: 'Royal & Majestic', tagClass: 'tag-royal', text: 'All hail Queen Nishika on her royal birthday! May your kingdom of dreams flourish with majesty, elegance, and endless golden moments. 👑✨' },
+    { id: 'w_roy_2', category: 'royal', categoryName: 'Royal & Majestic', tagClass: 'tag-royal', text: 'A crown of starlight for the most enchanting queen! Happy Birthday, My Love Nishika. Shine bright and rule every tomorrow with grace! 👑💖' },
+    { id: 'w_roy_3', category: 'royal', categoryName: 'Royal & Majestic', tagClass: 'tag-royal', text: 'To royal majesty and endless charm: Happy Birthday Queen Nishika! May every aspiration turn into glorious triumph this year! 🌟👑' },
+    { id: 'w_roy_4', category: 'royal', categoryName: 'Royal & Majestic', tagClass: 'tag-royal', text: 'Happy Birthday to royalty itself! Nishika, may your special day be filled with royal splendor, laughter, and timeless celebrations! 🏰✨' },
+    { id: 'w_roy_5', category: 'royal', categoryName: 'Royal & Majestic', tagClass: 'tag-royal', text: 'Royal blessings and eternal happiness to our radiant Queen Nishika! You wear kindness like a golden crown. Happy Birthday! 👑🌸' },
+
+    // HEARTFELT BLESSINGS
+    { id: 'w_bls_1', category: 'blessing', categoryName: 'Heartfelt Blessings', tagClass: 'tag-blessing', text: 'Wishing you a birthday blessed with radiant health, unbounded happiness, and every precious dream fulfilled! Happy Birthday Nishika! 🌸🎂' },
+    { id: 'w_bls_2', category: 'blessing', categoryName: 'Heartfelt Blessings', tagClass: 'tag-blessing', text: 'May your 26th year blossom with wondrous adventures, unconditional love, and peaceful sunshine every single day. Happy Birthday, Nishika! 🌻✨' },
+    { id: 'w_bls_3', category: 'blessing', categoryName: 'Heartfelt Blessings', tagClass: 'tag-blessing', text: 'Sending ocean-deep blessings, golden sunshine, and sweet memories on your birthday, dear Nishika! Have the most magical year ahead! 🌈💖' },
+    { id: 'w_bls_4', category: 'blessing', categoryName: 'Heartfelt Blessings', tagClass: 'tag-blessing', text: 'May the universe guard your steps, shower you with peace, and fill your heart with overwhelming bliss. Happy Birthday, dearest Nishika! 🕊️✨' },
+    { id: 'w_bls_5', category: 'blessing', categoryName: 'Heartfelt Blessings', tagClass: 'tag-blessing', text: 'Praying that every day of this new chapter brings you boundless reasons to smile, celebrate, and feel cherished. Happy Birthday Nishika! 💖🙏' },
+
+    // CELESTIAL & POETIC
+    { id: 'w_cel_1', category: 'celestial', categoryName: 'Celestial & Poetic', tagClass: 'tag-celestial', text: 'Like the rarest constellation across the midnight sky, your light illuminates everything. Happy Celestial Birthday, My Love Nishika! 🌌✨' },
+    { id: 'w_cel_2', category: 'celestial', categoryName: 'Celestial & Poetic', tagClass: 'tag-celestial', text: 'A poem written by the stars, a melody played by the wind—that is the beauty of your soul. Happy Birthday, Nishika! 🌙🎶' },
+    { id: 'w_cel_3', category: 'celestial', categoryName: 'Celestial & Poetic', tagClass: 'tag-celestial', text: 'Wishing you a universe of wonder and galaxies of love on your special day. Shine on, enchanting Nishika! 🪐💖' },
+    { id: 'w_cel_4', category: 'celestial', categoryName: 'Celestial & Poetic', tagClass: 'tag-celestial', text: 'Time pauses to celebrate the moment you graced this world. Happy Birthday to a truly timeless, celestial soul, Nishika! ⏳✨' },
+
+    // JOYFUL & CHEERFUL
+    { id: 'w_joy_1', category: 'joyful', categoryName: 'Joyful & Cheerful', tagClass: 'tag-joyful', text: 'Happy Birthday Nishika! May your day be filled with sweet cake, loud laughter, sparkling confetti, and zero worries! 🎂🎈🎉' },
+    { id: 'w_joy_2', category: 'joyful', categoryName: 'Joyful & Cheerful', tagClass: 'tag-joyful', text: 'Cheers to another year of being fabulous, radiant, and absolutely iconic! Have the best birthday party ever, Nishika! 🥂🥳✨' },
+    { id: 'w_joy_3', category: 'joyful', categoryName: 'Joyful & Cheerful', tagClass: 'tag-joyful', text: 'Warning: Extreme levels of cuteness, sweetness, and celebration ahead! Happy Birthday to the most wonderful Nishika! 💃🎉🎁' },
+    { id: 'w_joy_4', category: 'joyful', categoryName: 'Joyful & Cheerful', tagClass: 'tag-joyful', text: 'Let the music play, the lights dance, and the cake disappear! Happy Birthday to the life of every celebration, Nishika! 🍰🎉💖' },
+
+    // SHORT & SWEET
+    { id: 'w_sht_1', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Happy Birthday My Love Nishika! You mean everything to me. 💖✨' },
+    { id: 'w_sht_2', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'To endless love, laughter, and starlight. Happy Birthday Nishika! 🌸💫' },
+    { id: 'w_sht_3', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Wishing the sweetest birthday to the most wonderful soul! 🎂💕' },
+    { id: 'w_sht_4', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Forever celebrating you, today and every day. Happy Birthday! 👑✨' },
+    { id: 'w_sht_5', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'May your special day be as gorgeous and radiant as your smile! 🌹✨' }
+  ];
+
+  const mainWishCharCounter = document.getElementById('mainWishCharCounter');
+  const mainBtnAutoGenerateWish = document.getElementById('mainBtnAutoGenerateWish');
+  const mainBtnSurpriseWish = document.getElementById('mainBtnSurpriseWish');
+  const mainBtnWishLibrary = document.getElementById('mainBtnWishLibrary');
+  const mainBtnManualWish = document.getElementById('mainBtnManualWish');
+  const mainBtnClearWishText = document.getElementById('mainBtnClearWishText');
+  const mainWishMoodChips = document.getElementById('mainWishMoodChips');
+  const mainWishEmojiBar = document.getElementById('mainWishEmojiBar');
+
+  let mainSelectedMood = 'all';
+  let mainLastGeneratedIndex = -1;
+
+  function updateMainWishCharCount() {
+    if (!wishTextInput || !mainWishCharCounter) return;
+    const len = wishTextInput.value.length;
+    const max = wishTextInput.getAttribute('maxlength') || 600;
+    mainWishCharCounter.textContent = `${len} / ${max}`;
+    if (len >= max) {
+      mainWishCharCounter.className = 'wish-char-counter limit-reached';
+    } else if (len >= max * 0.85) {
+      mainWishCharCounter.className = 'wish-char-counter limit-near';
+    } else {
+      mainWishCharCounter.className = 'wish-char-counter';
+    }
+  }
+
+  if (wishTextInput) {
+    wishTextInput.addEventListener('input', updateMainWishCharCount);
+    updateMainWishCharCount();
+  }
+
+  function applyMainGeneratedWishText(text) {
+    if (!wishTextInput) return;
+    wishTextInput.value = text;
+    wishTextInput.classList.remove('wish-field-glow');
+    void wishTextInput.offsetWidth; // Force reflow
+    wishTextInput.classList.add('wish-field-glow');
+    updateMainWishCharCount();
+    if (typeof playSound === 'function') {
+      try { playSound('chime'); } catch(e) {}
+    }
+  }
+
+  function generateMainWishByMood(mood = 'all') {
+    const pool = mood === 'all' ? MAIN_WISH_TEMPLATES_LIBRARY : MAIN_WISH_TEMPLATES_LIBRARY.filter(w => w.category === mood);
+    if (!pool.length) return;
+    let nextIdx = Math.floor(Math.random() * pool.length);
+    if (pool.length > 1 && nextIdx === mainLastGeneratedIndex) {
+      nextIdx = (nextIdx + 1) % pool.length;
+    }
+    mainLastGeneratedIndex = nextIdx;
+    applyMainGeneratedWishText(pool[nextIdx].text);
+  }
+
+  if (mainBtnAutoGenerateWish) {
+    mainBtnAutoGenerateWish.addEventListener('click', () => {
+      generateMainWishByMood(mainSelectedMood);
+    });
+  }
+
+  if (mainBtnSurpriseWish) {
+    mainBtnSurpriseWish.addEventListener('click', () => {
+      generateMainWishByMood('all');
+    });
+  }
+
+  if (mainBtnManualWish) {
+    mainBtnManualWish.addEventListener('click', () => {
+      if (wishTextInput) {
+        wishTextInput.focus();
+        wishTextInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        wishTextInput.classList.remove('wish-field-glow');
+        void wishTextInput.offsetWidth;
+        wishTextInput.classList.add('wish-field-glow');
+      }
+    });
+  }
+
+  if (mainBtnClearWishText) {
+    mainBtnClearWishText.addEventListener('click', () => {
+      if (wishTextInput) {
+        wishTextInput.value = '';
+        updateMainWishCharCount();
+        wishTextInput.focus();
+      }
+    });
+  }
+
+  // Mood Chips Selector
+  if (mainWishMoodChips) {
+    mainWishMoodChips.addEventListener('click', (e) => {
+      const chip = e.target.closest('.wish-mood-chip');
+      if (!chip) return;
+      mainWishMoodChips.querySelectorAll('.wish-mood-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      mainSelectedMood = chip.dataset.mood || 'all';
+      generateMainWishByMood(mainSelectedMood);
+    });
+  }
+
+  // Emoji Inserter Helper
+  if (mainWishEmojiBar && wishTextInput) {
+    mainWishEmojiBar.addEventListener('click', (e) => {
+      const btn = e.target.closest('.wish-emoji-btn');
+      if (!btn) return;
+      const emoji = btn.dataset.emoji || btn.textContent.trim();
+      const start = wishTextInput.selectionStart || wishTextInput.value.length;
+      const end = wishTextInput.selectionEnd || wishTextInput.value.length;
+      const val = wishTextInput.value;
+      wishTextInput.value = val.substring(0, start) + emoji + val.substring(end);
+      wishTextInput.selectionStart = wishTextInput.selectionEnd = start + emoji.length;
+      wishTextInput.focus();
+      updateMainWishCharCount();
+      if (typeof playSound === 'function') {
+        try { playSound('sparkle'); } catch(e) {}
+      }
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // WISH LIBRARY MODAL ENGINE (Main Arena)
+  // --------------------------------------------------------------------------
+  const mainWishLibraryModal = document.getElementById('mainWishLibraryModal');
+  const closeMainWishLibraryBtn = document.getElementById('closeMainWishLibraryBtn');
+  const mainWishLibTabs = document.getElementById('mainWishLibTabs');
+  const mainWishLibSearchInput = document.getElementById('mainWishLibSearchInput');
+  const mainWishLibraryList = document.getElementById('mainWishLibraryList');
+
+  let mainLibMood = 'all';
+  let mainLibSearchQuery = '';
+
+  function renderMainWishLibraryCards() {
+    if (!mainWishLibraryList) return;
+    let filtered = MAIN_WISH_TEMPLATES_LIBRARY;
+    if (mainLibMood !== 'all') {
+      filtered = filtered.filter(w => w.category === mainLibMood);
+    }
+    if (mainLibSearchQuery) {
+      const q = mainLibSearchQuery.toLowerCase();
+      filtered = filtered.filter(w => w.text.toLowerCase().includes(q) || w.categoryName.toLowerCase().includes(q));
+    }
+
+    if (filtered.length === 0) {
+      mainWishLibraryList.innerHTML = `
+        <div style="text-align:center; padding:30px 10px; color:var(--text-muted);">
+          <i class="fa-solid fa-heart-crack" style="font-size:2rem; color:var(--accent-gold); opacity:0.5; margin-bottom:10px; display:block;"></i>
+          <p>No matching birthday wishes found. Try another keyword or mood!</p>
+        </div>
+      `;
+      return;
+    }
+
+    mainWishLibraryList.innerHTML = filtered.map(item => `
+      <div class="wish-item-card">
+        <div class="wish-item-header">
+          <span class="wish-item-tag ${item.tagClass}">${item.categoryName}</span>
+        </div>
+        <p class="wish-item-text">"${typeof escapeHtml === 'function' ? escapeHtml(item.text) : item.text.replace(/"/g, '&quot;')}"</p>
+        <div class="wish-item-actions">
+          <button type="button" class="wish-copy-btn" data-copy-text="${typeof escapeHtml === 'function' ? escapeHtml(item.text) : item.text.replace(/"/g, '&quot;')}" title="Copy wish to clipboard">
+            <i class="fa-solid fa-copy"></i> Copy
+          </button>
+          <button type="button" class="wish-use-btn" data-use-text="${typeof escapeHtml === 'function' ? escapeHtml(item.text) : item.text.replace(/"/g, '&quot;')}" title="Insert wish into your message">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Use This Wish
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function openMainWishLibraryModal() {
+    if (!mainWishLibraryModal) return;
+    mainWishLibraryModal.style.display = 'flex';
+    requestAnimationFrame(() => {
+      mainWishLibraryModal.classList.add('active');
+      mainWishLibraryModal.setAttribute('aria-hidden', 'false');
+    });
+    mainLibMood = 'all';
+    mainLibSearchQuery = '';
+    if (mainWishLibSearchInput) mainWishLibSearchInput.value = '';
+    if (mainWishLibTabs) {
+      mainWishLibTabs.querySelectorAll('.wish-lib-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.tabMood === 'all');
+      });
+    }
+    renderMainWishLibraryCards();
+    if (typeof playSound === 'function') {
+      try { playSound('chime'); } catch(e) {}
+    }
+  }
+
+  function closeMainWishLibraryModal() {
+    if (!mainWishLibraryModal) return;
+    mainWishLibraryModal.classList.remove('active');
+    mainWishLibraryModal.setAttribute('aria-hidden', 'true');
+    setTimeout(() => {
+      if (!mainWishLibraryModal.classList.contains('active')) {
+        mainWishLibraryModal.style.display = 'none';
+      }
+    }, 300);
+  }
+
+  if (mainBtnWishLibrary) mainBtnWishLibrary.addEventListener('click', openMainWishLibraryModal);
+  if (closeMainWishLibraryBtn) closeMainWishLibraryBtn.addEventListener('click', closeMainWishLibraryModal);
+
+  if (mainWishLibraryModal) {
+    mainWishLibraryModal.addEventListener('click', (e) => {
+      if (e.target === mainWishLibraryModal) closeMainWishLibraryModal();
+    });
+  }
+
+  if (mainWishLibTabs) {
+    mainWishLibTabs.addEventListener('click', (e) => {
+      const tab = e.target.closest('.wish-lib-tab');
+      if (!tab) return;
+      mainWishLibTabs.querySelectorAll('.wish-lib-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      mainLibMood = tab.dataset.tabMood || 'all';
+      renderMainWishLibraryCards();
+    });
+  }
+
+  if (mainWishLibSearchInput) {
+    mainWishLibSearchInput.addEventListener('input', (e) => {
+      mainLibSearchQuery = e.target.value.trim();
+      renderMainWishLibraryCards();
+    });
+  }
+
+  if (mainWishLibraryList) {
+    mainWishLibraryList.addEventListener('click', (e) => {
+      const useBtn = e.target.closest('.wish-use-btn');
+      if (useBtn) {
+        const text = useBtn.getAttribute('data-use-text');
+        if (text) {
+          applyMainGeneratedWishText(text);
+          closeMainWishLibraryModal();
+          if (wishTextInput) {
+            wishTextInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+        return;
+      }
+
+      const copyBtn = e.target.closest('.wish-copy-btn');
+      if (copyBtn) {
+        const text = copyBtn.getAttribute('data-copy-text');
+        if (text) {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+              const orig = copyBtn.innerHTML;
+              copyBtn.innerHTML = '<i class="fa-solid fa-check" style="color:#34d399;"></i> Copied!';
+              setTimeout(() => { copyBtn.innerHTML = orig; }, 1800);
+            }).catch(() => {
+              applyMainGeneratedWishText(text);
+              closeMainWishLibraryModal();
+            });
+          } else {
+            applyMainGeneratedWishText(text);
+            closeMainWishLibraryModal();
+          }
+        }
+      }
+    });
+  }
+
   // Wish Form Submission Handler
   if (wishForm) {
     wishForm.addEventListener('submit', async (e) => {
@@ -6509,15 +6821,437 @@ const romanticReasons = [
   if (shareFooterBtn) shareFooterBtn.addEventListener('click', () => openModal(customizeModal));
   if (closeCustomizeModalBtn) closeCustomizeModalBtn.addEventListener('click', () => closeModal(customizeModal));
 
+  // Helper: Strictly isolated certificate printing for single-page A4 PDF/Print
+  function triggerCertificatePrint(certType) {
+    const isStar = certType === 'star';
+    const targetElementId = isStar ? 'starCertPrint' : 'keepsakeCardPrint';
+    const sourceEl = document.getElementById(targetElementId);
+    
+    const recipient = (typeof state !== 'undefined' && state.recipientName) ? state.recipientName : 'Nishika';
+    const sender = (typeof state !== 'undefined' && state.senderName) ? state.senderName : 'Dilip';
+    const originalTitle = document.title;
+    const certDocTitle = isStar ? `Star Registry Deed - ${recipient}` : `Eternal Love Certificate - ${recipient}`;
+    document.title = certDocTitle;
+
+    // Reset scroll positions on any active modal containers to prevent viewport clipping
+    const activeModals = document.querySelectorAll('.modal-backdrop, .modal-dialog');
+    activeModals.forEach(m => { if (m.scrollTop) m.scrollTop = 0; });
+
+    // Method 1: Dedicated Isolated Print Iframe (100% full certificate, zero viewport scroll/clip)
+    try {
+      if (sourceEl) {
+        let printFrame = document.getElementById('certPrintIframe');
+        if (printFrame) printFrame.remove();
+
+        printFrame = document.createElement('iframe');
+        printFrame.id = 'certPrintIframe';
+        printFrame.setAttribute('aria-hidden', 'true');
+        printFrame.style.position = 'fixed';
+        printFrame.style.top = '-9999px';
+        printFrame.style.left = '-9999px';
+        printFrame.style.width = '900px';
+        printFrame.style.height = '1200px';
+        printFrame.style.border = 'none';
+        printFrame.style.zIndex = '-9999';
+        document.body.appendChild(printFrame);
+
+        const frameDoc = printFrame.contentWindow.document;
+        frameDoc.open();
+        frameDoc.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>${certDocTitle}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Dancing+Script:wght@700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 8mm 10mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: #ffffff !important;
+      color: #111827;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+    }
+    .print-cert-outer {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* KEEPSAKE CARD STYLES */
+    .keepsake-card-preview {
+      background: #fdfbf7 !important;
+      color: #1a0f2e !important;
+      padding: 14px !important;
+      border-radius: 16px !important;
+      border: 1px solid #d97706 !important;
+      box-shadow: none !important;
+      width: 100% !important;
+      max-width: 680px !important;
+    }
+    .keepsake-border {
+      border: 4px double #d97706 !important;
+      border-radius: 12px !important;
+      padding: 24px 28px !important;
+      background: radial-gradient(circle, #ffffff 60%, #fef3c7 100%) !important;
+    }
+    .keepsake-inner {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 12px !important;
+      text-align: center !important;
+    }
+    .keepsake-crown {
+      font-size: 2.5rem !important;
+      line-height: 1 !important;
+      display: block !important;
+    }
+    .keepsake-header h2 {
+      font-family: 'Cinzel', serif !important;
+      font-size: 1.65rem !important;
+      color: #9f1239 !important;
+      margin: 2px 0 !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.05em !important;
+    }
+    .keepsake-subtitle {
+      font-family: 'Dancing Script', cursive !important;
+      font-size: 1.35rem !important;
+      color: #b45309 !important;
+      margin: 0 !important;
+    }
+    .keepsake-certifies {
+      font-size: 0.88rem !important;
+      color: #64748b !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.12em !important;
+      margin: 8px 0 2px !important;
+    }
+    .keepsake-recipient {
+      font-family: 'Cinzel', serif !important;
+      font-size: 2.4rem !important;
+      color: #be123c !important;
+      margin: 4px 0 6px !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.04em !important;
+    }
+    .keepsake-statement {
+      font-size: 0.98rem !important;
+      line-height: 1.6 !important;
+      color: #334155 !important;
+      max-width: 520px !important;
+      margin: 0 auto !important;
+    }
+    .keepsake-footer {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100% !important;
+      margin-top: 16px !important;
+      border-top: 1px solid #e2e8f0 !important;
+      padding-top: 14px !important;
+    }
+    .keepsake-signature-box {
+      text-align: left !important;
+    }
+    .keepsake-sign {
+      font-family: 'Dancing Script', cursive !important;
+      font-size: 1.7rem !important;
+      color: #be123c !important;
+      display: block !important;
+      line-height: 1.2 !important;
+    }
+    .keepsake-sign-label {
+      font-size: 0.75rem !important;
+      color: #64748b !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.08em !important;
+    }
+    .keepsake-gold-seal {
+      width: 74px !important;
+      height: 74px !important;
+      background: radial-gradient(circle, #fde047 0%, #d97706 100%) !important;
+      border-radius: 50% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+      font-size: 0.58rem !important;
+      font-weight: 900 !important;
+      line-height: 1.25 !important;
+      color: #451a03 !important;
+      box-shadow: 0 4px 10px rgba(217, 119, 6, 0.4) !important;
+      border: 2px dashed #78350f !important;
+    }
+
+    /* STAR REGISTRY CERTIFICATE STYLES */
+    .star-certificate-preview {
+      background: radial-gradient(circle at center, #1c0c33 0%, #0c0418 100%) !important;
+      color: #ffffff !important;
+      border: 3px solid #d97706 !important;
+      border-radius: 16px !important;
+      padding: 16px !important;
+      box-shadow: none !important;
+      width: 100% !important;
+      max-width: 680px !important;
+    }
+    .star-cert-border {
+      border: 2px dashed rgba(251, 191, 36, 0.8) !important;
+      border-radius: 12px !important;
+      padding: 20px 24px !important;
+      background: rgba(0, 0, 0, 0.35) !important;
+    }
+    .star-cert-inner {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 10px !important;
+      text-align: center !important;
+    }
+    .star-icon-gold {
+      font-size: 1.6rem !important;
+      color: #ffd700 !important;
+      display: block !important;
+      line-height: 1 !important;
+    }
+    .star-cert-header h2 {
+      font-family: 'Cinzel', serif !important;
+      font-size: 1.55rem !important;
+      color: #ffd700 !important;
+      margin: 2px 0 !important;
+      letter-spacing: 0.05em !important;
+      font-weight: 700 !important;
+    }
+    .star-cert-subtitle {
+      font-size: 0.85rem !important;
+      color: #cbd5e1 !important;
+      margin: 0 0 6px !important;
+      letter-spacing: 0.08em !important;
+    }
+    .cert-deed {
+      font-size: 0.85rem !important;
+      color: #94a3b8 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.08em !important;
+      margin: 4px 0 2px !important;
+    }
+    .star-coordinates-box {
+      background: rgba(251, 191, 36, 0.15) !important;
+      border: 1px solid rgba(251, 191, 36, 0.5) !important;
+      border-radius: 8px !important;
+      padding: 6px 14px !important;
+      margin: 4px 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 3px !important;
+    }
+    .coord-label, .magnitude-label {
+      font-size: 0.8rem !important;
+      color: #fef08a !important;
+      font-family: monospace !important;
+      line-height: 1.3 !important;
+    }
+    .cert-named-text {
+      font-size: 0.88rem !important;
+      color: #cbd5e1 !important;
+      margin: 6px 0 2px !important;
+    }
+    .star-name-headline {
+      font-family: 'Cinzel', serif !important;
+      font-size: 1.95rem !important;
+      color: #ffffff !important;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.6) !important;
+      margin: 4px 0 6px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.04em !important;
+    }
+    .star-dedication-msg {
+      font-size: 0.95rem !important;
+      font-style: italic !important;
+      color: #ffd700 !important;
+      line-height: 1.5 !important;
+      padding: 10px 16px !important;
+      background: rgba(251, 191, 36, 0.12) !important;
+      border-radius: 8px !important;
+      border-left: 3px solid #ffd700 !important;
+      max-width: 520px !important;
+      margin: 4px auto !important;
+    }
+    .star-cert-footer {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100% !important;
+      margin-top: 14px !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+      padding-top: 12px !important;
+    }
+    .star-sign-box {
+      text-align: left !important;
+    }
+    .star-sign-name {
+      font-family: 'Dancing Script', cursive !important;
+      font-size: 1.7rem !important;
+      color: #ffd700 !important;
+      display: block !important;
+      line-height: 1.2 !important;
+    }
+    .star-sign-title {
+      font-size: 0.75rem !important;
+      color: #94a3b8 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.08em !important;
+    }
+    .star-gold-badge {
+      width: 74px !important;
+      height: 74px !important;
+      background: radial-gradient(circle, #fde047 0%, #d97706 100%) !important;
+      border-radius: 50% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+      font-size: 0.58rem !important;
+      font-weight: 900 !important;
+      line-height: 1.25 !important;
+      color: #451a03 !important;
+      box-shadow: 0 4px 10px rgba(217, 119, 6, 0.4) !important;
+      border: 2px dashed #78350f !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="print-cert-outer">
+    ${sourceEl.outerHTML}
+  </div>
+</body>
+</html>`);
+        frameDoc.close();
+
+        setTimeout(() => {
+          try {
+            printFrame.contentWindow.focus();
+            printFrame.contentWindow.print();
+            setTimeout(() => {
+              if (printFrame && printFrame.parentNode) printFrame.remove();
+              document.title = originalTitle;
+            }, 3000);
+            return;
+          } catch (err) {
+            console.warn('Iframe print blocked, falling back to window.print():', err);
+            fallbackWindowPrint();
+          }
+        }, 150);
+        return;
+      }
+    } catch (e) {
+      console.warn('Print iframe error, fallback to window.print():', e);
+    }
+
+    // Method 2: Main Window Fallback Print
+    fallbackWindowPrint();
+
+    function fallbackWindowPrint() {
+      document.body.classList.remove('print-keepsake-active', 'print-star-active');
+      document.body.classList.add(isStar ? 'print-star-active' : 'print-keepsake-active');
+      void document.body.offsetHeight;
+
+      setTimeout(() => {
+        try {
+          window.print();
+        } catch (err) {
+          console.error('Print failed:', err);
+        }
+      }, 60);
+
+      const cleanup = () => {
+        document.body.classList.remove('print-keepsake-active', 'print-star-active');
+        document.title = originalTitle;
+        window.removeEventListener('afterprint', cleanup);
+      };
+      window.addEventListener('afterprint', cleanup);
+      setTimeout(cleanup, 3500);
+    }
+  }
+
+  // Helper: Web Share API or Clipboard Dedication Copy
+  async function shareCertificate(certType) {
+    const isStar = certType === 'star';
+    const recipient = (typeof state !== 'undefined' && state.recipientName) ? state.recipientName : 'Nishika';
+    const sender = (typeof state !== 'undefined' && state.senderName) ? state.senderName : 'Dilip';
+    const shareUrl = window.location.href.split('#')[0];
+    
+    const shareTitle = isStar
+      ? `✨ Celestial Star Dedicated to ${recipient}`
+      : `💖 Eternal Love Certificate for ${recipient}`;
+      
+    const shareText = isStar
+      ? `🌟 Celestial Star Registry: A real radiant star has been officially named "${recipient} — The Star of My Love" by ${sender} 💖!\nView here: ${shareUrl}`
+      : `📜 Official Certificate of Endless Devotion: Dedicated to ${recipient} with infinite love by ${sender} 💖!\nView here: ${shareUrl}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl
+        });
+        showToast('✨ Certificate shared successfully!');
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(shareText);
+        showToast('📋 Certificate dedication copied to clipboard! 💖');
+      } else {
+        showToast('✨ Certificate ready to share!');
+      }
+    } catch (e) {
+      showToast('✨ Certificate ready to share!');
+    }
+  }
+
   // Keepsake Certificate Modal
   const openKeepsakeBtn = document.getElementById('openKeepsakeBtn');
   const keepsakeModal = document.getElementById('keepsakeModal');
   const closeKeepsakeModalBtn = document.getElementById('closeKeepsakeModalBtn');
   const printCardBtn = document.getElementById('printCardBtn');
+  const savePdfCardBtn = document.getElementById('savePdfCardBtn');
+  const shareKeepsakeBtn = document.getElementById('shareKeepsakeBtn');
 
   if (openKeepsakeBtn) openKeepsakeBtn.addEventListener('click', () => openModal(keepsakeModal));
   if (closeKeepsakeModalBtn) closeKeepsakeModalBtn.addEventListener('click', () => closeModal(keepsakeModal));
-  if (printCardBtn) printCardBtn.addEventListener('click', () => window.print());
+  if (printCardBtn) printCardBtn.addEventListener('click', () => triggerCertificatePrint('keepsake'));
+  if (savePdfCardBtn) savePdfCardBtn.addEventListener('click', () => {
+    showToast('💡 Tip: Select "Save as PDF" in the destination dropdown to download!');
+    setTimeout(() => triggerCertificatePrint('keepsake'), 350);
+  });
+  if (shareKeepsakeBtn) shareKeepsakeBtn.addEventListener('click', () => shareCertificate('keepsake'));
 
   // Theme Picker in Modal
   document.querySelectorAll('.theme-dot').forEach(dot => {
@@ -6615,16 +7349,22 @@ const romanticReasons = [
 
   // --------------------------------------------------------------------------
   // 20. CONSTELLATION OF LOVE & STAR REGISTRY FOR NISHIKA (MOBILE-OPTIMIZED)
-  // --------------------------------------------------------------------------
   const constellationCanvas = document.getElementById('constellationCanvas');
   const starModal = document.getElementById('starModal');
   const openStarRegistryBtn = document.getElementById('openStarRegistryBtn');
   const closeStarModalBtn = document.getElementById('closeStarModalBtn');
   const printStarCertBtn = document.getElementById('printStarCertBtn');
+  const savePdfStarBtn = document.getElementById('savePdfStarBtn');
+  const shareStarCertBtn = document.getElementById('shareStarCertBtn');
 
   if (openStarRegistryBtn) openStarRegistryBtn.addEventListener('click', () => openModal(starModal));
   if (closeStarModalBtn) closeStarModalBtn.addEventListener('click', () => closeModal(starModal));
-  if (printStarCertBtn) printStarCertBtn.addEventListener('click', () => window.print());
+  if (printStarCertBtn) printStarCertBtn.addEventListener('click', () => triggerCertificatePrint('star'));
+  if (savePdfStarBtn) savePdfStarBtn.addEventListener('click', () => {
+    showToast('💡 Tip: Select "Save as PDF" in the destination dropdown to download!');
+    setTimeout(() => triggerCertificatePrint('star'), 350);
+  });
+  if (shareStarCertBtn) shareStarCertBtn.addEventListener('click', () => shareCertificate('star'));
 
   if (constellationCanvas) {
     const starCtx = constellationCanvas.getContext('2d');

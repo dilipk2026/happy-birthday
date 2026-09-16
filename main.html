@@ -2148,14 +2148,71 @@
           </div>
 
           <form id="wishForm" class="wish-input-form blessing-form">
-            <div class="form-row-2col" style="display:grid; grid-template-columns: 1fr 2fr; gap:12px; width:100%;">
+            <div style="display:flex; flex-direction:column; gap:12px; width:100%;">
               <div>
                 <label for="wishAuthorInput" class="form-group-label"><i class="fa-solid fa-user-crown"></i> Your Royal Name</label>
-                <input type="text" id="wishAuthorInput" placeholder="Your Name (e.g. Dilip 💕, Loving Court)" required class="app-input" style="width:100%;" />
+                <input type="text" id="wishAuthorInput" placeholder="Your Name (e.g. Dilip 💕, Loving Court)" required class="app-input" style="width:100%;" maxlength="60" />
               </div>
-              <div>
-                <label for="wishTextInput" class="form-group-label"><i class="fa-solid fa-envelope-heart"></i> Heartfelt Birthday Message</label>
-                <input type="text" id="wishTextInput" placeholder="Write your sweetest blessings and memories for My Love Nishika..." required class="app-input" style="width:100%;" />
+
+              <div class="wish-generator-container">
+                <div class="wish-header-toolbar">
+                  <label for="wishTextInput" class="form-group-label" style="margin-bottom:0;"><i class="fa-solid fa-envelope-heart"></i> Heartfelt Birthday Message</label>
+                  <div class="wish-actions-group">
+                    <button type="button" class="wish-action-btn primary-magic" id="mainBtnAutoGenerateWish" title="Generate a sweet customized wish with one click">
+                      <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Auto Generate</span>
+                    </button>
+                    <button type="button" class="wish-action-btn" id="mainBtnSurpriseWish" title="Surprise with a random wish">
+                      <i class="fa-solid fa-dice"></i> <span>Surprise</span>
+                    </button>
+                    <button type="button" class="wish-action-btn" id="mainBtnWishLibrary" title="Browse our full collection of 30+ birthday wishes">
+                      <i class="fa-solid fa-book-bookmark"></i> <span>Wish Library</span>
+                    </button>
+                    <button type="button" class="wish-action-btn" id="mainBtnManualWish" title="Write your own custom message">
+                      <i class="fa-solid fa-pen-nib"></i> <span>Write Manually</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Mood / Tone Selector Chips -->
+                <div class="wish-mood-chips" id="mainWishMoodChips">
+                  <span style="font-size:0.72rem; color:var(--text-muted); margin-right:2px; font-weight:600;"><i class="fa-solid fa-sliders"></i> Mood:</span>
+                  <button type="button" class="wish-mood-chip active" data-mood="all"><i class="fa-solid fa-sparkles"></i> All</button>
+                  <button type="button" class="wish-mood-chip" data-mood="romantic"><i class="fa-solid fa-heart"></i> 💖 Romantic</button>
+                  <button type="button" class="wish-mood-chip" data-mood="royal"><i class="fa-solid fa-crown"></i> 👑 Royal</button>
+                  <button type="button" class="wish-mood-chip" data-mood="blessing"><i class="fa-solid fa-hand-holding-heart"></i> ✨ Blessings</button>
+                  <button type="button" class="wish-mood-chip" data-mood="celestial"><i class="fa-solid fa-moon"></i> 🌟 Celestial</button>
+                  <button type="button" class="wish-mood-chip" data-mood="joyful"><i class="fa-solid fa-cake-candles"></i> 🎉 Joyful</button>
+                  <button type="button" class="wish-mood-chip" data-mood="short"><i class="fa-solid fa-feather"></i> 💫 Short & Sweet</button>
+                </div>
+
+                <div class="wish-text-wrapper">
+                  <input type="text" id="wishTextInput" placeholder="Write your sweetest blessings and memories for My Love Nishika..." required class="app-input" style="width:100%;" maxlength="600" />
+                </div>
+
+                <div class="wish-input-footer">
+                  <!-- Quick Emoji Bar -->
+                  <div class="wish-emoji-bar" id="mainWishEmojiBar">
+                    <span class="wish-emoji-label"><i class="fa-solid fa-icons"></i> Add:</span>
+                    <button type="button" class="wish-emoji-btn" data-emoji="💖" title="Insert 💖">💖</button>
+                    <button type="button" class="wish-emoji-btn" data-emoji="🎂" title="Insert 🎂">🎂</button>
+                    <button type="button" class="wish-emoji-btn" data-emoji="👑" title="Insert 👑">👑</button>
+                    <button type="button" class="wish-emoji-btn" data-emoji="✨" title="Insert ✨">✨</button>
+                    <button type="button" class="wish-emoji-btn" data-emoji="🌸" title="Insert 🌸">🌸</button>
+                    <button type="button" class="wish-emoji-btn" data-emoji="🥂" title="Insert 🥂">🥂</button>
+                    <button type="button" class="wish-emoji-btn" data-emoji="🎉" title="Insert 🎉">🎉</button>
+                    <button type="button" class="wish-emoji-btn" data-emoji="💫" title="Insert 💫">💫</button>
+                    <button type="button" class="wish-emoji-btn" data-emoji="🌹" title="Insert 🌹">🌹</button>
+                    <button type="button" class="wish-emoji-btn" data-emoji="💌" title="Insert 💌">💌</button>
+                  </div>
+
+                  <!-- Character Counter & Quick Clear -->
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <button type="button" class="wish-action-btn" id="mainBtnClearWishText" style="padding:2px 8px; font-size:0.7rem;" title="Clear message text">
+                      <i class="fa-solid fa-xmark"></i> Clear
+                    </button>
+                    <span class="wish-char-counter" id="mainWishCharCounter">0 / 600</span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -3113,9 +3170,15 @@
         </div>
       </div>
 
-      <div class="modal-action-bar">
+      <div class="modal-action-bar" style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
         <button type="button" class="btn-primary" id="printCardBtn">
-          <i class="fa-solid fa-print"></i> Print / Save as PDF
+          <i class="fa-solid fa-print"></i> Print Certificate
+        </button>
+        <button type="button" class="btn-secondary" id="savePdfCardBtn">
+          <i class="fa-solid fa-file-pdf"></i> Save as PDF
+        </button>
+        <button type="button" class="btn-secondary" id="shareKeepsakeBtn">
+          <i class="fa-solid fa-share-nodes"></i> Share Certificate
         </button>
       </div>
     </div>
@@ -3164,9 +3227,15 @@
         </div>
       </div>
 
-      <div class="modal-action-bar">
+      <div class="modal-action-bar" style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
         <button type="button" class="btn-primary" id="printStarCertBtn">
           <i class="fa-solid fa-print"></i> Print Star Certificate
+        </button>
+        <button type="button" class="btn-secondary" id="savePdfStarBtn">
+          <i class="fa-solid fa-file-pdf"></i> Save as PDF
+        </button>
+        <button type="button" class="btn-secondary" id="shareStarCertBtn">
+          <i class="fa-solid fa-share-nodes"></i> Share Star Deed
         </button>
       </div>
     </div>
@@ -3778,6 +3847,31 @@
       <div class="hover-popout-footer">
         <p class="hover-popout-caption" id="hoverPopoutCaption">"Our unforgettable sacred memory"</p>
         <span class="hover-popout-hint"><i class="fa-solid fa-hand-pointer"></i> Move mouse away or click ✕ to close</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN WISH LIBRARY MODAL -->
+  <div class="wish-library-overlay" id="mainWishLibraryModal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="mainWishLibraryTitle" aria-hidden="true">
+    <div class="wish-library-card">
+      <div class="wish-library-header">
+        <h4 class="wish-library-title" id="mainWishLibraryTitle"><i class="fa-solid fa-book-bookmark"></i> Royal Birthday Wishes Library</h4>
+        <button type="button" class="wish-library-close-btn" id="closeMainWishLibraryBtn" aria-label="Close Wish Library" title="Close (Esc)">&times;</button>
+      </div>
+      <div class="wish-library-tabs" id="mainWishLibTabs">
+        <button type="button" class="wish-lib-tab active" data-tab-mood="all"><i class="fa-solid fa-sparkles"></i> All Wishes</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="romantic"><i class="fa-solid fa-heart"></i> 💖 Romantic</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="royal"><i class="fa-solid fa-crown"></i> 👑 Royal</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="blessing"><i class="fa-solid fa-hand-holding-heart"></i> ✨ Blessings</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="celestial"><i class="fa-solid fa-moon"></i> 🌟 Celestial</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="joyful"><i class="fa-solid fa-cake-candles"></i> 🎉 Joyful</button>
+        <button type="button" class="wish-lib-tab" data-tab-mood="short"><i class="fa-solid fa-feather"></i> 💫 Short & Sweet</button>
+      </div>
+      <div class="wish-library-search-box">
+        <input type="text" id="mainWishLibSearchInput" class="wish-lib-search-input" placeholder="🔍 Search wishes by keyword (e.g. starlight, queen, eternity, smile)..." />
+      </div>
+      <div class="wish-library-list" id="mainWishLibraryList">
+        <!-- Rendered dynamically -->
       </div>
     </div>
   </div>

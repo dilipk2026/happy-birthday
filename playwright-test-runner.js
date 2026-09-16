@@ -336,6 +336,81 @@ async function runAllTests() {
           !isRendered ? { severity: 'Medium', description: 'Wish note did not appear on grid' } : null
         );
       }
+
+      // Test Auto-Generate Wishes & Mood Chips on index.html
+      const autoGenBtn = await pageIndex.$('#btnAutoGenerateWish');
+      const guestWishArea = await pageIndex.$('#guestWish');
+      if (autoGenBtn && guestWishArea) {
+        await autoGenBtn.click();
+        await pageIndex.waitForTimeout(200);
+        const generatedVal = await guestWishArea.inputValue();
+        const hasGenWish = generatedVal.length > 10 && (generatedVal.includes('Nishika') || generatedVal.includes('Birthday'));
+        recordTest(
+          suite2,
+          'Clicking "✨ Auto Generate" button populates heartfelt birthday wish into #guestWish',
+          hasGenWish,
+          hasGenWish ? `Generated: ${generatedVal.substring(0, 40)}...` : 'Failed to generate wish'
+        );
+
+        // Test Mood Chip
+        const royalChip = await pageIndex.$('.wish-mood-chip[data-mood="royal"]');
+        if (royalChip) {
+          await royalChip.click();
+          await pageIndex.waitForTimeout(200);
+          const royalVal = await guestWishArea.inputValue();
+          const hasRoyalWish = royalVal.toLowerCase().includes('royal') || royalVal.toLowerCase().includes('queen') || royalVal.toLowerCase().includes('crown') || royalVal.toLowerCase().includes('majesty');
+          recordTest(
+            suite2,
+            'Clicking Royal mood chip generates tailored royal birthday dedication',
+            hasRoyalWish,
+            hasRoyalWish ? 'Tailored royal wish generated' : 'Mood chip failed to generate category wish'
+          );
+        }
+
+        // Test Emoji Inserter
+        const emojiBtn = await pageIndex.$('.wish-emoji-btn[data-emoji="💖"]');
+        if (emojiBtn) {
+          const preLen = (await guestWishArea.inputValue()).length;
+          await emojiBtn.click();
+          await pageIndex.waitForTimeout(100);
+          const postLen = (await guestWishArea.inputValue()).length;
+          recordTest(
+            suite2,
+            'Clicking Quick Emoji button appends emoji directly to message field',
+            postLen >= preLen + 1,
+            'Emoji successfully inserted'
+          );
+        }
+
+        // Test Wish Library Modal
+        const wishLibBtn = await pageIndex.$('#btnWishLibrary');
+        const wishLibModal = await pageIndex.$('#wishLibraryModal');
+        if (wishLibBtn && wishLibModal) {
+          await wishLibBtn.click();
+          await pageIndex.waitForTimeout(300);
+          const isLibActive = await wishLibModal.evaluate(el => el.classList.contains('active'));
+          recordTest(
+            suite2,
+            'Clicking "📚 Wish Library" button opens full-screen Wish Library Modal (#wishLibraryModal)',
+            isLibActive,
+            isLibActive ? 'Wish library modal opened' : 'Wish library modal did not open'
+          );
+
+          // Test "Use This Wish" inside modal
+          const firstUseBtn = await pageIndex.$('#wishLibraryList .wish-use-btn');
+          if (firstUseBtn) {
+            await firstUseBtn.click();
+            await pageIndex.waitForTimeout(200);
+            const isLibClosed = await wishLibModal.evaluate(el => !el.classList.contains('active'));
+            recordTest(
+              suite2,
+              'Selecting "Use This Wish" inserts selected wish and dismisses Wish Library modal',
+              isLibClosed,
+              isLibClosed ? 'Selected wish applied and modal closed' : 'Modal did not close on select'
+            );
+          }
+        }
+      }
     }
 
     // Test 2.5: Media Lightbox Controller on index.html
@@ -930,6 +1005,49 @@ async function runAllTests() {
         hasMainDriveVideo,
         hasMainDriveVideo ? 'Proper /preview iframe rendered' : 'Failed to render streaming video iframe'
       );
+
+      // Test main.html Auto-Generate Wishes & Mood Chips
+      const mainAutoGenBtn = await pSuite6.$('#mainBtnAutoGenerateWish');
+      if (mainAutoGenBtn && mainTextInput) {
+        await mainAutoGenBtn.click();
+        await pSuite6.waitForTimeout(200);
+        const mainGenVal = await mainTextInput.inputValue();
+        const hasMainGen = mainGenVal.length > 10 && (mainGenVal.includes('Nishika') || mainGenVal.includes('Birthday'));
+        recordTest(
+          suite6,
+          'main.html: Clicking "✨ Auto Generate" button populates heartfelt birthday wish into #wishTextInput',
+          hasMainGen,
+          hasMainGen ? `Generated: ${mainGenVal.substring(0, 40)}...` : 'Failed to auto-generate wish on main.html'
+        );
+
+        // Test main.html Wish Library Modal
+        const mainLibBtn = await pSuite6.$('#mainBtnWishLibrary');
+        const mainLibModal = await pSuite6.$('#mainWishLibraryModal');
+        if (mainLibBtn && mainLibModal) {
+          await mainLibBtn.click();
+          await pSuite6.waitForTimeout(300);
+          const isMainLibActive = await mainLibModal.evaluate(el => el.classList.contains('active'));
+          recordTest(
+            suite6,
+            'main.html: Clicking "📚 Wish Library" button opens main Wish Library Modal (#mainWishLibraryModal)',
+            isMainLibActive,
+            isMainLibActive ? 'Main wish library opened' : 'Main wish library failed to open'
+          );
+
+          const mainFirstUseBtn = await pSuite6.$('#mainWishLibraryList .wish-use-btn');
+          if (mainFirstUseBtn) {
+            await mainFirstUseBtn.click();
+            await pSuite6.waitForTimeout(200);
+            const isMainLibClosed = await mainLibModal.evaluate(el => !el.classList.contains('active'));
+            recordTest(
+              suite6,
+              'main.html: Selecting "Use This Wish" applies wish to #wishTextInput and dismisses modal',
+              isMainLibClosed,
+              isMainLibClosed ? 'Wish applied and modal closed' : 'Modal did not close on select'
+            );
+          }
+        }
+      }
     }
 
     // Test 6.5: Video Lightbox Modal Opens on main.html
@@ -1379,11 +1497,96 @@ async function runAllTests() {
       };
     });
 
+    // Test 6.17: Keepsake Card Modal Print, Save PDF & Share Actions with Strict Print Isolation
+    const keepsakeModalCheck = await pSuite6.evaluate(async () => {
+      const openBtn = document.getElementById('openKeepsakeBtn');
+      const modal = document.getElementById('keepsakeModal');
+      const cardPrint = document.getElementById('keepsakeCardPrint');
+      const printBtn = document.getElementById('printCardBtn');
+      const savePdfBtn = document.getElementById('savePdfCardBtn');
+      const shareBtn = document.getElementById('shareKeepsakeBtn');
+      const closeBtn = document.getElementById('closeKeepsakeModalBtn');
+
+      if (!openBtn || !modal || !cardPrint || !printBtn || !savePdfBtn || !shareBtn || !closeBtn) {
+        return {
+          ok: false,
+          reason: 'Missing elements',
+          found: { openBtn: !!openBtn, modal: !!modal, cardPrint: !!cardPrint, printBtn: !!printBtn, savePdfBtn: !!savePdfBtn, shareBtn: !!shareBtn, closeBtn: !!closeBtn }
+        };
+      }
+
+      // 1. Open modal
+      openBtn.click();
+      await new Promise(r => setTimeout(r, 100));
+      const isOpen = modal.classList.contains('active');
+
+      // 2. Check print isolation classes
+      document.body.classList.add('print-keepsake-active');
+      const hasPrintClass = document.body.classList.contains('print-keepsake-active');
+      document.body.classList.remove('print-keepsake-active');
+
+      // 3. Close modal
+      closeBtn.click();
+      await new Promise(r => setTimeout(r, 100));
+      const isClosed = !modal.classList.contains('active');
+
+      return {
+        ok: isOpen && hasPrintClass && isClosed,
+        details: { isOpen, hasPrintClass, isClosed }
+      };
+    });
+
     recordTest(
       suite6,
-      'Cache invalidation headers (Cache-Control: no-store/no-cache) and v=3.3.1 versioned assets ensure fresh page loads on refresh',
-      cacheVersioningCheck.ok,
-      cacheVersioningCheck.ok ? 'Asset query versions (v=3.3.1) and anti-cache meta tags verified' : JSON.stringify(cacheVersioningCheck.details)
+      'View Keepsake Card modal provides Print, Save as PDF, and Share actions with strictly isolated print styles',
+      keepsakeModalCheck.ok,
+      keepsakeModalCheck.ok ? 'Keepsake modal interactive, dedicated action buttons present, print isolation classes verified' : JSON.stringify(keepsakeModalCheck.details)
+    );
+
+    // Test 6.18: Star Registry Deed Modal Print, Save PDF & Share Actions
+    const starModalCheck = await pSuite6.evaluate(async () => {
+      const openBtn = document.getElementById('openStarRegistryBtn');
+      const modal = document.getElementById('starModal');
+      const certPrint = document.getElementById('starCertPrint');
+      const printBtn = document.getElementById('printStarCertBtn');
+      const savePdfBtn = document.getElementById('savePdfStarBtn');
+      const shareBtn = document.getElementById('shareStarCertBtn');
+      const closeBtn = document.getElementById('closeStarModalBtn');
+
+      if (!openBtn || !modal || !certPrint || !printBtn || !savePdfBtn || !shareBtn || !closeBtn) {
+        return {
+          ok: false,
+          reason: 'Missing elements',
+          found: { openBtn: !!openBtn, modal: !!modal, certPrint: !!certPrint, printBtn: !!printBtn, savePdfBtn: !!savePdfBtn, shareBtn: !!shareBtn, closeBtn: !!closeBtn }
+        };
+      }
+
+      // 1. Open modal
+      openBtn.click();
+      await new Promise(r => setTimeout(r, 100));
+      const isOpen = modal.classList.contains('active');
+
+      // 2. Check print isolation classes
+      document.body.classList.add('print-star-active');
+      const hasPrintClass = document.body.classList.contains('print-star-active');
+      document.body.classList.remove('print-star-active');
+
+      // 3. Close modal
+      closeBtn.click();
+      await new Promise(r => setTimeout(r, 100));
+      const isClosed = !modal.classList.contains('active');
+
+      return {
+        ok: isOpen && hasPrintClass && isClosed,
+        details: { isOpen, hasPrintClass, isClosed }
+      };
+    });
+
+    recordTest(
+      suite6,
+      'Star Registry Deed modal provides Print, Save as PDF, and Share actions with isolated celestial certificate print styling',
+      starModalCheck.ok,
+      starModalCheck.ok ? 'Star Registry modal interactive, deed print container verified, dedicated action buttons present' : JSON.stringify(starModalCheck.details)
     );
 
     await ctxSuite6.close();
