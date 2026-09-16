@@ -7,20 +7,20 @@
   <!-- PRE-LAUNCH PRIMARY ROUTER & AUTOMATIC CACHE/SERVICE WORKER PURGE -->
   <script>
     (function() {
-      // 0. Service Worker Unregister & Query Reset Handler (?reset=1, ?fresh=1, ?purge=1)
+      // 0. Service Worker Unregister & Fresh Cache Storage Enforcement
       try {
-        const urlParamsCheck = new URLSearchParams(window.location.search || '');
-        if (urlParamsCheck.get('reset') === '1' || urlParamsCheck.get('reset') === 'true' || urlParamsCheck.get('fresh') === '1' || urlParamsCheck.get('purge') === '1') {
-          localStorage.clear();
-          sessionStorage.clear();
-          if ('caches' in window) {
-            caches.keys().then(names => names.forEach(n => caches.delete(n)));
-          }
-        }
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.getRegistrations().then(regs => {
             regs.forEach(r => r.unregister());
           });
+        }
+        if ('caches' in window) {
+          caches.keys().then(names => names.forEach(n => caches.delete(n)));
+        }
+        const urlParamsCheck = new URLSearchParams(window.location.search || '');
+        if (urlParamsCheck.get('reset') === '1' || urlParamsCheck.get('reset') === 'true' || urlParamsCheck.get('fresh') === '1' || urlParamsCheck.get('purge') === '1') {
+          localStorage.clear();
+          sessionStorage.clear();
         }
       } catch(e) {}
 
@@ -146,11 +146,13 @@
 
   <meta name="description" content="Eternal Love — An ultra-luxurious, animated, and deeply romantic birthday celebration experience handcrafted with love. Featuring 3D interactive cake, wax-sealed love letter, love story timeline, magic love jar, and romantic piano harmonies." />
   <meta name="theme-color" content="#090514" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="alternate icon" href="favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=3.3.1" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=3.3.1" />
+  <link rel="shortcut icon" href="favicon.ico?v=3.3.1" />
+  <link rel="apple-touch-icon" href="favicon.svg?v=3.3.1" />
   
   <!-- Cache Invalidation & Fresh State Directives -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
@@ -168,7 +170,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <!-- Stylesheet with Cache-Busting Versioning -->
-  <link rel="stylesheet" href="style.css?v=2.1.0" />
+  <link rel="stylesheet" href="style.css?v=3.3.1" />
 </head>
 <body class="theme-magical">
   <!-- Interactive Background Canvas (Fireworks, Stars, Confetti & Shooting Stars) -->
@@ -3754,6 +3756,32 @@
     </div>
   </div>
 
-  <script src="script.js?v=2.1.0"></script>
+  <!-- INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA OVERLAY -->
+  <div class="media-hover-popout-overlay" id="mediaHoverPopout" role="dialog" aria-modal="true" aria-label="Media Cinema Pop-Out" aria-hidden="true">
+    <div class="hover-popout-card">
+      <div class="hover-popout-header">
+        <div class="hover-popout-header-left">
+          <div class="hover-popout-author" id="hoverPopoutAuthor">
+            <i class="fa-solid fa-crown"></i> <span>Queen Nishika</span>
+          </div>
+          <div class="hover-popout-badge" id="hoverPopoutBadge">
+            <i class="fa-solid fa-sparkles"></i> <span>Cinema Pop-Out</span>
+          </div>
+        </div>
+        <button type="button" class="hover-popout-close-btn" id="closeHoverPopoutBtn" aria-label="Close Cinema Pop-Out" title="Close Pop-Out (Esc)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="hover-popout-media-viewport" id="hoverPopoutViewport">
+        <!-- Enlarged Photo or Video Player injected dynamically -->
+      </div>
+      <div class="hover-popout-footer">
+        <p class="hover-popout-caption" id="hoverPopoutCaption">"Our unforgettable sacred memory"</p>
+        <span class="hover-popout-hint"><i class="fa-solid fa-hand-pointer"></i> Move mouse away or click ✕ to close</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js?v=3.3.1"></script>
 </body>
 </html>

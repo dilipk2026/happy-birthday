@@ -89,3 +89,13 @@
   - Locked media tab active and disabled the submit button during upload.
   - Added continuous percentage progress updates (`0% -> 25% -> 50% -> 75% -> 100%`) and glowing emerald green celebration alert banner.
 - **Verification**: Playwright test `TC-57` & `TC-58` verify 15MB video chunking progress updates, emerald completion banner, and zero UI resets during transmission. `[VERIFIED]`
+
+---
+
+### Problem 9: Google Drive Video Embed Shows "This video file is still being processed for playback. Please try again later."
+- **Cause**: When a video is uploaded to Google Drive, the file is saved immediately, but Google's backend cloud transcoder takes 1 to 30+ minutes to generate web-streaming preview bitrates (360p, 720p, 1080p). During this encoding window, the embedded `/preview` iframe shows Google's standard processing message with a link to `support.google.com/drive/answer/2423694`.
+- **Solution**:
+  1. **Direct Stream Bypass**: The raw uncompressed video is immediately accessible at `https://drive.google.com/uc?export=download&id=<ID>` and in the Drive viewer at `https://drive.google.com/file/d/<ID>/view`. We provide interactive glassmorphic quick-action pills (`Drive ↗` and `Download / Direct Stream`) directly inside every Google Drive video container so users can watch or download the video with zero delay.
+  2. **Instant Local HTML5 Playback for Newly Uploaded Videos**: When a user records or uploads a video note, the client renders the local Base64/blob video directly into a native `<video controls>` element with 0ms transcoding delay while Google Apps Script completes background Drive storage.
+  3. **Multi-Source Codec Fallbacks**: `parseGasVideoEmbed` generates multi-source `<video>` players with download fallback links for direct video assets.
+- **Verification**: Playwright automated tests verify Google Drive iframe embedding, quick action pills, and direct video streaming without breaking the UI. `[VERIFIED]`

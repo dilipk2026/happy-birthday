@@ -15,17 +15,19 @@
 
 [![Live GitHub Pages Portal](https://img.shields.io/badge/🚀%20LIVE%20CELEBRATION%20PORTAL-dilipk2026.github.io%2Fhappy--birthday-ff1493?style=for-the-badge&logo=githubpages&logoColor=white)](https://dilipk2026.github.io/happy-birthday/)
 [![Live Local Server](https://img.shields.io/badge/Local%20Preview-http%3A%2F%2Flocalhost%3A8080-00f2fe?style=for-the-badge&logo=googlechrome&logoColor=white)](http://localhost:8080)
-[![Playwright Tests](https://img.shields.io/badge/Playwright%20QA-61%2F61%20Passed%20(100%25)-10b981?style=for-the-badge&logo=playwright&logoColor=white)](docs/testing/Test-Execution-Report.md)
+[![Playwright Tests](https://img.shields.io/badge/Playwright%20QA-63%2F63%20Passed%20(100%25)-10b981?style=for-the-badge&logo=playwright&logoColor=white)](docs/testing/Test-Execution-Report.md)
 
 [![Celebrant](https://img.shields.io/badge/👑%20Celebrant-Queen%20Nishika-ffd700?style=flat-square)](#-overview--concept)
 [![Dedicated By](https://img.shields.io/badge/💖%20Dedicated%20By-Dilip-ff4081?style=flat-square)](#-overview--concept)
 [![Tech Stack](https://img.shields.io/badge/Stack-Vanilla%20HTML5%20%7C%20CSS3%20%7C%20ES6+-00f2fe?style=flat-square&logo=javascript&logoColor=white)](#-technology-stack)
 [![Zero Runtime Dependencies](https://img.shields.io/badge/Runtime%20Dependencies-ZERO-success?style=flat-square&logo=speedtest&logoColor=white)](#-technology-stack)
+[![Cinema Hover Pop-Out](https://img.shields.io/badge/Cinema%20Portal-Fullscreen%20Hover%20Pop--Out-ffd700?style=flat-square&logo=visualstudiocode&logoColor=white)](#-overview--concept)
 [![Video Codecs](https://img.shields.io/badge/Video%20Codecs-MP4%20%7C%20WebM%20%7C%20MOV%20%7C%20MKV%20%7C%20AVI%20%7C%20WMV%20%7C%203GP%20%7C%20OGG-ff007f?style=flat-square&logo=vlcmediaplayer&logoColor=white)](#-high-speed-video-upload-streaming-pipeline)
 [![Google Drive Cloud](https://img.shields.io/badge/Google%20Drive-Photo%20%26%20Video%20Storage-4285f4?style=flat-square&logo=googledrive&logoColor=white)](docs/06-Database-Documentation.md)
 [![Google Sheets Sync](https://img.shields.io/badge/Google%20Sheets-Live%20Sync%20Ready-34a853?style=flat-square&logo=googlesheets&logoColor=white)](docs/06-Database-Documentation.md)
 [![Audio Synthesizer](https://img.shields.io/badge/Web%20Audio%20API-Polyphonic%20Synthesizer-9d4edd?style=flat-square&logo=audacity&logoColor=white)](docs/04-Technical-Documentation.md)
 [![Mobile Viewports](https://img.shields.io/badge/Responsiveness-320px%20to%204K%20UHD%20(Zero--Overflow)-10b981?style=flat-square&logo=googlechrome&logoColor=white)](docs/testing/UI-Test-Cases.md)
+[![QA Coverage](https://img.shields.io/badge/Playwright%20QA-65%2F65%20Passed%20(100%25)-brightgreen?style=flat-square&logo=playwright&logoColor=white)](docs/testing/Test-Cases.md)
 
 </div>
 

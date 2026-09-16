@@ -1,6 +1,6 @@
 # 14. Release Notes & Version History
 
-> **Current Version**: `v3.2.0` (Production Master)  
+> **Current Version**: `v3.3.0` (Production Master)  
 > **Release Date**: September 2026  
 > **Target Celebrant**: Queen Nishika 👑  
 
@@ -8,7 +8,27 @@
 
 ## Release History
 
-### 🎬 Version 3.2.0 (Current Production Master) — *September 2026*
+### 👑 Version 3.3.0 (Current Production Master) — *September 2026*
+**Summary**: Perfect Picture & Video Frame Architecture, Fullscreen Hover Pop-Out Cinema Portal (`#mediaHoverPopout`), Google Sheet & Drive Cloud Video Upload Audit, and 63/63 Automated Playwright QA Verification.
+
+#### Added
+- **🖼️ Perfect Picture & Video Framing**:
+  - Implemented bespoke royal gold/rose framed wrappers (`border: 2px solid rgba(255, 215, 0, 0.45)` with metallic sheen overlay and inner vignette shadows).
+  - Applied strict aspect ratio preservation (`aspect-ratio: 16/10` for photos, `16/9` for videos, `object-fit: cover/contain`, zero letterboxing or distortion) across sticky notes, polaroids, preview containers, and media grids.
+- **🎬 Interactive Fullscreen Hover Pop-Out Cinema Portal (`#mediaHoverPopout`)**:
+  - Implemented an ultra-sleek, hardware-accelerated pop-out cinema portal engine across both `index.html` and `main.html`.
+  - Hovering cursor over any photo (`.sticky-media-wrap`, `.polaroid-img-wrap`, `.polaroid-photo`, `.media-preview-box img`) or video (`.sticky-video-embed`, `.polaroid-video-wrap`, preview containers) smoothly elevates it into an enlarged cinema preview (`scale(0.88) -> scale(1.0)` with soft backdrop blur, glowing gold frame, author crown badge, and heartfelt message).
+  - Moving the mouse cursor away (`mouseleave`) smoothly collapses and dismisses the popout back to normal view in ~200ms.
+  - Full touch/mobile compatibility: touch devices seamlessly open the persistent full-screen Lightbox Modal on tap with single-tap dismissal.
+- **☁️ Cloud Video Pipeline & Google Sheet Storage Audit**:
+  - Enhanced `uploadVideoChunks` in `script.js` to destructure and pass `fileName` in the chunk payload.
+  - Expanded `isVideoUrl()` in `Code.gs` to support all 12 video container formats (`.mp4`, `.webm`, `.mov`, `.qt`, `.m4v`, `.ogg`, `.ogv`, `.mkv`, `.avi`, `.wmv`, `.3gp`, `.3g2`, `.ts`, `.flv`).
+  - Audited and verified all 10 columns in Google Sheets `Wishes` tab and 7 columns in `Videos` tab with automatic header initialization and Drive preview streaming links.
+- **🧪 63-Assertion Automated Playwright QA Benchmark**: Expanded automated test suite with Test 6.12 and 6.13 validating framing styles, computed corner curvature, and hover pop-out activation/dismissal with a 100% pass rate.
+
+---
+
+### 🎬 Version 3.2.0 — *September 2026*
 **Summary**: Universal Video Codec & Container Support across Frontend & Cloud Backend, Automated MIME Ingestion Normalizer, Multi-Source Video Tag Generation with Direct Download Fallback, and 61/61 Automated Playwright QA Verification.
 
 #### Added

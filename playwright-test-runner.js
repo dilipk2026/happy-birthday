@@ -116,7 +116,8 @@ async function runAllTests() {
       { path: '/main.html', type: 'text/html' },
       { path: '/style.css', type: 'text/css' },
       { path: '/script.js', type: 'application/javascript' },
-      { path: '/favicon.svg', type: 'image/svg+xml' }
+      { path: '/favicon.svg', type: 'image/svg+xml' },
+      { path: '/favicon.ico', type: 'image/' }
     ];
 
     for (const asset of assetsToCheck) {
@@ -1188,6 +1189,201 @@ async function runAllTests() {
       'Video input file pickers specify comprehensive accept filters (.mp4, .webm, .mov, .mkv, .avi, .wmv, .3gp, .ogg, .flv, .ts)',
       fileAcceptCheck.allCovered,
       `Verified ${fileAcceptCheck.totalInputs} video file input elements`
+    );
+
+    // Test 6.12: Photo and Video Perfect Frame Styling & Aspect Ratio
+    const frameStyleCheck = await pSuite6.evaluate(() => {
+      // Inject test photo and video sticky notes to audit computed styles
+      const pinboard = document.getElementById('wishesPinboard');
+      if (!pinboard) return { ok: false, reason: 'Pinboard missing' };
+
+      const testSticky = document.createElement('div');
+      testSticky.className = 'wish-sticky theme-pink';
+      testSticky.innerHTML = `
+        <div class="sticky-media-wrap" data-img="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600" data-author="Dilip" data-msg="Sacred moments">
+          <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600" alt="Memory" />
+          <span class="sticky-media-badge"><i class="fa-solid fa-expand"></i> View Photo</span>
+        </div>
+        <div class="sticky-video-embed">
+          <video controls src="https://cdn.example.com/test.mp4"></video>
+        </div>
+      `;
+      pinboard.appendChild(testSticky);
+
+      const mediaWrap = testSticky.querySelector('.sticky-media-wrap');
+      const videoEmbed = testSticky.querySelector('.sticky-video-embed');
+
+      const wrapStyle = window.getComputedStyle(mediaWrap);
+      const videoStyle = window.getComputedStyle(videoEmbed);
+
+      const hasWrapBorder = wrapStyle.borderStyle !== 'none';
+      const hasWrapRadius = parseInt(wrapStyle.borderRadius, 10) >= 12;
+      const hasVideoRadius = parseInt(videoStyle.borderRadius, 10) >= 12;
+
+      testSticky.remove();
+
+      return {
+        ok: hasWrapBorder && hasWrapRadius && hasVideoRadius,
+        details: {
+          wrapBorder: wrapStyle.borderColor,
+          wrapRadius: wrapStyle.borderRadius,
+          videoRadius: videoStyle.borderRadius
+        }
+      };
+    });
+
+    recordTest(
+      suite6,
+      'Photo and Video frames apply luxury gilded border styling, smooth corner curvature, and containment',
+      frameStyleCheck.ok,
+      frameStyleCheck.ok ? `Border: ${frameStyleCheck.details.wrapBorder}, Radius: ${frameStyleCheck.details.wrapRadius}` : frameStyleCheck.reason
+    );
+
+    // Test 6.13: Interactive Fullscreen Cinema Hover Pop-Out Activation on main.html
+    const hoverPopoutCheck = await pSuite6.evaluate(async () => {
+      const popout = document.getElementById('mediaHoverPopout');
+      const viewport = document.getElementById('hoverPopoutViewport');
+      const authorEl = document.getElementById('hoverPopoutAuthor');
+      const captionEl = document.getElementById('hoverPopoutCaption');
+
+      if (!popout || !viewport) return { ok: false, reason: 'Popout overlay elements missing' };
+
+      // 1. Initially inactive
+      const initialInactive = !popout.classList.contains('active');
+
+      // 2. Simulate Hover on Photo Target
+      if (typeof window.showHoverPopout === 'function') {
+        window.showHoverPopout('photo', 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600', 'Dilip 👑', 'Forever and always my queen');
+      }
+
+      const activeAfterHover = popout.classList.contains('active');
+      const hasPhotoImg = viewport.querySelector('img') !== null;
+      const hasAuthor = authorEl && authorEl.textContent.includes('Dilip');
+      const hasCaption = captionEl && captionEl.textContent.includes('Forever');
+
+      // 3. Simulate Mouse Leave
+      if (typeof window.hideHoverPopout === 'function') {
+        window.hideHoverPopout();
+      }
+
+      const inactiveAfterLeave = !popout.classList.contains('active');
+
+      return {
+        ok: initialInactive && activeAfterHover && hasPhotoImg && hasAuthor && hasCaption && inactiveAfterLeave,
+        details: { initialInactive, activeAfterHover, hasPhotoImg, hasAuthor, hasCaption, inactiveAfterLeave }
+      };
+    });
+
+    recordTest(
+      suite6,
+      'Hover Pop-Out Cinema Portal (#mediaHoverPopout) expands on photo/video hover and smoothly dismisses when moving away',
+      hoverPopoutCheck.ok,
+      hoverPopoutCheck.ok ? 'Pop-out activated on hover, content populated, and cleanly dismissed on mouseleave' : JSON.stringify(hoverPopoutCheck.details)
+    );
+
+    // Test 6.14: Dedicated Close Button (#closeHoverPopoutBtn) and Escape key dismisses cinema popout
+    const closeBtnCheck = await pSuite6.evaluate(async () => {
+      const popout = document.getElementById('mediaHoverPopout');
+      const closeBtn = document.getElementById('closeHoverPopoutBtn');
+      if (!popout || !closeBtn) return { ok: false, reason: 'Close button or popout missing' };
+
+      // 1. Open Popout
+      if (typeof window.showHoverPopout === 'function') {
+        window.showHoverPopout('video', 'https://cdn.example.com/moment.mp4', 'Queen Nishika 👑', 'Sacred cinematic memory');
+      }
+      const isOpen = popout.classList.contains('active');
+
+      // 2. Click Close Button
+      closeBtn.click();
+      await new Promise(r => setTimeout(r, 60));
+      const isClosedAfterBtn = !popout.classList.contains('active');
+
+      // 3. Re-open and test Escape
+      if (typeof window.showHoverPopout === 'function') {
+        window.showHoverPopout('photo', 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600', 'Dilip 👑', 'Sweet memory');
+      }
+      const isReOpened = popout.classList.contains('active');
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      await new Promise(r => setTimeout(r, 60));
+      const isClosedAfterEsc = !popout.classList.contains('active');
+
+      return {
+        ok: isOpen && isClosedAfterBtn && isReOpened && isClosedAfterEsc,
+        details: { isOpen, isClosedAfterBtn, isReOpened, isClosedAfterEsc }
+      };
+    });
+
+    recordTest(
+      suite6,
+      'Dedicated Close Button (#closeHoverPopoutBtn) and Escape key immediately dismiss Hover Pop-Out Cinema Modal',
+      closeBtnCheck.ok,
+      closeBtnCheck.ok ? 'Close button click and Escape key cleanly dismissed popout modal' : JSON.stringify(closeBtnCheck.details)
+    );
+
+    // Test 6.15: Moving cursor out from photo frame / popout card immediately restores normal mode
+    const cursorOutCheck = await pSuite6.evaluate(async () => {
+      const popout = document.getElementById('mediaHoverPopout');
+      const card = popout ? popout.querySelector('.hover-popout-card') : null;
+      if (!popout || !card) return { ok: false, reason: 'Popout or card missing' };
+
+      // 1. Open Popout
+      if (typeof window.showHoverPopout === 'function') {
+        window.showHoverPopout('photo', 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600', 'Dilip 👑', 'Sweet memory');
+      }
+      const isOpen = popout.classList.contains('active');
+
+      // 2. Dispatch mouseleave on card
+      card.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+      await new Promise(r => setTimeout(r, 60));
+      const isClosedAfterCardLeave = !popout.classList.contains('active');
+
+      // 3. Re-open and test backdrop mousemove
+      if (typeof window.showHoverPopout === 'function') {
+        window.showHoverPopout('photo', 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600', 'Dilip 👑', 'Sweet memory');
+      }
+      const isReOpened = popout.classList.contains('active');
+      popout.dispatchEvent(new MouseEvent('mousemove', { bubbles: false }));
+      await new Promise(r => setTimeout(r, 60));
+      const isClosedAfterBackdropMove = !popout.classList.contains('active');
+
+      return {
+        ok: isOpen && isClosedAfterCardLeave && isReOpened && isClosedAfterBackdropMove,
+        details: { isOpen, isClosedAfterCardLeave, isReOpened, isClosedAfterBackdropMove }
+      };
+    });
+
+    recordTest(
+      suite6,
+      'Moving cursor out from photo frame or pop-out card immediately restores normal mode without sticking',
+      cursorOutCheck.ok,
+      cursorOutCheck.ok ? 'Pop-out immediately dismissed upon cursor leaving photo card or moving over backdrop' : JSON.stringify(cursorOutCheck.details)
+    );
+
+    // Test 6.16: Cache invalidation meta tags & asset versioning (v=3.3.1) verification
+    const cacheVersioningCheck = await pSuite6.evaluate(async () => {
+      const metaCache = document.querySelector('meta[http-equiv="Cache-Control"]');
+      const cssLink = document.querySelector('link[href*="style.css"]');
+      const scriptTag = document.querySelector('script[src*="script.js"]');
+
+      const hasMetaNoCache = metaCache && metaCache.getAttribute('content').includes('no-cache') && metaCache.getAttribute('content').includes('no-store');
+      const hasCssVersion = cssLink && cssLink.getAttribute('href').includes('v=3.3.1');
+      const hasScriptVersion = scriptTag && scriptTag.getAttribute('src').includes('v=3.3.1');
+
+      return {
+        ok: !!(hasMetaNoCache && hasCssVersion && hasScriptVersion),
+        details: {
+          metaContent: metaCache ? metaCache.getAttribute('content') : null,
+          cssHref: cssLink ? cssLink.getAttribute('href') : null,
+          scriptSrc: scriptTag ? scriptTag.getAttribute('src') : null
+        }
+      };
+    });
+
+    recordTest(
+      suite6,
+      'Cache invalidation headers (Cache-Control: no-store/no-cache) and v=3.3.1 versioned assets ensure fresh page loads on refresh',
+      cacheVersioningCheck.ok,
+      cacheVersioningCheck.ok ? 'Asset query versions (v=3.3.1) and anti-cache meta tags verified' : JSON.stringify(cacheVersioningCheck.details)
     );
 
     await ctxSuite6.close();

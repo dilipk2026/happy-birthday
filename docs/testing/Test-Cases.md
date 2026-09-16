@@ -1,8 +1,8 @@
 # Detailed Test Cases & Execution Matrix
 
-> **Status**: `[VERIFIED]` • 58 Automated Test Cases  
+> **Status**: `[VERIFIED]` • 65 Automated Test Cases  
 > **Automation Harness**: `playwright-test-runner.js`  
-> **Overall Execution**: 🟢 **58 / 58 Passed (100% Pass Rate)**  
+> **Overall Execution**: 🟢 **65 / 65 Passed (100% Pass Rate)**  
 
 ---
 
@@ -15,6 +15,7 @@
 | `TC-1.3` | Suite 1: Static Assets | GET `/style.css` returns 200 OK with `text/css` | High | 🟢 **PASS** |
 | `TC-1.4` | Suite 1: Static Assets | GET `/script.js` returns 200 OK with `application/javascript` | High | 🟢 **PASS** |
 | `TC-1.5` | Suite 1: Static Assets | GET `/favicon.svg` returns 200 OK with `image/svg+xml` | Medium | 🟢 **PASS** |
+| `TC-1.6` | Suite 1: Static Assets | GET `/favicon.ico` returns 200 OK with `image/x-icon` | Medium | 🟢 **PASS** |
 | `TC-2.1` | Suite 2: Pre-Launch | `index.html` has valid luxury title | Medium | 🟢 **PASS** |
 | `TC-2.2` | Suite 2: Pre-Launch | Live Countdown timer elements render valid positive integers | High | 🟢 **PASS** |
 | `TC-2.3` | Suite 2: Pre-Launch | VIP Access Button (`#vipUnlockTrigger`) is present in DOM | High | 🟢 **PASS** |
@@ -68,6 +69,13 @@
 | `TC-6.7` | Suite 6: Video & Cloud | 15MB Video upload progress bar displays percentage increments (0%->100%) & emerald state | Critical | 🟢 **PASS** |
 | `TC-6.8` | Suite 6: Video & Cloud | Video upload completion renders green celebration alert banner with confirmation | High | 🟢 **PASS** |
 | `TC-6.9` | Suite 6: Video & Cloud | All sticky video embeds scale gracefully within container boundaries without clipping | High | 🟢 **PASS** |
+| `TC-6.10`| Suite 6: Video & Cloud | Multi-Codec Engine resolves all 12 video container extensions (.mp4, .webm, .mov, etc.) | High | 🟢 **PASS** |
+| `TC-6.11`| Suite 6: Video & Cloud | `parseGasVideoEmbed` generates hardware-accelerated multi-source `<video>` players | High | 🟢 **PASS** |
+| `TC-6.12`| Suite 6: Video & Cloud | Photo and Video frames apply luxury gilded border styling and containment | High | 🟢 **PASS** |
+| `TC-6.13`| Suite 6: Video & Cloud | Hover Pop-Out Cinema Portal (`#mediaHoverPopout`) expands on hover and dismisses on mouseleave | High | 🟢 **PASS** |
+| `TC-6.14`| Suite 6: Video & Cloud | Dedicated Close Button (`#closeHoverPopoutBtn`) and Escape key dismiss Hover Pop-Out Cinema Modal | High | 🟢 **PASS** |
+| `TC-6.15`| Suite 6: Video & Cloud | Moving cursor out from photo frame / pop-out card immediately restores normal mode without sticking | High | 🟢 **PASS** |
+| `TC-6.16`| Suite 6: Video & Cloud | Cache invalidation headers (`Cache-Control: no-store/no-cache`) and `v=3.3.1` versioned assets ensure fresh load on refresh | High | 🟢 **PASS** |
 
 ---
 

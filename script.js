@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   // 1. STATE MANAGEMENT, CACHE INVALIDATION & LOCAL STORAGE ENGINE
   // --------------------------------------------------------------------------
-  const APP_VERSION = '2.1.0';
+  const APP_VERSION = '3.3.1';
   const STORAGE_KEY = `eternal_love_bday_state_v${APP_VERSION}`;
 
   // Purge lingering Service Workers & legacy caches
@@ -471,6 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
     base64Data,
     author,
     caption,
+    fileName,
     celebrant = 'Nishika',
     dedicatedBy = 'Dilip',
     color = 'gold',
@@ -526,6 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
         totalChunks: totalChunks,
         chunkData: chunkSlice,
         mimeType: mimeType,
+        fileName: fileName || ('video_' + uploadId + '.mp4'),
         author: author,
         name: author,
         caption: caption,
@@ -5054,16 +5056,16 @@ const romanticReasons = [
       const embedUrl = `https://www.youtube.com/embed/${ytId}?autoplay=${inLightbox ? 1 : 0}&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
       const watchUrl = `https://www.youtube.com/watch?v=${ytId}`;
       return `
-        <div class="video-embed-container" style="position:relative; width:100%; height:100%; min-height:160px; border-radius:10px; overflow:hidden; background:#000;">
+        <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
           <iframe src="${embedUrl}" 
                   title="YouTube Video Player"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                   allowfullscreen 
                   loading="lazy" 
                   referrerpolicy="strict-origin-when-cross-origin"
-                  style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px; display:block;">
+                  style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;">
           </iframe>
-          <a href="${watchUrl}" target="_blank" rel="noopener noreferrer" class="yt-direct-pill" title="Watch directly on YouTube" style="position:absolute; bottom:6px; right:6px; z-index:4; display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; padding:3px 8px; border-radius:6px; background:rgba(0,0,0,0.78); color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(4px); transition:all 0.2s ease;">
+          <a href="${watchUrl}" target="_blank" rel="noopener noreferrer" class="yt-direct-pill" title="Watch directly on YouTube" style="position:absolute; bottom:6px; right:6px; z-index:4; display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-weight:700; padding:3px 8px; border-radius:6px; background:rgba(0,0,0,0.78); color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(4px); transition:all 0.2s ease;">
             <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube ↗
           </a>
         </div>
@@ -5075,7 +5077,11 @@ const romanticReasons = [
       const vMatch = clean.match(/vimeo\.com\/(?:video\/)?([0-9]+)/i);
       const vId = vMatch ? vMatch[1] : clean.split('vimeo.com/')[1].split('?')[0].split('/')[0].split('&')[0];
       if (vId) {
-        return `<iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
+        return `
+          <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
+            <iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;"></iframe>
+          </div>
+        `;
       }
     }
 
@@ -5092,7 +5098,28 @@ const romanticReasons = [
       else if (m4 && m4[1]) gId = m4[1];
 
       if (gId) {
-        return `<iframe src="https://drive.google.com/file/d/${gId}/preview" allow="autoplay; encrypted-media" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
+        const drivePreviewUrl = `https://drive.google.com/file/d/${gId}/preview`;
+        const driveViewUrl = `https://drive.google.com/file/d/${gId}/view`;
+        const driveDownloadUrl = `https://drive.google.com/uc?export=download&id=${gId}`;
+        return `
+          <div class="video-embed-container gdrive-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
+            <iframe src="${drivePreviewUrl}" 
+                    title="Google Drive Video Player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen 
+                    loading="lazy" 
+                    style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;">
+            </iframe>
+            <div class="gdrive-quick-actions" style="position:absolute; bottom:6px; left:6px; right:6px; z-index:4; display:flex; align-items:center; justify-content:space-between; gap:6px; pointer-events:auto;">
+              <a href="${driveViewUrl}" target="_blank" rel="noopener noreferrer" class="gdrive-pill-link" title="Open directly in Google Drive" style="display:inline-flex; align-items:center; gap:5px; font-size:0.7rem; font-weight:700; padding:4px 9px; border-radius:8px; background:rgba(9, 3, 18, 0.88); color:#ffd700; text-decoration:none; border:1px solid rgba(255, 215, 0, 0.4); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); transition:all 0.2s ease;">
+                <i class="fa-brands fa-google-drive" style="color:#34a853;"></i> Drive ↗
+              </a>
+              <a href="${driveDownloadUrl}" target="_blank" rel="noopener noreferrer" class="gdrive-pill-link" title="Download / Direct Stream Video" style="display:inline-flex; align-items:center; gap:5px; font-size:0.7rem; font-weight:700; padding:4px 9px; border-radius:8px; background:rgba(9, 3, 18, 0.88); color:#ffffff; text-decoration:none; border:1px solid rgba(255, 255, 255, 0.25); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); transition:all 0.2s ease;">
+                <i class="fa-solid fa-cloud-arrow-down" style="color:#ff4081;"></i> Download
+              </a>
+            </div>
+          </div>
+        `;
       }
     }
 
@@ -5106,8 +5133,8 @@ const romanticReasons = [
     }
 
     return `
-      <div class="video-embed-container" style="position:relative; width:100%; height:100%; min-height:160px; max-height:400px; border-radius:10px; overflow:hidden; background:#000;">
-        <video controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="width:100%; height:100%; min-height:160px; max-height:400px; object-fit:contain; border-radius:10px; background:#000; display:block;">
+      <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
+        <video controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain; border-radius:12px; background:#000; display:block;">
           <source src="${clean}" type="${videoMime}">
           <source src="${clean}">
           Your browser does not support playing this ${videoMime} video codec directly. <a href="${clean}" download="video" target="_blank" style="color:var(--primary, #ff4081);">Download Video</a>
@@ -5547,15 +5574,16 @@ const romanticReasons = [
             <span class="sticky-media-badge"><i class="fa-solid fa-expand"></i> View Photo</span>
           </div>
         `;
-      } else if (isVideo && mediaUrl) {
+      } else if (isVideo && (mediaUrl || item.mediaData)) {
+        const displayVideoSource = (item.mediaData && item.mediaData.startsWith('data:video')) ? item.mediaData : (mediaUrl || item.mediaData);
         mediaHtml = `
           <div class="sticky-video-embed">
             <div class="sticky-video-action-bar">
-              <button type="button" class="sticky-video-expand-btn" data-video="${mediaUrl}" data-author="${encodeURIComponent(authorName)}" data-msg="${encodeURIComponent(messageText)}" title="Expand Video in Lightbox">
+              <button type="button" class="sticky-video-expand-btn" data-video="${displayVideoSource}" data-author="${encodeURIComponent(authorName)}" data-msg="${encodeURIComponent(messageText)}" title="Expand Video in Lightbox">
                 <i class="fa-solid fa-expand"></i> Lightbox
               </button>
             </div>
-            ${parseGasVideoEmbed(mediaUrl, false)}
+            ${parseGasVideoEmbed(displayVideoSource, false)}
           </div>
         `;
       }
@@ -5662,8 +5690,9 @@ const romanticReasons = [
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 6000);
-      const res = await fetch(sheetUrl + '?action=getAll', {
+      const res = await fetch(sheetUrl + '?action=getAll&_t=' + Date.now(), {
         method: 'GET',
+        cache: 'no-store',
         signal: controller.signal
       });
       clearTimeout(timeoutId);
@@ -5766,7 +5795,7 @@ const romanticReasons = [
     } catch (fetchErr) {
       console.warn('Standard fetch failed in main arena, attempting JSONP fallback...', fetchErr);
       try {
-        const data = await fetchGasJsonp(sheetUrl + '?action=getAll');
+        const data = await fetchGasJsonp(sheetUrl + '?action=getAll&_t=' + Date.now());
         if (data) {
           if (Array.isArray(data.wishes)) {
             data.wishes.forEach(w => {
@@ -6194,10 +6223,189 @@ const romanticReasons = [
   }
 
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && mediaLightboxModal && mediaLightboxModal.classList.contains('active')) {
-      closeMediaLightbox();
+    if (e.key === 'Escape') {
+      if (mediaHoverPopout && mediaHoverPopout.classList.contains('active')) {
+        hideHoverPopout();
+      }
+      if (mediaLightboxModal && mediaLightboxModal.classList.contains('active')) {
+        closeMediaLightbox();
+      }
     }
   });
+
+  // --------------------------------------------------------------------------
+  // INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL ENGINE
+  // --------------------------------------------------------------------------
+  const mediaHoverPopout = document.getElementById('mediaHoverPopout');
+  const hoverPopoutViewport = document.getElementById('hoverPopoutViewport');
+  const hoverPopoutAuthor = document.getElementById('hoverPopoutAuthor');
+  const hoverPopoutCaption = document.getElementById('hoverPopoutCaption');
+  const hoverPopoutBadge = document.getElementById('hoverPopoutBadge');
+  const closeHoverPopoutBtn = document.getElementById('closeHoverPopoutBtn');
+
+  let hoverPopoutTimer = null;
+  let activeHoverTarget = null;
+
+  function showHoverPopout(type, url, author, msg) {
+    if (!mediaHoverPopout || !hoverPopoutViewport) return;
+    if (mediaLightboxModal && mediaLightboxModal.classList.contains('active')) return;
+
+    if (type === 'photo') {
+      hoverPopoutViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Hover Cinema Pop-Out" style="max-width:100%; max-height:58vh; object-fit:contain; border-radius:12px;" />`;
+      if (hoverPopoutBadge) hoverPopoutBadge.innerHTML = '<i class="fa-solid fa-camera"></i> <span>Photo Pop-Out 📸</span>';
+    } else if (type === 'video') {
+      hoverPopoutViewport.innerHTML = `<div style="width:100%; height:52vh; max-height:500px;">${parseGasVideoEmbed(url, true)}</div>`;
+      if (hoverPopoutBadge) hoverPopoutBadge.innerHTML = '<i class="fa-solid fa-film"></i> <span>Cinema Video Pop-Out 🎬</span>';
+    }
+
+    const decodedAuthor = decodeURIComponent(author || 'Loving Well-wisher');
+    const decodedMsg = decodeURIComponent(msg || '');
+
+    if (hoverPopoutAuthor) hoverPopoutAuthor.innerHTML = `<i class="fa-solid fa-crown"></i> <span>${escapeHtml(decodedAuthor)}</span>`;
+    if (hoverPopoutCaption) hoverPopoutCaption.textContent = decodedMsg ? `"${decodedMsg}"` : 'Our sacred celebration moment ✨';
+
+    mediaHoverPopout.classList.add('active');
+  }
+
+  function hideHoverPopout() {
+    if (hoverPopoutTimer) {
+      clearTimeout(hoverPopoutTimer);
+      hoverPopoutTimer = null;
+    }
+    activeHoverTarget = null;
+    if (!mediaHoverPopout) return;
+    mediaHoverPopout.classList.remove('active');
+    setTimeout(() => {
+      if (!mediaHoverPopout.classList.contains('active') && hoverPopoutViewport) {
+        hoverPopoutViewport.innerHTML = '';
+      }
+    }, 250);
+  }
+
+  function initMediaHoverPopout() {
+    // Dedicated Close Button
+    if (closeHoverPopoutBtn) {
+      closeHoverPopoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        hideHoverPopout();
+      });
+    }
+
+    const popoutCard = mediaHoverPopout ? mediaHoverPopout.querySelector('.hover-popout-card') : null;
+
+    // Hover detection on pointer-capable devices
+    document.addEventListener('mouseover', (e) => {
+      const photoTarget = e.target.closest('.sticky-media-wrap, .polaroid-photo, .polaroid-img-wrap, #mainPhotoPreviewBox img');
+      const videoTarget = e.target.closest('.sticky-video-embed, .polaroid-video-wrap, #mainVideoPreviewBox');
+
+      const target = photoTarget || videoTarget;
+      if (!target || target === activeHoverTarget) return;
+
+      if (e.target.closest('.sticky-like-btn') || e.target.closest('.sticky-video-expand-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('#mediaHoverPopout')) {
+        return;
+      }
+
+      activeHoverTarget = target;
+      if (hoverPopoutTimer) clearTimeout(hoverPopoutTimer);
+
+      hoverPopoutTimer = setTimeout(() => {
+        if (target !== activeHoverTarget) return;
+
+        let type = photoTarget ? 'photo' : 'video';
+        let url = '';
+        let author = '';
+        let msg = '';
+
+        if (photoTarget) {
+          url = photoTarget.getAttribute('data-img') || (photoTarget.querySelector('img') && photoTarget.querySelector('img').src) || (photoTarget.tagName === 'IMG' ? photoTarget.src : '');
+          author = photoTarget.getAttribute('data-author') || '';
+          msg = photoTarget.getAttribute('data-msg') || '';
+        } else if (videoTarget) {
+          url = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-video')) ||
+                (videoTarget.querySelector('video') && videoTarget.querySelector('video').src) ||
+                (videoTarget.querySelector('iframe') && videoTarget.querySelector('iframe').src) || '';
+          author = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-author')) || '';
+          msg = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-msg')) || '';
+        }
+
+        const stickyCard = target.closest('.wish-sticky, .sticky-note, .polaroid-card');
+        if (stickyCard) {
+          if (!author) {
+            const authorEl = stickyCard.querySelector('.sticky-author-name, .polaroid-meta');
+            if (authorEl) author = authorEl.textContent.trim();
+          }
+          if (!msg) {
+            const msgEl = stickyCard.querySelector('.sticky-msg, .sticky-message, .polaroid-caption');
+            if (msgEl) msg = msgEl.textContent.trim().replace(/^["']|["']$/g, '');
+          }
+        }
+
+        if (url && url.length > 5 && !url.includes('data:image/svg+xml;utf8,<svg')) {
+          showHoverPopout(type, url, author || 'Queen Nishika', msg);
+        }
+      }, 120);
+    }, { passive: true });
+
+    // When mouse moves away from the origin photo/video target
+    document.addEventListener('mouseout', (e) => {
+      if (!activeHoverTarget) return;
+      const target = e.target.closest('.sticky-media-wrap, .sticky-video-embed, .polaroid-photo, .polaroid-img-wrap, .polaroid-video-wrap, #mainPhotoPreviewBox, #mainVideoPreviewBox');
+      if (target && target === activeHoverTarget) {
+        const related = e.relatedTarget;
+        if (!related || (!target.contains(related) && !related.closest('.hover-popout-card, #mediaHoverPopout'))) {
+          hideHoverPopout();
+        }
+      }
+    }, { passive: true });
+
+    // Global cursor move monitor: if popout is active and cursor moves outside the photo frame/card, immediately restore normal mode
+    document.addEventListener('mousemove', (e) => {
+      if (!mediaHoverPopout || !mediaHoverPopout.classList.contains('active')) return;
+      // If cursor is within the popout card or still on the origin target, remain active
+      if (e.target.closest('.hover-popout-card') || (activeHoverTarget && activeHoverTarget.contains(e.target))) {
+        return;
+      }
+      // Moving cursor out from photo frame -> immediately goes back to normal mode
+      hideHoverPopout();
+    }, { passive: true });
+
+    if (mediaHoverPopout) {
+      // Backdrop cursor movement or click -> immediately dismiss
+      mediaHoverPopout.addEventListener('mousemove', (e) => {
+        if (e.target === mediaHoverPopout) {
+          hideHoverPopout();
+        }
+      });
+      mediaHoverPopout.addEventListener('mouseover', (e) => {
+        if (e.target === mediaHoverPopout) {
+          hideHoverPopout();
+        }
+      });
+      mediaHoverPopout.addEventListener('click', (e) => {
+        if (e.target === mediaHoverPopout) {
+          hideHoverPopout();
+        }
+      });
+    }
+
+    if (popoutCard) {
+      popoutCard.addEventListener('mouseleave', () => {
+        hideHoverPopout();
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      if (mediaHoverPopout && mediaHoverPopout.classList.contains('active')) {
+        hideHoverPopout();
+      }
+    }, { passive: true });
+  }
+
+  initMediaHoverPopout();
+  window.initMediaHoverPopout = initMediaHoverPopout;
+  window.showHoverPopout = showHoverPopout;
+  window.hideHoverPopout = hideHoverPopout;
 
 
 

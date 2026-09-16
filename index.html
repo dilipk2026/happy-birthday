@@ -8,28 +8,33 @@
   <meta name="theme-color" content="#0d0614" />
 
   <!-- Cache Control & Fresh Delivery Directives -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
+
+  <!-- Luxury Favicon Directives -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=3.3.1" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=3.3.1" />
+  <link rel="shortcut icon" href="favicon.ico?v=3.3.1" />
+  <link rel="apple-touch-icon" href="favicon.svg?v=3.3.1" />
 
   <!-- AUTOMATIC SERVICE WORKER & CACHE PURGE / POST-LAUNCH REDIRECT -->
   <script>
     (function() {
-      // 1. Immediate Cache Storage Purge & Reset Parameter Handler (?reset=1, ?fresh=1, ?purge=1)
+      // 1. Immediate Cache Storage Purge & Fresh Delivery Enforcement
       try {
-        const urlP = new URLSearchParams(window.location.search || '');
-        if (urlP.get('reset') === '1' || urlP.get('reset') === 'true' || urlP.get('fresh') === '1' || urlP.get('purge') === '1') {
-          localStorage.clear();
-          sessionStorage.clear();
-          if ('caches' in window) {
-            caches.keys().then(names => names.forEach(n => caches.delete(n)));
-          }
-        }
-        // Unregister any stale service workers
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.getRegistrations().then(regs => {
             regs.forEach(r => r.unregister());
           });
+        }
+        if ('caches' in window) {
+          caches.keys().then(names => names.forEach(n => caches.delete(n)));
+        }
+        const urlP = new URLSearchParams(window.location.search || '');
+        if (urlP.get('reset') === '1' || urlP.get('reset') === 'true' || urlP.get('fresh') === '1' || urlP.get('purge') === '1') {
+          localStorage.clear();
+          sessionStorage.clear();
         }
       } catch(e) {}
 
@@ -1288,37 +1293,63 @@
       font-style: italic;
     }
 
-    /* Media Attachments inside Sticky Note */
+    /* Media Attachments inside Sticky Note (Perfect Frame Styling) */
     .sticky-media-wrap {
       margin-bottom: 14px;
       border-radius: 14px;
       overflow: hidden;
       position: relative;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid rgba(255, 215, 0, 0.45);
+      background: radial-gradient(circle at center, rgba(30, 10, 45, 0.6) 0%, rgba(5, 1, 10, 0.95) 100%);
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.6), 0 6px 20px rgba(0, 0, 0, 0.45);
+      aspect-ratio: 16 / 10;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.3s ease;
+    }
+
+    .sticky-media-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 50%, rgba(255, 215, 0, 0.08) 100%);
+      border-radius: 12px;
     }
 
     .sticky-media-wrap img {
       width: 100%;
-      height: 180px;
+      height: 100%;
       object-fit: cover;
+      object-position: center;
       display: block;
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s ease;
+    }
+
+    .sticky-media-wrap:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: #ffd700;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4), 0 16px 36px rgba(255, 64, 129, 0.4), 0 0 20px rgba(255, 215, 0, 0.4);
     }
 
     .sticky-media-wrap:hover img {
-      transform: scale(1.06);
+      transform: scale(1.07);
+      filter: brightness(1.05);
     }
 
     .sticky-media-badge {
       position: absolute;
       bottom: 8px;
       right: 8px;
-      background: rgba(9, 3, 18, 0.85);
-      color: var(--accent-gold);
-      border: 1px solid rgba(255, 215, 0, 0.4);
+      background: rgba(9, 3, 18, 0.88);
+      color: var(--accent-gold, #ffd700);
+      border: 1px solid rgba(255, 215, 0, 0.5);
       padding: 4px 10px;
       border-radius: 20px;
       font-size: 0.75rem;
@@ -1327,65 +1358,300 @@
       align-items: center;
       gap: 5px;
       backdrop-filter: blur(10px);
-      transition: var(--transition);
+      -webkit-backdrop-filter: blur(10px);
+      transition: var(--transition, all 0.3s ease);
       z-index: 2;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
 
     .sticky-media-wrap:hover .sticky-media-badge {
-      background: rgba(255, 64, 129, 0.9);
+      background: rgba(255, 64, 129, 0.95);
       border-color: #ff4081;
       color: #ffffff;
       transform: scale(1.05);
       box-shadow: 0 0 12px rgba(255, 64, 129, 0.6);
     }
 
+    /* Video Attachments (Perfect Frame Architecture) */
     .sticky-video-embed {
       width: 100%;
-      height: 195px;
+      aspect-ratio: 16 / 9;
       border-radius: 14px;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      margin-bottom: 14px;
-      background: #000;
+      border: 2px solid rgba(255, 215, 0, 0.55);
+      margin-bottom: 12px;
+      background: #000000;
       position: relative;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.8), 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 215, 0, 0.25);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.3s ease;
+      display: block;
+      box-sizing: border-box;
     }
 
-    .sticky-video-embed iframe, .sticky-video-embed video {
+    .sticky-video-embed:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: #ffd700;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 16px 36px rgba(255, 64, 129, 0.4), 0 0 22px rgba(255, 215, 0, 0.5);
+    }
+
+    .sticky-video-embed iframe,
+    .sticky-video-embed video {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       border: none;
-      object-fit: cover;
+      outline: none;
+      object-fit: contain;
       display: block;
+      background: #000000;
     }
 
     .sticky-video-action-bar {
       position: absolute;
       top: 8px;
       right: 8px;
-      z-index: 3;
+      z-index: 5;
     }
 
     .sticky-video-expand-btn {
-      background: rgba(9, 3, 18, 0.85);
-      border: 1px solid rgba(255, 215, 0, 0.5);
-      color: var(--accent-gold);
-      padding: 4px 9px;
-      border-radius: 16px;
+      background: rgba(9, 3, 18, 0.9);
+      border: 1px solid rgba(255, 215, 0, 0.6);
+      color: var(--accent-gold, #ffd700);
+      padding: 4px 10px;
+      border-radius: 14px;
       font-size: 0.72rem;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      backdrop-filter: blur(10px);
-      transition: var(--transition);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: var(--transition-smooth, all 0.3s ease);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     }
 
     .sticky-video-expand-btn:hover {
-      background: var(--primary-pink);
-      color: #ffffff;
+      background: #ff4081;
       border-color: #ff4081;
+      color: #ffffff;
+      transform: scale(1.06);
+      box-shadow: 0 0 12px rgba(255, 64, 129, 0.6);
+    }
+
+    .video-embed-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      overflow: hidden;
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-embed-container iframe,
+    .video-embed-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      object-fit: contain;
+      display: block;
+      background: #000000;
+    }
+
+    /* ==========================================================================
+       INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL (#mediaHoverPopout)
+       ========================================================================== */
+    .media-hover-popout-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 100050;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(5, 2, 12, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.25s ease;
+      box-sizing: border-box;
+    }
+
+    .media-hover-popout-overlay.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .hover-popout-card {
+      position: relative;
+      max-width: min(92vw, 760px);
+      width: 100%;
+      max-height: 88vh;
+      background: linear-gradient(160deg, rgba(28, 12, 45, 0.96) 0%, rgba(12, 4, 22, 0.98) 100%);
+      border: 2px solid rgba(255, 215, 0, 0.85);
+      border-radius: 22px;
+      box-shadow: 0 0 45px rgba(255, 215, 0, 0.45), 0 30px 80px rgba(0, 0, 0, 0.9), inset 0 1px 3px rgba(255, 255, 255, 0.25);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.88) translateY(15px);
+      transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .media-hover-popout-overlay.active .hover-popout-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .hover-popout-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: rgba(0, 0, 0, 0.65);
+      border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+      position: relative;
+      z-index: 5;
+    }
+
+    .hover-popout-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .hover-popout-author {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-gold, #ffd700);
+      font-weight: 700;
+      font-size: 0.96rem;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      white-space: nowrap;
+    }
+
+    .hover-popout-badge {
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.3), rgba(255, 215, 0, 0.25));
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      color: #ffffff;
+      padding: 3px 10px;
+      border-radius: 14px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .hover-popout-close-btn {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 215, 0, 0.6);
+      color: #ffd700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      padding: 0;
+      margin-left: 10px;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .hover-popout-close-btn:hover {
+      background: #ff4081;
+      border-color: #ff4081;
+      color: #ffffff;
+      transform: scale(1.12) rotate(90deg);
+      box-shadow: 0 0 15px rgba(255, 64, 129, 0.7);
+    }
+
+    .hover-popout-close-btn:active {
+      transform: scale(0.95);
+    }
+
+    .hover-popout-media-viewport {
+      width: 100%;
+      max-height: 58vh;
+      min-height: 220px;
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hover-popout-media-viewport img {
+      max-width: 100%;
+      max-height: 58vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .hover-popout-media-viewport video,
+    .hover-popout-media-viewport iframe {
+      width: 100%;
+      height: 52vh;
+      max-height: 500px;
+      border: none;
+      background: #000000;
+      display: block;
+    }
+
+    .hover-popout-footer {
+      padding: 14px 20px;
+      background: rgba(0, 0, 0, 0.65);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .hover-popout-caption {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.92);
+      line-height: 1.45;
+      font-style: italic;
+      margin: 0;
+      flex: 1;
+    }
+
+    .hover-popout-hint {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.55);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .sticky-card-footer {
@@ -2086,6 +2352,119 @@
       }
     }
 
+    @media (max-width: 600px) {
+      .media-hover-popout-overlay {
+        padding: 10px !important;
+      }
+      .hover-popout-card {
+        width: min(95vw, 440px) !important;
+        max-height: 88vh !important;
+        border-radius: 16px !important;
+      }
+      .hover-popout-header {
+        padding: 10px 14px !important;
+      }
+      .hover-popout-author {
+        font-size: 0.88rem !important;
+      }
+      .hover-popout-badge {
+        font-size: 0.68rem !important;
+        padding: 2px 7px !important;
+      }
+      .hover-popout-media-viewport {
+        max-height: 48vh !important;
+        min-height: 170px !important;
+      }
+      .hover-popout-media-viewport img {
+        max-height: 48vh !important;
+      }
+      .hover-popout-media-viewport video,
+      .hover-popout-media-viewport iframe {
+        height: clamp(160px, 44vh, 320px) !important;
+      }
+      .hover-popout-footer {
+        padding: 10px 14px !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+      }
+      .hover-popout-caption {
+        font-size: 0.82rem !important;
+        line-height: 1.38 !important;
+      }
+      .hover-popout-hint {
+        font-size: 0.65rem !important;
+      }
+      .media-lightbox-overlay {
+        padding: 10px !important;
+      }
+      .media-lightbox-card {
+        width: min(96vw, 480px) !important;
+        max-height: 90vh !important;
+        border-radius: 18px !important;
+      }
+      .lightbox-close-btn {
+        top: 10px !important;
+        right: 10px !important;
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 1rem !important;
+      }
+      .lightbox-media-viewport {
+        max-height: 50vh !important;
+      }
+      .lightbox-media-viewport img {
+        max-height: 50vh !important;
+      }
+      .lightbox-media-viewport video,
+      .lightbox-media-viewport iframe {
+        height: clamp(180px, 46vh, 340px) !important;
+      }
+      .lightbox-info-pane {
+        padding: 12px 14px !important;
+      }
+      .lightbox-author {
+        font-size: 0.92rem !important;
+      }
+      .lightbox-caption {
+        font-size: 0.82rem !important;
+      }
+      .sticky-media-wrap {
+        width: 100% !important;
+        aspect-ratio: 16 / 10 !important;
+        height: auto !important;
+        margin-bottom: 10px !important;
+        border-radius: 12px !important;
+      }
+      .sticky-video-embed {
+        width: 100% !important;
+        aspect-ratio: 16 / 9 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        border-radius: 12px !important;
+        margin-bottom: 10px !important;
+      }
+      .polaroid-img-wrap {
+        width: 100% !important;
+        aspect-ratio: 16 / 10 !important;
+        height: auto !important;
+        border-radius: 10px !important;
+        margin-bottom: 10px !important;
+      }
+      .polaroid-video-wrap {
+        width: 100% !important;
+        aspect-ratio: 16 / 9 !important;
+        height: auto !important;
+        border-radius: 10px !important;
+        margin-bottom: 10px !important;
+      }
+      .form-row-2col {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+      }
+    }
+
     @media (max-width: 360px) {
       .header-nav {
         padding: 6px 10px;
@@ -2107,6 +2486,28 @@
       }
       .sticky-note, .polaroid-card {
         transform: none !important;
+      }
+      .sticky-video-embed {
+        width: 100% !important;
+        aspect-ratio: 16 / 9 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+      }
+      .polaroid-img-wrap {
+        aspect-ratio: 16 / 10 !important;
+        height: auto !important;
+      }
+      .polaroid-video-wrap {
+        aspect-ratio: 16 / 9 !important;
+        height: auto !important;
+      }
+      .hover-popout-card {
+        width: 96vw !important;
+      }
+      .hover-popout-media-viewport {
+        min-height: 140px !important;
+        max-height: 42vh !important;
       }
     }
   </style>
@@ -2508,6 +2909,32 @@
           <i class="fa-solid fa-crown"></i> <span>Dilip</span>
         </div>
         <p class="lightbox-caption" id="lightboxMessage"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA OVERLAY -->
+  <div class="media-hover-popout-overlay" id="mediaHoverPopout" role="dialog" aria-modal="true" aria-label="Media Cinema Pop-Out" aria-hidden="true">
+    <div class="hover-popout-card">
+      <div class="hover-popout-header">
+        <div class="hover-popout-header-left">
+          <div class="hover-popout-author" id="hoverPopoutAuthor">
+            <i class="fa-solid fa-crown"></i> <span>Queen Nishika</span>
+          </div>
+          <div class="hover-popout-badge" id="hoverPopoutBadge">
+            <i class="fa-solid fa-sparkles"></i> <span>Cinema Pop-Out</span>
+          </div>
+        </div>
+        <button type="button" class="hover-popout-close-btn" id="closeHoverPopoutBtn" aria-label="Close Cinema Pop-Out" title="Close Pop-Out (Esc)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="hover-popout-media-viewport" id="hoverPopoutViewport">
+        <!-- Enlarged Photo or Video Player injected dynamically -->
+      </div>
+      <div class="hover-popout-footer">
+        <p class="hover-popout-caption" id="hoverPopoutCaption">"Our unforgettable sacred memory"</p>
+        <span class="hover-popout-hint"><i class="fa-solid fa-hand-pointer"></i> Move mouse away or click ✕ to close</span>
       </div>
     </div>
   </div>
@@ -3413,16 +3840,16 @@
           const embedUrl = `https://www.youtube.com/embed/${ytId}?autoplay=${inLightbox ? 1 : 0}&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
           const watchUrl = `https://www.youtube.com/watch?v=${ytId}`;
           return `
-            <div class="video-embed-container" style="position:relative; width:100%; height:100%; min-height:160px; border-radius:10px; overflow:hidden; background:#000;">
+            <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
               <iframe src="${embedUrl}" 
                       title="YouTube Video Player"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                       allowfullscreen 
                       loading="lazy" 
                       referrerpolicy="strict-origin-when-cross-origin"
-                      style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px; display:block;">
+                      style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;">
               </iframe>
-              <a href="${watchUrl}" target="_blank" rel="noopener noreferrer" class="yt-direct-pill" title="Watch directly on YouTube" style="position:absolute; bottom:6px; right:6px; z-index:4; display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; padding:3px 8px; border-radius:6px; background:rgba(0,0,0,0.78); color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(4px); transition:all 0.2s ease;">
+              <a href="${watchUrl}" target="_blank" rel="noopener noreferrer" class="yt-direct-pill" title="Watch directly on YouTube" style="position:absolute; bottom:6px; right:6px; z-index:4; display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-weight:700; padding:3px 8px; border-radius:6px; background:rgba(0,0,0,0.78); color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(4px); transition:all 0.2s ease;">
                 <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube ↗
               </a>
             </div>
@@ -3434,7 +3861,11 @@
           const vMatch = clean.match(/vimeo\.com\/(?:video\/)?([0-9]+)/i);
           const vId = vMatch ? vMatch[1] : clean.split('vimeo.com/')[1].split('?')[0].split('/')[0].split('&')[0];
           if (vId) {
-            return `<iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
+            return `
+              <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
+                <iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;"></iframe>
+              </div>
+            `;
           }
         }
 
@@ -3451,7 +3882,28 @@
           else if (m4 && m4[1]) gId = m4[1];
 
           if (gId) {
-            return `<iframe src="https://drive.google.com/file/d/${gId}/preview" allow="autoplay; encrypted-media" allowfullscreen loading="lazy" style="width:100%; height:100%; min-height:160px; border:0; border-radius:10px;"></iframe>`;
+            const drivePreviewUrl = `https://drive.google.com/file/d/${gId}/preview`;
+            const driveViewUrl = `https://drive.google.com/file/d/${gId}/view`;
+            const driveDownloadUrl = `https://drive.google.com/uc?export=download&id=${gId}`;
+            return `
+              <div class="video-embed-container gdrive-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
+                <iframe src="${drivePreviewUrl}" 
+                        title="Google Drive Video Player"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen 
+                        loading="lazy" 
+                        style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;">
+                </iframe>
+                <div class="gdrive-quick-actions" style="position:absolute; bottom:6px; left:6px; right:6px; z-index:4; display:flex; align-items:center; justify-content:space-between; gap:6px; pointer-events:auto;">
+                  <a href="${driveViewUrl}" target="_blank" rel="noopener noreferrer" class="gdrive-pill-link" title="Open directly in Google Drive" style="display:inline-flex; align-items:center; gap:5px; font-size:0.7rem; font-weight:700; padding:4px 9px; border-radius:8px; background:rgba(9, 3, 18, 0.88); color:#ffd700; text-decoration:none; border:1px solid rgba(255, 215, 0, 0.4); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); transition:all 0.2s ease;">
+                    <i class="fa-brands fa-google-drive" style="color:#34a853;"></i> Drive ↗
+                  </a>
+                  <a href="${driveDownloadUrl}" target="_blank" rel="noopener noreferrer" class="gdrive-pill-link" title="Download / Direct Stream Video" style="display:inline-flex; align-items:center; gap:5px; font-size:0.7rem; font-weight:700; padding:4px 9px; border-radius:8px; background:rgba(9, 3, 18, 0.88); color:#ffffff; text-decoration:none; border:1px solid rgba(255, 255, 255, 0.25); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); transition:all 0.2s ease;">
+                    <i class="fa-solid fa-cloud-arrow-down" style="color:#ff4081;"></i> Download
+                  </a>
+                </div>
+              </div>
+            `;
           }
         }
 
@@ -3465,8 +3917,8 @@
         }
 
         return `
-          <div class="video-embed-container" style="position:relative; width:100%; height:100%; min-height:160px; max-height:400px; border-radius:10px; overflow:hidden; background:#000;">
-            <video controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="width:100%; height:100%; min-height:160px; max-height:400px; object-fit:contain; border-radius:10px; background:#000; display:block;">
+          <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
+            <video controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain; border-radius:12px; background:#000; display:block;">
               <source src="${clean}" type="${videoMime}">
               <source src="${clean}">
               Your browser does not support playing this ${videoMime} video directly. <a href="${clean}" download="video" target="_blank" style="color:var(--primary-pink, #ff4081);">Download Video</a>
@@ -4673,8 +5125,9 @@
           // Attempt 1: Modern CORS Fetch
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 6000);
-          const res = await fetch(GOOGLE_SHEET_URL + '?action=getAll', {
+          const res = await fetch(GOOGLE_SHEET_URL + '?action=getAll&_t=' + Date.now(), {
             method: 'GET',
+            cache: 'no-store',
             signal: controller.signal
           });
           clearTimeout(timeoutId);
@@ -4746,7 +5199,7 @@
         } catch (fetchErr) {
           console.warn('Standard fetch failed, attempting JSONP fallback...', fetchErr);
           try {
-            const data = await fetchJsonp(GOOGLE_SHEET_URL + '?action=getAll');
+            const data = await fetchJsonp(GOOGLE_SHEET_URL + '?action=getAll&_t=' + Date.now());
             if (data) {
               if (Array.isArray(data.wishes)) {
                 data.wishes.forEach(w => {
@@ -5158,11 +5611,183 @@
         });
       }
 
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mediaLightbox && mediaLightbox.classList.contains('active')) {
-          closeLightbox(false);
+      // 10. INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL ENGINE
+      const indexMediaHoverPopout = document.getElementById('mediaHoverPopout');
+      const indexHoverPopoutViewport = document.getElementById('hoverPopoutViewport');
+      const indexHoverPopoutAuthor = document.getElementById('hoverPopoutAuthor');
+      const indexHoverPopoutCaption = document.getElementById('hoverPopoutCaption');
+      const indexHoverPopoutBadge = document.getElementById('hoverPopoutBadge');
+      const indexCloseHoverPopoutBtn = document.getElementById('closeHoverPopoutBtn');
+
+      let indexHoverTimer = null;
+      let indexActiveHoverTarget = null;
+
+      function showIndexHoverPopout(type, url, author, msg) {
+        if (!indexMediaHoverPopout || !indexHoverPopoutViewport) return;
+        if (mediaLightbox && mediaLightbox.classList.contains('active')) return;
+
+        if (type === 'photo') {
+          indexHoverPopoutViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Hover Cinema Pop-Out" style="max-width:100%; max-height:58vh; object-fit:contain; border-radius:12px;" />`;
+          if (indexHoverPopoutBadge) indexHoverPopoutBadge.innerHTML = '<i class="fa-solid fa-camera"></i> <span>Photo Pop-Out 📸</span>';
+        } else if (type === 'video') {
+          indexHoverPopoutViewport.innerHTML = `<div style="width:100%; height:52vh; max-height:500px;">${parseVideoEmbed(url, true)}</div>`;
+          if (indexHoverPopoutBadge) indexHoverPopoutBadge.innerHTML = '<i class="fa-solid fa-film"></i> <span>Cinema Video Pop-Out 🎬</span>';
         }
-      });
+
+        const decodedAuthor = decodeURIComponent(author || 'Loving Well-wisher');
+        const decodedMsg = decodeURIComponent(msg || '');
+
+        if (indexHoverPopoutAuthor) indexHoverPopoutAuthor.innerHTML = `<i class="fa-solid fa-crown"></i> <span>${escapeHtml(decodedAuthor)}</span>`;
+        if (indexHoverPopoutCaption) indexHoverPopoutCaption.textContent = decodedMsg ? `"${decodedMsg}"` : 'Our sacred celebration moment ✨';
+
+        indexMediaHoverPopout.classList.add('active');
+      }
+
+      function hideIndexHoverPopout() {
+        if (indexHoverTimer) {
+          clearTimeout(indexHoverTimer);
+          indexHoverTimer = null;
+        }
+        indexActiveHoverTarget = null;
+        if (!indexMediaHoverPopout) return;
+        indexMediaHoverPopout.classList.remove('active');
+        setTimeout(() => {
+          if (!indexMediaHoverPopout.classList.contains('active') && indexHoverPopoutViewport) {
+            indexHoverPopoutViewport.innerHTML = '';
+          }
+        }, 250);
+      }
+
+      function initIndexHoverPopout() {
+        // Dedicated Close Button
+        if (indexCloseHoverPopoutBtn) {
+          indexCloseHoverPopoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            hideIndexHoverPopout();
+          });
+        }
+
+        const indexPopoutCard = indexMediaHoverPopout ? indexMediaHoverPopout.querySelector('.hover-popout-card') : null;
+
+        // Global Escape key
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            if (indexMediaHoverPopout && indexMediaHoverPopout.classList.contains('active')) {
+              hideIndexHoverPopout();
+            }
+            if (mediaLightbox && mediaLightbox.classList.contains('active')) {
+              closeLightbox(false);
+            }
+          }
+        });
+
+        document.addEventListener('mouseover', (e) => {
+          const photoTarget = e.target.closest('.sticky-media-wrap, .polaroid-img-wrap, .memory-card img, #photoPreviewBox img');
+          const videoTarget = e.target.closest('.sticky-video-embed, .polaroid-video-wrap, #videoPreviewBox');
+
+          const target = photoTarget || videoTarget;
+          if (!target || target === indexActiveHoverTarget) return;
+
+          if (e.target.closest('.sticky-like-btn') || e.target.closest('.sticky-video-expand-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('#mediaHoverPopout')) {
+            return;
+          }
+
+          indexActiveHoverTarget = target;
+          if (indexHoverTimer) clearTimeout(indexHoverTimer);
+
+          indexHoverTimer = setTimeout(() => {
+            if (target !== indexActiveHoverTarget) return;
+
+            let type = photoTarget ? 'photo' : 'video';
+            let url = '';
+            let author = '';
+            let msg = '';
+
+            if (photoTarget) {
+              url = photoTarget.getAttribute('data-img') || (photoTarget.querySelector('img') && photoTarget.querySelector('img').src) || (photoTarget.tagName === 'IMG' ? photoTarget.src : '');
+              author = photoTarget.getAttribute('data-author') || '';
+              msg = photoTarget.getAttribute('data-msg') || '';
+            } else if (videoTarget) {
+              url = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-video')) ||
+                    (videoTarget.querySelector('video') && videoTarget.querySelector('video').src) ||
+                    (videoTarget.querySelector('iframe') && videoTarget.querySelector('iframe').src) || '';
+              author = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-author')) || '';
+              msg = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-msg')) || '';
+            }
+
+            const stickyCard = target.closest('.sticky-note, .polaroid-card, .memory-card');
+            if (stickyCard) {
+              if (!author) {
+                const authorEl = stickyCard.querySelector('.sticky-author-name, .polaroid-meta');
+                if (authorEl) author = authorEl.textContent.trim();
+              }
+              if (!msg) {
+                const msgEl = stickyCard.querySelector('.sticky-message, .polaroid-caption');
+                if (msgEl) msg = msgEl.textContent.trim().replace(/^["']|["']$/g, '');
+              }
+            }
+
+            if (url && url.length > 5 && !url.includes('data:image/svg+xml;utf8,<svg')) {
+              showIndexHoverPopout(type, url, author || 'Queen Nishika', msg);
+            }
+          }, 120);
+        }, { passive: true });
+
+        // When mouse leaves the origin photo target
+        document.addEventListener('mouseout', (e) => {
+          if (!indexActiveHoverTarget) return;
+          const target = e.target.closest('.sticky-media-wrap, .sticky-video-embed, .polaroid-img-wrap, .polaroid-video-wrap, #photoPreviewBox, #videoPreviewBox');
+          if (target && target === indexActiveHoverTarget) {
+            const related = e.relatedTarget;
+            if (!related || (!target.contains(related) && !related.closest('.hover-popout-card, #mediaHoverPopout'))) {
+              hideIndexHoverPopout();
+            }
+          }
+        }, { passive: true });
+
+        // Global cursor move monitor: if popout is active and cursor moves outside the photo frame/card, immediately restore normal mode
+        document.addEventListener('mousemove', (e) => {
+          if (!indexMediaHoverPopout || !indexMediaHoverPopout.classList.contains('active')) return;
+          if (e.target.closest('.hover-popout-card') || (indexActiveHoverTarget && indexActiveHoverTarget.contains(e.target))) {
+            return;
+          }
+          hideIndexHoverPopout();
+        }, { passive: true });
+
+        if (indexMediaHoverPopout) {
+          // Backdrop cursor movement or click -> immediately dismiss
+          indexMediaHoverPopout.addEventListener('mousemove', (e) => {
+            if (e.target === indexMediaHoverPopout) {
+              hideIndexHoverPopout();
+            }
+          });
+          indexMediaHoverPopout.addEventListener('mouseover', (e) => {
+            if (e.target === indexMediaHoverPopout) {
+              hideIndexHoverPopout();
+            }
+          });
+          indexMediaHoverPopout.addEventListener('click', (e) => {
+            if (e.target === indexMediaHoverPopout) {
+              hideIndexHoverPopout();
+            }
+          });
+        }
+
+        if (indexPopoutCard) {
+          indexPopoutCard.addEventListener('mouseleave', () => {
+            hideIndexHoverPopout();
+          });
+        }
+
+        window.addEventListener('scroll', () => {
+          if (indexMediaHoverPopout && indexMediaHoverPopout.classList.contains('active')) {
+            hideIndexHoverPopout();
+          }
+        }, { passive: true });
+      }
+
+      initIndexHoverPopout();
 
       // History Back & Mobile Gesture Navigation Manager (Closes open overlays instead of exiting page)
       window.addEventListener('popstate', (e) => {

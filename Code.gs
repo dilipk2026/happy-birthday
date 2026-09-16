@@ -48,9 +48,19 @@ function isVideoUrl(url) {
     str.indexOf('.mp4') !== -1 ||
     str.indexOf('.webm') !== -1 ||
     str.indexOf('.mov') !== -1 ||
+    str.indexOf('.qt') !== -1 ||
     str.indexOf('.m4v') !== -1 ||
     str.indexOf('.ogg') !== -1 ||
+    str.indexOf('.ogv') !== -1 ||
     str.indexOf('.mkv') !== -1 ||
+    str.indexOf('.avi') !== -1 ||
+    str.indexOf('.wmv') !== -1 ||
+    str.indexOf('.3gp') !== -1 ||
+    str.indexOf('.3g2') !== -1 ||
+    str.indexOf('.flv') !== -1 ||
+    str.indexOf('.ts') !== -1 ||
+    str.indexOf('.mts') !== -1 ||
+    str.indexOf('.m2ts') !== -1 ||
     str.indexOf('data:video') !== -1
   );
 }

@@ -6156,37 +6156,63 @@ h1, h2, h3, h4 {
   font-style: italic;
 }
 
-/* Media Attachments inside Sticky Note */
+/* Media Attachments inside Sticky Note (Perfect Frame Styling) */
 .sticky-media-wrap {
   margin-bottom: 12px;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 215, 0, 0.45);
+  background: radial-gradient(circle at center, rgba(30, 10, 45, 0.6) 0%, rgba(5, 1, 10, 0.95) 100%);
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.6), 0 6px 20px rgba(0, 0, 0, 0.45);
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.3s ease;
+}
+
+.sticky-media-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 50%, rgba(255, 215, 0, 0.08) 100%);
+  border-radius: 12px;
 }
 
 .sticky-media-wrap img {
   width: 100%;
-  height: 170px;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s ease;
+}
+
+.sticky-media-wrap:hover {
+  transform: translateY(-5px) scale(1.02);
+  border-color: #ffd700;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4), 0 16px 36px rgba(255, 64, 129, 0.4), 0 0 20px rgba(255, 215, 0, 0.4);
 }
 
 .sticky-media-wrap:hover img {
-  transform: scale(1.06);
+  transform: scale(1.07);
+  filter: brightness(1.05);
 }
 
 .sticky-media-badge {
   position: absolute;
   bottom: 8px;
   right: 8px;
-  background: rgba(9, 3, 18, 0.85);
-  color: var(--secondary);
-  border: 1px solid rgba(255, 215, 0, 0.4);
+  background: rgba(9, 3, 18, 0.88);
+  color: var(--secondary, #ffd700);
+  border: 1px solid rgba(255, 215, 0, 0.5);
   padding: 4px 10px;
   border-radius: 20px;
   font-size: 0.74rem;
@@ -6195,74 +6221,301 @@ h1, h2, h3, h4 {
   align-items: center;
   gap: 5px;
   backdrop-filter: blur(10px);
-  transition: var(--transition-smooth);
+  -webkit-backdrop-filter: blur(10px);
+  transition: var(--transition-smooth, all 0.3s ease);
   z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .sticky-media-wrap:hover .sticky-media-badge {
-  background: rgba(255, 64, 129, 0.9);
+  background: rgba(255, 64, 129, 0.95);
   border-color: #ff4081;
   color: #ffffff;
   transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 64, 129, 0.6);
 }
 
+/* Video Attachments (Perfect Frame Architecture) */
 .sticky-video-embed {
   width: 100%;
-  height: 180px;
-  border-radius: 12px;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 2px solid rgba(255, 215, 0, 0.55);
   margin-bottom: 12px;
-  background: #000;
+  background: #000000;
   position: relative;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.8), 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 215, 0, 0.25);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.3s ease;
+  display: block;
+  box-sizing: border-box;
 }
 
-.sticky-video-embed iframe, .sticky-video-embed video {
+.sticky-video-embed:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: #ffd700;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 16px 36px rgba(255, 64, 129, 0.4), 0 0 22px rgba(255, 215, 0, 0.5);
+}
+
+.sticky-video-embed iframe,
+.sticky-video-embed video {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   border: none;
-  object-fit: cover;
+  outline: none;
+  object-fit: contain;
   display: block;
+  background: #000000;
 }
 
 .sticky-video-action-bar {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  z-index: 3;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
 }
 
 .sticky-video-expand-btn {
-  background: rgba(9, 3, 18, 0.85);
-  border: 1px solid rgba(255, 215, 0, 0.5);
-  color: var(--secondary);
-  padding: 3px 8px;
+  background: rgba(9, 3, 18, 0.9);
+  border: 1px solid rgba(255, 215, 0, 0.6);
+  color: var(--secondary, #ffd700);
+  padding: 4px 10px;
   border-radius: 14px;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   backdrop-filter: blur(8px);
-  transition: var(--transition-smooth);
+  -webkit-backdrop-filter: blur(8px);
+  transition: var(--transition-smooth, all 0.3s ease);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .sticky-video-expand-btn:hover {
   background: #ff4081;
   border-color: #ff4081;
   color: #ffffff;
+  transform: scale(1.06);
+  box-shadow: 0 0 12px rgba(255, 64, 129, 0.6);
 }
 
 .video-embed-container {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  min-height: 160px;
-  border-radius: 10px;
+  border-radius: inherit;
   overflow: hidden;
-  background: #000;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-embed-container iframe,
+.video-embed-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  object-fit: contain;
+  display: block;
+  background: #000000;
+}
+
+/* ==========================================================================
+   INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL (#mediaHoverPopout)
+   ========================================================================== */
+.media-hover-popout-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 100050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(5, 2, 12, 0.88);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.25s ease;
+  box-sizing: border-box;
+}
+
+.media-hover-popout-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.hover-popout-card {
+  position: relative;
+  max-width: min(92vw, 780px);
+  width: 100%;
+  max-height: 88vh;
+  background: linear-gradient(160deg, rgba(28, 12, 45, 0.98) 0%, rgba(12, 4, 22, 0.99) 100%);
+  border: 2px solid rgba(255, 215, 0, 0.85);
+  border-radius: 22px;
+  box-shadow: 0 0 50px rgba(255, 215, 0, 0.45), 0 30px 80px rgba(0, 0, 0, 0.95), inset 0 1px 3px rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.88) translateY(15px);
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-sizing: border-box;
+}
+
+.media-hover-popout-overlay.active .hover-popout-card {
+  transform: scale(1) translateY(0);
+}
+
+.hover-popout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(0, 0, 0, 0.65);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+  position: relative;
+  z-index: 5;
+}
+
+.hover-popout-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.hover-popout-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--secondary, #ffd700);
+  font-weight: 700;
+  font-size: 0.96rem;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  white-space: nowrap;
+}
+
+.hover-popout-badge {
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.3), rgba(255, 215, 0, 0.25));
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  color: #ffffff;
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.hover-popout-close-btn {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.6);
+  color: #ffd700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 0;
+  margin-left: 10px;
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.hover-popout-close-btn:hover {
+  background: #ff4081;
+  border-color: #ff4081;
+  color: #ffffff;
+  transform: scale(1.12) rotate(90deg);
+  box-shadow: 0 0 15px rgba(255, 64, 129, 0.7);
+}
+
+.hover-popout-close-btn:active {
+  transform: scale(0.95);
+}
+
+.hover-popout-media-viewport {
+  width: 100%;
+  max-height: 58vh;
+  min-height: 220px;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.hover-popout-media-viewport img {
+  max-width: 100%;
+  max-height: 58vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.hover-popout-media-viewport video,
+.hover-popout-media-viewport iframe {
+  width: 100%;
+  height: 52vh;
+  max-height: 500px;
+  border: none;
+  background: #000000;
+  display: block;
+}
+
+.hover-popout-footer {
+  padding: 14px 20px;
+  background: rgba(0, 0, 0, 0.65);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hover-popout-caption {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.45;
+  font-style: italic;
+  margin: 0;
+  flex: 1;
+}
+
+.hover-popout-hint {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .yt-direct-pill:hover {
@@ -13043,6 +13296,232 @@ img, video, canvas, svg, iframe {
   .keypad-btn {
     height: 34px !important;
     font-size: 0.95rem !important;
+  }
+}
+
+/* ==========================================================================
+   11. UNIVERSAL MULTI-DEVICE RESPONSIVE SUITE FOR FRAMES & HOVER POPOUT
+   ========================================================================== */
+
+/* Mobile Phones (Portrait & Landscape <= 600px) */
+@media (max-width: 600px) {
+  /* Cinema Hover Pop-Out Overlay & Card Mobile Scaling */
+  .media-hover-popout-overlay {
+    padding: 10px !important;
+  }
+
+  .hover-popout-card {
+    width: min(95vw, 440px) !important;
+    max-height: 88vh !important;
+    border-radius: 16px !important;
+  }
+
+  .hover-popout-header {
+    padding: 10px 14px !important;
+  }
+
+  .hover-popout-author {
+    font-size: 0.88rem !important;
+  }
+
+  .hover-popout-badge {
+    font-size: 0.68rem !important;
+    padding: 2px 7px !important;
+  }
+
+  .hover-popout-media-viewport {
+    max-height: 48vh !important;
+    min-height: 170px !important;
+  }
+
+  .hover-popout-media-viewport img {
+    max-height: 48vh !important;
+  }
+
+  .hover-popout-media-viewport video,
+  .hover-popout-media-viewport iframe {
+    height: clamp(160px, 44vh, 320px) !important;
+  }
+
+  .hover-popout-footer {
+    padding: 10px 14px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+
+  .hover-popout-caption {
+    font-size: 0.82rem !important;
+    line-height: 1.38 !important;
+  }
+
+  .hover-popout-hint {
+    font-size: 0.65rem !important;
+  }
+
+  /* Media Lightbox Modal Mobile Scaling */
+  .media-lightbox-overlay {
+    padding: 10px !important;
+  }
+
+  .media-lightbox-card {
+    width: min(96vw, 480px) !important;
+    max-height: 90vh !important;
+    border-radius: 18px !important;
+  }
+
+  .lightbox-close-btn {
+    top: 10px !important;
+    right: 10px !important;
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 1rem !important;
+  }
+
+  .lightbox-media-viewport {
+    max-height: 50vh !important;
+  }
+
+  .lightbox-media-viewport img {
+    max-height: 50vh !important;
+  }
+
+  .lightbox-media-viewport video,
+  .lightbox-media-viewport iframe {
+    height: clamp(180px, 46vh, 340px) !important;
+  }
+
+  .lightbox-info-pane {
+    padding: 12px 14px !important;
+  }
+
+  .lightbox-author {
+    font-size: 0.92rem !important;
+  }
+
+  .lightbox-caption {
+    font-size: 0.82rem !important;
+  }
+
+  /* Sticky Frames & Polaroid Scaling */
+  .sticky-media-wrap {
+    width: 100% !important;
+    aspect-ratio: 16 / 10 !important;
+    height: auto !important;
+    margin-bottom: 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .sticky-video-embed {
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 12px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .polaroid-img-wrap {
+    width: 100% !important;
+    aspect-ratio: 16 / 10 !important;
+    height: auto !important;
+    border-radius: 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .polaroid-video-wrap {
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+    border-radius: 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Form Layout Mobile Wrap */
+  .form-row-2col {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+}
+
+/* Extra Small Mobile (<= 360px - iPhone SE / Fold Outer Display) */
+@media (max-width: 360px) {
+  .sticky-video-embed {
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  .polaroid-img-wrap {
+    aspect-ratio: 16 / 10 !important;
+    height: auto !important;
+  }
+
+  .polaroid-video-wrap {
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+  }
+
+  .hover-popout-card {
+    width: 96vw !important;
+  }
+
+  .hover-popout-media-viewport {
+    min-height: 140px !important;
+    max-height: 42vh !important;
+  }
+}
+
+/* Tablets (601px to 1024px - iPad Mini / Air / Pro) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .sticky-video-embed {
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+  }
+
+  .hover-popout-card {
+    width: min(88vw, 680px) !important;
+    max-height: 84vh !important;
+  }
+
+  .hover-popout-media-viewport {
+    max-height: 54vh !important;
+  }
+
+  .hover-popout-media-viewport video,
+  .hover-popout-media-viewport iframe {
+    height: 48vh !important;
+    max-height: 440px !important;
+  }
+
+  .media-lightbox-card {
+    width: min(90vw, 720px) !important;
+    max-height: 86vh !important;
+  }
+}
+
+/* Large Screens & Ultra 4K Displays (>= 1920px) */
+@media (min-width: 1920px) {
+  .sticky-video-embed {
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+  }
+
+  .hover-popout-card {
+    max-width: 860px !important;
+  }
+
+  .hover-popout-media-viewport {
+    max-height: 62vh !important;
+  }
+
+  .media-lightbox-card {
+    max-width: 920px !important;
   }
 }
 
