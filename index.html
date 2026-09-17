@@ -5064,7 +5064,7 @@
       // 7. GOOGLE SHEETS CLOUD INTEGRATION & STICKY WISH WALL ENGINE
       const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec';
 
-      // High-Speed Parallel Chunked Video Uploader
+      // High-Speed Direct & Sequential Chunked Video Uploader
       async function uploadVideoChunks({
         url = GOOGLE_SHEET_URL,
         base64Data,
@@ -5085,47 +5085,99 @@
           return { success: false, reason: 'no_url' };
         }
 
-        // High-Speed 3.5 MB chunks (reduces HTTP round trips by 70% for 5x-6x faster uploads)
-        const CHUNK_SIZE = 3.5 * 1024 * 1024;
-        const totalChars = base64Data.length;
-        const totalChunks = Math.max(1, Math.ceil(totalChars / CHUNK_SIZE));
-        const uploadId = 'up_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+        const cleanData = base64Data || '';
+        const totalChars = cleanData.length;
 
         let mimeType = 'video/mp4';
-        if (base64Data.startsWith('data:')) {
-          const semi = base64Data.indexOf(';');
-          if (semi > 5) mimeType = base64Data.substring(5, semi);
+        if (cleanData.startsWith('data:')) {
+          const semi = cleanData.indexOf(';');
+          if (semi > 5) mimeType = cleanData.substring(5, semi);
         } else if (typeof fileName === 'string' && fileName) {
           mimeType = getMimeTypeForVideoFile(fileName);
         }
 
-        let completedChunks = 0;
-        const chunkProgressMap = new Array(totalChunks).fill(0);
+        // High-speed direct upload for files <= 4MB
+        const DIRECT_UPLOAD_LIMIT = 4 * 1024 * 1024;
 
-        function reportOverallProgress(chunkIdx, chunkLoadedBytes) {
-          chunkProgressMap[chunkIdx] = chunkLoadedBytes;
-          const totalTransmittedChars = chunkProgressMap.reduce((acc, curr) => acc + curr, 0);
-          const overallPct = Math.min(99, Math.round((totalTransmittedChars / totalChars) * 100));
+        if (totalChars <= DIRECT_UPLOAD_LIMIT) {
           if (typeof onProgress === 'function') {
-            onProgress(overallPct, Math.min(totalChunks, completedChunks + 1), totalChunks, totalTransmittedChars, totalChars);
+            onProgress(35, 1, 1, Math.round(totalChars * 0.35), totalChars);
+          }
+          
+          try {
+            const payload = {
+              type: 'video',
+              videoUrl: cleanData,
+              dataUrl: cleanData,
+              mediaData: cleanData,
+              mediaUrl: cleanData,
+              mimeType: mimeType,
+              fileName: fileName || ('video_' + Date.now() + '.mp4'),
+              author: author,
+              name: author,
+              caption: caption,
+              message: caption,
+              text: caption,
+              celebrant: celebrant,
+              dedicatedBy: dedicatedBy,
+              color: color,
+              tag: tag,
+              timestamp: new Date().toISOString(),
+              localTime: new Date().toLocaleString()
+            };
+
+            if (typeof onProgress === 'function') {
+              onProgress(70, 1, 1, Math.round(totalChars * 0.7), totalChars);
+            }
+
+            await fetch(targetUrl, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify(payload)
+            });
+
+            if (typeof onProgress === 'function') {
+              onProgress(100, 1, 1, totalChars, totalChars);
+            }
+            if (typeof onSuccess === 'function') {
+              onSuccess();
+            }
+            return { success: true };
+          } catch (err) {
+            console.warn('Direct video upload failed in index:', err);
+            if (typeof onError === 'function') onError(err);
+            return { success: false, error: err };
           }
         }
 
-        async function sendSingleChunk(index) {
-          if (!navigator.onLine) throw new Error('Device is offline');
+        // For larger files: Robust sequential chunked upload (2.5 MB chunks)
+        const CHUNK_SIZE = 2.5 * 1024 * 1024;
+        const totalChunks = Math.max(1, Math.ceil(totalChars / CHUNK_SIZE));
+        const uploadId = 'up_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
 
-          const start = index * CHUNK_SIZE;
+        let completedChars = 0;
+
+        for (let i = 0; i < totalChunks; i++) {
+          if (!navigator.onLine) {
+            const offErr = new Error('Device is offline');
+            if (typeof onError === 'function') onError(offErr);
+            return { success: false, error: offErr };
+          }
+
+          const start = i * CHUNK_SIZE;
           const end = Math.min(totalChars, start + CHUNK_SIZE);
-          const chunkSlice = base64Data.substring(start, end);
+          const chunkSlice = cleanData.substring(start, end);
           const chunkSize = end - start;
 
           const chunkPayload = {
             type: 'video_chunk',
             uploadId: uploadId,
-            chunkIndex: index,
+            chunkIndex: i,
             totalChunks: totalChunks,
             chunkData: chunkSlice,
             mimeType: mimeType,
+            fileName: fileName || ('video_' + uploadId + '.mp4'),
             author: author,
             name: author,
             caption: caption,
@@ -5145,9 +5197,12 @@
           for (let attempt = 1; attempt <= 3; attempt++) {
             try {
               const controller = new AbortController();
-              const timeoutId = setTimeout(() => controller.abort(), 45000);
+              const timeoutId = setTimeout(() => controller.abort(), 60000);
 
-              reportOverallProgress(index, Math.round(chunkSize * 0.3));
+              const currentPct = Math.min(99, Math.round(((completedChars + chunkSize * 0.3) / totalChars) * 100));
+              if (typeof onProgress === 'function') {
+                onProgress(currentPct, i + 1, totalChunks, completedChars, totalChars);
+              }
 
               await fetch(targetUrl, {
                 method: 'POST',
@@ -5159,55 +5214,32 @@
 
               clearTimeout(timeoutId);
               sent = true;
-              completedChunks++;
-              reportOverallProgress(index, chunkSize);
+              completedChars += chunkSize;
+              const endPct = Math.min(99, Math.round((completedChars / totalChars) * 100));
+              if (typeof onProgress === 'function') {
+                onProgress(endPct, i + 1, totalChunks, completedChars, totalChars);
+              }
               break;
-            } catch (fetchErr) {
-              lastErr = fetchErr;
-              await new Promise(r => setTimeout(r, 400 * attempt));
+            } catch (chunkErr) {
+              lastErr = chunkErr;
+              await new Promise(r => setTimeout(r, 600 * attempt));
             }
           }
 
           if (!sent) {
-            throw lastErr || new Error(`Failed to upload chunk ${index + 1} of ${totalChunks}`);
+            const err = lastErr || new Error(`Failed to upload chunk ${i + 1} of ${totalChunks}`);
+            if (typeof onError === 'function') onError(err);
+            return { success: false, error: err };
           }
         }
 
-        try {
-          if (totalChunks === 1) {
-            await sendSingleChunk(0);
-          } else {
-            // Parallel transmission of non-final chunks (concurrency: 2)
-            const nonFinalIndices = [];
-            for (let i = 0; i < totalChunks - 1; i++) {
-              nonFinalIndices.push(i);
-            }
-
-            const CONCURRENCY = 2;
-            for (let i = 0; i < nonFinalIndices.length; i += CONCURRENCY) {
-              const batch = nonFinalIndices.slice(i, i + CONCURRENCY);
-              await Promise.all(batch.map(idx => sendSingleChunk(idx)));
-            }
-
-            // Send the final assembly chunk after all preceding chunks have landed
-            await sendSingleChunk(totalChunks - 1);
-          }
-
-          if (typeof onProgress === 'function') {
-            onProgress(100, totalChunks, totalChunks, totalChars, totalChars);
-          }
-
-          if (typeof onSuccess === 'function') {
-            onSuccess();
-          }
-          return { success: true };
-        } catch (err) {
-          console.warn('High-speed chunked video upload error in index:', err);
-          if (typeof onError === 'function') {
-            onError(err);
-          }
-          return { success: false, error: err };
+        if (typeof onProgress === 'function') {
+          onProgress(100, totalChunks, totalChunks, totalChars, totalChars);
         }
+        if (typeof onSuccess === 'function') {
+          onSuccess();
+        }
+        return { success: true };
       }
       const APP_VERSION = '2.1.0';
       const LOCAL_STORAGE_WISHES_KEY = `eternal_love_sticky_wishes_v${APP_VERSION}`;
@@ -5534,7 +5566,8 @@
           if (videoExpandBtn) {
             videoExpandBtn.addEventListener('click', (e) => {
               e.stopPropagation();
-              openLightbox('video', wish.mediaUrl, wish.name, wish.message);
+              const videoSrc = videoExpandBtn.getAttribute('data-video') || wish.mediaUrl;
+              openLightbox('video', videoSrc, wish.name, wish.message);
             });
           }
 

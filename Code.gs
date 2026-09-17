@@ -22,15 +22,17 @@
  */
 function extractDriveId(url) {
   if (!url) return '';
-  url = url.toString().trim();
-  var m1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  var m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-  var m3 = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  var m4 = url.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+  var str = url.toString().trim();
+  var m1 = str.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  var m2 = str.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  var m3 = str.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  var m4 = str.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+  var m5 = str.match(/googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
   if (m1 && m1[1]) return m1[1];
   if (m2 && m2[1]) return m2[1];
   if (m3 && m3[1]) return m3[1];
   if (m4 && m4[1]) return m4[1];
+  if (m5 && m5[1]) return m5[1];
   return '';
 }
 
@@ -66,7 +68,22 @@ function isVideoUrl(url) {
 }
 
 /**
- * Save Base64 file into Google Drive & return preview URLs
+ * Get or create the main dedicated Google Drive folder with public view permissions
+ */
+function getMainDriveFolder() {
+  var folderName = 'Eternal Love Wishes (Queen Nishika)';
+  var folders = DriveApp.getFoldersByName(folderName);
+  var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(folderName);
+  try {
+    folder.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  } catch (fErr) {
+    Logger.log('Folder permission set note: ' + fErr.toString());
+  }
+  return folder;
+}
+
+/**
+ * Save Base64 file into Google Drive & return preview and direct URLs
  */
 function saveBase64ToDrive(base64Uri, fileNamePrefix, isVideoFile) {
   try {
@@ -74,19 +91,17 @@ function saveBase64ToDrive(base64Uri, fileNamePrefix, isVideoFile) {
 
     // If it is already a web URL, don't attempt Base64 decoding
     if (base64Uri.indexOf('http://') === 0 || base64Uri.indexOf('https://') === 0) {
+      var dId = extractDriveId(base64Uri);
       return {
         fileUrl: base64Uri,
-        mediaUrl: base64Uri,
-        driveId: extractDriveId(base64Uri)
+        mediaUrl: dId ? (isVideoFile ? ('https://drive.google.com/file/d/' + dId + '/preview') : ('https://drive.google.com/thumbnail?id=' + dId + '&sz=w1000')) : base64Uri,
+        viewUrl: dId ? ('https://drive.google.com/file/d/' + dId + '/view') : base64Uri,
+        directUrl: dId ? ('https://drive.google.com/uc?export=download&id=' + dId) : base64Uri,
+        driveId: dId
       };
     }
 
-    var folderName = 'Eternal Love Wishes (Queen Nishika)';
-    var folders = DriveApp.getFoldersByName(folderName);
-    var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(folderName);
-    try {
-      folder.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-    } catch (fErr) {}
+    var folder = getMainDriveFolder();
 
     var commaIdx = base64Uri.indexOf(',');
     var headerPart = commaIdx > 0 ? base64Uri.substring(0, commaIdx) : '';
@@ -134,7 +149,7 @@ function saveBase64ToDrive(base64Uri, fileNamePrefix, isVideoFile) {
     try {
       file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
     } catch (shareErr) {
-      // Ignore domain permission restriction errors so file creation still succeeds
+      Logger.log('Share setting warning: ' + shareErr.toString());
     }
 
     var fileId = file.getId();
@@ -142,12 +157,16 @@ function saveBase64ToDrive(base64Uri, fileNamePrefix, isVideoFile) {
       return {
         fileUrl: file.getUrl(),
         mediaUrl: 'https://drive.google.com/file/d/' + fileId + '/preview',
+        viewUrl: 'https://drive.google.com/file/d/' + fileId + '/view',
+        directUrl: 'https://drive.google.com/uc?export=download&id=' + fileId,
         driveId: fileId
       };
     } else {
       return {
         fileUrl: file.getUrl(),
         mediaUrl: 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w1000',
+        viewUrl: file.getUrl(),
+        directUrl: 'https://drive.google.com/uc?export=download&id=' + fileId,
         driveId: fileId
       };
     }
@@ -181,7 +200,7 @@ function doGet(e) {
         if (author || message) {
           var mediaType = row[7] ? row[7].toString().trim().toLowerCase() : 'none';
           var mediaUrl = row[8] ? row[8].toString().trim() : '';
-          var likes = row[9] ? parseInt(row[9], 10) || 0 : Math.floor(Math.random() * 8) + 3;
+          var likes = row[9] ? parseInt(row[9], 10) || 0 : Math.floor(Math.random() * 8) + 5;
 
           // Auto-detect media type & format URLs
           if (mediaUrl) {
@@ -305,7 +324,8 @@ function doGet(e) {
             mediaType: 'video',
             driveUrl: vLink,
             mediaUrl: previewUrl,
-            videoUrl: previewUrl
+            videoUrl: previewUrl,
+            driveId: vId
           });
         }
       }
@@ -370,7 +390,7 @@ function doPost(e) {
     if (type === 'wish') {
       var sheet = ss.getSheetByName('Wishes') || ss.insertSheet('Wishes');
       
-      // Auto-initialize or ensure 10-column header
+      // Ensure 10-column header
       if (sheet.getLastRow() === 0 || sheet.getLastColumn() < 10) {
         var headers = [
           'Timestamp', 'Local Time', 'Celebrant', 'Dedicated By',
@@ -406,8 +426,6 @@ function doPost(e) {
           mediaUrl = driveResult.mediaUrl;
         } else if (driveResult && driveResult.fileUrl) {
           mediaUrl = driveResult.fileUrl;
-        } else {
-          mediaUrl = isVideo ? '[Video Attached: ' + author + ']' : '[Photo Attached: ' + author + ']';
         }
       } else if (mediaUrl) {
         // Direct link normalizer (Google Drive / YouTube / Vimeo / etc.)
@@ -578,7 +596,7 @@ function doPost(e) {
     }
 
     // ------------------------------------------------------------------------
-    // CASE C: VIDEO REEL UPLOAD (Saved to Drive + Logged in Videos & Wishes Tab)
+    // CASE C: VIDEO REEL DIRECT UPLOAD (Saved to Drive + Logged in Videos & Wishes Tab)
     // ------------------------------------------------------------------------
     else if (type === 'video') {
       var sheet = ss.getSheetByName('Videos') || ss.insertSheet('Videos');
@@ -663,10 +681,10 @@ function doPost(e) {
     }
 
     // ------------------------------------------------------------------------
-    // CASE D: CHUNKED VIDEO UPLOAD (Assembled in Drive & Logged in Sheets)
+    // CASE D: CHUNKED VIDEO UPLOAD (Deterministic Assembly in Drive & Logged in Sheets)
     // ------------------------------------------------------------------------
     else if (type === 'video_chunk') {
-      var uploadId = (data.uploadId || ('upload_' + new Date().getTime())).toString().replace(/[^a-zA-Z0-9_-]/g, '_');
+      var uploadId = (data.uploadId || ('up_' + new Date().getTime())).toString().replace(/[^a-zA-Z0-9_-]/g, '_');
       var chunkIndex = parseInt(data.chunkIndex, 10) || 0;
       var totalChunks = parseInt(data.totalChunks, 10) || 1;
       var chunkData = data.chunkData || '';
@@ -674,14 +692,9 @@ function doPost(e) {
       var caption = data.caption || data.message || data.title || 'Royal video dedication for Queen Nishika 🎬';
       var mimeType = data.mimeType || 'video/mp4';
 
-      var mainFolderName = 'Eternal Love Wishes (Queen Nishika)';
-      var mainFolders = DriveApp.getFoldersByName(mainFolderName);
-      var mainFolder = mainFolders.hasNext() ? mainFolders.next() : DriveApp.createFolder(mainFolderName);
-      try {
-        mainFolder.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-      } catch (fErr) {}
+      var mainFolder = getMainDriveFolder();
 
-      var tempFolderName = '.temp_chunks';
+      var tempFolderName = '.temp_video_chunks';
       var tempFolders = mainFolder.getFoldersByName(tempFolderName);
       var tempFolder = tempFolders.hasNext() ? tempFolders.next() : mainFolder.createFolder(tempFolderName);
 
@@ -695,11 +708,16 @@ function doPost(e) {
       // If this is the final chunk, assemble and finalize!
       if (chunkIndex >= totalChunks - 1) {
         var fullBase64 = '';
+        var allPartsFound = true;
+
         for (var c = 0; c < totalChunks; c++) {
           var partName = 'part_' + ('00000' + c).slice(-5) + '.txt';
           var partFiles = sessionFolder.getFilesByName(partName);
           if (partFiles.hasNext()) {
             fullBase64 += partFiles.next().getBlob().getDataAsString();
+          } else {
+            allPartsFound = false;
+            Logger.log('Missing chunk part: ' + partName);
           }
         }
 
@@ -743,6 +761,7 @@ function doPost(e) {
 
         var fileId = finalFile.getId();
         var streamUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
+        var directUrl = 'https://drive.google.com/uc?export=download&id=' + fileId;
 
         // Log in Videos sheet
         var videoSheet = ss.getSheetByName('Videos') || ss.insertSheet('Videos');
@@ -797,7 +816,9 @@ function doPost(e) {
         return ContentService.createTextOutput(JSON.stringify({
           status: 'success',
           type: 'video_assembled',
+          fileId: fileId,
           mediaUrl: streamUrl,
+          directUrl: directUrl,
           fileUrl: finalFile.getUrl(),
           message: 'Chunked video assembled, saved to Google Drive, and logged in Google Sheets!'
         })).setMimeType(ContentService.MimeType.JSON);
