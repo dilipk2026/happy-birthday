@@ -29,7 +29,8 @@
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
   --font-script: 'Dancing Script', cursive;
-  --font-handwriting: 'Caveat', cursive;
+  --font-handwriting: 'Comic Sans MS', 'Comic Sans', 'Comic Neue', cursive, sans-serif;
+  --font-comic: 'Comic Sans MS', 'Comic Sans', 'Comic Neue', cursive, sans-serif;
 
   --radius-sm: 10px;
   --radius-md: 18px;
@@ -259,6 +260,55 @@ h1, h2, h3, h4 {
 .highlight { color: var(--accent-gold); }
 .hidden { display: none !important; }
 
+/* ==========================================================================
+   COMIC SANS TYPOGRAPHY ENFORCEMENT FOR ALL WISHES & LETTERS
+   ========================================================================== */
+.sticky-note,
+.sticky-note-card,
+.sticky-note-text,
+.sticky-message,
+.wish-sticky,
+.wish-card,
+.wish-message,
+.wish-text,
+.wish-content,
+.guest-wish-input,
+#guestWish,
+#wishTextInput,
+.wish-library-text,
+.wish-library-item,
+.wish-preview-text,
+.wish-modal-text,
+.capsule-wish,
+.capsule-wish-card,
+#capsuleWish,
+#secretWishInput,
+.letter-sheet,
+.letter-body,
+.letter-salutation,
+.typewriter-container,
+#typewriterText,
+.letter-signature,
+.signature-name,
+.open-when-card,
+.open-when-body,
+.open-when-desc,
+.open-when-preview,
+.modal-letter-content,
+.letter-paper-inner,
+.letter-parchment,
+.letter-paper,
+.vintage-letter,
+.letter-content,
+.letter-text,
+#letterModal .modal-body,
+#openWhenModal .modal-body,
+.keepsake-message,
+.keepsake-body,
+.keepsake-quote {
+  font-family: 'Comic Sans MS', 'Comic Sans', 'Comic Neue', cursive, sans-serif !important;
+}
+
 .pulse-heart {
   display: inline-block;
   color: var(--secondary);
@@ -272,12 +322,20 @@ h1, h2, h3, h4 {
   45% { transform: scale(1.18); }
 }
 
-/* Scroll Reveal Animations */
+/* Scroll Reveal Animations & GPU Compositing */
+.celebration-section {
+  position: relative;
+  width: 100%;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 750px;
+}
+
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(35px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .reveal-on-scroll.is-revealed {
@@ -316,6 +374,7 @@ h1, h2, h3, h4 {
   font-weight: 800;
   background: linear-gradient(135deg, #ffffff 0%, var(--accent-rose) 60%, var(--primary) 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -889,6 +948,7 @@ h1, h2, h3, h4 {
 .name-gradient {
   background: linear-gradient(135deg, #fde047 0%, #f43f5e 40%, #c084fc 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
   font-family: var(--font-heading);
@@ -11264,6 +11324,7 @@ img, svg, canvas, video {
   margin: 8px 0;
   background: linear-gradient(135deg, #fff 30%, #ffd700 70%, #ff80ab 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -11927,6 +11988,7 @@ img, svg, canvas, video {
       margin-bottom: 14px;
       background: linear-gradient(135deg, #ffffff 30%, #ffc6e5 70%, #ffd700 100%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
@@ -12031,6 +12093,7 @@ img, svg, canvas, video {
       margin-bottom: 6px;
       background: linear-gradient(180deg, #ffffff 40%, var(--accent-gold) 100%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
     }

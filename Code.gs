@@ -4,10 +4,9 @@
  * Handcrafted for Queen Nishika's Birthday & Dedicated with Love by Dilip.
  * 
  * Functions:
- *   1. 💌 Sticky Wish Wall & Blessings   -> "Wishes" Sheet Tab (Read & Write with Photos/Videos)
+ *   1. 💌 Sticky Wish Wall & Blessings   -> "Wishes" Sheet Tab (Text & Photo Wishes)
  *   2. 📸 Uploaded Polaroid Photos       -> Google Drive Folder + "Photos" Tab (Read & Write)
- *   3. 🎬 Uploaded Videos & Reels        -> Google Drive Folder + "Videos" Tab (Read & Write)
- *   4. 🔮 Starry Time Capsule Wishes     -> "Secret Wishes" Sheet Tab (Read & Write)
+ *   3. 🔮 Starry Time Capsule Wishes     -> "Secret Wishes" Sheet Tab (Read & Write)
  * 
  * 100% Free Forever • Zero Third-Party Servers • Real-Time Cloud Sync
  * ============================================================================
@@ -37,38 +36,7 @@ function extractDriveId(url) {
 }
 
 /**
- * Detect if a URL or data string represents a video
- */
-function isVideoUrl(url) {
-  if (!url) return false;
-  var str = url.toString().toLowerCase();
-  return (
-    str.indexOf('youtube.com') !== -1 ||
-    str.indexOf('youtu.be') !== -1 ||
-    str.indexOf('vimeo.com') !== -1 ||
-    str.indexOf('/preview') !== -1 ||
-    str.indexOf('.mp4') !== -1 ||
-    str.indexOf('.webm') !== -1 ||
-    str.indexOf('.mov') !== -1 ||
-    str.indexOf('.qt') !== -1 ||
-    str.indexOf('.m4v') !== -1 ||
-    str.indexOf('.ogg') !== -1 ||
-    str.indexOf('.ogv') !== -1 ||
-    str.indexOf('.mkv') !== -1 ||
-    str.indexOf('.avi') !== -1 ||
-    str.indexOf('.wmv') !== -1 ||
-    str.indexOf('.3gp') !== -1 ||
-    str.indexOf('.3g2') !== -1 ||
-    str.indexOf('.flv') !== -1 ||
-    str.indexOf('.ts') !== -1 ||
-    str.indexOf('.mts') !== -1 ||
-    str.indexOf('.m2ts') !== -1 ||
-    str.indexOf('data:video') !== -1
-  );
-}
-
-/**
- * Get or create the main dedicated Google Drive folder with public view permissions
+ * Get or create the dedicated Google Drive folder with public view permissions
  */
 function getMainDriveFolder() {
   var folderName = 'Eternal Love Wishes (Queen Nishika)';
@@ -83,18 +51,18 @@ function getMainDriveFolder() {
 }
 
 /**
- * Save Base64 file into Google Drive & return preview and direct URLs
+ * Save Base64 Photo into Google Drive & return thumbnail and direct URLs
  */
-function saveBase64ToDrive(base64Uri, fileNamePrefix, isVideoFile) {
+function saveBase64ToDrive(base64Uri, fileNamePrefix) {
   try {
     if (!base64Uri || typeof base64Uri !== 'string') return null;
 
-    // If it is already a web URL, don't attempt Base64 decoding
+    // If it is already a web URL, return normalized Drive URL
     if (base64Uri.indexOf('http://') === 0 || base64Uri.indexOf('https://') === 0) {
       var dId = extractDriveId(base64Uri);
       return {
         fileUrl: base64Uri,
-        mediaUrl: dId ? (isVideoFile ? ('https://drive.google.com/file/d/' + dId + '/preview') : ('https://drive.google.com/thumbnail?id=' + dId + '&sz=w1000')) : base64Uri,
+        mediaUrl: dId ? ('https://drive.google.com/thumbnail?id=' + dId + '&sz=w1000') : base64Uri,
         viewUrl: dId ? ('https://drive.google.com/file/d/' + dId + '/view') : base64Uri,
         directUrl: dId ? ('https://drive.google.com/uc?export=download&id=' + dId) : base64Uri,
         driveId: dId
@@ -110,36 +78,20 @@ function saveBase64ToDrive(base64Uri, fileNamePrefix, isVideoFile) {
       rawBase64 = rawBase64.replace(/[\r\n\s]+/g, '');
     }
 
-    var mimeType = isVideoFile ? 'video/mp4' : 'image/jpeg';
+    var mimeType = 'image/jpeg';
     if (headerPart.indexOf('data:') === 0 && headerPart.indexOf(';') > 5) {
       mimeType = headerPart.substring(5, headerPart.indexOf(';'));
     }
 
-    var dateFormatted = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || 'GMT+0530', 'yyyy-MM-dd_HH-mm-ss');
-    var ext = '.mp4';
-    if (isVideoFile) {
-      var lowMime = (mimeType || '').toLowerCase();
-      if (lowMime.indexOf('webm') !== -1) ext = '.webm';
-      else if (lowMime.indexOf('ogg') !== -1 || lowMime.indexOf('ogv') !== -1) ext = '.ogv';
-      else if (lowMime.indexOf('quicktime') !== -1 || lowMime.indexOf('mov') !== -1 || lowMime.indexOf('qt') !== -1) ext = '.mov';
-      else if (lowMime.indexOf('x-matroska') !== -1 || lowMime.indexOf('mkv') !== -1 || lowMime.indexOf('matroska') !== -1) ext = '.mkv';
-      else if (lowMime.indexOf('msvideo') !== -1 || lowMime.indexOf('avi') !== -1) ext = '.avi';
-      else if (lowMime.indexOf('ms-wmv') !== -1 || lowMime.indexOf('wmv') !== -1 || lowMime.indexOf('asf') !== -1) ext = '.wmv';
-      else if (lowMime.indexOf('3gpp2') !== -1 || lowMime.indexOf('3g2') !== -1) ext = '.3g2';
-      else if (lowMime.indexOf('3gpp') !== -1 || lowMime.indexOf('3gp') !== -1) ext = '.3gp';
-      else if (lowMime.indexOf('m4v') !== -1) ext = '.m4v';
-      else if (lowMime.indexOf('flv') !== -1) ext = '.flv';
-      else if (lowMime.indexOf('mp2t') !== -1 || lowMime.indexOf('ts') !== -1) ext = '.ts';
-      else ext = '.mp4';
-    } else {
-      if (mimeType.indexOf('png') !== -1) ext = '.png';
-      else if (mimeType.indexOf('webp') !== -1) ext = '.webp';
-      else if (mimeType.indexOf('gif') !== -1) ext = '.gif';
-      else if (mimeType.indexOf('svg') !== -1) ext = '.svg';
-      else ext = '.jpg';
-    }
+    var ext = '.jpg';
+    if (mimeType.indexOf('png') !== -1) ext = '.png';
+    else if (mimeType.indexOf('webp') !== -1) ext = '.webp';
+    else if (mimeType.indexOf('gif') !== -1) ext = '.gif';
+    else if (mimeType.indexOf('svg') !== -1) ext = '.svg';
+    else ext = '.jpg';
 
-    var safePrefix = (fileNamePrefix || (isVideoFile ? 'Video' : 'Photo')).replace(/[^a-zA-Z0-9_-]/g, '_');
+    var dateFormatted = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || 'GMT+0530', 'yyyy-MM-dd_HH-mm-ss');
+    var safePrefix = (fileNamePrefix || 'Photo').replace(/[^a-zA-Z0-9_-]/g, '_');
     var fileName = safePrefix + '_' + dateFormatted + ext;
 
     var decodedBytes = Utilities.base64Decode(rawBase64);
@@ -153,36 +105,25 @@ function saveBase64ToDrive(base64Uri, fileNamePrefix, isVideoFile) {
     }
 
     var fileId = file.getId();
-    if (isVideoFile) {
-      return {
-        fileUrl: file.getUrl(),
-        mediaUrl: 'https://drive.google.com/file/d/' + fileId + '/preview',
-        viewUrl: 'https://drive.google.com/file/d/' + fileId + '/view',
-        directUrl: 'https://drive.google.com/uc?export=download&id=' + fileId,
-        driveId: fileId
-      };
-    } else {
-      return {
-        fileUrl: file.getUrl(),
-        mediaUrl: 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w1000',
-        viewUrl: file.getUrl(),
-        directUrl: 'https://drive.google.com/uc?export=download&id=' + fileId,
-        driveId: fileId
-      };
-    }
+    return {
+      fileUrl: file.getUrl(),
+      mediaUrl: 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w1000',
+      viewUrl: file.getUrl(),
+      directUrl: 'https://drive.google.com/uc?export=download&id=' + fileId,
+      driveId: fileId
+    };
   } catch (driveErr) {
-    Logger.log('Drive upload error: ' + driveErr.toString());
+    Logger.log('Drive photo upload error: ' + driveErr.toString());
     return null;
   }
 }
 
 // ============================================================================
-// 1. GET HANDLER (Fetch Live Wishes, Photos & Videos for Website Display)
+// 1. GET HANDLER (Fetch Live Wishes & Polaroid Photos for Website Display)
 // ============================================================================
 function doGet(e) {
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var action = (e && e.parameter && e.parameter.action) || 'getAll';
 
     // A. FETCH WISHES / STICKY NOTES
     var wishes = [];
@@ -202,23 +143,18 @@ function doGet(e) {
           var mediaUrl = row[8] ? row[8].toString().trim() : '';
           var likes = row[9] ? parseInt(row[9], 10) || 0 : Math.floor(Math.random() * 8) + 5;
 
-          // Auto-detect media type & format URLs
+          // Normalize photo media URLs
           if (mediaUrl) {
             if (mediaUrl.indexOf('blob:') === 0) {
               mediaUrl = '';
               mediaType = 'none';
             } else {
               var driveId = extractDriveId(mediaUrl);
-              if (mediaType === 'video' || isVideoUrl(mediaUrl)) {
-                mediaType = 'video';
-                if (driveId) {
-                  mediaUrl = 'https://drive.google.com/file/d/' + driveId + '/preview';
-                }
-              } else if (mediaType === 'photo' || mediaUrl.match(/(\.jpg|\.jpeg|\.png|\.gif|\.webp|data:image|drive\.google)/i)) {
+              if (driveId) {
                 mediaType = 'photo';
-                if (driveId) {
-                  mediaUrl = 'https://drive.google.com/thumbnail?id=' + driveId + '&sz=w1000';
-                }
+                mediaUrl = 'https://drive.google.com/thumbnail?id=' + driveId + '&sz=w1000';
+              } else if (mediaUrl.match(/(\.jpg|\.jpeg|\.png|\.gif|\.webp|data:image)/i)) {
+                mediaType = 'photo';
               }
             }
           }
@@ -235,8 +171,8 @@ function doGet(e) {
             text: message,
             color: (row[6] && row[6].toString().toLowerCase()) || 'pink',
             styleClass: row[6] || 'sticky-pink',
-            mediaType: mediaType,
-            mediaUrl: mediaUrl,
+            mediaType: mediaType === 'photo' ? 'photo' : 'none',
+            mediaUrl: mediaType === 'photo' ? mediaUrl : '',
             likes: likes
           });
         }
@@ -248,26 +184,24 @@ function doGet(e) {
     var photoSheet = ss.getSheetByName('Photos');
     if (photoSheet && photoSheet.getLastRow() > 1) {
       var photoValues = photoSheet.getRange(2, 1, photoSheet.getLastRow() - 1, Math.max(photoSheet.getLastColumn(), 8)).getValues();
+
       for (var j = photoValues.length - 1; j >= 0; j--) { // Newest first
         var pRow = photoValues[j];
         var driveLink = pRow[6] ? pRow[6].toString().trim() : '';
         var directImgUrl = '';
         var fId = extractDriveId(driveLink);
 
-        var isVideo = isVideoUrl(driveLink);
         if (fId) {
-          if (isVideo) {
-            directImgUrl = 'https://drive.google.com/file/d/' + fId + '/preview';
-          } else {
-            directImgUrl = 'https://drive.google.com/thumbnail?id=' + fId + '&sz=w1000';
-          }
+          directImgUrl = 'https://drive.google.com/thumbnail?id=' + fId + '&sz=w1000';
+        } else if (driveLink) {
+          directImgUrl = driveLink;
         }
 
         var caption = pRow[4] ? pRow[4].toString().trim() : 'Our unforgettable memory';
-        var tag = pRow[5] ? pRow[5].toString().trim() : (isVideo ? 'Video Reel 🎬' : 'Real Moment 📸');
+        var tag = pRow[5] ? pRow[5].toString().trim() : 'Real Moment 📸';
         var dedicatedBy = pRow[3] ? pRow[3].toString().trim() : 'Dilip';
 
-        if (directImgUrl || driveLink || caption) {
+        if (directImgUrl || caption) {
           photos.push({
             id: 'gs_photo_' + (j + 2),
             timestamp: pRow[0],
@@ -280,52 +214,10 @@ function doGet(e) {
             title: caption,
             message: caption,
             tag: tag,
-            mediaType: isVideo ? 'video' : 'photo',
+            mediaType: 'photo',
             driveUrl: driveLink,
             imgUrl: directImgUrl || driveLink,
             mediaUrl: directImgUrl || driveLink
-          });
-        }
-      }
-    }
-
-    // C. FETCH VIDEOS
-    var videos = [];
-    var videoSheet = ss.getSheetByName('Videos');
-    if (videoSheet && videoSheet.getLastRow() > 1) {
-      var videoValues = videoSheet.getRange(2, 1, videoSheet.getLastRow() - 1, Math.max(videoSheet.getLastColumn(), 7)).getValues();
-      for (var k = videoValues.length - 1; k >= 0; k--) {
-        var vRow = videoValues[k];
-        var vLink = vRow[6] ? vRow[6].toString().trim() : '';
-        var vId = extractDriveId(vLink);
-        var previewUrl = vLink;
-
-        if (vId) {
-          previewUrl = 'https://drive.google.com/file/d/' + vId + '/preview';
-        }
-
-        var vCaption = vRow[4] ? vRow[4].toString().trim() : 'Royal video dedication for Queen Nishika 🎬';
-        var vTag = vRow[5] ? vRow[5].toString().trim() : 'Video Reel 🎬';
-        var vSender = vRow[3] ? vRow[3].toString().trim() : 'Dilip';
-
-        if (previewUrl || vCaption) {
-          videos.push({
-            id: 'gs_video_' + (k + 2),
-            timestamp: vRow[0],
-            localTime: vRow[1] || 'Recently',
-            celebrant: vRow[2] || 'Nishika',
-            dedicatedBy: vSender,
-            author: vSender,
-            name: vSender,
-            caption: vCaption,
-            title: vCaption,
-            message: vCaption,
-            tag: vTag,
-            mediaType: 'video',
-            driveUrl: vLink,
-            mediaUrl: previewUrl,
-            videoUrl: previewUrl,
-            driveId: vId
           });
         }
       }
@@ -336,10 +228,8 @@ function doGet(e) {
       title: 'Eternal Love Cloud Hub 👑💖',
       countWishes: wishes.length,
       countPhotos: photos.length,
-      countVideos: videos.length,
       wishes: wishes,
       photos: photos,
-      videos: videos,
       timestamp: new Date().toISOString()
     };
 
@@ -369,7 +259,7 @@ function doGet(e) {
 }
 
 // ============================================================================
-// 2. POST HANDLER (Webhook Data Receiver: Wishes, Photos, Videos, Capsule)
+// 2. POST HANDLER (Webhook Data Receiver: Wishes, Photos, Capsule)
 // ============================================================================
 function doPost(e) {
   try {
@@ -385,7 +275,7 @@ function doPost(e) {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
 
     // ------------------------------------------------------------------------
-    // CASE A: STICKY WISH NOTE SUBMISSION (With optional Photo or Video)
+    // CASE A: STICKY WISH NOTE SUBMISSION (Pure Text or with Photo Attachment)
     // ------------------------------------------------------------------------
     if (type === 'wish') {
       var sheet = ss.getSheetByName('Wishes') || ss.insertSheet('Wishes');
@@ -411,34 +301,29 @@ function doPost(e) {
       var message = data.message || data.text || data.caption || '';
       var colorStyle = data.color || data.styleClass || 'pink';
       var mediaType = (data.mediaType || 'none').toString().trim().toLowerCase();
-      var mediaUrl = data.mediaUrl || data.mediaLink || data.mediaData || data.dataUrl || data.videoUrl || '';
+      var mediaUrl = data.mediaUrl || data.mediaLink || data.mediaData || data.dataUrl || '';
 
-      var isVideo = (mediaType === 'video') || (mediaUrl && (mediaUrl.indexOf('data:video') === 0 || isVideoUrl(mediaUrl)));
-      var isPhoto = !isVideo && ((mediaType === 'photo') || (mediaUrl && (mediaUrl.indexOf('data:image') === 0 || mediaUrl.match(/(\.jpg|\.jpeg|\.png|\.gif|\.webp)/i))));
+      var isPhoto = (mediaType === 'photo') || (mediaUrl && (mediaUrl.indexOf('data:image') === 0 || mediaUrl.match(/(\.jpg|\.jpeg|\.png|\.gif|\.webp)/i)));
 
-      if (isVideo) mediaType = 'video';
-      else if (isPhoto) mediaType = 'photo';
-
-      // If Base64 image or video is uploaded, store in Google Drive
-      if (mediaUrl && (mediaUrl.indexOf('data:image') === 0 || mediaUrl.indexOf('data:video') === 0)) {
-        var driveResult = saveBase64ToDrive(mediaUrl, (isVideo ? 'Wish_Video_' : 'Wish_Photo_') + author, isVideo);
-        if (driveResult && driveResult.mediaUrl) {
-          mediaUrl = driveResult.mediaUrl;
-        } else if (driveResult && driveResult.fileUrl) {
-          mediaUrl = driveResult.fileUrl;
-        }
-      } else if (mediaUrl) {
-        // Direct link normalizer (Google Drive / YouTube / Vimeo / etc.)
-        if (mediaUrl.indexOf('drive.google.com') !== -1 || mediaUrl.indexOf('docs.google.com') !== -1 || mediaUrl.indexOf('googleusercontent.com') !== -1) {
+      if (isPhoto) {
+        mediaType = 'photo';
+        // If Base64 image is uploaded, store in Google Drive
+        if (mediaUrl.indexOf('data:image') === 0) {
+          var driveResult = saveBase64ToDrive(mediaUrl, 'Wish_Photo_' + author);
+          if (driveResult && driveResult.mediaUrl) {
+            mediaUrl = driveResult.mediaUrl;
+          } else if (driveResult && driveResult.fileUrl) {
+            mediaUrl = driveResult.fileUrl;
+          }
+        } else if (mediaUrl.indexOf('drive.google.com') !== -1 || mediaUrl.indexOf('docs.google.com') !== -1 || mediaUrl.indexOf('googleusercontent.com') !== -1) {
           var dId = extractDriveId(mediaUrl);
           if (dId) {
-            if (mediaType === 'video') {
-              mediaUrl = 'https://drive.google.com/file/d/' + dId + '/preview';
-            } else if (mediaType === 'photo') {
-              mediaUrl = 'https://drive.google.com/thumbnail?id=' + dId + '&sz=w1000';
-            }
+            mediaUrl = 'https://drive.google.com/thumbnail?id=' + dId + '&sz=w1000';
           }
         }
+      } else {
+        mediaType = 'none';
+        mediaUrl = '';
       }
 
       sheet.appendRow([
@@ -454,25 +339,8 @@ function doPost(e) {
         1
       ]);
 
-      // If video attached, cross-log to Videos tab
-      if (mediaType === 'video') {
-        var videoSheet = ss.getSheetByName('Videos') || ss.insertSheet('Videos');
-        if (videoSheet.getLastRow() === 0) {
-          videoSheet.appendRow(['Timestamp', 'Local Time', 'Celebrant', 'Dedicated By', 'Video Caption', 'Moment Tag', 'Video Link / Stream URL']);
-          var vHeader = videoSheet.getRange(1, 1, 1, 7);
-          vHeader.setFontWeight('bold').setFontFamily('Arial').setFontColor('#831843').setBackground('#fce7f3').setHorizontalAlignment('center');
-          videoSheet.setFrozenRows(1);
-        }
-        videoSheet.appendRow([
-          new Date(),
-          data.localTime || new Date().toLocaleString(),
-          data.celebrant || 'Nishika',
-          author,
-          message || 'Royal video dedication for Queen Nishika 🎬',
-          data.tag || 'Video Reel 🎬',
-          mediaUrl || 'Uploaded Video'
-        ]);
-      } else if (mediaType === 'photo' && mediaUrl) {
+      // If photo attached, also log to Photos tab
+      if (mediaType === 'photo' && mediaUrl) {
         var photoSheet = ss.getSheetByName('Photos') || ss.insertSheet('Photos');
         if (photoSheet.getLastRow() === 0) {
           photoSheet.appendRow(['Timestamp', 'Local Time', 'Celebrant', 'Dedicated By', 'Photo Caption', 'Moment Tag', 'Google Drive Link', 'Image Preview']);
@@ -497,12 +365,12 @@ function doPost(e) {
         type: 'wish',
         mediaUrl: mediaUrl,
         mediaType: mediaType,
-        message: 'Wish note saved to Google Sheet & Google Drive successfully!'
+        message: 'Wish note saved to Google Sheet successfully!'
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
     // ------------------------------------------------------------------------
-    // CASE B: POLAROID PHOTO UPLOAD (Saved to Drive + Logged in Sheet)
+    // CASE B: POLAROID PHOTO UPLOAD (Saved to Drive + Logged in Photos & Wishes)
     // ------------------------------------------------------------------------
     else if (type === 'photo') {
       var sheet = ss.getSheetByName('Photos') || ss.insertSheet('Photos');
@@ -526,7 +394,7 @@ function doPost(e) {
       var caption = data.caption || data.message || data.title || 'Our unforgettable memory';
 
       if (dataUrl && dataUrl.indexOf('data:image') === 0) {
-        var driveResult = saveBase64ToDrive(dataUrl, 'Photo_' + sender, false);
+        var driveResult = saveBase64ToDrive(dataUrl, 'Photo_' + sender);
         if (driveResult) {
           fileUrl = driveResult.fileUrl;
           directImgUrl = driveResult.mediaUrl;
@@ -557,7 +425,7 @@ function doPost(e) {
       var lastRow = sheet.getLastRow();
       try { sheet.setRowHeight(lastRow, 90); } catch(rErr) {}
 
-      // Also log into Wishes tab for live Sticky Wall visibility
+      // Mirror to Wishes tab for live Sticky Wall visibility
       var wishSheet = ss.getSheetByName('Wishes') || ss.insertSheet('Wishes');
       if (wishSheet.getLastRow() === 0 || wishSheet.getLastColumn() < 10) {
         var headers = [
@@ -596,244 +464,7 @@ function doPost(e) {
     }
 
     // ------------------------------------------------------------------------
-    // CASE C: VIDEO REEL DIRECT UPLOAD (Saved to Drive + Logged in Videos & Wishes Tab)
-    // ------------------------------------------------------------------------
-    else if (type === 'video') {
-      var sheet = ss.getSheetByName('Videos') || ss.insertSheet('Videos');
-
-      if (sheet.getLastRow() === 0) {
-        sheet.appendRow(['Timestamp', 'Local Time', 'Celebrant', 'Dedicated By', 'Video Caption', 'Moment Tag', 'Video Link / Stream URL']);
-        var header = sheet.getRange(1, 1, 1, 7);
-        header.setFontWeight('bold')
-              .setFontFamily('Arial')
-              .setFontColor('#831843')
-              .setBackground('#fce7f3')
-              .setHorizontalAlignment('center');
-        sheet.setFrozenRows(1);
-      }
-
-      var videoLink = data.videoUrl || data.mediaUrl || data.mediaData || data.dataUrl || data.mediaLink || '';
-      var sender = data.author || data.name || data.dedicatedBy || 'Dilip';
-      var caption = data.caption || data.message || data.title || 'Royal video dedication for Queen Nishika 🎬';
-
-      if (videoLink && videoLink.indexOf('data:video') === 0) {
-        var driveResult = saveBase64ToDrive(videoLink, 'Video_' + sender, true);
-        if (driveResult && driveResult.mediaUrl) {
-          videoLink = driveResult.mediaUrl;
-        } else if (driveResult && driveResult.fileUrl) {
-          videoLink = driveResult.fileUrl;
-        } else {
-          videoLink = '[Uploaded Video: ' + sender + ']';
-        }
-      } else if (videoLink) {
-        if (videoLink.indexOf('drive.google.com') !== -1 || videoLink.indexOf('docs.google.com') !== -1 || videoLink.indexOf('googleusercontent.com') !== -1) {
-          var dId = extractDriveId(videoLink);
-          if (dId) {
-            videoLink = 'https://drive.google.com/file/d/' + dId + '/preview';
-          }
-        }
-      }
-
-      sheet.appendRow([
-        new Date(),
-        data.localTime || new Date().toLocaleString(),
-        data.celebrant || 'Nishika',
-        sender,
-        caption,
-        data.tag || 'Video Reel 🎬',
-        videoLink
-      ]);
-
-      // Also log into Wishes tab for live Sticky Wall visibility
-      var wishSheet = ss.getSheetByName('Wishes') || ss.insertSheet('Wishes');
-      if (wishSheet.getLastRow() === 0 || wishSheet.getLastColumn() < 10) {
-        var headers = [
-          'Timestamp', 'Local Time', 'Celebrant', 'Dedicated By',
-          'Author / Sender', 'Heartfelt Message', 'Sticky Note Style',
-          'Media Type', 'Media URL', 'Likes Count'
-        ];
-        wishSheet.getRange(1, 1, 1, 10).setValues([headers]);
-        var wHeader = wishSheet.getRange(1, 1, 1, 10);
-        wHeader.setFontWeight('bold').setFontFamily('Arial').setFontColor('#831843').setBackground('#fce7f3').setHorizontalAlignment('center');
-        wishSheet.setFrozenRows(1);
-      }
-
-      wishSheet.appendRow([
-        new Date(),
-        data.localTime || new Date().toLocaleString(),
-        data.celebrant || 'Nishika',
-        sender,
-        sender,
-        caption,
-        'gold',
-        'video',
-        videoLink,
-        1
-      ]);
-
-      return ContentService.createTextOutput(JSON.stringify({
-        status: 'success',
-        type: 'video',
-        mediaUrl: videoLink,
-        mediaType: 'video',
-        message: 'Video reel saved to Google Drive and logged in Google Sheet!'
-      })).setMimeType(ContentService.MimeType.JSON);
-    }
-
-    // ------------------------------------------------------------------------
-    // CASE D: CHUNKED VIDEO UPLOAD (Deterministic Assembly in Drive & Logged in Sheets)
-    // ------------------------------------------------------------------------
-    else if (type === 'video_chunk') {
-      var uploadId = (data.uploadId || ('up_' + new Date().getTime())).toString().replace(/[^a-zA-Z0-9_-]/g, '_');
-      var chunkIndex = parseInt(data.chunkIndex, 10) || 0;
-      var totalChunks = parseInt(data.totalChunks, 10) || 1;
-      var chunkData = data.chunkData || '';
-      var author = data.author || data.name || data.dedicatedBy || 'Dilip';
-      var caption = data.caption || data.message || data.title || 'Royal video dedication for Queen Nishika 🎬';
-      var mimeType = data.mimeType || 'video/mp4';
-
-      var mainFolder = getMainDriveFolder();
-
-      var tempFolderName = '.temp_video_chunks';
-      var tempFolders = mainFolder.getFoldersByName(tempFolderName);
-      var tempFolder = tempFolders.hasNext() ? tempFolders.next() : mainFolder.createFolder(tempFolderName);
-
-      var sessionFolders = tempFolder.getFoldersByName(uploadId);
-      var sessionFolder = sessionFolders.hasNext() ? sessionFolders.next() : tempFolder.createFolder(uploadId);
-
-      // Save chunk part file
-      var chunkFileName = 'part_' + ('00000' + chunkIndex).slice(-5) + '.txt';
-      sessionFolder.createFile(chunkFileName, chunkData, 'text/plain');
-
-      // If this is the final chunk, assemble and finalize!
-      if (chunkIndex >= totalChunks - 1) {
-        var fullBase64 = '';
-        var allPartsFound = true;
-
-        for (var c = 0; c < totalChunks; c++) {
-          var partName = 'part_' + ('00000' + c).slice(-5) + '.txt';
-          var partFiles = sessionFolder.getFilesByName(partName);
-          if (partFiles.hasNext()) {
-            fullBase64 += partFiles.next().getBlob().getDataAsString();
-          } else {
-            allPartsFound = false;
-            Logger.log('Missing chunk part: ' + partName);
-          }
-        }
-
-        var commaIdx = fullBase64.indexOf(',');
-        var headerPart = commaIdx > 0 ? fullBase64.substring(0, commaIdx) : '';
-        var rawB64 = commaIdx > 0 ? fullBase64.substring(commaIdx + 1) : fullBase64;
-        if (rawB64.indexOf('\n') !== -1 || rawB64.indexOf('\r') !== -1 || rawB64.indexOf(' ') !== -1) {
-          rawB64 = rawB64.replace(/[\r\n\s]+/g, '');
-        }
-
-        if (headerPart.indexOf('data:') === 0 && headerPart.indexOf(';') > 5) {
-          mimeType = headerPart.substring(5, headerPart.indexOf(';'));
-        }
-
-        var ext = '.mp4';
-        var lowMime = (mimeType || '').toLowerCase();
-        if (lowMime.indexOf('webm') !== -1) ext = '.webm';
-        else if (lowMime.indexOf('ogg') !== -1 || lowMime.indexOf('ogv') !== -1) ext = '.ogv';
-        else if (lowMime.indexOf('quicktime') !== -1 || lowMime.indexOf('mov') !== -1 || lowMime.indexOf('qt') !== -1) ext = '.mov';
-        else if (lowMime.indexOf('x-matroska') !== -1 || lowMime.indexOf('mkv') !== -1 || lowMime.indexOf('matroska') !== -1) ext = '.mkv';
-        else if (lowMime.indexOf('msvideo') !== -1 || lowMime.indexOf('avi') !== -1) ext = '.avi';
-        else if (lowMime.indexOf('ms-wmv') !== -1 || lowMime.indexOf('wmv') !== -1 || lowMime.indexOf('asf') !== -1) ext = '.wmv';
-        else if (lowMime.indexOf('3gpp2') !== -1 || lowMime.indexOf('3g2') !== -1) ext = '.3g2';
-        else if (lowMime.indexOf('3gpp') !== -1 || lowMime.indexOf('3gp') !== -1) ext = '.3gp';
-        else if (lowMime.indexOf('m4v') !== -1) ext = '.m4v';
-        else if (lowMime.indexOf('flv') !== -1) ext = '.flv';
-        else if (lowMime.indexOf('mp2t') !== -1 || lowMime.indexOf('ts') !== -1) ext = '.ts';
-        else ext = '.mp4';
-
-        var dateFormatted = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || 'GMT+0530', 'yyyy-MM-dd_HH-mm-ss');
-        var safeAuthor = (author || 'Guest').toString().replace(/[^a-zA-Z0-9_-]/g, '_');
-        var fileName = 'Video_' + safeAuthor + '_' + dateFormatted + ext;
-
-        var decodedBytes = Utilities.base64Decode(rawB64);
-        var blob = Utilities.newBlob(decodedBytes, mimeType, fileName);
-        var finalFile = mainFolder.createFile(blob);
-
-        try {
-          finalFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-        } catch (shareErr) {}
-
-        var fileId = finalFile.getId();
-        var streamUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
-        var directUrl = 'https://drive.google.com/uc?export=download&id=' + fileId;
-
-        // Log in Videos sheet
-        var videoSheet = ss.getSheetByName('Videos') || ss.insertSheet('Videos');
-        if (videoSheet.getLastRow() === 0) {
-          videoSheet.appendRow(['Timestamp', 'Local Time', 'Celebrant', 'Dedicated By', 'Video Caption', 'Moment Tag', 'Video Link / Stream URL']);
-          var vHeader = videoSheet.getRange(1, 1, 1, 7);
-          vHeader.setFontWeight('bold').setFontFamily('Arial').setFontColor('#831843').setBackground('#fce7f3').setHorizontalAlignment('center');
-          videoSheet.setFrozenRows(1);
-        }
-        videoSheet.appendRow([
-          new Date(),
-          data.localTime || new Date().toLocaleString(),
-          data.celebrant || 'Nishika',
-          author,
-          caption,
-          data.tag || 'Video Reel 🎬',
-          streamUrl
-        ]);
-
-        // Log in Wishes sheet for live Sticky Wall visibility
-        var wishSheet = ss.getSheetByName('Wishes') || ss.insertSheet('Wishes');
-        if (wishSheet.getLastRow() === 0 || wishSheet.getLastColumn() < 10) {
-          var headers = [
-            'Timestamp', 'Local Time', 'Celebrant', 'Dedicated By',
-            'Author / Sender', 'Heartfelt Message', 'Sticky Note Style',
-            'Media Type', 'Media URL', 'Likes Count'
-          ];
-          wishSheet.getRange(1, 1, 1, 10).setValues([headers]);
-          var wHeader = wishSheet.getRange(1, 1, 1, 10);
-          wHeader.setFontWeight('bold').setFontFamily('Arial').setFontColor('#831843').setBackground('#fce7f3').setHorizontalAlignment('center');
-          wishSheet.setFrozenRows(1);
-        }
-
-        wishSheet.appendRow([
-          new Date(),
-          data.localTime || new Date().toLocaleString(),
-          data.celebrant || 'Nishika',
-          author,
-          author,
-          caption,
-          data.color || 'gold',
-          'video',
-          streamUrl,
-          1
-        ]);
-
-        // Clean up temporary chunks folder
-        try {
-          sessionFolder.setTrashed(true);
-        } catch(trashErr) {}
-
-        return ContentService.createTextOutput(JSON.stringify({
-          status: 'success',
-          type: 'video_assembled',
-          fileId: fileId,
-          mediaUrl: streamUrl,
-          directUrl: directUrl,
-          fileUrl: finalFile.getUrl(),
-          message: 'Chunked video assembled, saved to Google Drive, and logged in Google Sheets!'
-        })).setMimeType(ContentService.MimeType.JSON);
-      }
-
-      return ContentService.createTextOutput(JSON.stringify({
-        status: 'success',
-        type: 'chunk_received',
-        chunkIndex: chunkIndex,
-        totalChunks: totalChunks
-      })).setMimeType(ContentService.MimeType.JSON);
-    }
-
-    // ------------------------------------------------------------------------
-    // CASE E: SECRET TIME CAPSULE WISH
+    // CASE C: SECRET TIME CAPSULE WISH
     // ------------------------------------------------------------------------
     else if (type === 'secret_wish') {
       var sheet = ss.getSheetByName('Secret Wishes') || ss.insertSheet('Secret Wishes');
@@ -911,19 +542,7 @@ function setupInitialSheets() {
     .setHorizontalAlignment('center');
   photoSheet.setFrozenRows(1);
 
-  // 3. Videos Tab
-  var videoSheet = ss.getSheetByName('Videos') || ss.insertSheet('Videos');
-  var videoHeaders = ['Timestamp', 'Local Time', 'Celebrant', 'Dedicated By', 'Video Caption', 'Moment Tag', 'Video Link / Stream URL'];
-  videoSheet.getRange(1, 1, 1, 7).setValues([videoHeaders]);
-  videoSheet.getRange(1, 1, 1, 7)
-    .setFontWeight('bold')
-    .setFontFamily('Arial')
-    .setFontColor('#831843')
-    .setBackground('#fce7f3')
-    .setHorizontalAlignment('center');
-  videoSheet.setFrozenRows(1);
-
-  // 4. Secret Wishes Tab
+  // 3. Secret Wishes Tab
   var secretSheet = ss.getSheetByName('Secret Wishes') || ss.insertSheet('Secret Wishes');
   var secretHeaders = ['Timestamp', 'Local Time', 'Celebrant', 'Dedicated By', 'Secret Birthday Wish'];
   secretSheet.getRange(1, 1, 1, 5).setValues([secretHeaders]);
@@ -935,5 +554,5 @@ function setupInitialSheets() {
     .setHorizontalAlignment('center');
   secretSheet.setFrozenRows(1);
 
-  Logger.log('👑 All 4 Eternal Love Sheet Tabs Initialized & Formatted Successfully!');
+  Logger.log('👑 All 3 Eternal Love Sheet Tabs (Wishes, Photos, Secret Wishes) Initialized Successfully!');
 }

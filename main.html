@@ -164,7 +164,7 @@
   <!-- Google Fonts for Luxury & Romantic Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Dancing+Script:wght@700&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=Comic+Neue:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Dancing+Script:wght@700&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
   
   <!-- FontAwesome for Celebration & Romantic Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -817,26 +817,26 @@
                 <i class="fa-solid fa-key"></i> Secret Wish Vault 🌠
               </button>
               <button class="btn-accent glow-btn" id="openCakeCutVideoBtn">
-                <i class="fa-solid fa-cake-candles"></i> 3D Cake Cutting Video 🍰
+                <i class="fa-solid fa-cake-candles"></i> Interactive Cake Cutting Ceremony 🍰
               </button>
             </div>
           </div>
 
-          <!-- 3D CAKE CUTTING VIDEO CINEMA PLAYER -->
+          <!-- 3D INTERACTIVE CAKE CUTTING CEREMONY -->
           <div class="cake-cutting-cinema" id="cakeCuttingCinema" style="display: none;">
             <div class="cinema-header-bar">
               <div class="cinema-header-left">
-                <span class="badge-tag"><i class="fa-solid fa-cake-candles"></i> Cake Cutting Video</span>
+                <span class="badge-tag"><i class="fa-solid fa-cake-candles"></i> Interactive Cake Ceremony</span>
                 <div class="cinema-mode-pills" role="tablist">
-                  <button type="button" class="cinema-mode-btn active" id="cakeRealVideoModeBtn" title="Watch Realistic Royal Video">
-                    <i class="fa-solid fa-film"></i> Real HD Video
+                  <button type="button" class="cinema-mode-btn active" id="cakeRealVideoModeBtn" title="Watch Realistic Royal Ceremony">
+                    <i class="fa-solid fa-film"></i> Royal Ceremony
                   </button>
                   <button type="button" class="cinema-mode-btn" id="cake3DAnimationModeBtn" title="Switch to 3D Slicing Animation">
                     <i class="fa-solid fa-cube"></i> 3D Slicing
                   </button>
                 </div>
               </div>
-              <button class="cinema-close-mini" id="closeCakeCutVideoBtn" aria-label="Close Cake Video">&times;</button>
+              <button class="cinema-close-mini" id="closeCakeCutVideoBtn" aria-label="Close Cake Ceremony">&times;</button>
             </div>
 
             <!-- Real HD Birthday Cake Cutting Video Container -->
@@ -2134,7 +2134,7 @@
           <div class="wish-board-header">
             <div>
               <h3><i class="fa-solid fa-envelope-open-text"></i> Royal Sticky Wish Wall for <span class="recipient-name-display">Nishika</span> 💌</h3>
-              <p class="sub-text">Write a heartfelt message, attach photographs, or link celebratory videos to consecrate onto My Love Nishika's live board!</p>
+              <p class="sub-text">Write a heartfelt message and attach treasured photographs to consecrate onto My Love Nishika's live board!</p>
             </div>
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
               <span class="cloud-sync-chip" id="wishSyncChip" title="Synced to Google Sheets">
@@ -2219,11 +2219,10 @@
             <!-- Media Attachment Bar -->
             <div class="media-attach-bar">
               <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                <span class="form-group-label" style="margin:0;"><i class="fa-solid fa-paperclip"></i> Add Media Attachment (Optional)</span>
+                <span class="form-group-label" style="margin:0;"><i class="fa-solid fa-paperclip"></i> Add Photo Attachment (Optional)</span>
                 <div class="media-tabs">
                   <button type="button" class="media-tab-btn active" data-tab="mainTabNone"><i class="fa-solid fa-font"></i> Text Only</button>
                   <button type="button" class="media-tab-btn" data-tab="mainTabPhoto"><i class="fa-solid fa-camera"></i> Photo</button>
-                  <button type="button" class="media-tab-btn" data-tab="mainTabVideo"><i class="fa-solid fa-video"></i> Video</button>
                 </div>
               </div>
 
@@ -2243,59 +2242,6 @@
                 <div class="media-preview-box" id="mainPhotoPreviewBox" style="display:none;">
                   <img id="mainPhotoPreviewImg" src="" alt="Photo Preview" />
                   <button type="button" class="remove-preview-btn" id="mainRemovePhotoBtn" title="Remove Photo">&times;</button>
-                </div>
-              </div>
-
-              <!-- Video Upload/Link Pane -->
-              <div class="media-content-pane" id="mainTabVideo">
-                <div style="display:flex; flex-direction:column; gap:10px;">
-                  <input type="url" id="mainWishVideoUrl" class="app-input" placeholder="Paste YouTube, YouTube Shorts, Vimeo, or MP4 Video Link..." />
-                  <div style="text-align:center; font-size:0.78rem; color:var(--text-muted); letter-spacing:1px;">— OR SELECT VIDEO FILE —</div>
-                  <div class="file-dropzone" id="mainVideoDropzone">
-                    <input type="file" id="mainWishVideoInput" accept="video/*,video/mp4,video/webm,video/ogg,video/quicktime,video/x-matroska,video/x-msvideo,video/avi,video/x-ms-wmv,video/3gpp,video/3gpp2,video/x-m4v,video/x-flv,video/mp2t,.mp4,.webm,.ogg,.ogv,.mov,.qt,.mkv,.avi,.wmv,.3gp,.3g2,.m4v,.flv,.ts,.mts,.m2ts" />
-                    <div class="dropzone-text">
-                      <i class="fa-solid fa-file-video"></i>
-                      <span>Select video (MP4, WebM, MOV, MKV, AVI, WMV, 3GP, OGG)</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="media-preview-box" id="mainVideoPreviewBox" style="display:none; max-width:280px;">
-                  <div id="mainVideoPreviewContainer">
-                    <video id="mainVideoPreviewPlayer" controls style="width:100%; border-radius:10px;"></video>
-                  </div>
-                  <button type="button" class="remove-preview-btn" id="mainRemoveVideoBtn" title="Remove Video">&times;</button>
-                </div>
-
-                <!-- Video Upload Progress Bar -->
-                <div id="mainVideoUploadProgressBox" class="upload-progress-card" style="display:none;">
-                  <div class="upload-progress-header">
-                    <div class="upload-progress-title-wrap">
-                      <i class="fa-solid fa-cloud-arrow-up fa-bounce upload-progress-icon" id="mainVideoProgressIcon"></i>
-                      <div>
-                        <div class="upload-progress-title" id="mainVideoProgressTitle">Processing Video...</div>
-                        <div class="upload-progress-meta" id="mainVideoProgressMeta">video.mp4 • 0 MB</div>
-                      </div>
-                    </div>
-                    <span class="upload-progress-pct" id="mainVideoProgressPct">0%</span>
-                  </div>
-                  <div class="upload-progress-bar-wrap">
-                    <div class="upload-progress-bar-fill" id="mainVideoProgressBarFill" style="width: 0%;"></div>
-                  </div>
-                  <div class="upload-progress-steps">
-                    <span class="upload-step-item active" id="mainVideoStep1"><i class="fa-solid fa-file-arrow-up"></i> 1. Read</span>
-                    <span class="upload-step-item" id="mainVideoStep2"><i class="fa-solid fa-film"></i> 2. Encode</span>
-                    <span class="upload-step-item" id="mainVideoStep3"><i class="fa-solid fa-cloud"></i> 3. Cloud Sync</span>
-                  </div>
-                </div>
-
-                <!-- Video Upload Alert Box (Error / Notice) -->
-                <div id="mainVideoUploadAlert" class="upload-status-alert is-error" style="display:none;">
-                  <div class="upload-alert-icon" id="mainVideoAlertIcon"><i class="fa-solid fa-circle-exclamation"></i></div>
-                  <div class="upload-alert-content">
-                    <div class="upload-alert-title" id="mainVideoAlertTitle">Upload Issue</div>
-                    <div class="upload-alert-msg" id="mainVideoAlertMsg">An error occurred while uploading video.</div>
-                  </div>
-                  <button type="button" class="upload-alert-close" id="mainVideoAlertClose" title="Dismiss">&times;</button>
                 </div>
               </div>
             </div>
@@ -2326,9 +2272,6 @@
               </button>
               <button type="button" class="filter-pill" data-filter="photo">
                 <i class="fa-solid fa-camera"></i> With Photos <span class="filter-count" id="mainCountPhotos">0</span>
-              </button>
-              <button type="button" class="filter-pill" data-filter="video">
-                <i class="fa-solid fa-video"></i> With Videos <span class="filter-count" id="mainCountVideos">0</span>
               </button>
               <button type="button" class="filter-pill" data-filter="royal">
                 <i class="fa-solid fa-crown"></i> Dilip's Dedications <span class="filter-count" id="mainCountRoyal">0</span>
@@ -3470,7 +3413,7 @@
             <ul class="shortcut-list">
               <li>
                 <div class="key-combo"><kbd class="kbd-key">Space</kbd></div>
-                <span class="key-desc">Play / Pause Background Melody or Active Video</span>
+                <span class="key-desc">Play / Pause Background Melody</span>
               </li>
               <li>
                 <div class="key-combo"><kbd class="kbd-key">M</kbd></div>
@@ -3478,7 +3421,7 @@
               </li>
               <li>
                 <div class="key-combo"><kbd class="kbd-key">C</kbd></div>
-                <span class="key-desc">Open 3D Cake Cutting Video & Cinema</span>
+                <span class="key-desc">Open Interactive Cake Cutting Ceremony 🍰</span>
               </li>
               <li>
                 <div class="key-combo"><kbd class="kbd-key">B</kbd></div>

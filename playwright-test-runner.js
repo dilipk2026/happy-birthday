@@ -853,99 +853,126 @@ async function runAllTests() {
     }
 
     // -------------------------------------------------------------------------
-    // SUITE 6: VIDEO UPLOAD, GOOGLE DRIVE STREAMING & CLOUD PREVIEW RECOVERY
+    // SUITE 6: PHOTO MEMORIES, LIVE CLOUD WISHES & LIGHTBOX PORTAL
     // -------------------------------------------------------------------------
-    console.log('\n🎬 SUITE 6: Video Upload, Google Drive Streaming & Cloud Preview Recovery');
-    const suite6 = 'Suite 6: Video Upload & Cloud Preview';
+    console.log('\n📸 SUITE 6: Photo Memories, Live Cloud Wishes & Lightbox Portal');
+    const suite6 = 'Suite 6: Photo Memories & Lightbox';
 
     const ctxSuite6 = await browser.newContext({ viewport: { width: 1280, height: 800 } });
     const pSuite6 = await ctxSuite6.newPage();
 
-    // Test 6.1: Video URL Submission on index.html
+    // Test 6.1: Photo URL Submission on index.html
     await pSuite6.goto(`${BASE_URL}/index.html`, { waitUntil: 'domcontentloaded' });
     await pSuite6.waitForTimeout(400);
 
-    const tabVideoBtn = await pSuite6.$('.media-tab-btn[data-tab="tabVideo"]');
-    if (tabVideoBtn) await tabVideoBtn.click();
+    const tabPhotoBtn = await pSuite6.$('.media-tab-btn[data-tab="tabPhoto"]');
+    if (tabPhotoBtn) await tabPhotoBtn.click();
     await pSuite6.waitForTimeout(200);
 
     const guestNameInput = await pSuite6.$('#guestName');
     const guestWishInput = await pSuite6.$('#guestWish');
-    const wishVideoUrl = await pSuite6.$('#wishVideoUrl');
+    const wishPhotoUrl = await pSuite6.$('#wishPhotoUrl');
     const submitWishBtn = await pSuite6.$('#submitWishBtn');
 
-    if (guestNameInput && guestWishInput && wishVideoUrl && submitWishBtn) {
-      await guestNameInput.fill('Dilip (Royal Video Test)');
-      await guestWishInput.fill('Forever dedicated to My Love Nishika! 🎬💖');
-      await wishVideoUrl.fill('https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/view');
+    if (guestNameInput && guestWishInput && wishPhotoUrl && submitWishBtn) {
+      await guestNameInput.fill('Dilip (Royal Photo Test)');
+      await guestWishInput.fill('Forever dedicated to My Love Nishika! 📸💖');
+      await wishPhotoUrl.fill('https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=800');
       await submitWishBtn.click();
       await pSuite6.waitForTimeout(600);
 
-      const hasVideoInSticky = await pSuite6.evaluate(() => {
+      const hasPhotoInSticky = await pSuite6.evaluate(() => {
         const grid = document.getElementById('stickyNotesGrid');
         if (!grid) return false;
-        return grid.innerHTML.includes('iframe') && grid.innerHTML.includes('drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/preview');
+        return grid.innerHTML.includes('img') && grid.innerHTML.includes('photo-1518199266791-5375a83190b7');
       });
 
       recordTest(
         suite6,
-        'Submitting Google Drive video link on index.html renders responsive iframe video player on #stickyNotesGrid',
-        hasVideoInSticky,
-        hasVideoInSticky ? 'Google Drive iframe rendered' : 'Video iframe not found on sticky grid'
+        'Submitting photo link on index.html renders responsive photo attachment on #stickyNotesGrid',
+        hasPhotoInSticky,
+        hasPhotoInSticky ? 'Photo memory rendered on sticky note' : 'Photo image not found on sticky grid'
       );
 
-      const hasExpandBtn = await pSuite6.evaluate(() => {
+      const hasLightboxTrigger = await pSuite6.evaluate(() => {
         const grid = document.getElementById('stickyNotesGrid');
         if (!grid) return false;
-        return Boolean(grid.querySelector('.sticky-video-expand-btn') || grid.querySelector('iframe'));
+        return Boolean(grid.querySelector('.sticky-media-wrap') || grid.querySelector('.sticky-media-badge'));
       });
 
       recordTest(
         suite6,
-        'Submitting video link renders responsive video player with theater expansion on Sticky Wall',
-        hasExpandBtn,
-        hasExpandBtn ? 'Video player and expand button present' : 'Video player missing'
+        'Submitting photo renders interactive lightbox trigger badge on Sticky Wall',
+        hasLightboxTrigger,
+        hasLightboxTrigger ? 'Photo lightbox trigger badge present' : 'Lightbox trigger missing'
       );
     }
 
-    // Test 6.2: Refreshing index.html preserves video embed without local storage stripping
+    // Test 6.2: Refreshing index.html preserves photo memories without local storage loss
     await pSuite6.reload({ waitUntil: 'domcontentloaded' });
     await pSuite6.waitForTimeout(400);
 
-    const hasVideoAfterReload = await pSuite6.evaluate(() => {
+    const hasPhotoAfterReload = await pSuite6.evaluate(() => {
       const grid = document.getElementById('stickyNotesGrid');
       if (!grid) return false;
-      return grid.innerHTML.includes('drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/preview');
+      return grid.innerHTML.includes('photo-1518199266791-5375a83190b7');
     });
 
     recordTest(
       suite6,
-      'Reloading index.html preserves Google Drive video iframe on Sticky Wall (zero localStorage stripping)',
-      hasVideoAfterReload,
-      hasVideoAfterReload ? 'Video iframe preserved after refresh' : 'Video URL was wiped on refresh'
+      'Reloading index.html preserves photo memories on Sticky Wall (zero localStorage stripping)',
+      hasPhotoAfterReload,
+      hasPhotoAfterReload ? 'Photo memory preserved after refresh' : 'Photo was wiped on refresh'
     );
 
-    // Test 6.3: Video Filter Pill isolation on index.html
-    const videoFilterPill = await pSuite6.$('.filter-pill[data-filter="video"]');
-    if (videoFilterPill) {
-      await videoFilterPill.click();
+    // Test 6.3: Photo Filter Pill isolation on index.html
+    const photoFilterPill = await pSuite6.$('.filter-pill[data-filter="photo"]');
+    if (photoFilterPill) {
+      await photoFilterPill.click();
       await pSuite6.waitForTimeout(300);
 
-      const onlyVideosShown = await pSuite6.evaluate(() => {
+      const onlyPhotosShown = await pSuite6.evaluate(() => {
         const notes = document.querySelectorAll('#stickyNotesGrid .sticky-note');
         if (notes.length === 0) return false;
-        return Array.from(notes).every(n => n.querySelector('.sticky-video-embed') !== null);
+        return Array.from(notes).every(n => n.querySelector('.sticky-media-wrap') !== null || n.querySelector('img') !== null);
       });
 
       recordTest(
         suite6,
-        'Clicking Video Filter Pill on index.html displays only video dedication sticky notes',
-        onlyVideosShown,
-        onlyVideosShown ? 'All visible notes have video embeds' : 'Non-video notes appeared'
+        'Clicking Photo Filter Pill on index.html displays only photo memory sticky notes',
+        onlyPhotosShown,
+        onlyPhotosShown ? 'All visible notes contain photo attachments' : 'Non-photo notes appeared'
       );
     }
 
-    // Test 6.4: main.html Google Drive & YouTube Video Embeds
+    // Test 6.4: Universal Photo URL Normalizer converts Google Drive image links to high-speed CDN URLs
+    const gdrivePhotoNormalizerCheck = await pSuite6.evaluate(() => {
+      if (typeof window.normalizeCloudImageUrl !== 'function') return { ok: false, reason: 'normalizeCloudImageUrl missing' };
+
+      const driveUrl1 = 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/view';
+      const driveUrl2 = 'https://drive.google.com/open?id=1QueenNishikaRoyalPhoto2026';
+      
+      const normalized1 = window.normalizeCloudImageUrl(driveUrl1);
+      const normalized2 = window.normalizeCloudImageUrl(driveUrl2);
+
+      const isCdn1 = normalized1.includes('lh3.googleusercontent.com/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms');
+      const isCdn2 = normalized2.includes('lh3.googleusercontent.com/d/1QueenNishikaRoyalPhoto2026');
+
+      return {
+        ok: isCdn1 && isCdn2,
+        normalized1,
+        normalized2
+      };
+    });
+
+    recordTest(
+      suite6,
+      'Universal Photo URL Normalizer converts Google Drive file links to high-speed CDN thumbnails (lh3.googleusercontent.com/d/...)',
+      gdrivePhotoNormalizerCheck.ok,
+      gdrivePhotoNormalizerCheck.ok ? `CDN URLs generated: ${gdrivePhotoNormalizerCheck.normalized1}` : 'Google Drive normalizer failed'
+    );
+
+    // Test 6.5: main.html Photo Attachment Submission & Wall Pinning
     await pSuite6.goto(`${BASE_URL}/main.html?preview=true`, { waitUntil: 'domcontentloaded' });
     await pSuite6.waitForTimeout(500);
 
@@ -970,22 +997,22 @@ async function runAllTests() {
     });
     await pSuite6.waitForTimeout(300);
 
-    // Click Video tab on wish form
+    // Click Photo tab on wish form
     await pSuite6.evaluate(() => {
-      const tab = document.querySelector('.media-tab-btn[data-tab="mainTabVideo"]');
+      const tab = document.querySelector('.media-tab-btn[data-tab="mainTabPhoto"]');
       if (tab) tab.click();
     });
     await pSuite6.waitForTimeout(200);
 
     const mainAuthorInput = await pSuite6.$('#wishAuthorInput');
     const mainTextInput = await pSuite6.$('#wishTextInput');
-    const mainVideoUrlInput = await pSuite6.$('#mainWishVideoUrl');
+    const mainPhotoUrlInput = await pSuite6.$('#mainWishPhotoUrl');
 
-    if (mainAuthorInput && mainTextInput && mainVideoUrlInput) {
+    if (mainAuthorInput && mainTextInput && mainPhotoUrlInput) {
       await mainAuthorInput.scrollIntoViewIfNeeded();
-      await mainAuthorInput.fill('Dilip (Main Video Test)');
-      await mainTextInput.fill('Majestic birthday reel for My Love Nishika! 🌟');
-      await mainVideoUrlInput.fill('https://drive.google.com/open?id=1AbCdEfGhIjKlMnOpQrStUvWxYz123456');
+      await mainAuthorInput.fill('Dilip (Main Photo Test)');
+      await mainTextInput.fill('Majestic birthday memory for My Love Nishika! 🌟');
+      await mainPhotoUrlInput.fill('https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800');
       
       await pSuite6.evaluate(() => {
         const btn = document.getElementById('mainSubmitWishBtn');
@@ -993,17 +1020,17 @@ async function runAllTests() {
       });
       await pSuite6.waitForTimeout(600);
 
-      const hasMainDriveVideo = await pSuite6.evaluate(() => {
+      const hasMainDrivePhoto = await pSuite6.evaluate(() => {
         const board = document.getElementById('wishesPinboard');
         if (!board) return false;
-        return board.innerHTML.includes('drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz123456/preview');
+        return board.innerHTML.includes('photo-1527529482837-4698179dc6ce');
       });
 
       recordTest(
         suite6,
-        'main.html Pinboard normalizes open?id= Google Drive link to streaming /preview iframe without converting to image thumbnail',
-        hasMainDriveVideo,
-        hasMainDriveVideo ? 'Proper /preview iframe rendered' : 'Failed to render streaming video iframe'
+        'main.html: Submitting photo attachment renders responsive photo memory card on #wishesPinboard',
+        hasMainDrivePhoto,
+        hasMainDrivePhoto ? 'Photo card rendered on main pinboard' : 'Photo card missing from pinboard'
       );
 
       // Test main.html Auto-Generate Wishes & Mood Chips
@@ -1050,11 +1077,11 @@ async function runAllTests() {
       }
     }
 
-    // Test 6.5: Video Lightbox Modal Opens on main.html
-    const isExpanded = await pSuite6.evaluate(() => {
-      const btn = document.querySelector('.sticky-video-expand-btn');
-      if (btn) {
-        btn.click();
+    // Test 6.6: Photo Lightbox Modal Opens on main.html
+    const isPhotoLightboxTriggered = await pSuite6.evaluate(() => {
+      const mediaWrap = document.querySelector('.wish-sticky .sticky-media-wrap');
+      if (mediaWrap) {
+        mediaWrap.click();
         return true;
       }
       return false;
@@ -1064,14 +1091,14 @@ async function runAllTests() {
     const isModalActive = await pSuite6.evaluate(() => {
       const modal = document.getElementById('mediaLightboxModal');
       const viewport = document.getElementById('lightboxViewport');
-      return modal && modal.classList.contains('active') && viewport && viewport.innerHTML.includes('iframe');
+      return modal && modal.classList.contains('active') && viewport && viewport.querySelector('img') !== null;
     });
 
     recordTest(
       suite6,
-      'Clicking Video Lightbox button expands video into full-screen iframe theater modal',
+      'Clicking Photo Attachment expands photo into full-screen theater Lightbox Modal (#mediaLightboxModal)',
       isModalActive,
-      isModalActive ? 'Lightbox modal active with video' : 'Lightbox failed to open video'
+      isModalActive ? 'Lightbox modal active with full photo image' : 'Lightbox failed to open photo'
     );
 
     await pSuite6.evaluate(() => {
@@ -1080,7 +1107,7 @@ async function runAllTests() {
     });
     await pSuite6.waitForTimeout(200);
 
-    // Test 6.6: Refreshing main.html retains pinned video
+    // Test 6.7: Refreshing main.html retains pinned photo
     await pSuite6.reload({ waitUntil: 'domcontentloaded' });
     await pSuite6.waitForTimeout(400);
 
@@ -1104,199 +1131,74 @@ async function runAllTests() {
     });
     await pSuite6.waitForTimeout(300);
 
-    // Test 6.7: Video Upload Progress Bar & Percentage Metric Simulation
-    const progressSimulationResult = await pSuite6.evaluate(async () => {
-      const progressBox = document.getElementById('mainVideoUploadProgressBox');
-      const pctEl = document.getElementById('mainVideoProgressPct');
-      const fillEl = document.getElementById('mainVideoProgressBarFill');
-      const titleEl = document.getElementById('mainVideoProgressTitle');
-      const metaEl = document.getElementById('mainVideoProgressMeta');
-      const alertEl = document.getElementById('mainVideoUploadAlert');
-      const alertTitleEl = document.getElementById('mainVideoAlertTitle');
-
-      if (!progressBox || !pctEl || !fillEl) return { ok: false, reason: 'Elements missing' };
-
-      // Simulate 15MB Video Progress Pipeline (0% -> 45% -> 80% -> 100%)
-      const stages = [];
-
-      // Step 1: Initial Read
-      if (typeof window.updateMainVideoProgressUI === 'function') {
-        window.updateMainVideoProgressUI({
-          visible: true,
-          title: 'Reading Video File (15.0 MB)...',
-          meta: 'video_15mb.mp4 • 0 MB / 15.0 MB (0%)',
-          pct: 0,
-          step: 1
-        });
-      }
-      stages.push({
-        visible: progressBox.style.display !== 'none',
-        pctText: pctEl.textContent,
-        fillWidth: fillEl.style.width
-      });
-
-      // Step 2: 45% Chunk Upload Transmitting
-      if (typeof window.updateMainVideoProgressUI === 'function') {
-        window.updateMainVideoProgressUI({
-          visible: true,
-          title: 'Uploading Video Reel (Part 6 of 13)...',
-          meta: 'Transmitted 6.8 MB / 15.0 MB to Google Cloud (45%)',
-          pct: 45,
-          step: 3
-        });
-      }
-      stages.push({
-        visible: progressBox.style.display !== 'none',
-        pctText: pctEl.textContent,
-        fillWidth: fillEl.style.width
-      });
-
-      // Step 3: 100% Completion State & Success Alert
-      if (typeof window.updateMainVideoProgressUI === 'function') {
-        window.updateMainVideoProgressUI({
-          visible: true,
-          title: '🎉 Video Upload Complete! (100%)',
-          meta: 'Successfully saved 15.0 MB video to Google Drive & Google Sheets!',
-          pct: 100,
-          step: 3,
-          isSuccess: true
-        });
-      }
-      if (typeof window.showMainVideoAlert === 'function') {
-        window.showMainVideoAlert({
-          type: 'success',
-          title: '✨ Video Dedication Successfully Uploaded! 👑',
-          msg: 'Your 15.0 MB video has been safely uploaded to Google Drive and permanently logged!'
-        });
-      }
-      stages.push({
-        visible: progressBox.style.display !== 'none',
-        pctText: pctEl.textContent,
-        fillWidth: fillEl.style.width,
-        isSuccessClass: progressBox.classList.contains('upload-complete'),
-        alertVisible: alertEl && alertEl.style.display !== 'none',
-        alertSuccessClass: alertEl && alertEl.classList.contains('is-success'),
-        alertTitle: alertTitleEl ? alertTitleEl.textContent : ''
-      });
-
-      return { ok: true, stages };
+    const isPhotoPreserved = await pSuite6.evaluate(() => {
+      const board = document.getElementById('wishesPinboard');
+      if (!board) return false;
+      return board.innerHTML.includes('photo-1527529482837-4698179dc6ce');
     });
 
     recordTest(
       suite6,
-      '15MB Video upload progress bar displays accurate percentage increments (0% -> 45% -> 100%) and glowing emerald success state',
-      progressSimulationResult.ok && 
-      progressSimulationResult.stages[0].pctText === '0%' && 
-      progressSimulationResult.stages[1].pctText === '45%' && 
-      progressSimulationResult.stages[2].pctText === '100%' && 
-      progressSimulationResult.stages[2].isSuccessClass,
-      progressSimulationResult.ok ? `Stages: ${JSON.stringify(progressSimulationResult.stages.map(s => s.pctText))}` : progressSimulationResult.reason
+      'main.html: Reloading preserves photo sticky notes on live pinboard without loss',
+      isPhotoPreserved,
+      isPhotoPreserved ? 'Photo sticky note intact after reload' : 'Photo note lost on reload'
     );
 
-    recordTest(
-      suite6,
-      'Video upload completion renders prominent green celebration alert banner with confirmation message',
-      progressSimulationResult.ok && 
-      progressSimulationResult.stages[2].alertVisible && 
-      progressSimulationResult.stages[2].alertSuccessClass && 
-      progressSimulationResult.stages[2].alertTitle.includes('Video Dedication'),
-      progressSimulationResult.ok ? `Alert Title: "${progressSimulationResult.stages[2].alertTitle}"` : progressSimulationResult.reason
-    );
+    // Test 6.8: Photo Filter Pill isolation on main.html
+    const mainPhotoFilterPill = await pSuite6.$('#mainWishFilterBar .filter-pill[data-filter="photo"]');
+    if (mainPhotoFilterPill) {
+      await mainPhotoFilterPill.click();
+      await pSuite6.waitForTimeout(300);
 
-    // Test 6.8: Video Responsive Box Dimensions across Viewport Bounds
-    const responsiveVideoCheck = await pSuite6.evaluate(() => {
-      const embeds = document.querySelectorAll('.sticky-video-embed');
-      const containers = document.querySelectorAll('.video-embed-container');
-      const allFit = Array.from(embeds).every(e => {
-        const rect = e.getBoundingClientRect();
-        return rect.width > 0 && rect.width <= window.innerWidth && rect.height > 0;
-      });
-      return { totalEmbeds: embeds.length, allFit };
-    });
-
-    recordTest(
-      suite6,
-      'All sticky video embeds scale gracefully within container boundaries without clipping',
-      responsiveVideoCheck.allFit,
-      `Verified ${responsiveVideoCheck.totalEmbeds} video embed containers within parent grid`
-    );
-
-    // Test 6.9: Multi-Codec Video Format & MIME Mapping Engine
-    const multiCodecCheck = await pSuite6.evaluate(() => {
-      if (typeof window.getMimeTypeForVideoFile !== 'function' || typeof window.getVideoCodecInfo !== 'function') {
-        return { ok: false, reason: 'getMimeTypeForVideoFile or getVideoCodecInfo missing' };
-      }
-
-      const sampleFiles = [
-        { file: 'celebration.mp4', expectedMime: 'video/mp4', expectedFormat: 'MP4 Video' },
-        { file: 'memory.webm', expectedMime: 'video/webm', expectedFormat: 'WebM' },
-        { file: 'romance.mov', expectedMime: 'video/quicktime', expectedFormat: 'QuickTime MOV' },
-        { file: 'cinematic.mkv', expectedMime: 'video/x-matroska', expectedFormat: 'Matroska MKV' },
-        { file: 'classic.avi', expectedMime: 'video/x-msvideo', expectedFormat: 'AVI' },
-        { file: 'windows.wmv', expectedMime: 'video/x-ms-wmv', expectedFormat: 'Windows Media' },
-        { file: 'mobile.3gp', expectedMime: 'video/3gpp', expectedFormat: '3GPP Mobile' },
-        { file: 'camcorder.ts', expectedMime: 'video/mp2t', expectedFormat: 'MPEG-TS' },
-        { file: 'retro.ogv', expectedMime: 'video/ogg', expectedFormat: 'Ogg Video' },
-        { file: 'flash.flv', expectedMime: 'video/x-flv', expectedFormat: 'Flash Video' },
-        { file: 'itunes.m4v', expectedMime: 'video/mp4', expectedFormat: 'Apple M4V' }
-      ];
-
-      const results = sampleFiles.map(s => {
-        const mime = window.getMimeTypeForVideoFile(s.file);
-        const info = window.getVideoCodecInfo(mime, s.file);
-        const mimeMatches = mime === s.expectedMime;
-        const formatMatches = info.format === s.expectedFormat;
-        return { file: s.file, mime, info, pass: mimeMatches && formatMatches };
+      const onlyMainPhotosShown = await pSuite6.evaluate(() => {
+        const notes = document.querySelectorAll('#wishesPinboard .wish-sticky');
+        if (notes.length === 0) return false;
+        return Array.from(notes).every(n => n.querySelector('.sticky-media-wrap') !== null);
       });
 
-      const allPassed = results.every(r => r.pass);
-      return { ok: allPassed, results };
+      recordTest(
+        suite6,
+        'main.html: Clicking Photo Filter Pill displays only photo memory sticky notes',
+        onlyMainPhotosShown,
+        onlyMainPhotosShown ? 'All visible sticky notes contain photo attachments' : 'Non-photo notes visible'
+      );
+    }
+
+    // Test 6.9: Local Image File Base64 Reader (readFileAsBase64) helper
+    const base64ReaderCheck = await pSuite6.evaluate(async () => {
+      if (typeof window.readFileAsBase64 !== 'function') return { ok: false, reason: 'readFileAsBase64 missing' };
+
+      // Create a mock Blob image file
+      const mockBlob = new Blob(['FakeImageData'], { type: 'image/jpeg' });
+      mockBlob.name = 'nishika_memory.jpg';
+
+      let progressCalled = false;
+      const dataUrl = await window.readFileAsBase64(mockBlob, (pct) => {
+        if (pct >= 0) progressCalled = true;
+      });
+
+      const isDataUrl = typeof dataUrl === 'string' && dataUrl.startsWith('data:');
+      return { ok: isDataUrl, progressCalled, dataUrlLength: dataUrl.length };
     });
 
     recordTest(
       suite6,
-      'Multi-Codec Engine resolves all 12 video container extensions (.mp4, .webm, .mov, .mkv, .avi, .wmv, .3gp, .ts, .ogv, .flv, .m4v) to standard MIME types and codec descriptors',
-      multiCodecCheck.ok,
-      multiCodecCheck.ok ? 'All 11 tested video extensions resolved accurately' : JSON.stringify(multiCodecCheck.results)
+      'Local Image File Base64 Reader (readFileAsBase64) converts device photos to Data URLs with progress callbacks',
+      base64ReaderCheck.ok,
+      base64ReaderCheck.ok ? `Data URL converted (${base64ReaderCheck.dataUrlLength} chars, progress notified)` : base64ReaderCheck.reason
     );
 
-    // Test 6.10: Multi-Source <video> Rendering with Type Attributes for WebM, MOV, and MKV
-    const multiSourceEmbedCheck = await pSuite6.evaluate(() => {
-      if (typeof window.parseGasVideoEmbed !== 'function') return { ok: false, reason: 'parseGasVideoEmbed missing' };
-
-      const webmEmbed = window.parseGasVideoEmbed('https://cdn.example.com/celebration.webm');
-      const movEmbed = window.parseGasVideoEmbed('https://cdn.example.com/memory.mov');
-      const mkvEmbed = window.parseGasVideoEmbed('https://cdn.example.com/cinema.mkv');
-
-      const webmHasSource = webmEmbed.includes('<source src="https://cdn.example.com/celebration.webm" type="video/webm">');
-      const movHasSource = movEmbed.includes('<source src="https://cdn.example.com/memory.mov" type="video/quicktime">');
-      const mkvHasSource = mkvEmbed.includes('<source src="https://cdn.example.com/cinema.mkv" type="video/x-matroska">');
-      const allHaveDownloadFallback = webmEmbed.includes('download="video"') && movEmbed.includes('download="video"') && mkvEmbed.includes('download="video"');
-
-      return {
-        ok: webmHasSource && movHasSource && mkvHasSource && allHaveDownloadFallback,
-        details: { webmHasSource, movHasSource, mkvHasSource, allHaveDownloadFallback }
-      };
-    });
-
-    recordTest(
-      suite6,
-      'parseGasVideoEmbed generates hardware-accelerated multi-source <video> players with correct MIME codecs and download fallback links',
-      multiSourceEmbedCheck.ok,
-      multiSourceEmbedCheck.ok ? 'Multi-source <video> player markup verified for WebM, MOV, MKV' : JSON.stringify(multiSourceEmbedCheck.details)
-    );
-
-    // Test 6.11: File Input accept attributes cover all video formats
+    // Test 6.10: Photo Dropzone & file input accept attributes specify standard image formats
     const fileAcceptCheck = await pSuite6.evaluate(() => {
       const inputs = [
-        document.getElementById('mainWishVideoInput'),
-        document.getElementById('wishVideoInput'),
-        document.getElementById('modalVideoFileInput')
+        document.getElementById('mainWishPhotoInput'),
+        document.getElementById('wishPhotoInput'),
+        document.getElementById('quickPhotoInput')
       ].filter(Boolean);
 
       const allCovered = inputs.every(input => {
         const accept = input.getAttribute('accept') || '';
-        return accept.includes('video/*') && accept.includes('.mp4') && accept.includes('.webm') && accept.includes('.mov') && accept.includes('.mkv') && accept.includes('.avi') && accept.includes('.wmv');
+        return accept.includes('image/*') || accept.includes('.jpg') || accept.includes('.png');
       });
 
       return { totalInputs: inputs.length, allCovered };
@@ -1304,14 +1206,13 @@ async function runAllTests() {
 
     recordTest(
       suite6,
-      'Video input file pickers specify comprehensive accept filters (.mp4, .webm, .mov, .mkv, .avi, .wmv, .3gp, .ogg, .flv, .ts)',
+      'Photo input file pickers specify comprehensive accept filters (image/*)',
       fileAcceptCheck.allCovered,
-      `Verified ${fileAcceptCheck.totalInputs} video file input elements`
+      `Verified ${fileAcceptCheck.totalInputs} photo file input elements`
     );
 
-    // Test 6.12: Photo and Video Perfect Frame Styling & Aspect Ratio
+    // Test 6.11: Photo Perfect Frame Styling & Aspect Ratio
     const frameStyleCheck = await pSuite6.evaluate(() => {
-      // Inject test photo and video sticky notes to audit computed styles
       const pinboard = document.getElementById('wishesPinboard');
       if (!pinboard) return { ok: false, reason: 'Pinboard missing' };
 
@@ -1322,42 +1223,34 @@ async function runAllTests() {
           <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600" alt="Memory" />
           <span class="sticky-media-badge"><i class="fa-solid fa-expand"></i> View Photo</span>
         </div>
-        <div class="sticky-video-embed">
-          <video controls src="https://cdn.example.com/test.mp4"></video>
-        </div>
       `;
       pinboard.appendChild(testSticky);
 
       const mediaWrap = testSticky.querySelector('.sticky-media-wrap');
-      const videoEmbed = testSticky.querySelector('.sticky-video-embed');
-
       const wrapStyle = window.getComputedStyle(mediaWrap);
-      const videoStyle = window.getComputedStyle(videoEmbed);
 
       const hasWrapBorder = wrapStyle.borderStyle !== 'none';
       const hasWrapRadius = parseInt(wrapStyle.borderRadius, 10) >= 12;
-      const hasVideoRadius = parseInt(videoStyle.borderRadius, 10) >= 12;
 
       testSticky.remove();
 
       return {
-        ok: hasWrapBorder && hasWrapRadius && hasVideoRadius,
+        ok: hasWrapBorder && hasWrapRadius,
         details: {
           wrapBorder: wrapStyle.borderColor,
-          wrapRadius: wrapStyle.borderRadius,
-          videoRadius: videoStyle.borderRadius
+          wrapRadius: wrapStyle.borderRadius
         }
       };
     });
 
     recordTest(
       suite6,
-      'Photo and Video frames apply luxury gilded border styling, smooth corner curvature, and containment',
+      'Photo memory frames apply luxury gilded border styling, smooth corner curvature, and containment',
       frameStyleCheck.ok,
       frameStyleCheck.ok ? `Border: ${frameStyleCheck.details.wrapBorder}, Radius: ${frameStyleCheck.details.wrapRadius}` : frameStyleCheck.reason
     );
 
-    // Test 6.13: Interactive Fullscreen Cinema Hover Pop-Out Activation on main.html
+    // Test 6.12: Interactive Fullscreen Cinema Hover Pop-Out Activation on main.html
     const hoverPopoutCheck = await pSuite6.evaluate(async () => {
       const popout = document.getElementById('mediaHoverPopout');
       const viewport = document.getElementById('hoverPopoutViewport');
@@ -1394,12 +1287,12 @@ async function runAllTests() {
 
     recordTest(
       suite6,
-      'Hover Pop-Out Cinema Portal (#mediaHoverPopout) expands on photo/video hover and smoothly dismisses when moving away',
+      'Hover Pop-Out Cinema Portal (#mediaHoverPopout) expands on photo hover and smoothly dismisses when moving away',
       hoverPopoutCheck.ok,
       hoverPopoutCheck.ok ? 'Pop-out activated on hover, content populated, and cleanly dismissed on mouseleave' : JSON.stringify(hoverPopoutCheck.details)
     );
 
-    // Test 6.14: Dedicated Close Button (#closeHoverPopoutBtn) and Escape key dismisses cinema popout
+    // Test 6.13: Dedicated Close Button (#closeHoverPopoutBtn) and Escape key dismisses cinema popout
     const closeBtnCheck = await pSuite6.evaluate(async () => {
       const popout = document.getElementById('mediaHoverPopout');
       const closeBtn = document.getElementById('closeHoverPopoutBtn');
@@ -1407,7 +1300,7 @@ async function runAllTests() {
 
       // 1. Open Popout
       if (typeof window.showHoverPopout === 'function') {
-        window.showHoverPopout('video', 'https://cdn.example.com/moment.mp4', 'Queen Nishika 👑', 'Sacred cinematic memory');
+        window.showHoverPopout('photo', 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600', 'Queen Nishika 👑', 'Sacred photo memory');
       }
       const isOpen = popout.classList.contains('active');
 
@@ -1438,7 +1331,7 @@ async function runAllTests() {
       closeBtnCheck.ok ? 'Close button click and Escape key cleanly dismissed popout modal' : JSON.stringify(closeBtnCheck.details)
     );
 
-    // Test 6.15: Moving cursor out from photo frame / popout card immediately restores normal mode
+    // Test 6.14: Moving cursor out from photo frame / popout card immediately restores normal mode
     const cursorOutCheck = await pSuite6.evaluate(async () => {
       const popout = document.getElementById('mediaHoverPopout');
       const card = popout ? popout.querySelector('.hover-popout-card') : null;

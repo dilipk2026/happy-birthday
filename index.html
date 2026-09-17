@@ -54,7 +54,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Dancing+Script:wght@700&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=Comic+Neue:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Dancing+Script:wght@700&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
 
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -81,6 +81,7 @@
       --font-display: 'Cinzel', 'Playfair Display', serif;
       --font-body: 'Outfit', 'Plus Jakarta Sans', sans-serif;
       --font-script: 'Dancing Script', 'Caveat', cursive;
+      --font-comic: 'Comic Sans MS', 'Comic Sans', 'Comic Neue', cursive, sans-serif;
       --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -1051,10 +1052,11 @@
       position: relative;
     }
 
-    .file-dropzone:hover {
-      background: rgba(255, 215, 0, 0.08);
+    .file-dropzone:hover, .file-dropzone.dragover {
+      background: rgba(255, 215, 0, 0.12);
       border-color: var(--accent-gold);
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+      box-shadow: 0 0 18px rgba(255, 215, 0, 0.35);
+      transform: scale(1.01);
     }
 
     .file-dropzone input[type="file"] {
@@ -1065,6 +1067,7 @@
       height: 100%;
       opacity: 0;
       cursor: pointer;
+      z-index: 2;
     }
 
     .dropzone-text {
@@ -1088,9 +1091,10 @@
       overflow: hidden;
       border: 1.5px solid var(--accent-gold);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      background: #000;
     }
 
-    .media-preview-box img, .media-preview-box video {
+    .media-preview-box img {
       width: 100%;
       height: 150px;
       object-fit: cover;
@@ -1728,15 +1732,20 @@
       color: rgba(226, 217, 243, 0.7);
     }
 
-    /* Wish Message */
-    .sticky-message {
-      font-family: var(--font-body);
-      font-size: 0.95rem;
+    /* Wish Message (Comic Sans) */
+    .sticky-message,
+    .sticky-note-text,
+    .wish-text,
+    .guest-wish-input,
+    #guestWish,
+    .wish-library-text,
+    .wish-library-item {
+      font-family: var(--font-comic) !important;
+      font-size: 0.98rem;
       line-height: 1.6;
       color: #ffffff;
       margin-bottom: 14px;
       word-break: break-word;
-      font-style: italic;
     }
 
     /* Media Attachments inside Sticky Note (Perfect Frame Styling) */
@@ -2972,9 +2981,9 @@
       </div>
 
       <div class="nav-actions">
-        <button type="button" class="nav-btn nav-btn-media" id="navAddMediaBtn" title="Add Image or Video to Celebration">
+        <button type="button" class="nav-btn nav-btn-media" id="navAddMediaBtn" title="Add Photo to Celebration">
           <i class="fa-solid fa-camera-retro"></i>
-          <span>Add Image / Video</span>
+          <span>Add Photo 📸</span>
         </button>
         <button type="button" class="nav-btn" id="soundToggleBtn" title="Toggle Magical Soundscape">
           <i class="fa-solid fa-music"></i>
@@ -3039,8 +3048,8 @@
       <!-- Interactive Teaser Actions -->
       <div class="teaser-actions">
         <button type="button" class="btn-primary" id="heroAddMediaBtn">
-          <i class="fa-solid fa-photo-film"></i>
-          <span>Add Photo / Video 📸</span>
+          <i class="fa-solid fa-camera"></i>
+          <span>Add Photo Memory 📸</span>
         </button>
         <button type="button" class="btn-primary" id="heroPreviewBtn" style="background: linear-gradient(135deg, #9d4edd 0%, #ff4081 100%);">
           <i class="fa-solid fa-crown"></i>
@@ -3054,8 +3063,8 @@
 
       <!-- Pre-Launch Blessing & Media Form Section -->
       <section class="blessing-section" id="blessingSection">
-        <h3 class="blessing-title">✨ Send an Early Birthday Blessing (With Photos & Videos)</h3>
-        <p class="blessing-subtitle">Leave a personal heartfelt message, high-res photo, or video clip sealed for My Love Nishika. Your dedication is consecrated on the live Sticky Wall below! 💌</p>
+        <h3 class="blessing-title">✨ Send an Early Birthday Blessing (With Photos & Text Wishes) 💖</h3>
+        <p class="blessing-subtitle">Leave a personal heartfelt message or attach a high-res photo sealed for My Love Nishika. Your dedication is consecrated on the live Sticky Wall below! 💌</p>
         
         <form id="preLaunchWishForm" class="blessing-form">
           <div>
@@ -3127,11 +3136,10 @@
           <!-- Media Attachment Bar -->
           <div class="media-attach-bar">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-              <span class="form-group-label" style="margin:0;"><i class="fa-solid fa-photo-film"></i> Attach Photo or Video (Choose an Option)</span>
+              <span class="form-group-label" style="margin:0;"><i class="fa-solid fa-photo-film"></i> Attach Photo Memory (Optional)</span>
               <div class="media-tabs">
                 <button type="button" class="media-tab-btn active" data-tab="tabNone"><i class="fa-solid fa-font"></i> Text Only</button>
-                <button type="button" class="media-tab-btn" data-tab="tabPhoto"><i class="fa-solid fa-camera"></i> 📸 Add Image</button>
-                <button type="button" class="media-tab-btn" data-tab="tabVideo"><i class="fa-solid fa-video"></i> 🎬 Add Video</button>
+                <button type="button" class="media-tab-btn" data-tab="tabPhoto"><i class="fa-solid fa-camera"></i> 📸 Add Photo</button>
               </div>
             </div>
 
@@ -3151,59 +3159,6 @@
               <div class="media-preview-box" id="photoPreviewBox" style="display:none;">
                 <img id="photoPreviewImg" src="" alt="Photo Preview" />
                 <button type="button" class="remove-preview-btn" id="removePhotoBtn" title="Remove Photo">&times;</button>
-              </div>
-            </div>
-
-            <!-- Video Upload/Link Pane -->
-            <div class="media-content-pane" id="tabVideo">
-              <div style="display:flex; flex-direction:column; gap:10px;">
-                <input type="url" id="wishVideoUrl" class="input-field" placeholder="Paste YouTube, YouTube Shorts, Vimeo, Google Drive, or MP4 Video Link..." />
-                <div style="text-align:center; font-size:0.78rem; color:var(--text-muted); letter-spacing:1px;">— OR SELECT VIDEO FILE FROM DEVICE —</div>
-                <div class="file-dropzone" id="videoDropzone">
-                  <input type="file" id="wishVideoInput" accept="video/*,video/mp4,video/webm,video/ogg,video/quicktime,video/x-matroska,video/x-msvideo,video/avi,video/x-ms-wmv,video/3gpp,video/3gpp2,video/x-m4v,video/x-flv,video/mp2t,.mp4,.webm,.ogg,.ogv,.mov,.qt,.mkv,.avi,.wmv,.3gp,.3g2,.m4v,.flv,.ts,.mts,.m2ts" />
-                  <div class="dropzone-text">
-                    <i class="fa-solid fa-file-video"></i>
-                    <span><strong>Select video from device</strong> (MP4, WebM, MOV, MKV, AVI, WMV, 3GP, OGG)</span>
-                  </div>
-                </div>
-              </div>
-              <div class="media-preview-box" id="videoPreviewBox" style="display:none; max-width:280px;">
-                <div id="videoPreviewContainer">
-                  <video id="videoPreviewPlayer" controls style="width:100%; border-radius:10px;"></video>
-                </div>
-                <button type="button" class="remove-preview-btn" id="removeVideoBtn" title="Remove Video">&times;</button>
-              </div>
-
-              <!-- Video Upload Progress Bar -->
-              <div id="wishVideoUploadProgressBox" class="upload-progress-card" style="display:none;">
-                <div class="upload-progress-header">
-                  <div class="upload-progress-title-wrap">
-                    <i class="fa-solid fa-cloud-arrow-up fa-bounce upload-progress-icon" id="wishVideoProgressIcon"></i>
-                    <div>
-                      <div class="upload-progress-title" id="wishVideoProgressTitle">Processing Video...</div>
-                      <div class="upload-progress-meta" id="wishVideoProgressMeta">video.mp4 • 0 MB</div>
-                    </div>
-                  </div>
-                  <span class="upload-progress-pct" id="wishVideoProgressPct">0%</span>
-                </div>
-                <div class="upload-progress-bar-wrap">
-                  <div class="upload-progress-bar-fill" id="wishVideoProgressBarFill" style="width: 0%;"></div>
-                </div>
-                <div class="upload-progress-steps">
-                  <span class="upload-step-item active" id="wishVideoStep1"><i class="fa-solid fa-file-arrow-up"></i> 1. Read</span>
-                  <span class="upload-step-item" id="wishVideoStep2"><i class="fa-solid fa-film"></i> 2. Encode</span>
-                  <span class="upload-step-item" id="wishVideoStep3"><i class="fa-solid fa-cloud"></i> 3. Cloud Sync</span>
-                </div>
-              </div>
-
-              <!-- Video Upload Alert Box -->
-              <div id="wishVideoUploadAlert" class="upload-status-alert is-error" style="display:none;">
-                <div class="upload-alert-icon" id="wishVideoAlertIcon"><i class="fa-solid fa-circle-exclamation"></i></div>
-                <div class="upload-alert-content">
-                  <div class="upload-alert-title" id="wishVideoAlertTitle">Upload Issue</div>
-                  <div class="upload-alert-msg" id="wishVideoAlertMsg">An error occurred while uploading video.</div>
-                </div>
-                <button type="button" class="upload-alert-close" id="wishVideoAlertClose" title="Dismiss">&times;</button>
               </div>
             </div>
           </div>
@@ -3235,7 +3190,7 @@
       <section class="sticky-wall-section" id="stickyWishWallSection">
         <div class="sticky-wall-header">
           <h2 class="sticky-wall-title">✨ Royal Sticky Wish Wall 💌</h2>
-          <p class="sticky-wall-subtitle">Live heartfelt wishes, photographs & video dedications for My Love Nishika from loved ones across the galaxy.</p>
+          <p class="sticky-wall-subtitle">Live heartfelt wishes & photo memories for My Love Nishika from loved ones across the galaxy.</p>
         </div>
 
         <!-- Filter & Search Controls Bar -->
@@ -3247,22 +3202,15 @@
             <button type="button" class="filter-pill" data-filter="photo">
               <i class="fa-solid fa-camera"></i> With Photos <span class="filter-count" id="countPhotos">0</span>
             </button>
-            <button type="button" class="filter-pill" data-filter="video">
-              <i class="fa-solid fa-video"></i> With Videos <span class="filter-count" id="countVideos">0</span>
-            </button>
             <button type="button" class="filter-pill" data-filter="royal">
               <i class="fa-solid fa-crown"></i> Dilip's Dedications <span class="filter-count" id="countRoyal">0</span>
             </button>
           </div>
 
           <div class="sync-actions-group">
-            <button type="button" class="sync-refresh-btn" id="quickAddPhotoBtn" title="Add Image to Wall">
+            <button type="button" class="sync-refresh-btn" id="quickAddPhotoBtn" title="Add Photo to Wall">
               <i class="fa-solid fa-camera"></i>
-              <span>+ Add Image</span>
-            </button>
-            <button type="button" class="sync-refresh-btn" id="quickAddVideoBtn" title="Add Video to Wall">
-              <i class="fa-solid fa-video"></i>
-              <span>+ Add Video</span>
+              <span>+ Add Photo</span>
             </button>
             <button type="button" class="sync-refresh-btn" id="syncWishesBtn" title="Sync live wishes from Google Cloud">
               <i class="fa-solid fa-rotate"></i>
@@ -3300,20 +3248,15 @@
     </footer>
   </div>
 
-  <!-- QUICK MEDIA STUDIO MODAL (ADD IMAGE OR VIDEO POPUP) -->
+  <!-- QUICK MEDIA STUDIO MODAL (ADD IMAGE POPUP) -->
   <div class="quick-media-overlay" id="quickMediaModal" role="dialog" aria-modal="true" aria-labelledby="quickMediaTitle">
     <div class="quick-media-box">
       <button type="button" class="modal-close-btn" id="closeQuickMediaModal" title="Close"><i class="fa-solid fa-xmark"></i></button>
       
       <div class="quick-media-header">
-        <i class="fa-solid fa-photo-film" style="font-size: 2rem; color: var(--accent-gold); margin-bottom: 8px;"></i>
-        <h3 id="quickMediaTitle">📸 Add Image or Video</h3>
-        <p>Upload a cherished photo or paste a video link to immortalize on My Love Nishika's wall & memories gallery!</p>
-      </div>
-
-      <div class="quick-media-mode-tabs">
-        <button type="button" class="quick-mode-btn active" id="quickModePhotoBtn"><i class="fa-solid fa-camera"></i> 📸 Add Image</button>
-        <button type="button" class="quick-mode-btn" id="quickModeVideoBtn"><i class="fa-solid fa-video"></i> 🎬 Add Video</button>
+        <i class="fa-solid fa-camera-retro" style="font-size: 2rem; color: var(--accent-gold); margin-bottom: 8px;"></i>
+        <h3 id="quickMediaTitle">📸 Add Photo Memory</h3>
+        <p>Upload a cherished photo or paste an image link to immortalize on My Love Nishika's wall!</p>
       </div>
 
       <form id="quickMediaForm" style="display:flex; flex-direction:column; gap:14px; text-align:left;">
@@ -3330,7 +3273,7 @@
         <!-- Image Mode Inputs -->
         <div id="quickImageInputs">
           <label class="form-group-label"><i class="fa-solid fa-image"></i> Select Image File</label>
-          <div class="file-dropzone" style="margin-bottom:10px;">
+          <div class="file-dropzone" id="modalPhotoDropzone" style="margin-bottom:10px;">
             <input type="file" id="modalPhotoFileInput" accept="image/*" />
             <div class="dropzone-text">
               <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -3338,56 +3281,9 @@
             </div>
           </div>
           <input type="url" id="modalPhotoUrlInput" class="input-field" placeholder="Or paste image URL (Google Drive, Imgur, Photos)..." />
-          <div id="modalPhotoPreview" style="display:none; margin-top:10px; text-align:center;">
-            <img id="modalPhotoPreviewImg" src="" alt="Preview" style="max-height:160px; border-radius:12px; border:1px solid var(--accent-gold); max-width:100%;" />
-          </div>
-        </div>
-
-        <!-- Video Mode Inputs -->
-        <div id="quickVideoInputs" style="display:none;">
-          <label class="form-group-label"><i class="fa-solid fa-film"></i> Video URL or File</label>
-          <input type="url" id="modalVideoUrlInput" class="input-field" placeholder="Paste YouTube, Shorts, Vimeo, Google Drive, or MP4 link..." style="margin-bottom:10px;" />
-          <div class="file-dropzone">
-            <input type="file" id="modalVideoFileInput" accept="video/*,video/mp4,video/webm,video/ogg,video/quicktime,video/x-matroska,video/x-msvideo,video/avi,video/x-ms-wmv,video/3gpp,video/3gpp2,video/x-m4v,video/x-flv,video/mp2t,.mp4,.webm,.ogg,.ogv,.mov,.qt,.mkv,.avi,.wmv,.3gp,.3g2,.m4v,.flv,.ts,.mts,.m2ts" />
-            <div class="dropzone-text">
-              <i class="fa-solid fa-file-video"></i>
-              <span>Or choose video file (MP4, WebM, MOV, MKV, AVI, WMV, 3GP, OGG)</span>
-            </div>
-          </div>
-          <div id="modalVideoPreview" style="display:none; margin-top:10px; text-align:center;">
-            <video id="modalVideoPreviewPlayer" controls style="max-height:160px; border-radius:12px; width:100%; background:#000;"></video>
-          </div>
-
-          <!-- Modal Video Upload Progress Bar -->
-          <div id="modalVideoUploadProgressBox" class="upload-progress-card" style="display:none;">
-            <div class="upload-progress-header">
-              <div class="upload-progress-title-wrap">
-                <i class="fa-solid fa-cloud-arrow-up fa-bounce upload-progress-icon" id="modalVideoProgressIcon"></i>
-                <div>
-                  <div class="upload-progress-title" id="modalVideoProgressTitle">Processing Video...</div>
-                  <div class="upload-progress-meta" id="modalVideoProgressMeta">video.mp4 • 0 MB</div>
-                </div>
-              </div>
-              <span class="upload-progress-pct" id="modalVideoProgressPct">0%</span>
-            </div>
-            <div class="upload-progress-bar-wrap">
-              <div class="upload-progress-bar-fill" id="modalVideoProgressBarFill" style="width: 0%;"></div>
-            </div>
-            <div class="upload-progress-steps">
-              <span class="upload-step-item active" id="modalVideoStep1"><i class="fa-solid fa-file-arrow-up"></i> 1. Read</span>
-              <span class="upload-step-item" id="modalVideoStep2"><i class="fa-solid fa-film"></i> 2. Encode</span>
-              <span class="upload-step-item" id="modalVideoStep3"><i class="fa-solid fa-cloud"></i> 3. Cloud Sync</span>
-            </div>
-          </div>
-
-          <!-- Modal Video Upload Alert Box -->
-          <div id="modalVideoUploadAlert" class="upload-status-alert is-error" style="display:none;">
-            <div class="upload-alert-icon" id="modalVideoAlertIcon"><i class="fa-solid fa-circle-exclamation"></i></div>
-            <div class="upload-alert-content">
-              <div class="upload-alert-title" id="modalVideoAlertTitle">Upload Issue</div>
-              <div class="upload-alert-msg" id="modalVideoAlertMsg">An error occurred while uploading video.</div>
-            </div>
-            <button type="button" class="upload-alert-close" id="modalVideoAlertClose" title="Dismiss">&times;</button>
+          <div class="media-preview-box" id="modalPhotoPreview" style="display:none; margin-top:10px;">
+            <img id="modalPhotoPreviewImg" src="" alt="Photo Preview" />
+            <button type="button" class="remove-preview-btn" id="removeModalPhotoBtn" title="Remove Photo">&times;</button>
           </div>
         </div>
 
@@ -3404,7 +3300,7 @@
     <div class="media-lightbox-card">
       <button type="button" class="lightbox-close-btn" id="closeLightboxBtn" title="Close Lightbox">&times;</button>
       <div class="lightbox-media-viewport" id="lightboxViewport">
-        <!-- Image or Video injected dynamically -->
+        <!-- Photo injected dynamically -->
       </div>
       <div class="lightbox-info-pane">
         <div class="lightbox-author" id="lightboxAuthorName">
@@ -3416,7 +3312,7 @@
   </div>
 
   <!-- INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA OVERLAY -->
-  <div class="media-hover-popout-overlay" id="mediaHoverPopout" role="dialog" aria-modal="true" aria-label="Media Cinema Pop-Out" aria-hidden="true">
+  <div class="media-hover-popout-overlay" id="mediaHoverPopout" role="dialog" aria-modal="true" aria-label="Photo Pop-Out" aria-hidden="true">
     <div class="hover-popout-card">
       <div class="hover-popout-header">
         <div class="hover-popout-header-left">
@@ -3424,15 +3320,15 @@
             <i class="fa-solid fa-crown"></i> <span>Queen Nishika</span>
           </div>
           <div class="hover-popout-badge" id="hoverPopoutBadge">
-            <i class="fa-solid fa-sparkles"></i> <span>Cinema Pop-Out</span>
+            <i class="fa-solid fa-camera"></i> <span>Photo Pop-Out</span>
           </div>
         </div>
-        <button type="button" class="hover-popout-close-btn" id="closeHoverPopoutBtn" aria-label="Close Cinema Pop-Out" title="Close Pop-Out (Esc)">
+        <button type="button" class="hover-popout-close-btn" id="closeHoverPopoutBtn" aria-label="Close Pop-Out" title="Close Pop-Out (Esc)">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
       <div class="hover-popout-media-viewport" id="hoverPopoutViewport">
-        <!-- Enlarged Photo or Video Player injected dynamically -->
+        <!-- Enlarged Photo injected dynamically -->
       </div>
       <div class="hover-popout-footer">
         <p class="hover-popout-caption" id="hoverPopoutCaption">"Our unforgettable sacred memory"</p>
@@ -3586,33 +3482,48 @@
         height = canvas.height = window.innerHeight;
       });
 
-      const stars = Array.from({ length: 90 }, () => ({
+      const stars = Array.from({ length: 65 }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        size: Math.random() * 2 + 0.5,
+        size: Math.random() * 1.8 + 0.5,
         alpha: Math.random(),
         speed: Math.random() * 0.02 + 0.005
       }));
 
       const hearts = [];
+      let heartSpawnTimer = null;
+
       function spawnHeart() {
-        if (hearts.length < 25) {
+        if (document.hidden) return;
+        if (hearts.length < 18) {
           hearts.push({
             x: Math.random() * width,
             y: height + 20,
-            size: Math.random() * 12 + 8,
-            speedY: Math.random() * 1.2 + 0.6,
-            speedX: Math.sin(Math.random() * Math.PI) * 0.5,
-            alpha: Math.random() * 0.6 + 0.3,
+            size: Math.random() * 10 + 8,
+            speedY: Math.random() * 1.1 + 0.5,
+            speedX: Math.sin(Math.random() * Math.PI) * 0.4,
+            alpha: Math.random() * 0.5 + 0.3,
             color: Math.random() > 0.4 ? '#ff4081' : '#ffd700'
           });
         }
       }
-      setInterval(spawnHeart, 400);
+
+      function startHeartSpawner() {
+        if (!heartSpawnTimer) {
+          heartSpawnTimer = setInterval(spawnHeart, 500);
+        }
+      }
+
+      function stopHeartSpawner() {
+        if (heartSpawnTimer) {
+          clearInterval(heartSpawnTimer);
+          heartSpawnTimer = null;
+        }
+      }
+      startHeartSpawner();
 
       function drawHeart(cx, cy, size, color, alpha) {
-        ctx.save();
-        ctx.globalAlpha = alpha;
+        ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
         ctx.fillStyle = color;
         ctx.beginPath();
         const top = size * 0.3;
@@ -3623,20 +3534,30 @@
         ctx.bezierCurveTo(cx + size / 2, cy, cx, cy, cx, cy + top);
         ctx.closePath();
         ctx.fill();
-        ctx.restore();
       }
 
+      let canvasRafId = null;
       function animateCanvas() {
+        if (document.hidden) {
+          canvasRafId = null;
+          return;
+        }
+
         ctx.clearRect(0, 0, width, height);
 
-        stars.forEach(s => {
-          s.alpha += Math.sin(Date.now() * s.speed) * 0.01;
-          ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.1, Math.min(1, s.alpha))})`;
+        // Batch render stars with alpha
+        const now = Date.now();
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+          s.alpha += Math.sin(now * s.speed) * 0.01;
+          const a = Math.max(0.1, Math.min(0.9, s.alpha));
+          ctx.fillStyle = `rgba(255, 255, 255, ${a})`;
           ctx.beginPath();
           ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
           ctx.fill();
-        });
+        }
 
+        // Render floating hearts
         for (let i = hearts.length - 1; i >= 0; i--) {
           const h = hearts[i];
           h.y -= h.speedY;
@@ -3644,10 +3565,22 @@
           drawHeart(h.x, h.y, h.size, h.color, h.alpha);
           if (h.y < -30) hearts.splice(i, 1);
         }
+        ctx.globalAlpha = 1.0;
 
-        requestAnimationFrame(animateCanvas);
+        canvasRafId = requestAnimationFrame(animateCanvas);
       }
-      animateCanvas();
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          startHeartSpawner();
+          if (!canvasRafId) {
+            canvasRafId = requestAnimationFrame(animateCanvas);
+          }
+        } else {
+          stopHeartSpawner();
+        }
+      });
+      canvasRafId = requestAnimationFrame(animateCanvas);
 
       // 3. POLYPHONIC WEB AUDIO SYNTHESIZER
       let audioCtx = null;
@@ -4055,10 +3988,6 @@
             const pane = document.getElementById('tabPhoto');
             if (pane) pane.classList.add('active');
             selectedMediaType = 'photo';
-          } else if (targetTab === 'tabVideo') {
-            const pane = document.getElementById('tabVideo');
-            if (pane) pane.classList.add('active');
-            selectedMediaType = 'video';
           } else {
             selectedMediaType = 'none';
             selectedMediaData = '';
@@ -4122,19 +4051,62 @@
         reader.readAsDataURL(file);
       }
 
+      function setupDropzone(dropzoneEl, fileInputEl, onFileSelected) {
+        if (!dropzoneEl || !fileInputEl) return;
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dropzoneEl.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzoneEl.classList.add('dragover');
+          });
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+          dropzoneEl.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzoneEl.classList.remove('dragover');
+          });
+        });
+        dropzoneEl.addEventListener('drop', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const dt = e.dataTransfer;
+          const files = dt && dt.files;
+          if (files && files.length > 0) {
+            onFileSelected(files[0]);
+          }
+        });
+      }
+
+      function handlePhotoFileSelection(file) {
+        if (!file) return;
+        processImageFile(file, (dataUrl) => {
+          selectedMediaData = dataUrl;
+          selectedMediaType = 'photo';
+          if (photoPreviewImg) photoPreviewImg.src = dataUrl;
+          if (photoPreviewBox) photoPreviewBox.style.display = 'inline-block';
+          if (wishPhotoUrl) wishPhotoUrl.value = '';
+          
+          // Ensure Photo tab is active
+          mediaTabBtns.forEach(b => b.classList.remove('active'));
+          const photoTabBtn = document.querySelector('.media-tab-btn[data-tab="tabPhoto"]');
+          if (photoTabBtn) photoTabBtn.classList.add('active');
+          document.querySelectorAll('.media-content-pane').forEach(p => p.classList.remove('active'));
+          const pane = document.getElementById('tabPhoto');
+          if (pane) pane.classList.add('active');
+        });
+      }
+
       if (wishPhotoInput) {
         wishPhotoInput.addEventListener('change', (e) => {
           const file = e.target.files && e.target.files[0];
-          if (file) {
-            processImageFile(file, (dataUrl) => {
-              selectedMediaData = dataUrl;
-              selectedMediaType = 'photo';
-              if (photoPreviewImg) photoPreviewImg.src = dataUrl;
-              if (photoPreviewBox) photoPreviewBox.style.display = 'inline-block';
-              if (wishPhotoUrl) wishPhotoUrl.value = '';
-            });
-          }
+          if (file) handlePhotoFileSelection(file);
         });
+      }
+
+      const photoDropzone = document.getElementById('photoDropzone');
+      if (photoDropzone && wishPhotoInput) {
+        setupDropzone(photoDropzone, wishPhotoInput, handlePhotoFileSelection);
       }
 
       if (wishPhotoUrl) {
@@ -4151,408 +4123,15 @@
       }
 
       if (removePhotoBtn) {
-        removePhotoBtn.addEventListener('click', () => {
+        removePhotoBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
           if (wishPhotoInput) wishPhotoInput.value = '';
           if (wishPhotoUrl) wishPhotoUrl.value = '';
           if (photoPreviewBox) photoPreviewBox.style.display = 'none';
           if (photoPreviewImg) photoPreviewImg.src = '';
           selectedMediaData = '';
           selectedMediaType = 'none';
-        });
-      }
-
-      // Video MIME type and Codec format helper
-      function getMimeTypeForVideoFile(file) {
-        if (!file) return 'video/mp4';
-        if (file.type && file.type.startsWith('video/')) return file.type;
-        const name = (typeof file === 'string' ? file : (file.name || '')).toLowerCase();
-        if (name.endsWith('.mp4') || name.endsWith('.m4v')) return 'video/mp4';
-        if (name.endsWith('.webm')) return 'video/webm';
-        if (name.endsWith('.mov') || name.endsWith('.qt')) return 'video/quicktime';
-        if (name.endsWith('.mkv')) return 'video/x-matroska';
-        if (name.endsWith('.avi')) return 'video/x-msvideo';
-        if (name.endsWith('.wmv')) return 'video/x-ms-wmv';
-        if (name.endsWith('.3gp')) return 'video/3gpp';
-        if (name.endsWith('.3g2')) return 'video/3gpp2';
-        if (name.endsWith('.ogv') || name.endsWith('.ogg')) return 'video/ogg';
-        if (name.endsWith('.flv')) return 'video/x-flv';
-        if (name.endsWith('.ts') || name.endsWith('.mts') || name.endsWith('.m2ts')) return 'video/mp2t';
-        return 'video/mp4';
-      }
-      window.getMimeTypeForVideoFile = getMimeTypeForVideoFile;
-
-      function getVideoCodecInfo(mimeType, urlOrName) {
-        const cleanMime = (mimeType || '').toLowerCase();
-        const cleanUrl = (urlOrName || '').toLowerCase();
-        if (cleanMime.includes('webm') || cleanUrl.includes('.webm')) {
-          return { format: 'WebM', codec: 'VP8 / VP9 / AV1', ext: '.webm' };
-        }
-        if (cleanMime.includes('quicktime') || cleanMime.includes('mov') || cleanUrl.includes('.mov') || cleanUrl.includes('.qt')) {
-          return { format: 'QuickTime MOV', codec: 'Apple ProRes / H.264 / HEVC', ext: '.mov' };
-        }
-        if (cleanMime.includes('matroska') || cleanMime.includes('mkv') || cleanUrl.includes('.mkv')) {
-          return { format: 'Matroska MKV', codec: 'H.264 / HEVC / VP9 / AV1', ext: '.mkv' };
-        }
-        if (cleanMime.includes('msvideo') || cleanMime.includes('avi') || cleanUrl.includes('.avi')) {
-          return { format: 'AVI', codec: 'MPEG-4 / DivX / XviD', ext: '.avi' };
-        }
-        if (cleanMime.includes('ms-wmv') || cleanMime.includes('wmv') || cleanUrl.includes('.wmv')) {
-          return { format: 'Windows Media', codec: 'WMV9 / VC-1', ext: '.wmv' };
-        }
-        if (cleanMime.includes('3gpp2') || cleanUrl.includes('.3g2')) {
-          return { format: '3GPP2 Mobile', codec: 'H.263 / MPEG-4', ext: '.3g2' };
-        }
-        if (cleanMime.includes('3gpp') || cleanUrl.includes('.3gp')) {
-          return { format: '3GPP Mobile', codec: 'H.263 / H.264', ext: '.3gp' };
-        }
-        if (cleanMime.includes('ogg') || cleanMime.includes('ogv') || cleanUrl.includes('.ogv') || cleanUrl.includes('.ogg')) {
-          return { format: 'Ogg Video', codec: 'Theora / Vorbis', ext: '.ogv' };
-        }
-        if (cleanMime.includes('m4v') || cleanUrl.includes('.m4v')) {
-          return { format: 'Apple M4V', codec: 'H.264 / AAC', ext: '.m4v' };
-        }
-        if (cleanMime.includes('flv') || cleanUrl.includes('.flv')) {
-          return { format: 'Flash Video', codec: 'Sorenson Spark / VP6', ext: '.flv' };
-        }
-        if (cleanMime.includes('mp2t') || cleanUrl.includes('.ts') || cleanUrl.includes('.mts') || cleanUrl.includes('.m2ts')) {
-          return { format: 'MPEG-TS', codec: 'MPEG-2 / H.264 / HEVC', ext: '.ts' };
-        }
-        return { format: 'MP4 Video', codec: 'H.264 (AVC) / H.265 (HEVC) / AV1', ext: '.mp4' };
-      }
-      window.getVideoCodecInfo = getVideoCodecInfo;
-
-      // Async helper to convert file to Base64 with progress callback and MIME normalization
-      function readFileAsBase64(file, onProgress) {
-        return new Promise((resolve, reject) => {
-          if (!file) return resolve('');
-          const reader = new FileReader();
-          reader.onprogress = (e) => {
-            if (e.lengthComputable && typeof onProgress === 'function') {
-              const pct = Math.round((e.loaded / e.total) * 100);
-              onProgress(pct, e.loaded, e.total);
-            }
-          };
-          reader.onload = () => {
-            if (typeof onProgress === 'function') onProgress(100, file.size, file.size);
-            let result = reader.result || '';
-            // If MIME was empty or generic octet-stream, inject inferred MIME type into data URL header
-            if (file.name && (file.type === '' || file.type === 'application/octet-stream' || !result.startsWith('data:video/'))) {
-              const detectedMime = getMimeTypeForVideoFile(file);
-              if (detectedMime && detectedMime.startsWith('video/')) {
-                const comma = result.indexOf(',');
-                if (comma !== -1) {
-                  result = `data:${detectedMime};base64,${result.substring(comma + 1)}`;
-                }
-              }
-            }
-            resolve(result);
-          };
-          reader.onerror = (err) => reject(new Error('Failed to read media file from device.'));
-          reader.readAsDataURL(file);
-        });
-      }
-
-      // Video Upload & Link handling
-      const wishVideoInput = document.getElementById('wishVideoInput');
-      const wishVideoUrl = document.getElementById('wishVideoUrl');
-      const videoPreviewBox = document.getElementById('videoPreviewBox');
-      const videoPreviewContainer = document.getElementById('videoPreviewContainer');
-      const removeVideoBtn = document.getElementById('removeVideoBtn');
-
-      // Wish Video Upload Progress & Status Elements
-      const wishVideoUploadProgressBox = document.getElementById('wishVideoUploadProgressBox');
-      const wishVideoProgressTitle = document.getElementById('wishVideoProgressTitle');
-      const wishVideoProgressMeta = document.getElementById('wishVideoProgressMeta');
-      const wishVideoProgressPct = document.getElementById('wishVideoProgressPct');
-      const wishVideoProgressBarFill = document.getElementById('wishVideoProgressBarFill');
-      const wishVideoStep1 = document.getElementById('wishVideoStep1');
-      const wishVideoStep2 = document.getElementById('wishVideoStep2');
-      const wishVideoStep3 = document.getElementById('wishVideoStep3');
-
-      const wishVideoUploadAlert = document.getElementById('wishVideoUploadAlert');
-      const wishVideoAlertTitle = document.getElementById('wishVideoAlertTitle');
-      const wishVideoAlertMsg = document.getElementById('wishVideoAlertMsg');
-      const wishVideoAlertIcon = document.getElementById('wishVideoAlertIcon');
-      const wishVideoAlertClose = document.getElementById('wishVideoAlertClose');
-
-      function updateWishVideoProgressUI({ visible = true, title = 'Processing Video...', meta = '', pct = 0, step = 1, isSuccess = false }) {
-        if (!wishVideoUploadProgressBox) return;
-        if (!visible) {
-          wishVideoUploadProgressBox.style.display = 'none';
-          wishVideoUploadProgressBox.classList.remove('upload-complete');
-          return;
-        }
-        wishVideoUploadProgressBox.style.display = 'block';
-        if (isSuccess) {
-          wishVideoUploadProgressBox.classList.add('upload-complete');
-        } else {
-          wishVideoUploadProgressBox.classList.remove('upload-complete');
-        }
-
-        if (wishVideoUploadAlert && !isSuccess) wishVideoUploadAlert.style.display = 'none';
-
-        if (wishVideoProgressTitle) wishVideoProgressTitle.textContent = title;
-        if (wishVideoProgressMeta) wishVideoProgressMeta.textContent = meta;
-        
-        const roundedPct = Math.min(100, Math.max(0, Math.round(pct)));
-        if (wishVideoProgressPct) wishVideoProgressPct.textContent = `${roundedPct}%`;
-        
-        if (wishVideoProgressBarFill) {
-          wishVideoProgressBarFill.style.width = `${roundedPct}%`;
-          if (isSuccess || roundedPct >= 100) {
-            wishVideoProgressBarFill.classList.add('success');
-          } else {
-            wishVideoProgressBarFill.classList.remove('success');
-          }
-        }
-
-        if (wishVideoStep1 && wishVideoStep2 && wishVideoStep3) {
-          wishVideoStep1.className = 'upload-step-item' + (step >= 1 ? (step > 1 || isSuccess ? ' completed' : ' active') : '');
-          wishVideoStep2.className = 'upload-step-item' + (step >= 2 ? (step > 2 || isSuccess ? ' completed' : ' active') : '');
-          wishVideoStep3.className = 'upload-step-item' + (step >= 3 ? (isSuccess || roundedPct >= 100 ? ' completed' : ' active') : '');
-        }
-      }
-
-      function showWishVideoAlert({ type = 'error', title = 'Upload Issue', msg = '' }) {
-        if (!wishVideoUploadAlert) return;
-        wishVideoUploadAlert.className = `upload-status-alert ${type === 'success' ? 'is-success' : 'is-error'}`;
-        if (wishVideoAlertIcon) {
-          wishVideoAlertIcon.innerHTML = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-triangle-exclamation"></i>';
-        }
-        if (wishVideoAlertTitle) wishVideoAlertTitle.textContent = title;
-        if (wishVideoAlertMsg) wishVideoAlertMsg.textContent = msg;
-        wishVideoUploadAlert.style.display = 'flex';
-      }
-
-      function hideWishVideoAlert() {
-        if (wishVideoUploadAlert) wishVideoUploadAlert.style.display = 'none';
-      }
-
-      if (wishVideoAlertClose) {
-        wishVideoAlertClose.addEventListener('click', hideWishVideoAlert);
-      }
-
-      function extractYouTubeId(url) {
-        if (!url) return null;
-        let str = url.toString().trim();
-        const iframeMatch = str.match(/src=["']([^"']+)["']/i);
-        if (iframeMatch && iframeMatch[1]) str = iframeMatch[1].trim();
-        str = str.replace(/^[<"']+|[>"']+$/g, '');
-
-        let match = str.match(/(?:youtube\.com|youtu\.be)\/shorts\/([a-zA-Z0-9_-]{11})/i);
-        if (match && match[1]) return match[1];
-
-        match = str.match(/(?:youtube\.com|youtu\.be)\/live\/([a-zA-Z0-9_-]{11})/i);
-        if (match && match[1]) return match[1];
-
-        match = str.match(/(?:youtube\.com\/(?:embed|v)|youtu\.be|youtube-nocookie\.com\/embed)\/([a-zA-Z0-9_-]{11})/i);
-        if (match && match[1]) return match[1];
-
-        match = str.match(/[?&]v=([a-zA-Z0-9_-]{11})/i);
-        if (match && match[1]) return match[1];
-
-        match = str.match(/(?:https?:\/\/)?(?:www\.|m\.|music\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?.*v=|embed\/|v\/|shorts\/|live\/)?([a-zA-Z0-9_-]{11})/i);
-        if (match && match[1]) return match[1];
-
-        return null;
-      }
-
-      function parseVideoEmbed(url, inLightbox = false) {
-        if (!url) return '';
-        const clean = url.toString().trim();
-
-        // 1. YouTube standard watch, youtu.be, shorts, live, embed, mobile, music
-        const ytId = extractYouTubeId(clean);
-        if (ytId) {
-          const embedUrl = `https://www.youtube.com/embed/${ytId}?autoplay=${inLightbox ? 1 : 0}&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
-          const watchUrl = `https://www.youtube.com/watch?v=${ytId}`;
-          return `
-            <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
-              <iframe src="${embedUrl}" 
-                      title="YouTube Video Player"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                      allowfullscreen 
-                      loading="lazy" 
-                      referrerpolicy="strict-origin-when-cross-origin"
-                      style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;">
-              </iframe>
-              <a href="${watchUrl}" target="_blank" rel="noopener noreferrer" class="yt-direct-pill" title="Watch directly on YouTube" style="position:absolute; bottom:6px; right:6px; z-index:4; display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-weight:700; padding:3px 8px; border-radius:6px; background:rgba(0,0,0,0.78); color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(4px); transition:all 0.2s ease;">
-                <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube ↗
-              </a>
-            </div>
-          `;
-        }
-
-        // 2. Vimeo
-        if (clean.includes('vimeo.com/')) {
-          const vMatch = clean.match(/vimeo\.com\/(?:video\/)?([0-9]+)/i);
-          const vId = vMatch ? vMatch[1] : clean.split('vimeo.com/')[1].split('?')[0].split('/')[0].split('&')[0];
-          if (vId) {
-            return `
-              <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
-                <iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;"></iframe>
-              </div>
-            `;
-          }
-        }
-
-        // 3. Google Drive Video Link (all variants: /file/d/, open?id=, uc?id=, thumbnail?id=, googleusercontent.com/d/, docs.google.com)
-        if (clean.includes('drive.google.com') || clean.includes('docs.google.com') || clean.includes('googleusercontent.com')) {
-          let gId = '';
-          const m1 = clean.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-          const m2 = clean.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-          const m3 = clean.match(/\/d\/([a-zA-Z0-9_-]+)/);
-          const m4 = clean.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
-          if (m1 && m1[1]) gId = m1[1];
-          else if (m2 && m2[1]) gId = m2[1];
-          else if (m3 && m3[1]) gId = m3[1];
-          else if (m4 && m4[1]) gId = m4[1];
-
-          if (gId) {
-            const drivePreviewUrl = `https://drive.google.com/file/d/${gId}/preview`;
-            const driveViewUrl = `https://drive.google.com/file/d/${gId}/view`;
-            const driveDownloadUrl = `https://drive.google.com/uc?export=download&id=${gId}`;
-            return `
-              <div class="video-embed-container gdrive-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
-                <iframe src="${drivePreviewUrl}" 
-                        title="Google Drive Video Player"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen 
-                        loading="lazy" 
-                        style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;">
-                </iframe>
-                <div class="gdrive-quick-actions" style="position:absolute; bottom:6px; left:6px; right:6px; z-index:4; display:flex; align-items:center; justify-content:space-between; gap:6px; pointer-events:auto;">
-                  <a href="${driveViewUrl}" target="_blank" rel="noopener noreferrer" class="gdrive-pill-link" title="Open directly in Google Drive" style="display:inline-flex; align-items:center; gap:5px; font-size:0.7rem; font-weight:700; padding:4px 9px; border-radius:8px; background:rgba(9, 3, 18, 0.88); color:#ffd700; text-decoration:none; border:1px solid rgba(255, 215, 0, 0.4); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); transition:all 0.2s ease;">
-                    <i class="fa-brands fa-google-drive" style="color:#34a853;"></i> Drive ↗
-                  </a>
-                  <a href="${driveDownloadUrl}" target="_blank" rel="noopener noreferrer" class="gdrive-pill-link" title="Download / Direct Stream Video" style="display:inline-flex; align-items:center; gap:5px; font-size:0.7rem; font-weight:700; padding:4px 9px; border-radius:8px; background:rgba(9, 3, 18, 0.88); color:#ffffff; text-decoration:none; border:1px solid rgba(255, 255, 255, 0.25); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); transition:all 0.2s ease;">
-                    <i class="fa-solid fa-cloud-arrow-down" style="color:#ff4081;"></i> Download
-                  </a>
-                </div>
-              </div>
-            `;
-          }
-        }
-
-        // 4. Direct MP4 / WebM / QuickTime MOV / MKV / AVI / WMV / 3GP / OGG / Base64 Data URL
-        let videoMime = 'video/mp4';
-        if (clean.startsWith('data:')) {
-          const semi = clean.indexOf(';');
-          if (semi > 5) videoMime = clean.substring(5, semi);
-        } else {
-          videoMime = getMimeTypeForVideoFile(clean);
-        }
-
-        return `
-          <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
-            <video controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain; border-radius:12px; background:#000; display:block;">
-              <source src="${clean}" type="${videoMime}">
-              <source src="${clean}">
-              Your browser does not support playing this ${videoMime} video directly. <a href="${clean}" download="video" target="_blank" style="color:var(--primary-pink, #ff4081);">Download Video</a>
-            </video>
-          </div>
-        `;
-      }
-
-      function updateVideoPreview(val) {
-        if (!videoPreviewBox || !videoPreviewContainer) return;
-        selectedMediaData = val;
-        selectedMediaType = 'video';
-        videoPreviewContainer.innerHTML = `<div style="height:150px; border-radius:10px; overflow:hidden;">${parseVideoEmbed(val)}</div>`;
-        videoPreviewBox.style.display = 'inline-block';
-      }
-
-      let selectedWishVideoFile = null;
-
-      if (wishVideoInput) {
-        wishVideoInput.addEventListener('change', async (e) => {
-          const file = e.target.files && e.target.files[0];
-          if (file) {
-            selectedWishVideoFile = file;
-            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
-            if (file.size > 30 * 1024 * 1024) {
-              showWishVideoAlert({
-                type: 'error',
-                title: 'Video File Exceeds 30MB Limit',
-                msg: `Your selected video is ${fileSizeMB} MB. Please choose a video under 30MB, or paste a Google Drive / YouTube link in the URL field.`
-              });
-              wishVideoInput.value = '';
-              updateWishVideoProgressUI({ visible: false });
-              return;
-            }
-
-            hideWishVideoAlert();
-            updateWishVideoProgressUI({
-              visible: true,
-              title: `Reading Video File (${fileSizeMB} MB)...`,
-              meta: `Preparing ${file.name} for high-speed transmission...`,
-              pct: 15,
-              step: 1
-            });
-
-            // Instant local blob preview
-            const blobUrl = URL.createObjectURL(file);
-            updateVideoPreview(blobUrl);
-
-            try {
-              const base64Data = await readFileAsBase64(file, (filePct, loaded, total) => {
-                const mappedPct = Math.min(95, 15 + Math.round(filePct * 0.8));
-                const loadedMB = loaded ? (loaded / (1024 * 1024)).toFixed(1) : ((file.size * filePct / 100) / (1024 * 1024)).toFixed(1);
-                updateWishVideoProgressUI({
-                  visible: true,
-                  title: filePct < 100 ? `Reading Video (${filePct}%)...` : 'Encoding Video Stream...',
-                  meta: `${file.name} • ${loadedMB} MB / ${fileSizeMB} MB (${filePct}%)`,
-                  pct: mappedPct,
-                  step: filePct < 100 ? 1 : 2
-                });
-              });
-
-              selectedMediaData = base64Data;
-              selectedMediaType = 'video';
-              if (wishVideoUrl) wishVideoUrl.value = '';
-
-              updateWishVideoProgressUI({
-                visible: true,
-                title: 'Video Ready to Upload & Pin ✨',
-                meta: `${file.name} • ${fileSizeMB} MB • Encoded & Ready to Consecrate`,
-                pct: 100,
-                step: 2
-              });
-            } catch (err) {
-              console.warn('Base64 encoding error:', err);
-              showWishVideoAlert({
-                type: 'error',
-                title: 'Video Read Failed',
-                msg: 'Unable to process the video from your device. Please try another MP4, WebM, or MOV video.'
-              });
-              updateWishVideoProgressUI({ visible: false });
-            }
-          }
-        });
-      }
-
-      if (wishVideoUrl) {
-        wishVideoUrl.addEventListener('input', (e) => {
-          const val = e.target.value.trim();
-          if (val) {
-            hideWishVideoAlert();
-            updateWishVideoProgressUI({ visible: false });
-            updateVideoPreview(val);
-            if (wishVideoInput) wishVideoInput.value = '';
-          }
-        });
-      }
-
-      if (removeVideoBtn) {
-        removeVideoBtn.addEventListener('click', () => {
-          if (wishVideoInput) wishVideoInput.value = '';
-          if (wishVideoUrl) wishVideoUrl.value = '';
-          if (videoPreviewBox) videoPreviewBox.style.display = 'none';
-          if (videoPreviewContainer) videoPreviewContainer.innerHTML = '';
-          selectedMediaData = '';
-          selectedMediaType = 'none';
-          hideWishVideoAlert();
-          updateWishVideoProgressUI({ visible: false });
         });
       }
 
@@ -4566,38 +4145,25 @@
         });
       });
 
-      // 6. QUICK MEDIA MODAL STUDIO (ADD IMAGE / VIDEO FROM ANYWHERE)
+      // 6. QUICK MEDIA MODAL STUDIO (ADD PHOTO FROM ANYWHERE)
       const quickMediaModal = document.getElementById('quickMediaModal');
       const navAddMediaBtn = document.getElementById('navAddMediaBtn');
       const heroAddMediaBtn = document.getElementById('heroAddMediaBtn');
-      const addMemoryPhotoBtn = document.getElementById('addMemoryPhotoBtn');
-      const addMemoryVideoBtn = document.getElementById('addMemoryVideoBtn');
       const quickAddPhotoBtn = document.getElementById('quickAddPhotoBtn');
-      const quickAddVideoBtn = document.getElementById('quickAddVideoBtn');
       const closeQuickMediaModal = document.getElementById('closeQuickMediaModal');
-
-      const quickModePhotoBtn = document.getElementById('quickModePhotoBtn');
-      const quickModeVideoBtn = document.getElementById('quickModeVideoBtn');
-      const quickImageInputs = document.getElementById('quickImageInputs');
-      const quickVideoInputs = document.getElementById('quickVideoInputs');
       const quickMediaForm = document.getElementById('quickMediaForm');
 
       const modalPhotoFileInput = document.getElementById('modalPhotoFileInput');
+      const modalPhotoDropzone = document.getElementById('modalPhotoDropzone');
       const modalPhotoUrlInput = document.getElementById('modalPhotoUrlInput');
       const modalPhotoPreview = document.getElementById('modalPhotoPreview');
       const modalPhotoPreviewImg = document.getElementById('modalPhotoPreviewImg');
+      const removeModalPhotoBtn = document.getElementById('removeModalPhotoBtn');
 
-      const modalVideoFileInput = document.getElementById('modalVideoFileInput');
-      const modalVideoUrlInput = document.getElementById('modalVideoUrlInput');
-      const modalVideoPreview = document.getElementById('modalVideoPreview');
-      const modalVideoPreviewPlayer = document.getElementById('modalVideoPreviewPlayer');
-
-      let modalMediaType = 'photo';
       let modalMediaData = '';
 
-      function openQuickMedia(mode = 'photo', pushHistory = true) {
+      function openQuickMedia(pushHistory = true) {
         if (!quickMediaModal) return;
-        setQuickMediaMode(mode);
         if (!quickMediaModal.classList.contains('active')) {
           quickMediaModal.classList.add('active');
           if (pushHistory) {
@@ -4617,7 +4183,7 @@
         if (quickMediaForm) quickMediaForm.reset();
         modalMediaData = '';
         if (modalPhotoPreview) modalPhotoPreview.style.display = 'none';
-        if (modalVideoPreview) modalVideoPreview.style.display = 'none';
+        if (modalPhotoPreviewImg) modalPhotoPreviewImg.src = '';
 
         if (wasActive && !fromHistory) {
           if (window.location.hash === '#add-media' || (history.state && history.state.modal === 'quickMedia')) {
@@ -4630,27 +4196,9 @@
         }
       }
 
-      function setQuickMediaMode(mode) {
-        modalMediaType = mode;
-        if (mode === 'photo') {
-          if (quickModePhotoBtn) quickModePhotoBtn.classList.add('active');
-          if (quickModeVideoBtn) quickModeVideoBtn.classList.remove('active');
-          if (quickImageInputs) quickImageInputs.style.display = 'block';
-          if (quickVideoInputs) quickVideoInputs.style.display = 'none';
-        } else {
-          if (quickModePhotoBtn) quickModePhotoBtn.classList.remove('active');
-          if (quickModeVideoBtn) quickModeVideoBtn.classList.add('active');
-          if (quickImageInputs) quickImageInputs.style.display = 'none';
-          if (quickVideoInputs) quickVideoInputs.style.display = 'block';
-        }
-      }
-
-      if (navAddMediaBtn) navAddMediaBtn.addEventListener('click', () => openQuickMedia('photo'));
-      if (heroAddMediaBtn) heroAddMediaBtn.addEventListener('click', () => openQuickMedia('photo'));
-      if (addMemoryPhotoBtn) addMemoryPhotoBtn.addEventListener('click', () => openQuickMedia('photo'));
-      if (addMemoryVideoBtn) addMemoryVideoBtn.addEventListener('click', () => openQuickMedia('video'));
-      if (quickAddPhotoBtn) quickAddPhotoBtn.addEventListener('click', () => openQuickMedia('photo'));
-      if (quickAddVideoBtn) quickAddVideoBtn.addEventListener('click', () => openQuickMedia('video'));
+      if (navAddMediaBtn) navAddMediaBtn.addEventListener('click', () => openQuickMedia());
+      if (heroAddMediaBtn) heroAddMediaBtn.addEventListener('click', () => openQuickMedia());
+      if (quickAddPhotoBtn) quickAddPhotoBtn.addEventListener('click', () => openQuickMedia());
       if (closeQuickMediaModal) closeQuickMediaModal.addEventListener('click', closeQuickMedia);
 
       if (quickMediaModal) {
@@ -4659,21 +4207,25 @@
         });
       }
 
-      if (quickModePhotoBtn) quickModePhotoBtn.addEventListener('click', () => setQuickMediaMode('photo'));
-      if (quickModeVideoBtn) quickModeVideoBtn.addEventListener('click', () => setQuickMediaMode('video'));
+      function handleModalPhotoFileSelection(file) {
+        if (!file) return;
+        processImageFile(file, (dataUrl) => {
+          modalMediaData = dataUrl;
+          if (modalPhotoPreviewImg) modalPhotoPreviewImg.src = dataUrl;
+          if (modalPhotoPreview) modalPhotoPreview.style.display = 'inline-block';
+          if (modalPhotoUrlInput) modalPhotoUrlInput.value = '';
+        });
+      }
 
       if (modalPhotoFileInput) {
         modalPhotoFileInput.addEventListener('change', (e) => {
           const file = e.target.files && e.target.files[0];
-          if (file) {
-            processImageFile(file, (dataUrl) => {
-              modalMediaData = dataUrl;
-              if (modalPhotoPreviewImg) modalPhotoPreviewImg.src = dataUrl;
-              if (modalPhotoPreview) modalPhotoPreview.style.display = 'block';
-              if (modalPhotoUrlInput) modalPhotoUrlInput.value = '';
-            });
-          }
+          if (file) handleModalPhotoFileSelection(file);
         });
+      }
+
+      if (modalPhotoDropzone && modalPhotoFileInput) {
+        setupDropzone(modalPhotoDropzone, modalPhotoFileInput, handleModalPhotoFileSelection);
       }
 
       if (modalPhotoUrlInput) {
@@ -4682,168 +4234,21 @@
           if (val) {
             modalMediaData = val;
             if (modalPhotoPreviewImg) modalPhotoPreviewImg.src = val;
-            if (modalPhotoPreview) modalPhotoPreview.style.display = 'block';
+            if (modalPhotoPreview) modalPhotoPreview.style.display = 'inline-block';
             if (modalPhotoFileInput) modalPhotoFileInput.value = '';
           }
         });
       }
 
-      // Modal Video Upload Progress Elements
-      const modalVideoUploadProgressBox = document.getElementById('modalVideoUploadProgressBox');
-      const modalVideoProgressTitle = document.getElementById('modalVideoProgressTitle');
-      const modalVideoProgressMeta = document.getElementById('modalVideoProgressMeta');
-      const modalVideoProgressPct = document.getElementById('modalVideoProgressPct');
-      const modalVideoProgressBarFill = document.getElementById('modalVideoProgressBarFill');
-      const modalVideoStep1 = document.getElementById('modalVideoStep1');
-      const modalVideoStep2 = document.getElementById('modalVideoStep2');
-      const modalVideoStep3 = document.getElementById('modalVideoStep3');
-
-      const modalVideoUploadAlert = document.getElementById('modalVideoUploadAlert');
-      const modalVideoAlertTitle = document.getElementById('modalVideoAlertTitle');
-      const modalVideoAlertMsg = document.getElementById('modalVideoAlertMsg');
-      const modalVideoAlertIcon = document.getElementById('modalVideoAlertIcon');
-      const modalVideoAlertClose = document.getElementById('modalVideoAlertClose');
-
-      function updateModalVideoProgressUI({ visible = true, title = 'Processing Video...', meta = '', pct = 0, step = 1, isSuccess = false }) {
-        if (!modalVideoUploadProgressBox) return;
-        if (!visible) {
-          modalVideoUploadProgressBox.style.display = 'none';
-          modalVideoUploadProgressBox.classList.remove('upload-complete');
-          return;
-        }
-        modalVideoUploadProgressBox.style.display = 'block';
-        if (isSuccess) {
-          modalVideoUploadProgressBox.classList.add('upload-complete');
-        } else {
-          modalVideoUploadProgressBox.classList.remove('upload-complete');
-        }
-
-        if (modalVideoUploadAlert && !isSuccess) modalVideoUploadAlert.style.display = 'none';
-
-        if (modalVideoProgressTitle) modalVideoProgressTitle.textContent = title;
-        if (modalVideoProgressMeta) modalVideoProgressMeta.textContent = meta;
-        
-        const roundedPct = Math.min(100, Math.max(0, Math.round(pct)));
-        if (modalVideoProgressPct) modalVideoProgressPct.textContent = `${roundedPct}%`;
-        
-        if (modalVideoProgressBarFill) {
-          modalVideoProgressBarFill.style.width = `${roundedPct}%`;
-          if (isSuccess || roundedPct >= 100) {
-            modalVideoProgressBarFill.classList.add('success');
-          } else {
-            modalVideoProgressBarFill.classList.remove('success');
-          }
-        }
-
-        if (modalVideoStep1 && modalVideoStep2 && modalVideoStep3) {
-          modalVideoStep1.className = 'upload-step-item' + (step >= 1 ? (step > 1 || isSuccess ? ' completed' : ' active') : '');
-          modalVideoStep2.className = 'upload-step-item' + (step >= 2 ? (step > 2 || isSuccess ? ' completed' : ' active') : '');
-          modalVideoStep3.className = 'upload-step-item' + (step >= 3 ? (isSuccess || roundedPct >= 100 ? ' completed' : ' active') : '');
-        }
-      }
-
-      function showModalVideoAlert({ type = 'error', title = 'Upload Issue', msg = '' }) {
-        if (!modalVideoUploadAlert) return;
-        modalVideoUploadAlert.className = `upload-status-alert ${type === 'success' ? 'is-success' : 'is-error'}`;
-        if (modalVideoAlertIcon) {
-          modalVideoAlertIcon.innerHTML = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-triangle-exclamation"></i>';
-        }
-        if (modalVideoAlertTitle) modalVideoAlertTitle.textContent = title;
-        if (modalVideoAlertMsg) modalVideoAlertMsg.textContent = msg;
-        modalVideoUploadAlert.style.display = 'flex';
-      }
-
-      function hideModalVideoAlert() {
-        if (modalVideoUploadAlert) modalVideoUploadAlert.style.display = 'none';
-      }
-
-      if (modalVideoAlertClose) {
-        modalVideoAlertClose.addEventListener('click', hideModalVideoAlert);
-      }
-
-      let selectedModalVideoFile = null;
-
-      if (modalVideoFileInput) {
-        modalVideoFileInput.addEventListener('change', async (e) => {
-          const file = e.target.files && e.target.files[0];
-          if (file) {
-            selectedModalVideoFile = file;
-            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
-            if (file.size > 30 * 1024 * 1024) {
-              showModalVideoAlert({
-                type: 'error',
-                title: 'Video File Exceeds 30MB Limit',
-                msg: `Your selected video is ${fileSizeMB} MB. Please choose a video under 30MB, or paste a Google Drive / YouTube link in the URL field.`
-              });
-              modalVideoFileInput.value = '';
-              updateModalVideoProgressUI({ visible: false });
-              return;
-            }
-
-            hideModalVideoAlert();
-            updateModalVideoProgressUI({
-              visible: true,
-              title: `Reading Video File (${fileSizeMB} MB)...`,
-              meta: `Preparing ${file.name} for high-speed transmission...`,
-              pct: 15,
-              step: 1
-            });
-
-            const blobUrl = URL.createObjectURL(file);
-            if (modalVideoPreview) {
-              modalVideoPreview.innerHTML = `<video src="${blobUrl}" controls style="max-height:160px; border-radius:12px; width:100%; background:#000;"></video>`;
-              modalVideoPreview.style.display = 'block';
-            }
-
-            try {
-              const base64Data = await readFileAsBase64(file, (filePct, loaded, total) => {
-                const mappedPct = Math.min(95, 15 + Math.round(filePct * 0.8));
-                const loadedMB = loaded ? (loaded / (1024 * 1024)).toFixed(1) : ((file.size * filePct / 100) / (1024 * 1024)).toFixed(1);
-                updateModalVideoProgressUI({
-                  visible: true,
-                  title: filePct < 100 ? `Reading Video (${filePct}%)...` : 'Encoding Video Stream...',
-                  meta: `${file.name} • ${loadedMB} MB / ${fileSizeMB} MB (${filePct}%)`,
-                  pct: mappedPct,
-                  step: filePct < 100 ? 1 : 2
-                });
-              });
-
-              modalMediaData = base64Data;
-              if (modalVideoUrlInput) modalVideoUrlInput.value = '';
-
-              updateModalVideoProgressUI({
-                visible: true,
-                title: 'Video Ready to Upload & Publish ✨',
-                meta: `${file.name} • ${fileSizeMB} MB • Encoded & Ready`,
-                pct: 100,
-                step: 2
-              });
-            } catch (err) {
-              console.warn('Modal video base64 error:', err);
-              showModalVideoAlert({
-                type: 'error',
-                title: 'Video Read Failed',
-                msg: 'Unable to process the video from your device. Please try another MP4, WebM, or MOV video.'
-              });
-              updateModalVideoProgressUI({ visible: false });
-            }
-          }
-        });
-      }
-
-      if (modalVideoUrlInput) {
-        modalVideoUrlInput.addEventListener('input', (e) => {
-          const val = e.target.value.trim();
-          if (val) {
-            hideModalVideoAlert();
-            updateModalVideoProgressUI({ visible: false });
-            modalMediaData = val;
-            if (modalVideoPreview) {
-              modalVideoPreview.innerHTML = `<div style="height:150px; border-radius:10px; overflow:hidden;">${parseVideoEmbed(val)}</div>`;
-              modalVideoPreview.style.display = 'block';
-            }
-            if (modalVideoFileInput) modalVideoFileInput.value = '';
-          }
+      if (removeModalPhotoBtn) {
+        removeModalPhotoBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (modalPhotoFileInput) modalPhotoFileInput.value = '';
+          if (modalPhotoUrlInput) modalPhotoUrlInput.value = '';
+          if (modalPhotoPreview) modalPhotoPreview.style.display = 'none';
+          if (modalPhotoPreviewImg) modalPhotoPreviewImg.src = '';
+          modalMediaData = '';
         });
       }
 
@@ -4857,45 +4262,10 @@
           const sender = document.getElementById('quickSenderName')?.value.trim() || 'Loving Well-wisher';
           const caption = document.getElementById('quickCaption')?.value.trim() || 'Our unforgettable memory 💖';
 
-          const hasVideoFile = (modalVideoFileInput && modalVideoFileInput.files && modalVideoFileInput.files[0]) || selectedModalVideoFile;
-          const isVideoUpload = modalMediaType === 'video' && (hasVideoFile || (modalMediaData && modalMediaData.startsWith('data:video')));
-
-          // Ensure Base64 conversion is fully resolved before dispatch
-          if (isVideoUpload && (!modalMediaData || !modalMediaData.startsWith('data:video')) && hasVideoFile) {
-            const fileObj = (modalVideoFileInput && modalVideoFileInput.files && modalVideoFileInput.files[0]) || selectedModalVideoFile;
-            const fileSizeMB = (fileObj.size / (1024 * 1024)).toFixed(1);
-            updateModalVideoProgressUI({
-              visible: true,
-              title: `Encoding Video (${fileSizeMB} MB)...`,
-              meta: 'Preparing data stream for cloud transmission...',
-              pct: 20,
-              step: 2
-            });
-            try {
-              modalMediaData = await readFileAsBase64(fileObj);
-            } catch (fileErr) {
-              console.warn('Video encoding failed:', fileErr);
-              showModalVideoAlert({
-                type: 'error',
-                title: 'Encoding Issue',
-                msg: 'Failed to encode video file. Please try another file.'
-              });
-              return;
-            }
-          } else if (modalMediaType === 'photo' && modalPhotoFileInput && modalPhotoFileInput.files && modalPhotoFileInput.files[0]) {
-            if (!modalMediaData || !modalMediaData.startsWith('data:image')) {
-              try {
-                modalMediaData = await readFileAsBase64(modalPhotoFileInput.files[0]);
-              } catch (photoErr) {
-                console.warn('Photo encoding failed:', photoErr);
-              }
-            }
-          }
-
           const mediaUrl = modalMediaData;
 
           if (!mediaUrl) {
-            alert('Please select a photo/video file or paste a media link.');
+            alert('Please select a photo file or paste an image link.');
             return;
           }
 
@@ -4908,7 +4278,7 @@
             message: caption,
             text: caption,
             color: 'gold',
-            mediaType: modalMediaType,
+            mediaType: 'photo',
             mediaUrl: mediaUrl,
             mediaData: mediaUrl,
             likes: 1,
@@ -4922,326 +4292,53 @@
           saveWishesToLocal(allWishes);
 
           renderStickyNotes();
-          renderMemoriesGrid();
 
-          // Dispatches to Google Sheets & Drive asynchronously
-          if (isVideoUpload) {
-            const fileObj = (modalVideoFileInput && modalVideoFileInput.files && modalVideoFileInput.files[0]) || selectedModalVideoFile;
-            const fileSizeMB = fileObj ? (fileObj.size / (1024 * 1024)).toFixed(1) : ((mediaUrl.length * 0.75) / (1024 * 1024)).toFixed(1);
-
-            updateModalVideoProgressUI({
-              visible: true,
-              title: `Uploading Video (${fileSizeMB} MB) to Google Drive...`,
-              meta: 'Transmitting video chunks to Queen Nishika\'s cloud folder...',
-              pct: 4,
-              step: 3
-            });
-
-            if (publishBtn) {
-              publishBtn.disabled = true;
-              publishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video (${fileSizeMB} MB)... (0%)</span>`;
-            }
-
-            uploadVideoChunks({
-              base64Data: mediaUrl,
-              author: sender,
-              caption: caption,
-              celebrant: 'Nishika',
-              dedicatedBy: 'Dilip',
-              color: 'gold',
-              tag: 'Video Reel 🎬',
-              onProgress: (pct, currentChunk, totalChunks, endBytes, totalBytes) => {
-                const transMB = ((endBytes * 0.75) / (1024 * 1024)).toFixed(1);
-                const totMB = ((totalBytes * 0.75) / (1024 * 1024)).toFixed(1);
-                updateModalVideoProgressUI({
-                  visible: true,
-                  title: currentChunk < totalChunks 
-                    ? `Uploading Video (Part ${currentChunk} of ${totalChunks})...` 
-                    : 'Finalizing Video & Saving to Google Drive...',
-                  meta: `Transmitted ${transMB} MB / ${totMB} MB (${pct}%)`,
-                  pct: Math.min(100, Math.max(4, pct)),
-                  step: 3
-                });
-
-                if (publishBtn) {
-                  publishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video (${pct}% • Part ${currentChunk}/${totalChunks})...</span>`;
-                }
-              },
-              onSuccess: () => {
-                updateModalVideoProgressUI({
-                  visible: true,
-                  title: '🎉 Video Upload Complete! (100%)',
-                  meta: `Successfully saved ${fileSizeMB} MB video to Google Drive!`,
-                  pct: 100,
-                  step: 3,
-                  isSuccess: true
-                });
-
-                showModalVideoAlert({
-                  type: 'success',
-                  title: '✨ Video Dedication Uploaded! 👑',
-                  msg: `Your ${fileSizeMB} MB video has been consecrated to Google Drive and logged on the celebration wall!`
-                });
-
-                if (typeof showToast === 'function') {
-                  showToast(`🎉 Video upload complete! (${fileSizeMB} MB saved to Google Drive) 🎬✨`);
-                }
-
-                if (publishBtn) {
-                  publishBtn.disabled = false;
-                  publishBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Published Successfully! ✨</span>';
-                }
-
-                setTimeout(() => {
-                  closeQuickMedia();
-                  const wallSec = document.getElementById('stickyWishWallSection');
-                  if (wallSec) wallSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  if (publishBtn) {
-                    publishBtn.innerHTML = '<i class="fa-solid fa-sparkles"></i> <span>Publish to Celebration 👑</span>';
-                  }
-                }, 4000);
-              },
-              onError: () => {
-                showModalVideoAlert({
-                  type: 'error',
-                  title: 'Cloud Sync Notice',
-                  msg: 'Network timeout or offline, but your dedication is 100% saved locally on this device! ✨'
-                });
-                if (publishBtn) {
-                  publishBtn.disabled = false;
-                  publishBtn.innerHTML = '<i class="fa-solid fa-sparkles"></i> <span>Publish to Celebration 👑</span>';
-                }
-              }
-            });
-          } else {
-            if (publishBtn) {
-              publishBtn.disabled = true;
-              publishBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Publishing Media...</span>';
-            }
-
-            try {
-              fetch(GOOGLE_SHEET_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({
-                  type: modalMediaType === 'video' ? 'video' : 'photo',
-                  mediaType: modalMediaType,
-                  name: sender,
-                  author: sender,
-                  caption: caption,
-                  message: caption,
-                  text: caption,
-                  color: 'gold',
-                  dataUrl: mediaUrl,
-                  mediaData: mediaUrl,
-                  mediaUrl: mediaUrl,
-                  videoUrl: mediaUrl,
-                  celebrant: 'Nishika',
-                  dedicatedBy: 'Dilip',
-                  timestamp: new Date().toISOString(),
-                  localTime: new Date().toLocaleString()
-                })
-              });
-            } catch(err) {
-              console.warn('Cloud sync error in modal:', err);
-            }
-
-            if (publishBtn) {
-              publishBtn.disabled = false;
-              publishBtn.innerHTML = '<i class="fa-solid fa-sparkles"></i> <span>Publish to Celebration 👑</span>';
-            }
-
-            setTimeout(() => {
-              closeQuickMedia();
-              const wallSec = document.getElementById('stickyWishWallSection');
-              if (wallSec) wallSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 300);
+          if (publishBtn) {
+            publishBtn.disabled = true;
+            publishBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Publishing Photo...</span>';
           }
+
+          try {
+            fetch(GOOGLE_SHEET_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({
+                type: 'photo',
+                mediaType: 'photo',
+                name: sender,
+                author: sender,
+                caption: caption,
+                message: caption,
+                text: caption,
+                color: 'gold',
+                dataUrl: mediaUrl,
+                mediaData: mediaUrl,
+                mediaUrl: mediaUrl,
+                celebrant: 'Nishika',
+                dedicatedBy: 'Dilip',
+                timestamp: new Date().toISOString(),
+                localTime: new Date().toLocaleString()
+              })
+            });
+          } catch(err) {
+            console.warn('Cloud sync error in modal:', err);
+          }
+
+          if (publishBtn) {
+            publishBtn.disabled = false;
+            publishBtn.innerHTML = '<i class="fa-solid fa-sparkles"></i> <span>Publish to Celebration 👑</span>';
+          }
+
+          closeQuickMedia();
+          const wallSec = document.getElementById('stickyWishWallSection');
+          if (wallSec) wallSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       }
 
       // 7. GOOGLE SHEETS CLOUD INTEGRATION & STICKY WISH WALL ENGINE
       const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec';
-
-      // High-Speed Direct & Sequential Chunked Video Uploader
-      async function uploadVideoChunks({
-        url = GOOGLE_SHEET_URL,
-        base64Data,
-        author,
-        caption,
-        celebrant = 'Nishika',
-        dedicatedBy = 'Dilip',
-        color = 'gold',
-        tag = 'Video Reel 🎬',
-        fileName,
-        onProgress,
-        onSuccess,
-        onError
-      }) {
-        const targetUrl = url || GOOGLE_SHEET_URL;
-        if (!targetUrl || !targetUrl.startsWith('http')) {
-          if (typeof onError === 'function') onError(new Error('No Google Sheet Webhook URL configured'));
-          return { success: false, reason: 'no_url' };
-        }
-
-        const cleanData = base64Data || '';
-        const totalChars = cleanData.length;
-
-        let mimeType = 'video/mp4';
-        if (cleanData.startsWith('data:')) {
-          const semi = cleanData.indexOf(';');
-          if (semi > 5) mimeType = cleanData.substring(5, semi);
-        } else if (typeof fileName === 'string' && fileName) {
-          mimeType = getMimeTypeForVideoFile(fileName);
-        }
-
-        // High-speed direct upload for files <= 4MB
-        const DIRECT_UPLOAD_LIMIT = 4 * 1024 * 1024;
-
-        if (totalChars <= DIRECT_UPLOAD_LIMIT) {
-          if (typeof onProgress === 'function') {
-            onProgress(35, 1, 1, Math.round(totalChars * 0.35), totalChars);
-          }
-          
-          try {
-            const payload = {
-              type: 'video',
-              videoUrl: cleanData,
-              dataUrl: cleanData,
-              mediaData: cleanData,
-              mediaUrl: cleanData,
-              mimeType: mimeType,
-              fileName: fileName || ('video_' + Date.now() + '.mp4'),
-              author: author,
-              name: author,
-              caption: caption,
-              message: caption,
-              text: caption,
-              celebrant: celebrant,
-              dedicatedBy: dedicatedBy,
-              color: color,
-              tag: tag,
-              timestamp: new Date().toISOString(),
-              localTime: new Date().toLocaleString()
-            };
-
-            if (typeof onProgress === 'function') {
-              onProgress(70, 1, 1, Math.round(totalChars * 0.7), totalChars);
-            }
-
-            await fetch(targetUrl, {
-              method: 'POST',
-              mode: 'no-cors',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify(payload)
-            });
-
-            if (typeof onProgress === 'function') {
-              onProgress(100, 1, 1, totalChars, totalChars);
-            }
-            if (typeof onSuccess === 'function') {
-              onSuccess();
-            }
-            return { success: true };
-          } catch (err) {
-            console.warn('Direct video upload failed in index:', err);
-            if (typeof onError === 'function') onError(err);
-            return { success: false, error: err };
-          }
-        }
-
-        // For larger files: Robust sequential chunked upload (2.5 MB chunks)
-        const CHUNK_SIZE = 2.5 * 1024 * 1024;
-        const totalChunks = Math.max(1, Math.ceil(totalChars / CHUNK_SIZE));
-        const uploadId = 'up_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
-
-        let completedChars = 0;
-
-        for (let i = 0; i < totalChunks; i++) {
-          if (!navigator.onLine) {
-            const offErr = new Error('Device is offline');
-            if (typeof onError === 'function') onError(offErr);
-            return { success: false, error: offErr };
-          }
-
-          const start = i * CHUNK_SIZE;
-          const end = Math.min(totalChars, start + CHUNK_SIZE);
-          const chunkSlice = cleanData.substring(start, end);
-          const chunkSize = end - start;
-
-          const chunkPayload = {
-            type: 'video_chunk',
-            uploadId: uploadId,
-            chunkIndex: i,
-            totalChunks: totalChunks,
-            chunkData: chunkSlice,
-            mimeType: mimeType,
-            fileName: fileName || ('video_' + uploadId + '.mp4'),
-            author: author,
-            name: author,
-            caption: caption,
-            message: caption,
-            text: caption,
-            celebrant: celebrant,
-            dedicatedBy: dedicatedBy,
-            color: color,
-            tag: tag,
-            timestamp: new Date().toISOString(),
-            localTime: new Date().toLocaleString()
-          };
-
-          let sent = false;
-          let lastErr = null;
-
-          for (let attempt = 1; attempt <= 3; attempt++) {
-            try {
-              const controller = new AbortController();
-              const timeoutId = setTimeout(() => controller.abort(), 60000);
-
-              const currentPct = Math.min(99, Math.round(((completedChars + chunkSize * 0.3) / totalChars) * 100));
-              if (typeof onProgress === 'function') {
-                onProgress(currentPct, i + 1, totalChunks, completedChars, totalChars);
-              }
-
-              await fetch(targetUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(chunkPayload),
-                signal: controller.signal
-              });
-
-              clearTimeout(timeoutId);
-              sent = true;
-              completedChars += chunkSize;
-              const endPct = Math.min(99, Math.round((completedChars / totalChars) * 100));
-              if (typeof onProgress === 'function') {
-                onProgress(endPct, i + 1, totalChunks, completedChars, totalChars);
-              }
-              break;
-            } catch (chunkErr) {
-              lastErr = chunkErr;
-              await new Promise(r => setTimeout(r, 600 * attempt));
-            }
-          }
-
-          if (!sent) {
-            const err = lastErr || new Error(`Failed to upload chunk ${i + 1} of ${totalChunks}`);
-            if (typeof onError === 'function') onError(err);
-            return { success: false, error: err };
-          }
-        }
-
-        if (typeof onProgress === 'function') {
-          onProgress(100, totalChunks, totalChunks, totalChars, totalChars);
-        }
-        if (typeof onSuccess === 'function') {
-          onSuccess();
-        }
-        return { success: true };
-      }
-      const APP_VERSION = '2.1.0';
+      const APP_VERSION = '2.2.0';
       const LOCAL_STORAGE_WISHES_KEY = `eternal_love_sticky_wishes_v${APP_VERSION}`;
 
       // Purge outdated wishes keys from previous versions
@@ -5258,22 +4355,11 @@
         try {
           localStorage.setItem(LOCAL_STORAGE_WISHES_KEY, JSON.stringify(wishesList));
         } catch(e) {
-          console.warn('LocalStorage quota limit reached, saving safe representation:', e);
-          try {
-            const compactList = wishesList.map(w => {
-              if (w.mediaUrl && w.mediaUrl.startsWith('data:video') && w.mediaUrl.length > 500000) {
-                return { ...w, mediaUrl: '' };
-              }
-              return w;
-            });
-            localStorage.setItem(LOCAL_STORAGE_WISHES_KEY, JSON.stringify(compactList));
-          } catch(innerErr) {
-            console.warn('LocalStorage save failed completely:', innerErr);
-          }
+          console.warn('LocalStorage save failed:', e);
         }
       }
 
-      // Default Pre-Populated Royal Dedications with Photos & Videos
+      // Default Pre-Populated Royal Dedications with Photos & Text Wishes
       const DEFAULT_WISHES = [
         {
           id: 'def_1',
@@ -5288,11 +4374,11 @@
         },
         {
           id: 'def_2',
-          name: 'Celestial Rhapsody 🎶',
-          message: 'A heavenly romantic birthday melody dedicated to My Love Nishika! May your 26th year be filled with divine melodies and infinite royal joy! 🎂✨',
+          name: 'Celestial Blessings 🌟',
+          message: 'A heavenly romantic birthday blessing dedicated to My Love Nishika! May your year ahead be filled with celestial wonder, endless smiles, and divine royal joy! 🎂✨',
           color: 'pink',
-          mediaType: 'video',
-          mediaUrl: 'https://www.youtube.com/watch?v=2Vv-BfVoq4g',
+          mediaType: 'photo',
+          mediaUrl: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=900&auto=format&fit=crop&q=80',
           likes: 38,
           isRoyal: false,
           localTime: 'September 2026'
@@ -5314,7 +4400,7 @@
           message: 'Celebrating your grace, kindness, and royal brilliance. May all your celestial dreams turn into reality this year! 🌟✨',
           color: 'sapphire',
           mediaType: 'photo',
-          mediaUrl: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=900&auto=format&fit=crop&q=80',
+          mediaUrl: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=900&auto=format&fit=crop&q=80',
           likes: 34,
           isRoyal: false,
           localTime: 'Anniversary Blessing'
@@ -5324,8 +4410,8 @@
           name: 'Sunset Blessings 🍑',
           message: 'May every sunrise bring you radiant smiles and every sunset bring you peaceful serenity. Happy Birthday My Love Nishika! 🎂🥂',
           color: 'peach',
-          mediaType: 'photo',
-          mediaUrl: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=900&auto=format&fit=crop&q=80',
+          mediaType: 'none',
+          mediaUrl: '',
           likes: 22,
           isRoyal: false,
           localTime: 'Grand Celebration'
@@ -5346,10 +4432,8 @@
       let activeFilter = 'all';
 
       const stickyNotesGrid = document.getElementById('stickyNotesGrid');
-      const memoriesGrid = document.getElementById('memoriesGrid');
       const countAll = document.getElementById('countAll');
       const countPhotos = document.getElementById('countPhotos');
-      const countVideos = document.getElementById('countVideos');
       const countRoyal = document.getElementById('countRoyal');
       const syncWishesBtn = document.getElementById('syncWishesBtn');
 
@@ -5370,120 +4454,20 @@
         return clean.length > 0 ? clean[0].toUpperCase() : '👑';
       }
 
-      // Filter & Memory State
-      let activeMemoryFilter = 'all';
-      const memoriesFilterBar = document.getElementById('memoriesFilterBar');
-      const countMemoriesAll = document.getElementById('countMemoriesAll');
-      const countMemoriesPhotos = document.getElementById('countMemoriesPhotos');
-      const countMemoriesVideos = document.getElementById('countMemoriesVideos');
-
-      if (memoriesFilterBar) {
-        memoriesFilterBar.addEventListener('click', (e) => {
-          const btn = e.target.closest('.filter-pill');
-          if (!btn) return;
-          memoriesFilterBar.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-          btn.classList.add('active');
-          activeMemoryFilter = btn.dataset.memoryFilter || 'all';
-          renderMemoriesGrid();
-        });
-      }
-
-      // Render Royal Memories Polaroid & Video Gallery
-      function renderMemoriesGrid() {
-        if (!memoriesGrid) return;
-        memoriesGrid.innerHTML = '';
-
-        const mediaItems = allWishes.filter(w => {
-          const hasMedia = Boolean(w.mediaUrl && w.mediaUrl.trim());
-          if (!hasMedia) return false;
-          if (activeMemoryFilter === 'photo') return w.mediaType === 'photo';
-          if (activeMemoryFilter === 'video') return w.mediaType === 'video';
-          return true;
-        });
-
-        // Update Gallery Counter Badges
-        if (countMemoriesAll) countMemoriesAll.textContent = allWishes.filter(w => Boolean(w.mediaUrl && w.mediaUrl.trim())).length;
-        if (countMemoriesPhotos) countMemoriesPhotos.textContent = allWishes.filter(w => w.mediaType === 'photo' && Boolean(w.mediaUrl && w.mediaUrl.trim())).length;
-        if (countMemoriesVideos) countMemoriesVideos.textContent = allWishes.filter(w => w.mediaType === 'video' && Boolean(w.mediaUrl && w.mediaUrl.trim())).length;
-
-        const rotationAngles = [-1.5, 1.2, -2.0, 1.8, -1.0, 2.2, -1.8, 1.5];
-
-        if (mediaItems.length === 0) {
-          memoriesGrid.innerHTML = `
-            <div class="sticky-empty-box">
-              <i class="fa-solid fa-camera-retro"></i>
-              <h3>No ${activeMemoryFilter !== 'all' ? activeMemoryFilter : 'memory'} items found</h3>
-              <p>Click "+ Add Image / Photo" or "+ Add Video Reel" above to consecrate memories for My Love Nishika!</p>
-            </div>
-          `;
-          return;
-        }
-
-        mediaItems.forEach((item, idx) => {
-          const rot = rotationAngles[idx % rotationAngles.length];
-          const card = document.createElement('div');
-          card.className = 'polaroid-card';
-          card.style.transform = `rotate(${rot}deg)`;
-
-          let mediaVisual = '';
-          if (item.mediaType === 'photo') {
-            mediaVisual = `
-              <div class="polaroid-img-wrap">
-                <img src="${item.mediaUrl}" alt="${escapeHtml(item.message || item.name)}" loading="lazy" />
-              </div>
-            `;
-          } else {
-            mediaVisual = `
-              <div class="polaroid-video-wrap">
-                ${parseVideoEmbed(item.mediaUrl, false)}
-              </div>
-            `;
-          }
-
-          card.innerHTML = `
-            ${mediaVisual}
-            <div class="polaroid-caption">"${escapeHtml(item.message || 'Our sacred memory 💖')}"</div>
-            <div class="polaroid-meta">
-              <span><i class="fa-solid fa-user-heart"></i> ${escapeHtml(item.name || 'Dilip')}</span>
-              <span class="polaroid-tag">${item.mediaType === 'video' ? '🎬 Video Reel' : '📸 Polaroid'}</span>
-            </div>
-          `;
-
-          card.addEventListener('click', (e) => {
-            if (e.target.tagName === 'IFRAME' || e.target.tagName === 'VIDEO' || e.target.closest('.polaroid-video-wrap')) return;
-            openLightbox(item.mediaType, item.mediaUrl, item.name, item.message);
-          });
-
-          memoriesGrid.appendChild(card);
-        });
-      }
-
       function renderStickyNotes() {
         if (!stickyNotesGrid) return;
         stickyNotesGrid.innerHTML = '';
 
-        const isVideoWish = (w) => {
-          if (!w) return false;
-          if (w.mediaType === 'video') return true;
-          if (w.mediaType === 'photo') return false;
-          const u = (w.mediaUrl || w.mediaData || '').toLowerCase();
-          if (!u) return false;
-          return u.includes('youtube.com') || u.includes('youtu.be') || u.includes('vimeo.com') || u.includes('/preview') || /\.(mp4|webm|ogg|ogv|mov|qt|m4v|avi|mkv|wmv|3gp|3g2|flv|ts|mts|m2ts)($|\?)/i.test(u) || u.startsWith('data:video');
-        };
-
         const filtered = allWishes.filter(w => {
-          const isVid = isVideoWish(w);
-          const isPic = (w.mediaType === 'photo') || (w.mediaUrl && !isVid);
-          if (activeFilter === 'photo') return isPic && w.mediaUrl;
-          if (activeFilter === 'video') return isVid && w.mediaUrl;
+          const isPic = (w.mediaType === 'photo') || (w.mediaUrl && w.mediaUrl.trim().length > 0);
+          if (activeFilter === 'photo') return isPic;
           if (activeFilter === 'royal') return w.isRoyal || (w.name && w.name.toLowerCase().includes('dilip'));
           return true;
         });
 
         // Update Counter Badges
         if (countAll) countAll.textContent = allWishes.length;
-        if (countPhotos) countPhotos.textContent = allWishes.filter(w => !isVideoWish(w) && w.mediaUrl).length;
-        if (countVideos) countVideos.textContent = allWishes.filter(w => isVideoWish(w) && w.mediaUrl).length;
+        if (countPhotos) countPhotos.textContent = allWishes.filter(w => w.mediaType === 'photo' || (w.mediaUrl && w.mediaUrl.trim().length > 0)).length;
         if (countRoyal) countRoyal.textContent = allWishes.filter(w => w.isRoyal || (w.name && w.name.toLowerCase().includes('dilip'))).length;
 
         if (filtered.length === 0) {
@@ -5491,7 +4475,7 @@
             <div class="sticky-empty-box">
               <i class="fa-solid fa-sparkles"></i>
               <h3>No blessings in this category yet</h3>
-              <p>Be the first to consecrate a heartfelt wish, photo, or video dedication for My Love Nishika!</p>
+              <p>Be the first to consecrate a heartfelt wish or photo dedication for My Love Nishika!</p>
             </div>
           `;
           return;
@@ -5503,29 +4487,17 @@
           const rot = rotationAngles[idx % rotationAngles.length];
           const isDilip = wish.isRoyal || (wish.name && wish.name.toLowerCase().includes('dilip'));
           const theme = wish.color || 'pink';
-
-          const isVid = isVideoWish(wish);
+          const hasPhoto = Boolean(wish.mediaUrl && wish.mediaUrl.trim().length > 0);
 
           const card = document.createElement('div');
           card.className = `sticky-note theme-${theme}`;
           card.style.transform = `rotate(${rot}deg)`;
 
           let mediaHtml = '';
-          if (isVid && wish.mediaUrl) {
+          if (hasPhoto) {
             mediaHtml = `
-              <div class="sticky-video-embed">
-                <div class="sticky-video-action-bar">
-                  <button type="button" class="sticky-video-expand-btn" data-video="${wish.mediaUrl}" data-author="${encodeURIComponent(wish.name)}" data-msg="${encodeURIComponent(wish.message)}" title="Expand Video in Lightbox">
-                    <i class="fa-solid fa-expand"></i> Lightbox
-                  </button>
-                </div>
-                ${parseVideoEmbed(wish.mediaUrl, false)}
-              </div>
-            `;
-          } else if (wish.mediaUrl) {
-            mediaHtml = `
-              <div class="sticky-media-wrap" data-img="${wish.mediaUrl}" data-author="${encodeURIComponent(wish.name)}" data-msg="${encodeURIComponent(wish.message)}">
-                <img src="${wish.mediaUrl}" alt="Attached Memory" loading="lazy" />
+              <div class="sticky-media-wrap" data-img="${escapeHtml(wish.mediaUrl)}" data-author="${encodeURIComponent(wish.name)}" data-msg="${encodeURIComponent(wish.message)}">
+                <img src="${escapeHtml(wish.mediaUrl)}" alt="Attached Memory" loading="lazy" onerror="this.closest('.sticky-media-wrap').style.display='none';" />
                 <span class="sticky-media-badge"><i class="fa-solid fa-expand"></i> View Photo</span>
               </div>
             `;
@@ -5561,16 +4533,6 @@
             });
           }
 
-          // Handle Video Expand Click to Lightbox
-          const videoExpandBtn = card.querySelector('.sticky-video-expand-btn');
-          if (videoExpandBtn) {
-            videoExpandBtn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              const videoSrc = videoExpandBtn.getAttribute('data-video') || wish.mediaUrl;
-              openLightbox('video', videoSrc, wish.name, wish.message);
-            });
-          }
-
           // Handle Like Button Click
           const likeBtn = card.querySelector('.sticky-like-btn');
           if (likeBtn) {
@@ -5599,45 +4561,47 @@
         });
       });
 
-      // Comprehensive Media Normalizer for Google Drive, YouTube, Vimeo, MP4, and Photos
+      // Universal Photo Media URL Normalizer (Converts Google Drive photos to high-speed CDN thumbnails)
+      function normalizeCloudImageUrl(url) {
+        if (!url) return '';
+        let str = url.toString().trim();
+        if (str.startsWith('blob:')) return '';
+        if (str.startsWith('data:image')) return str;
+
+        let driveId = '';
+        if (str.includes('drive.google.com') || str.includes('docs.google.com') || str.includes('googleusercontent.com')) {
+          const idMatch = str.match(/[?&]id=([a-zA-Z0-9_-]+)/) ||
+                          str.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                          str.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
+                          str.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+          if (idMatch && idMatch[1]) {
+            driveId = idMatch[1];
+          }
+        }
+
+        if (driveId) {
+          return `https://lh3.googleusercontent.com/d/${driveId}`;
+        }
+        return str;
+      }
+      window.normalizeCloudImageUrl = normalizeCloudImageUrl;
+
+      // Comprehensive Image Normalizer for Google Drive and Photos
       function normalizeMediaData(url, typeHint = 'none') {
         if (!url) return { url: '', type: 'none' };
         let str = url.toString().trim();
         if (str.startsWith('blob:')) return { url: '', type: 'none' };
         if (str.startsWith('data:image')) return { url: str, type: 'photo' };
-        if (str.startsWith('data:video')) return { url: str, type: 'video' };
 
-        // 1. Google Drive Links
+        // Google Drive Links
         if (str.includes('drive.google.com') || str.includes('docs.google.com') || str.includes('googleusercontent.com')) {
-          let driveId = '';
-          const m1 = str.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-          const m2 = str.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-          const m3 = str.match(/\/d\/([a-zA-Z0-9_-]+)/);
-          const m4 = str.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
-          if (m1 && m1[1]) driveId = m1[1];
-          else if (m2 && m2[1]) driveId = m2[1];
-          else if (m3 && m3[1]) driveId = m3[1];
-          else if (m4 && m4[1]) driveId = m4[1];
-
-          if (driveId) {
-            if (typeHint === 'video' || str.includes('/preview') || str.match(/\.(mp4|webm|mov|qt|m4v|ogg|ogv|avi|mkv|wmv|3gp|3g2|flv|ts|mts|m2ts)/i)) {
-              return { url: `https://drive.google.com/file/d/${driveId}/preview`, type: 'video' };
-            } else {
-              return { url: `https://drive.google.com/thumbnail?id=${driveId}&sz=w1000`, type: 'photo' };
-            }
+          const cdnUrl = normalizeCloudImageUrl(str);
+          if (cdnUrl) {
+            return { url: cdnUrl, type: 'photo' };
           }
         }
 
-        // 2. Video Streaming & File Links
-        if (typeHint === 'video' ||
-            str.includes('youtube.com') ||
-            str.includes('youtu.be') ||
-            str.includes('vimeo.com') ||
-            str.match(/\.(mp4|webm|mov|qt|m4v|ogg|ogv|avi|mkv|wmv|3gp|3g2|flv|ts|mts|m2ts)($|\?)/i)) {
-          return { url: str, type: 'video' };
-        }
-
-        // 3. Photo Links
+        // Photo Links
         if (typeHint === 'photo' || str.match(/\.(jpg|jpeg|png|gif|webp|svg)($|\?)/i)) {
           return { url: str, type: 'photo' };
         }
@@ -5697,7 +4661,7 @@
             if (data) {
               if (Array.isArray(data.wishes)) {
                 data.wishes.forEach(w => {
-                  const rawUrl = w.mediaUrl || w.mediaLink || w.mediaData || w.videoUrl || '';
+                  const rawUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
                   const norm = normalizeMediaData(rawUrl, w.mediaType || 'none');
                   cloudWishes.push({
                     id: w.id || ('gs_wish_' + Math.random()),
@@ -5731,26 +4695,6 @@
                     likes: 24,
                     isRoyal: sender.toLowerCase().includes('dilip'),
                     localTime: p.localTime || 'Recently'
-                  });
-                });
-              }
-              if (Array.isArray(data.videos)) {
-                data.videos.forEach(v => {
-                  const rawUrl = v.videoUrl || v.driveUrl || v.mediaUrl || '';
-                  const norm = normalizeMediaData(rawUrl, 'video');
-                  const sender = v.dedicatedBy || v.author || v.name || 'Dilip 👑';
-                  cloudWishes.push({
-                    id: v.id || ('video_' + Math.random()),
-                    name: sender,
-                    author: sender,
-                    message: v.caption || v.message || 'Royal video dedication for My Love Nishika 🎬',
-                    text: v.caption || v.message || 'Royal video dedication for My Love Nishika 🎬',
-                    color: 'gold',
-                    mediaType: 'video',
-                    mediaUrl: norm.url,
-                    likes: 30,
-                    isRoyal: sender.toLowerCase().includes('dilip'),
-                    localTime: v.localTime || 'Recently'
                   });
                 });
               }
@@ -5763,7 +4707,7 @@
             if (data) {
               if (Array.isArray(data.wishes)) {
                 data.wishes.forEach(w => {
-                  const rawUrl = w.mediaUrl || w.mediaLink || w.mediaData || w.videoUrl || '';
+                  const rawUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
                   const norm = normalizeMediaData(rawUrl, w.mediaType || 'none');
                   cloudWishes.push({
                     id: w.id || ('gs_wish_' + Math.random()),
@@ -5797,26 +4741,6 @@
                     likes: 24,
                     isRoyal: sender.toLowerCase().includes('dilip'),
                     localTime: p.localTime || 'Recently'
-                  });
-                });
-              }
-              if (Array.isArray(data.videos)) {
-                data.videos.forEach(v => {
-                  const rawUrl = v.videoUrl || v.driveUrl || v.mediaUrl || '';
-                  const norm = normalizeMediaData(rawUrl, 'video');
-                  const sender = v.dedicatedBy || v.author || v.name || 'Dilip 👑';
-                  cloudWishes.push({
-                    id: v.id || ('video_' + Math.random()),
-                    name: sender,
-                    author: sender,
-                    message: v.caption || v.message || 'Royal video dedication for My Love Nishika 🎬',
-                    text: v.caption || v.message || 'Royal video dedication for My Love Nishika 🎬',
-                    color: 'gold',
-                    mediaType: 'video',
-                    mediaUrl: norm.url,
-                    likes: 30,
-                    isRoyal: sender.toLowerCase().includes('dilip'),
-                    localTime: v.localTime || 'Recently'
                   });
                 });
               }
@@ -5852,12 +4776,10 @@
 
         if (syncWishesBtn) syncWishesBtn.classList.remove('rotating');
         renderStickyNotes();
-        renderMemoriesGrid();
       }
 
       // Initial local render
       renderStickyNotes();
-      renderMemoriesGrid();
 
       if (syncWishesBtn) syncWishesBtn.addEventListener('click', fetchWishesFromCloud);
       fetchWishesFromCloud();
@@ -5903,9 +4825,9 @@
         // SHORT & SWEET
         { id: 'w_sht_1', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Happy Birthday My Love Nishika! You mean everything to me. 💖✨' },
         { id: 'w_sht_2', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'To endless love, laughter, and starlight. Happy Birthday Nishika! 🌸💫' },
-        { id: 'w_sht_3', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Wishing the sweetest birthday to the most wonderful soul! 🎂💕' },
-        { id: 'w_sht_4', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Forever celebrating you, today and every day. Happy Birthday! 👑✨' },
-        { id: 'w_sht_5', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'May your special day be as gorgeous and radiant as your smile! 🌹✨' }
+        { id: 'w_sht_3', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Wishing the sweetest birthday to the most wonderful soul, Nishika! 🎂💕' },
+        { id: 'w_sht_4', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Forever celebrating you, today and every day. Happy Birthday Nishika! 👑✨' },
+        { id: 'w_sht_5', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'May your special 26th birthday be as gorgeous and radiant as your smile, Nishika! 🌹✨' }
       ];
 
       const guestWishInput = document.getElementById('guestWish');
@@ -6172,7 +5094,7 @@
         });
       }
 
-      // 8. FORM SUBMISSION (Syncs to Google Sheets + Updates Wall & Memories in Real-Time)
+      // 8. FORM SUBMISSION (Syncs to Google Sheets + Updates Wall in Real-Time)
       const wishForm = document.getElementById('preLaunchWishForm');
       const feedback = document.getElementById('blessingFeedback');
       const submitWishBtn = document.getElementById('submitWishBtn');
@@ -6190,41 +5112,6 @@
           const message = wishInput ? wishInput.value.trim() : '';
 
           if (!message) return;
-
-          const hasVideoFile = (wishVideoInput && wishVideoInput.files && wishVideoInput.files[0]) || selectedWishVideoFile;
-          const isVideoUpload = selectedMediaType === 'video' && (hasVideoFile || (selectedMediaData && selectedMediaData.startsWith('data:video')));
-
-          // Ensure Base64 file is fully encoded before dispatching payload
-          if (isVideoUpload && (!selectedMediaData || !selectedMediaData.startsWith('data:video')) && hasVideoFile) {
-            const fileObj = (wishVideoInput && wishVideoInput.files && wishVideoInput.files[0]) || selectedWishVideoFile;
-            const fileSizeMB = (fileObj.size / (1024 * 1024)).toFixed(1);
-            updateWishVideoProgressUI({
-              visible: true,
-              title: `Encoding Video (${fileSizeMB} MB)...`,
-              meta: 'Preparing stream for cloud transmission...',
-              pct: 20,
-              step: 2
-            });
-            try {
-              selectedMediaData = await readFileAsBase64(fileObj);
-            } catch (vErr) {
-              console.warn('Wish video encoding error:', vErr);
-              showWishVideoAlert({
-                type: 'error',
-                title: 'Encoding Issue',
-                msg: 'Failed to encode video file. Please try another file.'
-              });
-              return;
-            }
-          } else if (selectedMediaType === 'photo' && wishPhotoInput && wishPhotoInput.files && wishPhotoInput.files[0]) {
-            if (!selectedMediaData || !selectedMediaData.startsWith('data:image')) {
-              try {
-                selectedMediaData = await readFileAsBase64(wishPhotoInput.files[0]);
-              } catch (pErr) {
-                console.warn('Wish photo encoding error:', pErr);
-              }
-            }
-          }
 
           const newWish = {
             id: 'local_' + Date.now(),
@@ -6246,184 +5133,68 @@
           allWishes.unshift(newWish);
           saveWishesToLocal(allWishes);
           renderStickyNotes();
-          renderMemoriesGrid();
 
-          // Send to Google Sheets via POST
-          if (isVideoUpload) {
-            const fileObj = (wishVideoInput && wishVideoInput.files && wishVideoInput.files[0]) || selectedWishVideoFile;
-            const fileSizeMB = fileObj ? (fileObj.size / (1024 * 1024)).toFixed(1) : ((selectedMediaData.length * 0.75) / (1024 * 1024)).toFixed(1);
-
-            // Keep the video tab active and progress card locked in view
-            const videoTabBtn = document.querySelector('.media-tab-btn[data-tab="tabVideo"]');
-            if (videoTabBtn) {
-              mediaTabBtns.forEach(b => b.classList.remove('active'));
-              videoTabBtn.classList.add('active');
-            }
-            const videoPane = document.getElementById('tabVideo');
-            if (videoPane) {
-              document.querySelectorAll('.media-content-pane').forEach(p => p.classList.remove('active'));
-              videoPane.classList.add('active');
-            }
-
-            updateWishVideoProgressUI({
-              visible: true,
-              title: `Uploading Video (${fileSizeMB} MB) to Google Drive...`,
-              meta: 'Initiating high-speed chunk transmission...',
-              pct: 4,
-              step: 3
-            });
-
-            if (submitWishBtn) {
-              submitWishBtn.disabled = true;
-              submitWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video (${fileSizeMB} MB)... (0%)</span>`;
-            }
-
-            uploadVideoChunks({
-              base64Data: selectedMediaData,
-              author: author,
-              caption: message,
-              celebrant: 'Nishika',
-              dedicatedBy: 'Dilip',
-              color: selectedTheme,
-              tag: 'Video Reel 🎬',
-              onProgress: (pct, currentChunk, totalChunks, endBytes, totalBytes) => {
-                const transMB = ((endBytes * 0.75) / (1024 * 1024)).toFixed(1);
-                const totMB = ((totalBytes * 0.75) / (1024 * 1024)).toFixed(1);
-                updateWishVideoProgressUI({
-                  visible: true,
-                  title: currentChunk < totalChunks 
-                    ? `Uploading Video (Part ${currentChunk} of ${totalChunks})...` 
-                    : 'Finalizing Video & Saving to Google Drive...',
-                  meta: `Transmitted ${transMB} MB / ${totMB} MB to Google Cloud (${pct}%)`,
-                  pct: Math.min(100, Math.max(4, pct)),
-                  step: 3
-                });
-
-                if (submitWishBtn) {
-                  submitWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video (${pct}% • Part ${currentChunk}/${totalChunks})...</span>`;
-                }
-              },
-              onSuccess: () => {
-                updateWishVideoProgressUI({
-                  visible: true,
-                  title: '🎉 Video Upload Complete! (100%)',
-                  meta: `Successfully saved ${fileSizeMB} MB video to Google Drive & Google Sheets!`,
-                  pct: 100,
-                  step: 3,
-                  isSuccess: true
-                });
-
-                showWishVideoAlert({
-                  type: 'success',
-                  title: '✨ Video Blessing Consecrated! 👑',
-                  msg: `Your ${fileSizeMB} MB video reel was successfully uploaded to Google Drive and recorded on the live wall!`
-                });
-
-                if (submitWishBtn) {
-                  submitWishBtn.disabled = false;
-                  submitWishBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Consecrated Successfully! ✨</span>';
-                }
-
-                setTimeout(() => {
-                  updateWishVideoProgressUI({ visible: false });
-                  hideWishVideoAlert();
-                  wishForm.reset();
-                  selectedMediaData = '';
-                  selectedMediaType = 'none';
-                  selectedWishVideoFile = null;
-                  if (videoPreviewBox) videoPreviewBox.style.display = 'none';
-                  if (videoPreviewContainer) videoPreviewContainer.innerHTML = '';
-                  mediaTabBtns.forEach(b => b.classList.remove('active'));
-                  const defaultTab = document.querySelector('.media-tab-btn[data-tab="tabNone"]');
-                  if (defaultTab) defaultTab.classList.add('active');
-                  document.querySelectorAll('.media-content-pane').forEach(p => p.classList.remove('active'));
-
-                  if (submitWishBtn) {
-                    submitWishBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> <span>Consecrate Blessing on Wall ✨</span>';
-                  }
-
-                  const wallSec = document.getElementById('stickyWishWallSection');
-                  if (wallSec) wallSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 4500);
-              },
-              onError: () => {
-                showWishVideoAlert({
-                  type: 'error',
-                  title: 'Cloud Sync Notice',
-                  msg: 'Cloud sync encountered a network delay or timeout, but your dedication is 100% saved locally on this device! ✨'
-                });
-                if (submitWishBtn) {
-                  submitWishBtn.disabled = false;
-                  submitWishBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> <span>Consecrate Blessing on Wall ✨</span>';
-                }
-              }
-            });
-          } else {
-            if (submitWishBtn) {
-              submitWishBtn.disabled = true;
-              submitWishBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Consecrating Blessing...</span>';
-            }
-
-            try {
-              fetch(GOOGLE_SHEET_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({
-                  type: 'wish',
-                  name: author,
-                  author: author,
-                  message: message,
-                  text: message,
-                  color: selectedTheme,
-                  mediaType: selectedMediaType,
-                  mediaData: selectedMediaData,
-                  mediaUrl: selectedMediaData,
-                  dataUrl: selectedMediaData,
-                  videoUrl: selectedMediaData,
-                  celebrant: 'Nishika',
-                  dedicatedBy: 'Dilip',
-                  timestamp: new Date().toISOString(),
-                  localTime: new Date().toLocaleString()
-                })
-              });
-            } catch (postErr) {
-              console.warn('Cloud sync error in preLaunchWishForm:', postErr);
-            }
-
-            wishForm.reset();
-            selectedMediaData = '';
-            selectedMediaType = 'none';
-            if (photoPreviewBox) photoPreviewBox.style.display = 'none';
-            if (photoPreviewImg) photoPreviewImg.src = '';
-            if (videoPreviewBox) videoPreviewBox.style.display = 'none';
-            if (videoPreviewContainer) videoPreviewContainer.innerHTML = '';
-
-            // Reset tabs
-            mediaTabBtns.forEach(b => b.classList.remove('active'));
-            const defaultTab = document.querySelector('.media-tab-btn[data-tab="tabNone"]');
-            if (defaultTab) defaultTab.classList.add('active');
-            document.querySelectorAll('.media-content-pane').forEach(p => p.classList.remove('active'));
-
-            if (submitWishBtn) {
-              submitWishBtn.disabled = false;
-              submitWishBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> <span>Consecrate Blessing on Wall ✨</span>';
-            }
-
-            if (feedback) {
-              feedback.style.display = 'block';
-              setTimeout(() => {
-                feedback.style.display = 'none';
-              }, 6000);
-            }
-
-            const wallSec = document.getElementById('stickyWishWallSection');
-            if (wallSec) wallSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (submitWishBtn) {
+            submitWishBtn.disabled = true;
+            submitWishBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Consecrating Blessing...</span>';
           }
+
+          try {
+            fetch(GOOGLE_SHEET_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({
+                type: 'wish',
+                name: author,
+                author: author,
+                message: message,
+                text: message,
+                color: selectedTheme,
+                mediaType: selectedMediaType,
+                mediaData: selectedMediaData,
+                mediaUrl: selectedMediaData,
+                dataUrl: selectedMediaData,
+                celebrant: 'Nishika',
+                dedicatedBy: 'Dilip',
+                timestamp: new Date().toISOString(),
+                localTime: new Date().toLocaleString()
+              })
+            });
+          } catch (postErr) {
+            console.warn('Cloud sync error in preLaunchWishForm:', postErr);
+          }
+
+          wishForm.reset();
+          selectedMediaData = '';
+          selectedMediaType = 'none';
+          if (photoPreviewBox) photoPreviewBox.style.display = 'none';
+          if (photoPreviewImg) photoPreviewImg.src = '';
+
+          // Reset tabs
+          mediaTabBtns.forEach(b => b.classList.remove('active'));
+          const defaultTab = document.querySelector('.media-tab-btn[data-tab="tabNone"]');
+          if (defaultTab) defaultTab.classList.add('active');
+          document.querySelectorAll('.media-content-pane').forEach(p => p.classList.remove('active'));
+
+          if (submitWishBtn) {
+            submitWishBtn.disabled = false;
+            submitWishBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> <span>Consecrate Blessing on Wall ✨</span>';
+          }
+
+          if (feedback) {
+            feedback.style.display = 'block';
+            setTimeout(() => {
+              feedback.style.display = 'none';
+            }, 6000);
+          }
+
+          const wallSec = document.getElementById('stickyWishWallSection');
+          if (wallSec) wallSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       }
 
-      // 9. MEDIA LIGHTBOX CONTROLLER
+      // 9. MEDIA LIGHTBOX CONTROLLER (Photos)
       const mediaLightbox = document.getElementById('mediaLightboxModal');
       const closeLightboxBtn = document.getElementById('closeLightboxBtn');
       const lightboxViewport = document.getElementById('lightboxViewport');
@@ -6435,11 +5206,7 @@
         initAudio();
         playChime(659.25, 0.2);
 
-        if (type === 'photo') {
-          lightboxViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Full Photo" style="max-width:100%; max-height:60vh; object-fit:contain; border-radius:12px;" />`;
-        } else if (type === 'video') {
-          lightboxViewport.innerHTML = `<div style="width:100%; height:55vh; max-height:550px;">${parseVideoEmbed(url, true)}</div>`;
-        }
+        lightboxViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Full Photo" style="max-width:100%; max-height:60vh; object-fit:contain; border-radius:12px;" />`;
 
         const decodedAuthor = decodeURIComponent(author || 'Loving Well-wisher');
         const decodedMsg = decodeURIComponent(msg || '');
@@ -6481,7 +5248,7 @@
         });
       }
 
-      // 10. INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL ENGINE
+      // 10. INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL ENGINE (Photos)
       const indexMediaHoverPopout = document.getElementById('mediaHoverPopout');
       const indexHoverPopoutViewport = document.getElementById('hoverPopoutViewport');
       const indexHoverPopoutAuthor = document.getElementById('hoverPopoutAuthor');
@@ -6496,13 +5263,8 @@
         if (!indexMediaHoverPopout || !indexHoverPopoutViewport) return;
         if (mediaLightbox && mediaLightbox.classList.contains('active')) return;
 
-        if (type === 'photo') {
-          indexHoverPopoutViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Hover Cinema Pop-Out" style="max-width:100%; max-height:58vh; object-fit:contain; border-radius:12px;" />`;
-          if (indexHoverPopoutBadge) indexHoverPopoutBadge.innerHTML = '<i class="fa-solid fa-camera"></i> <span>Photo Pop-Out 📸</span>';
-        } else if (type === 'video') {
-          indexHoverPopoutViewport.innerHTML = `<div style="width:100%; height:52vh; max-height:500px;">${parseVideoEmbed(url, true)}</div>`;
-          if (indexHoverPopoutBadge) indexHoverPopoutBadge.innerHTML = '<i class="fa-solid fa-film"></i> <span>Cinema Video Pop-Out 🎬</span>';
-        }
+        indexHoverPopoutViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Hover Photo Pop-Out" style="max-width:100%; max-height:58vh; object-fit:contain; border-radius:12px;" />`;
+        if (indexHoverPopoutBadge) indexHoverPopoutBadge.innerHTML = '<i class="fa-solid fa-camera"></i> <span>Photo Pop-Out 📸</span>';
 
         const decodedAuthor = decodeURIComponent(author || 'Loving Well-wisher');
         const decodedMsg = decodeURIComponent(msg || '');
@@ -6529,7 +5291,6 @@
       }
 
       function initIndexHoverPopout() {
-        // Dedicated Close Button
         if (indexCloseHoverPopoutBtn) {
           indexCloseHoverPopoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -6540,7 +5301,6 @@
 
         const indexPopoutCard = indexMediaHoverPopout ? indexMediaHoverPopout.querySelector('.hover-popout-card') : null;
 
-        // Global Escape key
         window.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') {
             if (indexMediaHoverPopout && indexMediaHoverPopout.classList.contains('active')) {
@@ -6554,39 +5314,23 @@
 
         document.addEventListener('mouseover', (e) => {
           const photoTarget = e.target.closest('.sticky-media-wrap, .polaroid-img-wrap, .memory-card img, #photoPreviewBox img');
-          const videoTarget = e.target.closest('.sticky-video-embed, .polaroid-video-wrap, #videoPreviewBox');
+          if (!photoTarget || photoTarget === indexActiveHoverTarget) return;
 
-          const target = photoTarget || videoTarget;
-          if (!target || target === indexActiveHoverTarget) return;
-
-          if (e.target.closest('.sticky-like-btn') || e.target.closest('.sticky-video-expand-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('#mediaHoverPopout')) {
+          if (e.target.closest('.sticky-like-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('#mediaHoverPopout')) {
             return;
           }
 
-          indexActiveHoverTarget = target;
+          indexActiveHoverTarget = photoTarget;
           if (indexHoverTimer) clearTimeout(indexHoverTimer);
 
           indexHoverTimer = setTimeout(() => {
-            if (target !== indexActiveHoverTarget) return;
+            if (photoTarget !== indexActiveHoverTarget) return;
 
-            let type = photoTarget ? 'photo' : 'video';
-            let url = '';
-            let author = '';
-            let msg = '';
+            let url = photoTarget.getAttribute('data-img') || (photoTarget.querySelector('img') && photoTarget.querySelector('img').src) || (photoTarget.tagName === 'IMG' ? photoTarget.src : '');
+            let author = photoTarget.getAttribute('data-author') || '';
+            let msg = photoTarget.getAttribute('data-msg') || '';
 
-            if (photoTarget) {
-              url = photoTarget.getAttribute('data-img') || (photoTarget.querySelector('img') && photoTarget.querySelector('img').src) || (photoTarget.tagName === 'IMG' ? photoTarget.src : '');
-              author = photoTarget.getAttribute('data-author') || '';
-              msg = photoTarget.getAttribute('data-msg') || '';
-            } else if (videoTarget) {
-              url = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-video')) ||
-                    (videoTarget.querySelector('video') && videoTarget.querySelector('video').src) ||
-                    (videoTarget.querySelector('iframe') && videoTarget.querySelector('iframe').src) || '';
-              author = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-author')) || '';
-              msg = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-msg')) || '';
-            }
-
-            const stickyCard = target.closest('.sticky-note, .polaroid-card, .memory-card');
+            const stickyCard = photoTarget.closest('.sticky-note, .polaroid-card, .memory-card');
             if (stickyCard) {
               if (!author) {
                 const authorEl = stickyCard.querySelector('.sticky-author-name, .polaroid-meta');
@@ -6599,15 +5343,14 @@
             }
 
             if (url && url.length > 5 && !url.includes('data:image/svg+xml;utf8,<svg')) {
-              showIndexHoverPopout(type, url, author || 'Queen Nishika', msg);
+              showIndexHoverPopout('photo', url, author || 'Queen Nishika', msg);
             }
           }, 120);
         }, { passive: true });
 
-        // When mouse leaves the origin photo target
         document.addEventListener('mouseout', (e) => {
           if (!indexActiveHoverTarget) return;
-          const target = e.target.closest('.sticky-media-wrap, .sticky-video-embed, .polaroid-img-wrap, .polaroid-video-wrap, #photoPreviewBox, #videoPreviewBox');
+          const target = e.target.closest('.sticky-media-wrap, .polaroid-img-wrap, #photoPreviewBox');
           if (target && target === indexActiveHoverTarget) {
             const related = e.relatedTarget;
             if (!related || (!target.contains(related) && !related.closest('.hover-popout-card, #mediaHoverPopout'))) {
@@ -6616,7 +5359,6 @@
           }
         }, { passive: true });
 
-        // Global cursor move monitor: if popout is active and cursor moves outside the photo frame/card, immediately restore normal mode
         document.addEventListener('mousemove', (e) => {
           if (!indexMediaHoverPopout || !indexMediaHoverPopout.classList.contains('active')) return;
           if (e.target.closest('.hover-popout-card') || (indexActiveHoverTarget && indexActiveHoverTarget.contains(e.target))) {
@@ -6626,21 +5368,14 @@
         }, { passive: true });
 
         if (indexMediaHoverPopout) {
-          // Backdrop cursor movement or click -> immediately dismiss
           indexMediaHoverPopout.addEventListener('mousemove', (e) => {
-            if (e.target === indexMediaHoverPopout) {
-              hideIndexHoverPopout();
-            }
+            if (e.target === indexMediaHoverPopout) hideIndexHoverPopout();
           });
           indexMediaHoverPopout.addEventListener('mouseover', (e) => {
-            if (e.target === indexMediaHoverPopout) {
-              hideIndexHoverPopout();
-            }
+            if (e.target === indexMediaHoverPopout) hideIndexHoverPopout();
           });
           indexMediaHoverPopout.addEventListener('click', (e) => {
-            if (e.target === indexMediaHoverPopout) {
-              hideIndexHoverPopout();
-            }
+            if (e.target === indexMediaHoverPopout) hideIndexHoverPopout();
           });
         }
 
@@ -6659,7 +5394,7 @@
 
       initIndexHoverPopout();
 
-      // History Back & Mobile Gesture Navigation Manager (Closes open overlays instead of exiting page)
+      // History Back & Mobile Gesture Navigation Manager
       window.addEventListener('popstate', (e) => {
         if (vipModal && vipModal.classList.contains('active')) {
           closeVipModal(true);
@@ -6672,7 +5407,7 @@
         }
       });
 
-      // Bfcache / Page Restoration Lifecycle Handler (Guarantees clean state upon Back navigation)
+      // Bfcache / Page Restoration Lifecycle Handler
       window.addEventListener('pageshow', (e) => {
         if (e.persisted) {
           if (vipModal && vipModal.classList.contains('active')) {

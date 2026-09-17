@@ -136,67 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Video MIME type and Codec format helper
-  function getMimeTypeForVideoFile(file) {
-    if (!file) return 'video/mp4';
-    if (file.type && file.type.startsWith('video/')) return file.type;
-    const name = (typeof file === 'string' ? file : (file.name || '')).toLowerCase();
-    if (name.endsWith('.mp4') || name.endsWith('.m4v')) return 'video/mp4';
-    if (name.endsWith('.webm')) return 'video/webm';
-    if (name.endsWith('.mov') || name.endsWith('.qt')) return 'video/quicktime';
-    if (name.endsWith('.mkv')) return 'video/x-matroska';
-    if (name.endsWith('.avi')) return 'video/x-msvideo';
-    if (name.endsWith('.wmv')) return 'video/x-ms-wmv';
-    if (name.endsWith('.3gp')) return 'video/3gpp';
-    if (name.endsWith('.3g2')) return 'video/3gpp2';
-    if (name.endsWith('.ogv') || name.endsWith('.ogg')) return 'video/ogg';
-    if (name.endsWith('.flv')) return 'video/x-flv';
-    if (name.endsWith('.ts') || name.endsWith('.mts') || name.endsWith('.m2ts')) return 'video/mp2t';
-    return 'video/mp4';
-  }
-  window.getMimeTypeForVideoFile = getMimeTypeForVideoFile;
-
-  function getVideoCodecInfo(mimeType, urlOrName) {
-    const cleanMime = (mimeType || '').toLowerCase();
-    const cleanUrl = (urlOrName || '').toLowerCase();
-    if (cleanMime.includes('webm') || cleanUrl.includes('.webm')) {
-      return { format: 'WebM', codec: 'VP8 / VP9 / AV1', ext: '.webm' };
-    }
-    if (cleanMime.includes('quicktime') || cleanMime.includes('mov') || cleanUrl.includes('.mov') || cleanUrl.includes('.qt')) {
-      return { format: 'QuickTime MOV', codec: 'Apple ProRes / H.264 / HEVC', ext: '.mov' };
-    }
-    if (cleanMime.includes('matroska') || cleanMime.includes('mkv') || cleanUrl.includes('.mkv')) {
-      return { format: 'Matroska MKV', codec: 'H.264 / HEVC / VP9 / AV1', ext: '.mkv' };
-    }
-    if (cleanMime.includes('msvideo') || cleanMime.includes('avi') || cleanUrl.includes('.avi')) {
-      return { format: 'AVI', codec: 'MPEG-4 / DivX / XviD', ext: '.avi' };
-    }
-    if (cleanMime.includes('ms-wmv') || cleanMime.includes('wmv') || cleanUrl.includes('.wmv')) {
-      return { format: 'Windows Media', codec: 'WMV9 / VC-1', ext: '.wmv' };
-    }
-    if (cleanMime.includes('3gpp2') || cleanUrl.includes('.3g2')) {
-      return { format: '3GPP2 Mobile', codec: 'H.263 / MPEG-4', ext: '.3g2' };
-    }
-    if (cleanMime.includes('3gpp') || cleanUrl.includes('.3gp')) {
-      return { format: '3GPP Mobile', codec: 'H.263 / H.264', ext: '.3gp' };
-    }
-    if (cleanMime.includes('ogg') || cleanMime.includes('ogv') || cleanUrl.includes('.ogv') || cleanUrl.includes('.ogg')) {
-      return { format: 'Ogg Video', codec: 'Theora / Vorbis', ext: '.ogv' };
-    }
-    if (cleanMime.includes('m4v') || cleanUrl.includes('.m4v')) {
-      return { format: 'Apple M4V', codec: 'H.264 / AAC', ext: '.m4v' };
-    }
-    if (cleanMime.includes('flv') || cleanUrl.includes('.flv')) {
-      return { format: 'Flash Video', codec: 'Sorenson Spark / VP6', ext: '.flv' };
-    }
-    if (cleanMime.includes('mp2t') || cleanUrl.includes('.ts') || cleanUrl.includes('.mts') || cleanUrl.includes('.m2ts')) {
-      return { format: 'MPEG-TS', codec: 'MPEG-2 / H.264 / HEVC', ext: '.ts' };
-    }
-    return { format: 'MP4 Video', codec: 'H.264 (AVC) / H.265 (HEVC) / AV1', ext: '.mp4' };
-  }
-  window.getVideoCodecInfo = getVideoCodecInfo;
-
-  // Async helper to convert file to Base64 with progress callback and MIME normalization
+  // Async helper to convert image file to Base64 with progress callback
   function readFileAsBase64(file, onProgress) {
     return new Promise((resolve, reject) => {
       if (!file) return resolve('');
@@ -209,20 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       reader.onload = () => {
         if (typeof onProgress === 'function') onProgress(100, file.size, file.size);
-        let result = reader.result || '';
-        // If MIME was empty or generic octet-stream, inject inferred MIME type into data URL header
-        if (file.name && (file.type === '' || file.type === 'application/octet-stream' || !result.startsWith('data:video/'))) {
-          const detectedMime = getMimeTypeForVideoFile(file);
-          if (detectedMime && detectedMime.startsWith('video/')) {
-            const comma = result.indexOf(',');
-            if (comma !== -1) {
-              result = `data:${detectedMime};base64,${result.substring(comma + 1)}`;
-            }
-          }
-        }
-        resolve(result);
+        resolve(reader.result || '');
       };
-      reader.onerror = () => reject(new Error('Failed to read media file from device.'));
+      reader.onerror = () => reject(new Error('Failed to read image file from device.'));
       reader.readAsDataURL(file);
     });
   }
@@ -260,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.warn('Storage quota limit reached, saving safe representation:', e);
       try {
         const safeWishes = (state.pinnedWishes || []).map(w => {
-          if (w.mediaUrl && w.mediaUrl.startsWith('data:video') && w.mediaUrl.length > 500000) {
+          if (w.mediaUrl && w.mediaUrl.length > 500000) {
             return { ...w, mediaUrl: '' };
           }
           return w;
@@ -465,185 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   window.sendToGoogleSheet = sendToGoogleSheet;
 
-  // High-Speed Direct & Sequential Chunked Video Uploader
-  async function uploadVideoChunks({
-    url,
-    base64Data,
-    author,
-    caption,
-    fileName,
-    celebrant = 'Nishika',
-    dedicatedBy = 'Dilip',
-    color = 'gold',
-    tag = 'Video Reel 🎬',
-    onProgress,
-    onSuccess,
-    onError
-  }) {
-    const targetUrl = url || state.googleSheetUrl || localStorage.getItem('eternal_love_sheet_url') || DEFAULT_GOOGLE_SHEET_URL;
-    if (!targetUrl || !targetUrl.startsWith('http')) {
-      if (typeof onError === 'function') onError(new Error('No Google Sheet Webhook URL configured'));
-      return { success: false, reason: 'no_url' };
-    }
-
-    const cleanData = base64Data || '';
-    const totalChars = cleanData.length;
-
-    let mimeType = 'video/mp4';
-    if (cleanData.startsWith('data:')) {
-      const semi = cleanData.indexOf(';');
-      if (semi > 5) mimeType = cleanData.substring(5, semi);
-    } else if (typeof fileName === 'string' && fileName) {
-      mimeType = getMimeTypeForVideoFile(fileName);
-    }
-
-    // High-speed direct upload for files <= 4MB
-    const DIRECT_UPLOAD_LIMIT = 4 * 1024 * 1024;
-
-    if (totalChars <= DIRECT_UPLOAD_LIMIT) {
-      if (typeof onProgress === 'function') {
-        onProgress(35, 1, 1, Math.round(totalChars * 0.35), totalChars);
-      }
-      
-      try {
-        const payload = {
-          type: 'video',
-          videoUrl: cleanData,
-          dataUrl: cleanData,
-          mediaData: cleanData,
-          mediaUrl: cleanData,
-          mimeType: mimeType,
-          fileName: fileName || ('video_' + Date.now() + '.mp4'),
-          author: author,
-          name: author,
-          caption: caption,
-          message: caption,
-          text: caption,
-          celebrant: celebrant,
-          dedicatedBy: dedicatedBy,
-          color: color,
-          tag: tag,
-          timestamp: new Date().toISOString(),
-          localTime: new Date().toLocaleString()
-        };
-
-        if (typeof onProgress === 'function') {
-          onProgress(70, 1, 1, Math.round(totalChars * 0.7), totalChars);
-        }
-
-        await fetch(targetUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        });
-
-        if (typeof onProgress === 'function') {
-          onProgress(100, 1, 1, totalChars, totalChars);
-        }
-        if (typeof onSuccess === 'function') {
-          onSuccess();
-        }
-        return { success: true };
-      } catch (err) {
-        console.warn('Direct video upload failed in script.js:', err);
-        if (typeof onError === 'function') onError(err);
-        return { success: false, error: err };
-      }
-    }
-
-    // For larger files: Robust sequential chunked upload (2.5 MB chunks)
-    const CHUNK_SIZE = 2.5 * 1024 * 1024;
-    const totalChunks = Math.max(1, Math.ceil(totalChars / CHUNK_SIZE));
-    const uploadId = 'up_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
-
-    let completedChars = 0;
-
-    for (let i = 0; i < totalChunks; i++) {
-      if (!navigator.onLine) {
-        const offErr = new Error('Device is offline');
-        if (typeof onError === 'function') onError(offErr);
-        return { success: false, error: offErr };
-      }
-
-      const start = i * CHUNK_SIZE;
-      const end = Math.min(totalChars, start + CHUNK_SIZE);
-      const chunkSlice = cleanData.substring(start, end);
-      const chunkSize = end - start;
-
-      const chunkPayload = {
-        type: 'video_chunk',
-        uploadId: uploadId,
-        chunkIndex: i,
-        totalChunks: totalChunks,
-        chunkData: chunkSlice,
-        mimeType: mimeType,
-        fileName: fileName || ('video_' + uploadId + '.mp4'),
-        author: author,
-        name: author,
-        caption: caption,
-        message: caption,
-        text: caption,
-        celebrant: celebrant,
-        dedicatedBy: dedicatedBy,
-        color: color,
-        tag: tag,
-        timestamp: new Date().toISOString(),
-        localTime: new Date().toLocaleString()
-      };
-
-      let sent = false;
-      let lastErr = null;
-
-      for (let attempt = 1; attempt <= 3; attempt++) {
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 60000);
-
-          const currentPct = Math.min(99, Math.round(((completedChars + chunkSize * 0.3) / totalChars) * 100));
-          if (typeof onProgress === 'function') {
-            onProgress(currentPct, i + 1, totalChunks, completedChars, totalChars);
-          }
-
-          await fetch(targetUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(chunkPayload),
-            signal: controller.signal
-          });
-
-          clearTimeout(timeoutId);
-          sent = true;
-          completedChars += chunkSize;
-          const endPct = Math.min(99, Math.round((completedChars / totalChars) * 100));
-          if (typeof onProgress === 'function') {
-            onProgress(endPct, i + 1, totalChunks, completedChars, totalChars);
-          }
-          break;
-        } catch (chunkErr) {
-          lastErr = chunkErr;
-          await new Promise(r => setTimeout(r, 600 * attempt));
-        }
-      }
-
-      if (!sent) {
-        const err = lastErr || new Error(`Failed to upload chunk ${i + 1} of ${totalChunks}`);
-        if (typeof onError === 'function') onError(err);
-        return { success: false, error: err };
-      }
-    }
-
-    if (typeof onProgress === 'function') {
-      onProgress(100, totalChunks, totalChunks, totalChars, totalChars);
-    }
-    if (typeof onSuccess === 'function') {
-      onSuccess();
-    }
-    return { success: true };
-  }
-  window.uploadVideoChunks = uploadVideoChunks;
-
   // --------------------------------------------------------------------------
   // 2. SCROLL REVEAL OBSERVER (INTERSECTION OBSERVER) & MOBILE GUARANTEE
   // --------------------------------------------------------------------------
@@ -665,24 +415,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Safeguard: Ensure Section 7 (Polaroid & Wish Wall) and all sections are revealed
+  // Safeguard: Ensure Section 7 (Polaroid & Wish Wall) and all sections are revealed without scroll-layout thrashing
+  let revealTimer = null;
   const ensureVisibleSections = () => {
     const memSec = document.getElementById('memoriesSec');
     if (memSec) {
       memSec.classList.add('is-revealed');
     }
     document.querySelectorAll('.reveal-on-scroll').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 1.6 || window.innerWidth <= 1024) {
-        el.classList.add('is-revealed');
-      }
+      el.classList.add('is-revealed');
     });
   };
-  window.addEventListener('load', ensureVisibleSections);
-  window.addEventListener('resize', ensureVisibleSections);
-  window.addEventListener('scroll', ensureVisibleSections, { passive: true });
-  setTimeout(ensureVisibleSections, 200);
-  setTimeout(ensureVisibleSections, 1000);
+
+  window.addEventListener('load', ensureVisibleSections, { passive: true });
+  window.addEventListener('resize', () => {
+    if (revealTimer) cancelAnimationFrame(revealTimer);
+    revealTimer = requestAnimationFrame(ensureVisibleSections);
+  }, { passive: true });
+  setTimeout(ensureVisibleSections, 300);
 
   // --------------------------------------------------------------------------
   // 3. WEB AUDIO SYNTHESIZER ENGINE
@@ -1146,51 +896,59 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', resizeCanvases);
   resizeCanvases();
 
-  // Floating background cosmic sparkles
+  // Floating background cosmic sparkles (Batched single-draw architecture)
   const bgParticles = [];
-  for (let i = 0; i < 45; i++) {
+  const particleCount = window.innerWidth <= 768 ? 24 : 38;
+  for (let i = 0; i < particleCount; i++) {
     bgParticles.push({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
-      radius: Math.random() * 2 + 0.8,
-      speedX: (Math.random() - 0.5) * 0.4,
-      speedY: -Math.random() * 0.4 - 0.2,
-      alpha: Math.random() * 0.7 + 0.2,
+      radius: Math.random() * 1.8 + 0.8,
+      speedX: (Math.random() - 0.5) * 0.35,
+      speedY: -Math.random() * 0.35 - 0.15,
+      alpha: Math.random() * 0.6 + 0.2,
       pulse: Math.random() * 0.02 + 0.01
     });
   }
 
+  let bgParticleRafId = null;
   function renderBackgroundParticles() {
     if (!pCtx || !particleCanvas) return;
+    if (document.hidden) {
+      bgParticleRafId = null;
+      return;
+    }
+
     pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
 
-    bgParticles.forEach(p => {
+    const now = Date.now();
+    pCtx.beginPath();
+    for (let i = 0; i < bgParticles.length; i++) {
+      const p = bgParticles[i];
       p.x += p.speedX;
       p.y += p.speedY;
-      p.alpha += Math.sin(Date.now() * p.pulse) * 0.01;
+      p.alpha += Math.sin(now * p.pulse) * 0.01;
 
       if (p.y < -10) p.y = particleCanvas.height + 10;
       if (p.x < -10) p.x = particleCanvas.width + 10;
       if (p.x > particleCanvas.width + 10) p.x = -10;
 
-      pCtx.beginPath();
+      pCtx.moveTo(p.x + p.radius, p.y);
       pCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      pCtx.fillStyle = `rgba(251, 191, 36, ${Math.max(0.1, Math.min(0.8, p.alpha))})`;
-      pCtx.fill();
-    });
-
-    if (!document.hidden) {
-      requestAnimationFrame(renderBackgroundParticles);
     }
+    pCtx.fillStyle = 'rgba(251, 191, 36, 0.45)';
+    pCtx.fill();
+
+    bgParticleRafId = requestAnimationFrame(renderBackgroundParticles);
   }
 
   // Only render particles if page is active
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-      requestAnimationFrame(renderBackgroundParticles);
+    if (!document.hidden && !bgParticleRafId) {
+      bgParticleRafId = requestAnimationFrame(renderBackgroundParticles);
     }
   });
-  renderBackgroundParticles();
+  bgParticleRafId = requestAnimationFrame(renderBackgroundParticles);
 
   // 2D Confetti Particle Burst Engine (Zero-Idle-Lag Architecture)
   let activeConfetti = [];
@@ -1429,7 +1187,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pagePasscodeFeedback.innerHTML = '';
           }
         }
-      }, 800);
+      }, 2500);
     }
   }
 
@@ -4751,22 +4509,29 @@ const romanticReasons = [
   // --------------------------------------------------------------------------
   const tiltCards = document.querySelectorAll('.tilt-element');
   tiltCards.forEach(card => {
+    let cardRaf = null;
     card.addEventListener('mousemove', (e) => {
       if (window.innerWidth <= 1024 || window.matchMedia('(hover: none)').matches) return;
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = ((y - centerY) / centerY) * -10;
-      const rotateY = ((x - centerX) / centerX) * 10;
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.04, 1.04, 1.04)`;
-    });
+      if (cardRaf) return;
+      cardRaf = requestAnimationFrame(() => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(1)}deg) rotateY(${rotateY.toFixed(1)}deg) scale3d(1.04, 1.04, 1.04)`;
+        cardRaf = null;
+      });
+    }, { passive: true });
 
     card.addEventListener('mouseleave', () => {
+      if (cardRaf) { cancelAnimationFrame(cardRaf); cardRaf = null; }
       card.style.transform = '';
     });
     card.addEventListener('touchend', () => {
+      if (cardRaf) { cancelAnimationFrame(cardRaf); cardRaf = null; }
       card.style.transform = '';
     });
   });
@@ -4894,21 +4659,28 @@ const romanticReasons = [
       </div>
     `;
 
+    let dynamicCardRaf = null;
     card.addEventListener('mousemove', (e) => {
       if (window.innerWidth <= 1024 || window.matchMedia('(hover: none)').matches) return;
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = ((y - centerY) / centerY) * -10;
-      const rotateY = ((x - centerX) / centerX) * 10;
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.04, 1.04, 1.04)`;
-    });
+      if (dynamicCardRaf) return;
+      dynamicCardRaf = requestAnimationFrame(() => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(1)}deg) rotateY(${rotateY.toFixed(1)}deg) scale3d(1.04, 1.04, 1.04)`;
+        dynamicCardRaf = null;
+      });
+    }, { passive: true });
     card.addEventListener('mouseleave', () => {
+      if (dynamicCardRaf) { cancelAnimationFrame(dynamicCardRaf); dynamicCardRaf = null; }
       card.style.transform = '';
     });
     card.addEventListener('touchend', () => {
+      if (dynamicCardRaf) { cancelAnimationFrame(dynamicCardRaf); dynamicCardRaf = null; }
       card.style.transform = '';
     });
 
@@ -4936,7 +4708,8 @@ const romanticReasons = [
   }
 
   // --------------------------------------------------------------------------
-  // 17. SECTION 10: STICKY WISH WALL ENGINE (With Photos, Videos & Cloud Sync)
+  // --------------------------------------------------------------------------
+  // 17. SECTION 10: STICKY WISH WALL ENGINE (With Photos & Cloud Sync)
   // --------------------------------------------------------------------------
   const wishForm = document.getElementById('wishForm');
   const wishAuthorInput = document.getElementById('wishAuthorInput');
@@ -4946,7 +4719,6 @@ const romanticReasons = [
 
   const mainCountAll = document.getElementById('mainCountAll');
   const mainCountPhotos = document.getElementById('mainCountPhotos');
-  const mainCountVideos = document.getElementById('mainCountVideos');
   const mainCountRoyal = document.getElementById('mainCountRoyal');
 
   let mainSelectedMediaType = 'none';
@@ -4954,7 +4726,7 @@ const romanticReasons = [
   let mainSelectedTheme = 'pink';
   let mainActiveFilter = 'all';
 
-  // Default multimedia royal dedications with photos & videos
+  // Default multimedia royal dedications with photos & text wishes
   const DEFAULT_MAIN_WISHES = [
     {
       id: 'def_main_1',
@@ -4978,8 +4750,8 @@ const romanticReasons = [
       text: 'A heavenly romantic birthday melody dedicated to My Love Nishika! May your 26th year be filled with divine melodies and infinite royal joy! 🎂✨',
       color: 'pink',
       styleClass: 'sticky-pink',
-      mediaType: 'video',
-      mediaUrl: 'https://www.youtube.com/watch?v=2Vv-BfVoq4g',
+      mediaType: 'photo',
+      mediaUrl: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=900&auto=format&fit=crop&q=80',
       likes: 44,
       isRoyal: false,
       localTime: 'September 2026'
@@ -5050,138 +4822,13 @@ const romanticReasons = [
     return trimmed;
   }
 
-  // Helper: Robust YouTube Video ID Extractor
-  function extractYouTubeId(url) {
-    if (!url) return null;
-    let str = url.toString().trim();
-    const iframeMatch = str.match(/src=["']([^"']+)["']/i);
-    if (iframeMatch && iframeMatch[1]) str = iframeMatch[1].trim();
-    str = str.replace(/^[<"']+|[>"']+$/g, '');
-
-    let match = str.match(/(?:youtube\.com|youtu\.be)\/shorts\/([a-zA-Z0-9_-]{11})/i);
-    if (match && match[1]) return match[1];
-
-    match = str.match(/(?:youtube\.com|youtu\.be)\/live\/([a-zA-Z0-9_-]{11})/i);
-    if (match && match[1]) return match[1];
-
-    match = str.match(/(?:youtube\.com\/(?:embed|v)|youtu\.be|youtube-nocookie\.com\/embed)\/([a-zA-Z0-9_-]{11})/i);
-    if (match && match[1]) return match[1];
-
-    match = str.match(/[?&]v=([a-zA-Z0-9_-]{11})/i);
-    if (match && match[1]) return match[1];
-
-    match = str.match(/(?:https?:\/\/)?(?:www\.|m\.|music\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?.*v=|embed\/|v\/|shorts\/|live\/)?([a-zA-Z0-9_-]{11})/i);
-    if (match && match[1]) return match[1];
-
-    return null;
-  }
-
-  // Helper: Parse video URLs into responsive iframes or video players
-  function parseGasVideoEmbed(url, inLightbox = false) {
-    if (!url) return '';
-    const clean = url.toString().trim();
-
-    // 1. YouTube standard watch, youtu.be, shorts, live, embed, mobile, music
-    const ytId = extractYouTubeId(clean);
-    if (ytId) {
-      const embedUrl = `https://www.youtube.com/embed/${ytId}?autoplay=${inLightbox ? 1 : 0}&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
-      const watchUrl = `https://www.youtube.com/watch?v=${ytId}`;
-      return `
-        <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
-          <iframe src="${embedUrl}" 
-                  title="YouTube Video Player"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  allowfullscreen 
-                  loading="lazy" 
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;">
-          </iframe>
-          <a href="${watchUrl}" target="_blank" rel="noopener noreferrer" class="yt-direct-pill" title="Watch directly on YouTube" style="position:absolute; bottom:6px; right:6px; z-index:4; display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-weight:700; padding:3px 8px; border-radius:6px; background:rgba(0,0,0,0.78); color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(4px); transition:all 0.2s ease;">
-            <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube ↗
-          </a>
-        </div>
-      `;
-    }
-
-    // 2. Vimeo
-    if (clean.includes('vimeo.com/')) {
-      const vMatch = clean.match(/vimeo\.com\/(?:video\/)?([0-9]+)/i);
-      const vId = vMatch ? vMatch[1] : clean.split('vimeo.com/')[1].split('?')[0].split('/')[0].split('&')[0];
-      if (vId) {
-        return `
-          <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
-            <iframe src="https://player.vimeo.com/video/${vId}?autoplay=${inLightbox ? 1 : 0}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;"></iframe>
-          </div>
-        `;
-      }
-    }
-
-    // 3. Google Drive Video Link (all variants: /file/d/, open?id=, uc?id=, thumbnail?id=, googleusercontent.com/d/, docs.google.com)
-    if (clean.includes('drive.google.com') || clean.includes('docs.google.com') || clean.includes('googleusercontent.com')) {
-      let gId = '';
-      const m1 = clean.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-      const m2 = clean.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-      const m3 = clean.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      const m4 = clean.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
-      if (m1 && m1[1]) gId = m1[1];
-      else if (m2 && m2[1]) gId = m2[1];
-      else if (m3 && m3[1]) gId = m3[1];
-      else if (m4 && m4[1]) gId = m4[1];
-
-      if (gId) {
-        const drivePreviewUrl = `https://drive.google.com/file/d/${gId}/preview`;
-        const driveViewUrl = `https://drive.google.com/file/d/${gId}/view`;
-        const driveDownloadUrl = `https://drive.google.com/uc?export=download&id=${gId}`;
-        return `
-          <div class="video-embed-container gdrive-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
-            <iframe src="${drivePreviewUrl}" 
-                    title="Google Drive Video Player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen 
-                    loading="lazy" 
-                    style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;">
-            </iframe>
-            <div class="gdrive-quick-actions" style="position:absolute; bottom:6px; left:6px; right:6px; z-index:4; display:flex; align-items:center; justify-content:space-between; gap:6px; pointer-events:auto;">
-              <a href="${driveViewUrl}" target="_blank" rel="noopener noreferrer" class="gdrive-pill-link" title="Open directly in Google Drive" style="display:inline-flex; align-items:center; gap:5px; font-size:0.7rem; font-weight:700; padding:4px 9px; border-radius:8px; background:rgba(9, 3, 18, 0.88); color:#ffd700; text-decoration:none; border:1px solid rgba(255, 215, 0, 0.4); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); transition:all 0.2s ease;">
-                <i class="fa-brands fa-google-drive" style="color:#34a853;"></i> Drive ↗
-              </a>
-              <a href="${driveDownloadUrl}" target="_blank" rel="noopener noreferrer" class="gdrive-pill-link" title="Download / Direct Stream Video" style="display:inline-flex; align-items:center; gap:5px; font-size:0.7rem; font-weight:700; padding:4px 9px; border-radius:8px; background:rgba(9, 3, 18, 0.88); color:#ffffff; text-decoration:none; border:1px solid rgba(255, 255, 255, 0.25); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); transition:all 0.2s ease;">
-                <i class="fa-solid fa-cloud-arrow-down" style="color:#ff4081;"></i> Download
-              </a>
-            </div>
-          </div>
-        `;
-      }
-    }
-
-    // 4. Direct MP4 / WebM / QuickTime MOV / MKV / AVI / WMV / 3GP / OGG / Base64 Data URL
-    let videoMime = 'video/mp4';
-    if (clean.startsWith('data:')) {
-      const semi = clean.indexOf(';');
-      if (semi > 5) videoMime = clean.substring(5, semi);
-    } else {
-      videoMime = getMimeTypeForVideoFile(clean);
-    }
-
-    return `
-      <div class="video-embed-container" style="position:relative; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#000;">
-        <video controls ${inLightbox ? 'autoplay' : ''} preload="metadata" playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain; border-radius:12px; background:#000; display:block;">
-          <source src="${clean}" type="${videoMime}">
-          <source src="${clean}">
-          Your browser does not support playing this ${videoMime} video codec directly. <a href="${clean}" download="video" target="_blank" style="color:var(--primary, #ff4081);">Download Video</a>
-        </video>
-      </div>
-    `;
-  }
-  window.parseGasVideoEmbed = parseGasVideoEmbed;
-
   function getWishAvatarLetter(name) {
     if (!name) return '👑';
     const clean = name.replace(/[^a-zA-Z]/g, '');
     return clean.length > 0 ? clean[0].toUpperCase() : '👑';
   }
 
-  // Media Tab Switching in Main Wish Form
+  // Media Tab Switching in Main Wish Form (Photo & Text)
   const mainMediaTabBtns = document.querySelectorAll('.media-tab-btn[data-tab^="mainTab"]');
   mainMediaTabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -5194,10 +4841,6 @@ const romanticReasons = [
         const pane = document.getElementById('mainTabPhoto');
         if (pane) pane.classList.add('active');
         mainSelectedMediaType = 'photo';
-      } else if (targetTab === 'mainTabVideo') {
-        const pane = document.getElementById('mainTabVideo');
-        if (pane) pane.classList.add('active');
-        mainSelectedMediaType = 'video';
       } else {
         mainSelectedMediaType = 'none';
         mainSelectedMediaData = '';
@@ -5254,210 +4897,6 @@ const romanticReasons = [
     });
   }
 
-  // Video Attachment Handlers & Upload Progress Controller
-  const mainWishVideoInput = document.getElementById('mainWishVideoInput');
-  const mainWishVideoUrl = document.getElementById('mainWishVideoUrl');
-  const mainVideoPreviewBox = document.getElementById('mainVideoPreviewBox');
-  const mainVideoPreviewContainer = document.getElementById('mainVideoPreviewContainer');
-  const mainRemoveVideoBtn = document.getElementById('mainRemoveVideoBtn');
-
-  const mainVideoUploadProgressBox = document.getElementById('mainVideoUploadProgressBox');
-  const mainVideoProgressTitle = document.getElementById('mainVideoProgressTitle');
-  const mainVideoProgressMeta = document.getElementById('mainVideoProgressMeta');
-  const mainVideoProgressPct = document.getElementById('mainVideoProgressPct');
-  const mainVideoProgressBarFill = document.getElementById('mainVideoProgressBarFill');
-  const mainVideoStep1 = document.getElementById('mainVideoStep1');
-  const mainVideoStep2 = document.getElementById('mainVideoStep2');
-  const mainVideoStep3 = document.getElementById('mainVideoStep3');
-
-  const mainVideoUploadAlert = document.getElementById('mainVideoUploadAlert');
-  const mainVideoAlertTitle = document.getElementById('mainVideoAlertTitle');
-  const mainVideoAlertMsg = document.getElementById('mainVideoAlertMsg');
-  const mainVideoAlertIcon = document.getElementById('mainVideoAlertIcon');
-  const mainVideoAlertClose = document.getElementById('mainVideoAlertClose');
-
-  let mainSelectedVideoFile = null;
-  let isVideoEncodingInProgress = false;
-
-  function updateMainVideoProgressUI({
-    visible = true,
-    title = 'Processing Video...',
-    meta = '',
-    pct = 0,
-    step = 1,
-    isSuccess = false
-  }) {
-    if (!mainVideoUploadProgressBox) return;
-    if (!visible) {
-      mainVideoUploadProgressBox.style.display = 'none';
-      mainVideoUploadProgressBox.classList.remove('upload-complete');
-      return;
-    }
-    mainVideoUploadProgressBox.style.display = 'block';
-    if (isSuccess) {
-      mainVideoUploadProgressBox.classList.add('upload-complete');
-    } else {
-      mainVideoUploadProgressBox.classList.remove('upload-complete');
-    }
-
-    if (mainVideoUploadAlert && !isSuccess) mainVideoUploadAlert.style.display = 'none';
-
-    if (mainVideoProgressTitle) mainVideoProgressTitle.textContent = title;
-    if (mainVideoProgressMeta) mainVideoProgressMeta.textContent = meta;
-    
-    const roundedPct = Math.min(100, Math.max(0, Math.round(pct)));
-    if (mainVideoProgressPct) mainVideoProgressPct.textContent = `${roundedPct}%`;
-    
-    if (mainVideoProgressBarFill) {
-      mainVideoProgressBarFill.style.width = `${roundedPct}%`;
-      if (isSuccess || roundedPct >= 100) {
-        mainVideoProgressBarFill.classList.add('success');
-      } else {
-        mainVideoProgressBarFill.classList.remove('success');
-      }
-    }
-
-    if (mainVideoStep1 && mainVideoStep2 && mainVideoStep3) {
-      mainVideoStep1.className = 'upload-step-item' + (step >= 1 ? (step > 1 || isSuccess ? ' completed' : ' active') : '');
-      mainVideoStep2.className = 'upload-step-item' + (step >= 2 ? (step > 2 || isSuccess ? ' completed' : ' active') : '');
-      mainVideoStep3.className = 'upload-step-item' + (step >= 3 ? (isSuccess || roundedPct >= 100 ? ' completed' : ' active') : '');
-    }
-  }
-
-  function showMainVideoAlert({ type = 'error', title = 'Upload Issue', msg = '' }) {
-    if (!mainVideoUploadAlert) return;
-    mainVideoUploadAlert.className = `upload-status-alert ${type === 'success' ? 'is-success' : 'is-error'}`;
-    if (mainVideoAlertIcon) {
-      mainVideoAlertIcon.innerHTML = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-triangle-exclamation"></i>';
-    }
-    if (mainVideoAlertTitle) mainVideoAlertTitle.textContent = title;
-    if (mainVideoAlertMsg) mainVideoAlertMsg.textContent = msg;
-    mainVideoUploadAlert.style.display = 'flex';
-  }
-
-  function hideMainVideoAlert() {
-    if (mainVideoUploadAlert) mainVideoUploadAlert.style.display = 'none';
-  }
-
-  window.updateMainVideoProgressUI = updateMainVideoProgressUI;
-  window.showMainVideoAlert = showMainVideoAlert;
-  window.hideMainVideoAlert = hideMainVideoAlert;
-
-  if (mainVideoAlertClose) {
-    mainVideoAlertClose.addEventListener('click', hideMainVideoAlert);
-  }
-
-  function updateMainVideoPreview(src) {
-    if (!src) {
-      if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'none';
-      if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
-      mainSelectedMediaData = '';
-      return;
-    }
-    mainSelectedMediaData = src;
-    mainSelectedMediaType = 'video';
-    if (mainVideoPreviewContainer) {
-      mainVideoPreviewContainer.innerHTML = parseGasVideoEmbed(src, false);
-    }
-    if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'inline-block';
-  }
-
-  if (mainWishVideoInput) {
-    mainWishVideoInput.addEventListener('change', async (e) => {
-      const file = e.target.files && e.target.files[0];
-      if (file) {
-        mainSelectedVideoFile = file;
-        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
-        if (file.size > 30 * 1024 * 1024) {
-          showMainVideoAlert({
-            type: 'error',
-            title: 'Video File Exceeds 30MB Limit',
-            msg: `Your selected video is ${fileSizeMB} MB. Please choose a video under 30MB, or paste a Google Drive / YouTube link in the URL field above.`
-          });
-          mainWishVideoInput.value = '';
-          updateMainVideoProgressUI({ visible: false });
-          return;
-        }
-
-        hideMainVideoAlert();
-        isVideoEncodingInProgress = true;
-        updateMainVideoProgressUI({
-          visible: true,
-          title: `Reading Video File (${fileSizeMB} MB)...`,
-          meta: `Preparing ${file.name} for high-speed transmission...`,
-          pct: 15,
-          step: 1
-        });
-
-        const videoUrl = URL.createObjectURL(file);
-        updateMainVideoPreview(videoUrl);
-
-        try {
-          const base64Data = await readFileAsBase64(file, (filePct, loaded, total) => {
-            const mappedPct = Math.min(95, 15 + Math.round(filePct * 0.8));
-            const loadedMB = loaded ? (loaded / (1024 * 1024)).toFixed(1) : ((file.size * filePct / 100) / (1024 * 1024)).toFixed(1);
-            updateMainVideoProgressUI({
-              visible: true,
-              title: filePct < 100 ? `Reading Video (${filePct}%)...` : 'Encoding Video Stream...',
-              meta: `${file.name} • ${loadedMB} MB / ${fileSizeMB} MB (${filePct}%)`,
-              pct: mappedPct,
-              step: filePct < 100 ? 1 : 2
-            });
-          });
-
-          mainSelectedMediaData = base64Data;
-          mainSelectedMediaType = 'video';
-          isVideoEncodingInProgress = false;
-          if (mainWishVideoUrl) mainWishVideoUrl.value = '';
-
-          updateMainVideoProgressUI({
-            visible: true,
-            title: 'Video Ready to Upload & Pin ✨',
-            meta: `${file.name} • ${fileSizeMB} MB • Encoded & Ready to Consecrate`,
-            pct: 100,
-            step: 2
-          });
-        } catch(vErr) {
-          console.warn('Video encoding error:', vErr);
-          isVideoEncodingInProgress = false;
-          showMainVideoAlert({
-            type: 'error',
-            title: 'Video Read Failed',
-            msg: 'Unable to process the video from your device. Please try another MP4, WebM, or MOV video.'
-          });
-          updateMainVideoProgressUI({ visible: false });
-        }
-      }
-    });
-  }
-
-  if (mainWishVideoUrl) {
-    mainWishVideoUrl.addEventListener('input', (e) => {
-      const val = e.target.value.trim();
-      if (val) {
-        hideMainVideoAlert();
-        updateMainVideoProgressUI({ visible: false });
-        updateMainVideoPreview(val);
-        if (mainWishVideoInput) mainWishVideoInput.value = '';
-      }
-    });
-  }
-
-  if (mainRemoveVideoBtn) {
-    mainRemoveVideoBtn.addEventListener('click', () => {
-      if (mainWishVideoInput) mainWishVideoInput.value = '';
-      if (mainWishVideoUrl) mainWishVideoUrl.value = '';
-      if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'none';
-      if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
-      mainSelectedMediaData = '';
-      mainSelectedMediaType = 'none';
-      mainSelectedVideoFile = null;
-      isVideoEncodingInProgress = false;
-      hideMainVideoAlert();
-      updateMainVideoProgressUI({ visible: false });
-    });
-  }
-
   // Theme Color Swatches Picker
   const mainColorChips = document.querySelectorAll('#mainStickyColorPalette .color-chip');
   mainColorChips.forEach(chip => {
@@ -5468,7 +4907,7 @@ const romanticReasons = [
     });
   });
 
-  // Filter Pills Handler
+  // Filter Pills Handler (All, Photos, Royal)
   const mainFilterPills = document.querySelectorAll('#mainWishFilterBar .filter-pill');
   mainFilterPills.forEach(pill => {
     pill.addEventListener('click', () => {
@@ -5482,13 +4921,9 @@ const romanticReasons = [
   function isPhotoItem(w) {
     if (!w) return false;
     const type = (w.mediaType || '').toLowerCase();
-    if (type === 'video') return false;
     if (type === 'photo') return true;
     const url = (w.mediaUrl || w.mediaData || '').toLowerCase();
     if (!url) return false;
-    if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com') || url.includes('/preview') || /\.(mp4|webm|ogg|ogv|mov|qt|m4v|avi|mkv|wmv|3gp|3g2|flv|ts|mts|m2ts)(\?.*)?$/i.test(url) || url.startsWith('data:video')) {
-      return false;
-    }
     return url.startsWith('data:image') ||
            url.includes('googleusercontent.com') ||
            url.includes('drive.google.com') ||
@@ -5496,27 +4931,12 @@ const romanticReasons = [
            /\.(jpg|jpeg|png|gif|webp|avif|svg)(\?.*)?$/i.test(url);
   }
 
-  function isVideoItem(w) {
-    if (!w) return false;
-    const type = (w.mediaType || '').toLowerCase();
-    if (type === 'video') return true;
-    if (type === 'photo') return false;
-    const url = (w.mediaUrl || w.mediaData || '').toLowerCase();
-    if (!url) return false;
-    return url.includes('youtube.com') ||
-           url.includes('youtu.be') ||
-           url.includes('vimeo.com') ||
-           url.includes('/preview') ||
-           url.startsWith('data:video') ||
-           /\.(mp4|webm|ogg|ogv|mov|qt|m4v|avi|mkv|wmv|3gp|3g2|flv|ts|mts|m2ts)(\?.*)?$/i.test(url);
-  }
-
-  // Universal Media URL Normalizer (Keeps Video stream links intact and converts Photos to fast CDN thumbnails)
-  function normalizeCloudImageUrl(url, isVideo = false) {
+  // Universal Photo Media URL Normalizer (Converts Google Drive photos to high-speed CDN thumbnails)
+  function normalizeCloudImageUrl(url) {
     if (!url) return '';
     url = url.toString().trim();
     if (url.startsWith('blob:')) return '';
-    if (url.startsWith('data:image') || url.startsWith('data:video')) return url;
+    if (url.startsWith('data:image')) return url;
 
     let driveId = '';
     if (url.includes('drive.google.com') || url.includes('docs.google.com') || url.includes('googleusercontent.com')) {
@@ -5530,16 +4950,13 @@ const romanticReasons = [
     }
 
     if (driveId) {
-      if (isVideo || url.includes('/preview') || url.match(/\.(mp4|webm|mov|qt|m4v|ogg|ogv|avi|mkv|wmv|3gp|3g2|flv|ts|mts|m2ts)/i)) {
-        return `https://drive.google.com/file/d/${driveId}/preview`;
-      }
       return `https://lh3.googleusercontent.com/d/${driveId}`;
     }
     return url;
   }
   window.normalizeCloudImageUrl = normalizeCloudImageUrl;
 
-  // Render Dynamic Sticky Notes on Wall
+  // Render Dynamic Sticky Notes on Wall (Photos & Text Wishes)
   function renderPinnedWishes() {
     if (!wishesPinboard) return;
     wishesPinboard.innerHTML = '';
@@ -5553,11 +4970,9 @@ const romanticReasons = [
 
     const filtered = allNotes.filter(w => {
       const isPhoto = isPhotoItem(w);
-      const isVideo = isVideoItem(w);
       const isRoyal = w.isRoyal || (w.author && w.author.toLowerCase().includes('dilip')) || (w.name && w.name.toLowerCase().includes('dilip'));
 
       if (mainActiveFilter === 'photo') return isPhoto;
-      if (mainActiveFilter === 'video') return isVideo;
       if (mainActiveFilter === 'royal') return isRoyal;
       return true;
     });
@@ -5565,7 +4980,6 @@ const romanticReasons = [
     // Update Counter Badges
     if (mainCountAll) mainCountAll.textContent = allNotes.length;
     if (mainCountPhotos) mainCountPhotos.textContent = allNotes.filter(w => isPhotoItem(w)).length;
-    if (mainCountVideos) mainCountVideos.textContent = allNotes.filter(w => isVideoItem(w)).length;
     if (mainCountRoyal) mainCountRoyal.textContent = allNotes.filter(w => w.isRoyal || (w.author && w.author.toLowerCase().includes('dilip')) || (w.name && w.name.toLowerCase().includes('dilip'))).length;
 
     if (filtered.length === 0) {
@@ -5573,7 +4987,7 @@ const romanticReasons = [
         <div class="sticky-empty-box">
           <i class="fa-solid fa-sparkles"></i>
           <h3>No notes in this category yet</h3>
-          <p>Be the first to consecrate a heartfelt wish, photo, or video dedication for My Love Nishika!</p>
+          <p>Be the first to consecrate a heartfelt wish or photo dedication for My Love Nishika!</p>
         </div>
       `;
       return;
@@ -5588,9 +5002,8 @@ const romanticReasons = [
       const isRoyal = item.isRoyal || authorName.toLowerCase().includes('dilip');
       const themeClass = item.styleClass || `theme-${item.color || 'pink'}`;
       const isPhoto = isPhotoItem(item);
-      const isVideo = isVideoItem(item);
       const rawMediaUrl = item.mediaUrl || item.mediaData || '';
-      const mediaUrl = isPhoto ? normalizeCloudImageUrl(rawMediaUrl) : rawMediaUrl;
+      const mediaUrl = isPhoto ? normalizeCloudImageUrl(rawMediaUrl) : '';
       const likesCount = item.likes || Math.floor(Math.random() * 8) + 12;
 
       const sticky = document.createElement('div');
@@ -5603,18 +5016,6 @@ const romanticReasons = [
           <div class="sticky-media-wrap" data-img="${mediaUrl}" data-author="${encodeURIComponent(authorName)}" data-msg="${encodeURIComponent(messageText)}">
             <img src="${mediaUrl}" alt="Attached Memory" loading="lazy" onerror="this.onerror=null; if(this.src.indexOf('lh3.googleusercontent.com')!==-1){this.src=this.src.replace('lh3.googleusercontent.com/d/','drive.google.com/thumbnail?id=').split('?')[0]+'&sz=w1000';}" />
             <span class="sticky-media-badge"><i class="fa-solid fa-expand"></i> View Photo</span>
-          </div>
-        `;
-      } else if (isVideo && (mediaUrl || item.mediaData)) {
-        const displayVideoSource = (item.mediaData && item.mediaData.startsWith('data:video')) ? item.mediaData : (mediaUrl || item.mediaData);
-        mediaHtml = `
-          <div class="sticky-video-embed">
-            <div class="sticky-video-action-bar">
-              <button type="button" class="sticky-video-expand-btn" data-video="${displayVideoSource}" data-author="${encodeURIComponent(authorName)}" data-msg="${encodeURIComponent(messageText)}" title="Expand Video in Lightbox">
-                <i class="fa-solid fa-expand"></i> Lightbox
-              </button>
-            </div>
-            ${parseGasVideoEmbed(displayVideoSource, false)}
           </div>
         `;
       }
@@ -5646,16 +5047,6 @@ const romanticReasons = [
       if (mediaWrap) {
         mediaWrap.addEventListener('click', () => {
           openMediaLightbox('photo', mediaUrl, authorName, messageText);
-        });
-      }
-
-      // Video Lightbox Click
-      const videoExpandBtn = sticky.querySelector('.sticky-video-expand-btn');
-      if (videoExpandBtn) {
-        videoExpandBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const videoSrc = videoExpandBtn.getAttribute('data-video') || mediaUrl;
-          openMediaLightbox('video', videoSrc, authorName, messageText);
         });
       }
 
@@ -5710,7 +5101,7 @@ const romanticReasons = [
     });
   }
 
-  // Live Cloud Fetch for Wishes, Photos & Videos
+  // Live Cloud Fetch for Wishes & Photos
   async function fetchCloudWishes() {
     const sheetUrl = state.googleSheetUrl || localStorage.getItem('eternal_love_sheet_url') || DEFAULT_GOOGLE_SHEET_URL;
     if (!sheetUrl || !sheetUrl.startsWith('http')) return;
@@ -5734,9 +5125,8 @@ const romanticReasons = [
         if (data) {
           if (Array.isArray(data.wishes)) {
             data.wishes.forEach(w => {
-              const rawMediaUrl = w.mediaUrl || w.mediaLink || w.mediaData || w.videoUrl || '';
-              const isVideo = (w.mediaType === 'video') || isVideoItem({ mediaType: w.mediaType, mediaUrl: rawMediaUrl });
-              const normalizedMediaUrl = normalizeCloudImageUrl(rawMediaUrl, isVideo);
+              const rawMediaUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
+              const normalizedMediaUrl = normalizeCloudImageUrl(rawMediaUrl);
               const authorName = w.author || w.name || 'Loving Well-wisher';
               const messageText = w.message || w.text || '';
               const isRoyal = w.isRoyal || authorName.toLowerCase().includes('dilip');
@@ -5749,7 +5139,7 @@ const romanticReasons = [
                 text: messageText,
                 color: w.color || 'pink',
                 styleClass: w.styleClass || `theme-${w.color || 'pink'}`,
-                mediaType: isVideo ? 'video' : (w.mediaType || (rawMediaUrl ? 'photo' : 'none')),
+                mediaType: w.mediaType || (rawMediaUrl ? 'photo' : 'none'),
                 mediaUrl: normalizedMediaUrl,
                 mediaData: normalizedMediaUrl,
                 likes: w.likes || (Math.floor(Math.random() * 8) + 12),
@@ -5762,7 +5152,7 @@ const romanticReasons = [
 
           if (Array.isArray(data.photos)) {
             data.photos.forEach(p => {
-              const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '', false);
+              const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '');
               const author = p.dedicatedBy || 'Dilip 👑';
               const caption = p.caption || `Our unforgettable memory with ${p.celebrant || state.recipientName} 💖`;
 
@@ -5793,32 +5183,6 @@ const romanticReasons = [
                 isRoyal: true,
                 localTime: p.localTime || 'Recently',
                 timestamp: p.timestamp || new Date().toISOString()
-              });
-            });
-          }
-
-          if (Array.isArray(data.videos)) {
-            data.videos.forEach(v => {
-              const rawUrl = v.videoUrl || v.driveUrl || v.mediaUrl || '';
-              const videoUrl = normalizeCloudImageUrl(rawUrl, true);
-              const sender = v.dedicatedBy || v.author || v.name || 'Dilip 👑';
-              const caption = v.caption || v.message || 'Royal video dedication for My Love Nishika 🎬';
-
-              cloudWishes.push({
-                id: v.id || ('gs_video_' + Math.random()),
-                author: sender,
-                name: sender,
-                message: caption,
-                text: caption,
-                color: 'gold',
-                styleClass: 'theme-gold',
-                mediaType: 'video',
-                mediaUrl: videoUrl,
-                mediaData: videoUrl,
-                likes: 30,
-                isRoyal: true,
-                localTime: v.localTime || 'Recently',
-                timestamp: v.timestamp || new Date().toISOString()
               });
             });
           }
@@ -5831,9 +5195,8 @@ const romanticReasons = [
         if (data) {
           if (Array.isArray(data.wishes)) {
             data.wishes.forEach(w => {
-              const rawMediaUrl = w.mediaUrl || w.mediaLink || w.mediaData || w.videoUrl || '';
-              const isVideo = (w.mediaType === 'video') || isVideoItem({ mediaType: w.mediaType, mediaUrl: rawMediaUrl });
-              const normalizedMediaUrl = normalizeCloudImageUrl(rawMediaUrl, isVideo);
+              const rawMediaUrl = w.mediaUrl || w.mediaLink || w.mediaData || '';
+              const normalizedMediaUrl = normalizeCloudImageUrl(rawMediaUrl);
               const authorName = w.author || w.name || 'Loving Well-wisher';
               const messageText = w.message || w.text || '';
               const isRoyal = w.isRoyal || authorName.toLowerCase().includes('dilip');
@@ -5846,7 +5209,7 @@ const romanticReasons = [
                 text: messageText,
                 color: w.color || 'pink',
                 styleClass: w.styleClass || `theme-${w.color || 'pink'}`,
-                mediaType: isVideo ? 'video' : (w.mediaType || (rawMediaUrl ? 'photo' : 'none')),
+                mediaType: w.mediaType || (rawMediaUrl ? 'photo' : 'none'),
                 mediaUrl: normalizedMediaUrl,
                 mediaData: normalizedMediaUrl,
                 likes: w.likes || (Math.floor(Math.random() * 8) + 12),
@@ -5859,7 +5222,7 @@ const romanticReasons = [
 
           if (Array.isArray(data.photos)) {
             data.photos.forEach(p => {
-              const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '', false);
+              const photoUrl = normalizeCloudImageUrl(p.imgUrl || p.driveUrl || '');
               const author = p.dedicatedBy || 'Dilip 👑';
               const caption = p.caption || `Our unforgettable memory with ${p.celebrant || state.recipientName} 💖`;
 
@@ -5890,32 +5253,6 @@ const romanticReasons = [
                 isRoyal: true,
                 localTime: p.localTime || 'Recently',
                 timestamp: p.timestamp || new Date().toISOString()
-              });
-            });
-          }
-
-          if (Array.isArray(data.videos)) {
-            data.videos.forEach(v => {
-              const rawUrl = v.videoUrl || v.driveUrl || v.mediaUrl || '';
-              const videoUrl = normalizeCloudImageUrl(rawUrl, true);
-              const sender = v.dedicatedBy || v.author || v.name || 'Dilip 👑';
-              const caption = v.caption || v.message || 'Royal video dedication for My Love Nishika 🎬';
-
-              cloudWishes.push({
-                id: v.id || ('gs_video_' + Math.random()),
-                author: sender,
-                name: sender,
-                message: caption,
-                text: caption,
-                color: 'gold',
-                styleClass: 'theme-gold',
-                mediaType: 'video',
-                mediaUrl: videoUrl,
-                mediaData: videoUrl,
-                likes: 30,
-                isRoyal: true,
-                localTime: v.localTime || 'Recently',
-                timestamp: v.timestamp || new Date().toISOString()
               });
             });
           }
@@ -5999,9 +5336,9 @@ const romanticReasons = [
     // SHORT & SWEET
     { id: 'w_sht_1', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Happy Birthday My Love Nishika! You mean everything to me. 💖✨' },
     { id: 'w_sht_2', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'To endless love, laughter, and starlight. Happy Birthday Nishika! 🌸💫' },
-    { id: 'w_sht_3', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Wishing the sweetest birthday to the most wonderful soul! 🎂💕' },
-    { id: 'w_sht_4', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Forever celebrating you, today and every day. Happy Birthday! 👑✨' },
-    { id: 'w_sht_5', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'May your special day be as gorgeous and radiant as your smile! 🌹✨' }
+    { id: 'w_sht_3', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Wishing the sweetest birthday to the most wonderful soul, Nishika! 🎂💕' },
+    { id: 'w_sht_4', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'Forever celebrating you, today and every day. Happy Birthday Nishika! 👑✨' },
+    { id: 'w_sht_5', category: 'short', categoryName: 'Short & Sweet', tagClass: 'tag-short', text: 'May your special 26th birthday be as gorgeous and radiant as your smile, Nishika! 🌹✨' }
   ];
 
   const mainWishCharCounter = document.getElementById('mainWishCharCounter');
@@ -6279,35 +5616,8 @@ const romanticReasons = [
       if (!text) return;
 
       const submitBtn = document.getElementById('mainSubmitWishBtn');
-      const hasVideoFile = (mainWishVideoInput && mainWishVideoInput.files && mainWishVideoInput.files[0]) || mainSelectedVideoFile;
-      const isVideoUpload = (mainSelectedMediaType === 'video') && (hasVideoFile || (mainSelectedMediaData && mainSelectedMediaData.startsWith('data:video')));
 
-      if (isVideoUpload && isVideoEncodingInProgress) {
-        showMainVideoAlert({
-          type: 'error',
-          title: 'Encoding in Progress',
-          msg: 'Please wait a moment while your video finishes preparing, then click Pin Note.'
-        });
-        return;
-      }
-
-      // Ensure Base64 file is fully encoded before dispatching payload
-      if (isVideoUpload && (!mainSelectedMediaData || !mainSelectedMediaData.startsWith('data:video')) && hasVideoFile) {
-        const fileObj = (mainWishVideoInput && mainWishVideoInput.files && mainWishVideoInput.files[0]) || mainSelectedVideoFile;
-        const fileSizeMB = (fileObj.size / (1024 * 1024)).toFixed(1);
-        updateMainVideoProgressUI({
-          visible: true,
-          title: `Encoding Video (${fileSizeMB} MB)...`,
-          meta: 'Preparing stream for cloud upload...',
-          pct: 20,
-          step: 2
-        });
-        try {
-          mainSelectedMediaData = await readFileAsBase64(fileObj);
-        } catch (vErr) {
-          console.warn('Main wish video encoding error:', vErr);
-        }
-      } else if (mainSelectedMediaType === 'photo' && mainWishPhotoInput && mainWishPhotoInput.files && mainWishPhotoInput.files[0]) {
+      if (mainSelectedMediaType === 'photo' && mainWishPhotoInput && mainWishPhotoInput.files && mainWishPhotoInput.files[0]) {
         if (!mainSelectedMediaData || !mainSelectedMediaData.startsWith('data:image')) {
           try {
             mainSelectedMediaData = await readFileAsBase64(mainWishPhotoInput.files[0]);
@@ -6346,184 +5656,64 @@ const romanticReasons = [
       audioSynth.playCheerSound();
       burstConfetti(window.innerWidth / 2, window.innerHeight * 0.7, 45);
 
-      if (isVideoUpload) {
-        const fileObj = (mainWishVideoInput && mainWishVideoInput.files && mainWishVideoInput.files[0]) || mainSelectedVideoFile;
-        const fileSizeMB = fileObj ? (fileObj.size / (1024 * 1024)).toFixed(1) : ((mainSelectedMediaData.length * 0.75) / (1024 * 1024)).toFixed(1);
-
-        // Keep the video tab and upload progress card active and locked in view
-        const videoTabBtn = document.querySelector('.media-tab-btn[data-tab="mainTabVideo"]');
-        if (videoTabBtn) {
-          mainMediaTabBtns.forEach(b => b.classList.remove('active'));
-          videoTabBtn.classList.add('active');
-        }
-        const videoPane = document.getElementById('mainTabVideo');
-        if (videoPane) {
-          document.querySelectorAll('#wishBoardSection .media-content-pane').forEach(p => p.classList.remove('active'));
-          videoPane.classList.add('active');
-        }
-
-        updateMainVideoProgressUI({
-          visible: true,
-          title: `Uploading Video (${fileSizeMB} MB) to Google Drive...`,
-          meta: `Initiating high-speed chunk transmission...`,
-          pct: 4,
-          step: 3
-        });
-
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video (${fileSizeMB} MB)... (0%)</span>`;
-        }
-
-        uploadVideoChunks({
-          base64Data: mainSelectedMediaData,
-          author: author,
-          caption: text,
-          celebrant: state.recipientName || 'Nishika',
-          dedicatedBy: state.senderName || 'Dilip',
-          color: mainSelectedTheme,
-          tag: 'Video Reel 🎬',
-          onProgress: (pct, currentChunk, totalChunks, endBytes, totalBytes) => {
-            const transMB = ((endBytes * 0.75) / (1024 * 1024)).toFixed(1);
-            const totMB = ((totalBytes * 0.75) / (1024 * 1024)).toFixed(1);
-            updateMainVideoProgressUI({
-              visible: true,
-              title: currentChunk < totalChunks 
-                ? `Uploading Video (Part ${currentChunk} of ${totalChunks})...` 
-                : 'Finalizing Video & Saving to Google Drive...',
-              meta: `Transmitted ${transMB} MB / ${totMB} MB to Google Cloud (${pct}%)`,
-              pct: Math.min(100, Math.max(4, pct)),
-              step: 3
-            });
-
-            if (submitBtn) {
-              submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Uploading Video (${pct}% • Part ${currentChunk}/${totalChunks})...</span>`;
-            }
-          },
-          onSuccess: () => {
-            updateMainVideoProgressUI({
-              visible: true,
-              title: '🎉 Video Upload Complete! (100%)',
-              meta: `Successfully saved ${fileSizeMB} MB video to Google Drive & Google Sheets!`,
-              pct: 100,
-              step: 3,
-              isSuccess: true
-            });
-
-            showMainVideoAlert({
-              type: 'success',
-              title: '✨ Video Dedication Successfully Uploaded! 👑',
-              msg: `Your ${fileSizeMB} MB video has been safely uploaded to Google Drive and permanently logged in Google Sheets & the live wall!`
-            });
-
-            if (typeof showToast === 'function') {
-              showToast(`🎉 Video upload complete! (${fileSizeMB} MB saved to Google Drive) 🎬✨`);
-            }
-
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Consecrated Successfully! ✨</span>';
-            }
-
-            // Gracefully reset after the user has seen the complete 100% success state
-            setTimeout(() => {
-              updateMainVideoProgressUI({ visible: false });
-              hideMainVideoAlert();
-              wishForm.reset();
-              mainSelectedMediaData = '';
-              mainSelectedMediaType = 'none';
-              mainSelectedVideoFile = null;
-              if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'none';
-              if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
-              mainMediaTabBtns.forEach(b => b.classList.remove('active'));
-              const defaultTab = document.querySelector('.media-tab-btn[data-tab="mainTabNone"]');
-              if (defaultTab) defaultTab.classList.add('active');
-              document.querySelectorAll('#wishBoardSection .media-content-pane').forEach(p => p.classList.remove('active'));
-
-              if (submitBtn) {
-                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
-              }
-            }, 4500);
-          },
-          onError: (err) => {
-            showMainVideoAlert({
-              type: 'error',
-              title: 'Cloud Sync Notice',
-              msg: 'Cloud sync encountered a network delay or timeout, but your blessing and video are safely preserved in your browser memory wall! ✨'
-            });
-            setTimeout(() => {
-              updateMainVideoProgressUI({ visible: false });
-            }, 6000);
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
-            }
-          }
-        });
-      } else {
-        // Standard post for text or photo
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Pinning Blessing...</span>';
-        }
-
-        sendToGoogleSheet({
-          type: 'wish',
-          name: author,
-          author: author,
-          message: text,
-          text: text,
-          color: mainSelectedTheme,
-          styleClass: styleThemeClass,
-          mediaType: mainSelectedMediaType,
-          mediaData: mainSelectedMediaData,
-          mediaUrl: mainSelectedMediaData,
-          dataUrl: mainSelectedMediaData,
-          videoUrl: mainSelectedMediaData,
-          celebrant: state.recipientName || 'Nishika',
-          dedicatedBy: state.senderName || 'Dilip',
-          timestamp: new Date().toISOString(),
-          localTime: new Date().toLocaleString()
-        }, {
-          chipElement: document.getElementById('wishSyncChip'),
-          textElement: document.getElementById('wishSyncText'),
-          successText: 'Wish Saved to Google Sheets! 💖✨',
-          defaultText: 'Google Sheets Connected ✨',
-          onSuccess: () => {
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
-            }
-          },
-          onError: () => {
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
-            }
-          }
-        });
-
-        // Reset form for standard text/photo
-        wishForm.reset();
-        mainSelectedMediaData = '';
-        mainSelectedMediaType = 'none';
-        if (mainPhotoPreviewBox) mainPhotoPreviewBox.style.display = 'none';
-        if (mainPhotoPreviewImg) mainPhotoPreviewImg.src = '';
-        if (mainVideoPreviewBox) mainVideoPreviewBox.style.display = 'none';
-        if (mainVideoPreviewContainer) mainVideoPreviewContainer.innerHTML = '';
-
-        mainMediaTabBtns.forEach(b => b.classList.remove('active'));
-        const defaultTab = document.querySelector('.media-tab-btn[data-tab="mainTabNone"]');
-        if (defaultTab) defaultTab.classList.add('active');
-        document.querySelectorAll('#wishBoardSection .media-content-pane').forEach(p => p.classList.remove('active'));
-
-        showToast('Note pinned to My Love Nishika\'s celebration board! 📌✨');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Pinning Blessing...</span>';
       }
+
+      sendToGoogleSheet({
+        type: 'wish',
+        name: author,
+        author: author,
+        message: text,
+        text: text,
+        color: mainSelectedTheme,
+        styleClass: styleThemeClass,
+        mediaType: mainSelectedMediaType,
+        mediaData: mainSelectedMediaData,
+        mediaUrl: mainSelectedMediaData,
+        dataUrl: mainSelectedMediaData,
+        celebrant: state.recipientName || 'Nishika',
+        dedicatedBy: state.senderName || 'Dilip',
+        timestamp: new Date().toISOString(),
+        localTime: new Date().toLocaleString()
+      }, {
+        chipElement: document.getElementById('wishSyncChip'),
+        textElement: document.getElementById('wishSyncText'),
+        successText: 'Wish Saved to Google Sheets! 💖✨',
+        defaultText: 'Google Sheets Connected ✨',
+        onSuccess: () => {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
+          }
+        },
+        onError: () => {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Pin Consecrated Note ✨';
+          }
+        }
+      });
+
+      // Reset form
+      wishForm.reset();
+      mainSelectedMediaData = '';
+      mainSelectedMediaType = 'none';
+      if (mainPhotoPreviewBox) mainPhotoPreviewBox.style.display = 'none';
+      if (mainPhotoPreviewImg) mainPhotoPreviewImg.src = '';
+
+      mainMediaTabBtns.forEach(b => b.classList.remove('active'));
+      const defaultTab = document.querySelector('.media-tab-btn[data-tab="mainTabNone"]');
+      if (defaultTab) defaultTab.classList.add('active');
+      document.querySelectorAll('#wishBoardSection .media-content-pane').forEach(p => p.classList.remove('active'));
+
+      showToast('Note pinned to My Love Nishika\'s celebration board! 📌✨');
     });
   }
 
   // --------------------------------------------------------------------------
-  // MEDIA LIGHTBOX CONTROLLER (Photos & Videos)
+  // MEDIA LIGHTBOX CONTROLLER (Photos & Memories)
   // --------------------------------------------------------------------------
   const mediaLightboxModal = document.getElementById('mediaLightboxModal');
   const closeMediaLightboxBtn = document.getElementById('closeMediaLightboxBtn');
@@ -6537,10 +5727,8 @@ const romanticReasons = [
       try { audioSynth.playChime(659.25, 0.2); } catch(e) {}
     }
 
-    if (type === 'photo') {
+    if (url) {
       lightboxViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Full Photo" style="max-width:100%; max-height:60vh; object-fit:contain; border-radius:12px;" />`;
-    } else if (type === 'video') {
-      lightboxViewport.innerHTML = `<div style="width:100%; height:55vh; max-height:550px;">${parseGasVideoEmbed(url, true)}</div>`;
     }
 
     const decodedAuthor = decodeURIComponent(author || 'Loving Well-wisher');
@@ -6578,7 +5766,7 @@ const romanticReasons = [
   });
 
   // --------------------------------------------------------------------------
-  // INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL ENGINE
+  // INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL ENGINE (Photos)
   // --------------------------------------------------------------------------
   const mediaHoverPopout = document.getElementById('mediaHoverPopout');
   const hoverPopoutViewport = document.getElementById('hoverPopoutViewport');
@@ -6594,13 +5782,8 @@ const romanticReasons = [
     if (!mediaHoverPopout || !hoverPopoutViewport) return;
     if (mediaLightboxModal && mediaLightboxModal.classList.contains('active')) return;
 
-    if (type === 'photo') {
-      hoverPopoutViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Hover Cinema Pop-Out" style="max-width:100%; max-height:58vh; object-fit:contain; border-radius:12px;" />`;
-      if (hoverPopoutBadge) hoverPopoutBadge.innerHTML = '<i class="fa-solid fa-camera"></i> <span>Photo Pop-Out 📸</span>';
-    } else if (type === 'video') {
-      hoverPopoutViewport.innerHTML = `<div style="width:100%; height:52vh; max-height:500px;">${parseGasVideoEmbed(url, true)}</div>`;
-      if (hoverPopoutBadge) hoverPopoutBadge.innerHTML = '<i class="fa-solid fa-film"></i> <span>Cinema Video Pop-Out 🎬</span>';
-    }
+    hoverPopoutViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Hover Cinema Pop-Out" style="max-width:100%; max-height:58vh; object-fit:contain; border-radius:12px;" />`;
+    if (hoverPopoutBadge) hoverPopoutBadge.innerHTML = '<i class="fa-solid fa-camera"></i> <span>Photo Pop-Out 📸</span>';
 
     const decodedAuthor = decodeURIComponent(author || 'Loving Well-wisher');
     const decodedMsg = decodeURIComponent(msg || '');
@@ -6641,12 +5824,10 @@ const romanticReasons = [
     // Hover detection on pointer-capable devices
     document.addEventListener('mouseover', (e) => {
       const photoTarget = e.target.closest('.sticky-media-wrap, .polaroid-photo, .polaroid-img-wrap, #mainPhotoPreviewBox img');
-      const videoTarget = e.target.closest('.sticky-video-embed, .polaroid-video-wrap, #mainVideoPreviewBox');
-
-      const target = photoTarget || videoTarget;
+      const target = photoTarget;
       if (!target || target === activeHoverTarget) return;
 
-      if (e.target.closest('.sticky-like-btn') || e.target.closest('.sticky-video-expand-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('#mediaHoverPopout')) {
+      if (e.target.closest('.sticky-like-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('#mediaHoverPopout')) {
         return;
       }
 
@@ -6656,22 +5837,10 @@ const romanticReasons = [
       hoverPopoutTimer = setTimeout(() => {
         if (target !== activeHoverTarget) return;
 
-        let type = photoTarget ? 'photo' : 'video';
-        let url = '';
-        let author = '';
-        let msg = '';
-
-        if (photoTarget) {
-          url = photoTarget.getAttribute('data-img') || (photoTarget.querySelector('img') && photoTarget.querySelector('img').src) || (photoTarget.tagName === 'IMG' ? photoTarget.src : '');
-          author = photoTarget.getAttribute('data-author') || '';
-          msg = photoTarget.getAttribute('data-msg') || '';
-        } else if (videoTarget) {
-          url = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-video')) ||
-                (videoTarget.querySelector('video') && videoTarget.querySelector('video').src) ||
-                (videoTarget.querySelector('iframe') && videoTarget.querySelector('iframe').src) || '';
-          author = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-author')) || '';
-          msg = (videoTarget.querySelector('.sticky-video-expand-btn') && videoTarget.querySelector('.sticky-video-expand-btn').getAttribute('data-msg')) || '';
-        }
+        let type = 'photo';
+        let url = photoTarget.getAttribute('data-img') || (photoTarget.querySelector('img') && photoTarget.querySelector('img').src) || (photoTarget.tagName === 'IMG' ? photoTarget.src : '');
+        let author = photoTarget.getAttribute('data-author') || '';
+        let msg = photoTarget.getAttribute('data-msg') || '';
 
         const stickyCard = target.closest('.wish-sticky, .sticky-note, .polaroid-card');
         if (stickyCard) {
@@ -6691,10 +5860,10 @@ const romanticReasons = [
       }, 120);
     }, { passive: true });
 
-    // When mouse moves away from the origin photo/video target
+    // When mouse moves away from the origin photo target
     document.addEventListener('mouseout', (e) => {
       if (!activeHoverTarget) return;
-      const target = e.target.closest('.sticky-media-wrap, .sticky-video-embed, .polaroid-photo, .polaroid-img-wrap, .polaroid-video-wrap, #mainPhotoPreviewBox, #mainVideoPreviewBox');
+      const target = e.target.closest('.sticky-media-wrap, .polaroid-photo, .polaroid-img-wrap, #mainPhotoPreviewBox');
       if (target && target === activeHoverTarget) {
         const related = e.relatedTarget;
         if (!related || (!target.contains(related) && !related.closest('.hover-popout-card, #mediaHoverPopout'))) {
