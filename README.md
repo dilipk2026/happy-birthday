@@ -16,7 +16,6 @@
 </p>
 
 [![Live Portal](https://img.shields.io/badge/🚀%20LIVE%20CELEBRATION%20PORTAL-dilipk2026.github.io%2Fhappy--birthday-ff1493?style=for-the-badge&logo=githubpages&logoColor=white)](https://dilipk2026.github.io/happy-birthday/)
-[![Playwright QA](https://img.shields.io/badge/Playwright%20QA-75%2F75%20Passed%20(100%25)-10b981?style=for-the-badge&logo=playwright&logoColor=white)](#-automated-testing--qa-verification)
 [![Performance](https://img.shields.io/badge/Performance-60FPS%20%7C%20Zero--Lag-6366f1?style=for-the-badge&logo=speedtest&logoColor=white)](#-high-performance-zero-lag-engine)
 [![Platform](https://img.shields.io/badge/Experience-Mobile%20%26%20Desktop-ff69b4?style=for-the-badge&logo=safari&logoColor=white)](#-mobile-first-experience)
 
@@ -33,7 +32,7 @@
 
 ### 🗺️ Quick Navigation
 
-[✨ Live Access](#-instant-live-access--qr-launch) • [🔑 Passcodes](#-vip-access-credentials--passcodes) • [📸 Visual Gallery](#-graphical-visual-showcase) • [💎 Core Features](#-interactive-feature-matrix) • [🎨 Comic Sans](#-bespoke-comic-sans-typography) • [🎵 Sound Engine](#-dual-mode-web-audio-synthesizer) • [☁️ Google Sheets](#️-google-sheets--cloud-backend) • [🧪 Testing](#-automated-testing--qa-verification) • [🚀 Quick Start](#-local-development--instant-hosting)
+[✨ Live Access](#-instant-live-access--qr-launch) • [🔑 Passcodes](#-vip-access-credentials--passcodes) • [📸 Visual Gallery](#-graphical-visual-showcase) • [🎬 Hover Cinema](#-interactive-hover-pop-out-fullscreen-cinema) • [💎 Core Features](#-interactive-feature-matrix) • [🎨 Comic Sans](#-bespoke-comic-sans-typography) • [🎵 Sound Engine](#-dual-mode-web-audio-synthesizer) • [☁️ Google Sheets](#️-google-sheets--cloud-backend) • [🚀 Quick Start](#-local-development--instant-hosting)
 
 ---
 
@@ -184,6 +183,26 @@ Experience all 11 stages of the live celebration platform:
 
 ---
 
+## 🎬 Interactive Hover Pop-Out Fullscreen Cinema
+
+The platform includes a dedicated **Hover Pop-Out Fullscreen Cinema Portal** for memories and uploaded photos:
+
+```mermaid
+graph LR
+    A[Cursor Rests on Photo Memory] -->|300ms Intentional Dwell| B[Cinema Pop-Out Portal Appears]
+    B --> C[Glassmorphic Card with Royal Crown Badge & High-Res View]
+    C -->|Click Photo| D[Opens Full Persistent Lightbox Modal]
+    C -->|Move Cursor Away| E[220ms Grace Period & Smooth Fade Out]
+    C -->|Press Escape / Click Close / Scroll| F[Instant Clean Dismissal]
+```
+
+- **✨ Smart Dwell Detection (300ms)**: Passing the cursor casually across a card avoids unwanted popups; resting on a memory reveals the high-res cinema preview.
+- **🛡️ 220ms Grace Transition Window**: Bi-directional cursor tracking between the origin photo and pop-out card ensures smooth interaction with **zero flickering or rapid blinking**.
+- **🔍 Click-to-Lightbox Bridge**: Tapping or clicking the image in the Cinema Pop-Out expands it immediately into the full-screen `#mediaLightboxModal`.
+- **⌨️ Accessible Controls**: Dismiss seamlessly via backdrop click, `✕` button, `Escape` key, or page scrolling.
+
+---
+
 ## 💎 Interactive Feature Matrix
 
 <details open>
@@ -193,6 +212,7 @@ Experience all 11 stages of the live celebration platform:
 |---|:---:|---|
 | **Countdown & VIP Keypad** | `Pre-Launch` | Live countdown down to the exact second + 4-digit glass keypad authentication. |
 | **Comic Sans Sticky Wall** | `Pre-Launch` | Interactive pinboard for guest wishes with color picker, rotation, and sound FX. |
+| **Hover Pop-Out Cinema** | `Media` | 300ms dwelling pop-out with royal author badges, wish captions, and lightbox bridge. |
 | **3D Gift Box Unboxing** | `Celebration` | Animated ribbon untying, lid popping, and custom confetti explosion. |
 | **Relationship Clock** | `Celebration` | Live ticking timer calculating exact days, hours, minutes, and seconds of love. |
 | **3D Cake Cutting** | `Interactive` | Knife slicing across canvas with real-time cake split, candle extinguish, and fanfare. |
@@ -326,42 +346,14 @@ The platform connects to Google Sheets and Google Drive via [Code.gs](Code.gs) f
 
 ---
 
-## 🧪 Automated Testing & QA Verification
+## 🛡️ Code Architecture & Quality Standards
 
-The repository includes a comprehensive Playwright automation suite ([playwright-test-runner.js](playwright-test-runner.js)) testing all 75 platform specifications:
+The platform is built with **100% native Vanilla HTML5, CSS3, and modern ES6+ JavaScript** with **ZERO external npm dependencies**:
 
-```bash
-node playwright-test-runner.js
-```
-
-### 📊 Playwright QA Verification Results
-
-<div align="center">
-
-```
-================================================================================
-👑 ETERNAL LOVE — AUTOMATED PLAYWRIGHT QA TEST SUITE
-================================================================================
-✅ Tests Passed      : 75 / 75 (100.0% Perfect Pass Rate)
-❌ Tests Failed      : 0
-⚠️  Warnings          : 0
-⏱️  Total Duration   : 28.4s
-📱 Viewports Tested  : Mobile (375x667), Tablet (768x1024), Desktop (1440x900), 4K UHD (2560x1440)
-================================================================================
-```
-
-</div>
-
-<details>
-<summary><strong>📋 Test Coverage Breakdown (75 Test Suites)</strong></summary>
-
-- **Pre-Launch Security**: Countdown accuracy, anniversary PIN validation (`2912`), birthdate unlock (`22092000`), bypass query parameters (`?preview=true`).
-- **Typography**: Comic Sans MS verification across all wishes, letter envelopes, sticky notes, and time capsule inputs.
-- **Interactive Ceremonies**: 3D Gift unboxing, Cake knife drag slicing, candle microphone blow, reason jar random generator, fortune roulette spinning wheel.
-- **Cloud Connectivity**: Google Apps Script POST/GET payload formatting, base64 photo uploader normalizer, mock fallback resilience.
-- **Performance & Accessibility**: 60FPS canvas framerate, Page Visibility API throttling, WCAG color contrast, ARIA screen-reader labels.
-
-</details>
+- **🔒 Privacy & Security**: Passcode hash validation, strictly protected VIP gatekeeper, and sanitized inputs.
+- **🎨 Bespoke Typography**: Comic Sans MS for wishes, love letters, and sticky notes; luxury display serif for royal headings.
+- **📱 Universal Responsiveness**: Fluid `clamp()` typography, zero-overflow viewports, and mobile touch targets tested across all resolutions (320px to 4K).
+- **⚡ High-Performance Rendering**: Hardware-accelerated canvas animations, Web Audio API synthesis, and 60FPS smooth transitions.
 
 ---
 
@@ -407,6 +399,12 @@ Once running, open your browser to `http://localhost:8080`.
 <summary><strong>Q: Why is Comic Sans used for all the wishes and love letters?</strong></summary>
 
 > **Answer:** Comic Sans MS was specifically chosen to give the love letters, sticky notes, and guest wishes a warm, friendly, authentic handwritten feel that evokes nostalgic handwritten stationery.
+</details>
+
+<details>
+<summary><strong>Q: How does the Hover Pop-Out Cinema work?</strong></summary>
+
+> **Answer:** Hovering over any photo card for 300ms smoothly activates a glassmorphic cinema pop-out with author crown badge and wish caption. Clicking the photo or the pop-out opens the full high-resolution Lightbox modal.
 </details>
 
 <details>

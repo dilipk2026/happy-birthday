@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   // 1. STATE MANAGEMENT, CACHE INVALIDATION & LOCAL STORAGE ENGINE
   // --------------------------------------------------------------------------
-  const APP_VERSION = '3.3.1';
+  const APP_VERSION = '3.5.0';
   const STORAGE_KEY = `eternal_love_bday_state_v${APP_VERSION}`;
 
   // Purge lingering Service Workers & legacy caches
@@ -95,6 +95,43 @@ document.addEventListener('DOMContentLoaded', () => {
     customJourneyPins: savedData.customJourneyPins || [],
     googleSheetUrl: savedData.googleSheetUrl || localStorage.getItem('eternal_love_sheet_url') || DEFAULT_GOOGLE_SHEET_URL
   };
+
+  // Strictly sanitize and deduplicate photos and wishes on initial state load
+  if (Array.isArray(state.uploadedPhotos)) {
+    const photoDedupeMap = new Map();
+    state.uploadedPhotos.forEach(p => {
+      const raw = (p.imgUrl || p.dataUrl || p.driveUrl || '').trim();
+      const key = raw ? raw.toLowerCase() : (p.caption || '').trim().toLowerCase();
+      if (key && !photoDedupeMap.has(key)) {
+        photoDedupeMap.set(key, p);
+      }
+    });
+    state.uploadedPhotos = Array.from(photoDedupeMap.values());
+  }
+
+  if (Array.isArray(state.pinnedWishes)) {
+    const wishDedupeMap = new Map();
+    const seenMediaSet = new Set();
+    state.pinnedWishes.forEach(w => {
+      if (!w || (!w.message && !w.text)) return;
+      const author = (w.author || w.name || '').trim();
+      const msg = (w.message || w.text || '').trim();
+      const textKey = (author + '_' + msg).toLowerCase();
+      const normMedia = (w.mediaUrl || w.mediaData || '').trim().toLowerCase();
+
+      if (normMedia && seenMediaSet.has(normMedia)) {
+        if (!wishDedupeMap.has(textKey)) {
+          wishDedupeMap.set(textKey, { ...w, mediaType: 'none', mediaUrl: '', mediaData: '' });
+        }
+        return;
+      }
+      if (!wishDedupeMap.has(textKey)) {
+        wishDedupeMap.set(textKey, w);
+        if (normMedia) seenMediaSet.add(normMedia);
+      }
+    });
+    state.pinnedWishes = Array.from(wishDedupeMap.values());
+  }
 
   // Clean up any test mock or truncated URL and upgrade to full Google Sheet URL
   if (!state.googleSheetUrl || state.googleSheetUrl.includes('AKfycb_TEST_MOCK_SHEET') || state.googleSheetUrl === 'https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZh/exec') {
@@ -4641,6 +4678,7 @@ const romanticReasons = [
 
   function renderUploadedPolaroid(photoItem, prepend = false) {
     if (!polaroidGrid) return;
+    polaroidGrid.style.display = 'grid';
     const card = document.createElement('div');
     card.className = `polaroid-card dynamic-uploaded tilt-element ${photoItem.filterClass || ''}`;
     card.innerHTML = `
@@ -4697,14 +4735,20 @@ const romanticReasons = [
     const dynamicCards = grid.querySelectorAll('.polaroid-card.dynamic-uploaded');
     dynamicCards.forEach(c => c.remove());
     if (state.uploadedPhotos && state.uploadedPhotos.length > 0) {
+      grid.style.display = 'grid';
       state.uploadedPhotos.forEach(p => renderUploadedPolaroid(p));
+    } else {
+      grid.style.display = 'none';
     }
   }
   window.renderAllPolaroidGallery = renderAllPolaroidGallery;
 
   // Load existing uploaded photos from storage
   if (state.uploadedPhotos && state.uploadedPhotos.length > 0) {
+    polaroidGrid.style.display = 'grid';
     state.uploadedPhotos.forEach(p => renderUploadedPolaroid(p));
+  } else if (polaroidGrid) {
+    polaroidGrid.style.display = 'none';
   }
 
   // --------------------------------------------------------------------------
@@ -4726,7 +4770,7 @@ const romanticReasons = [
   let mainSelectedTheme = 'pink';
   let mainActiveFilter = 'all';
 
-  // Default multimedia royal dedications with photos & text wishes
+  // Default royal dedications (Only Google Sheets & Live Submissions Display Attached Photos)
   const DEFAULT_MAIN_WISHES = [
     {
       id: 'def_main_1',
@@ -4736,8 +4780,8 @@ const romanticReasons = [
       text: 'Happy Birthday to the most radiant, beautiful, and enchanting My Love Nishika! Every moment with you is poetry written in starlight. My whole heart is consecrated to you forever! 💕✨',
       color: 'gold',
       styleClass: 'sticky-gold',
-      mediaType: 'photo',
-      mediaUrl: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=900&auto=format&fit=crop&q=80',
+      mediaType: 'none',
+      mediaUrl: '',
       likes: 58,
       isRoyal: true,
       localTime: 'Consecrated for Eternity'
@@ -4750,8 +4794,8 @@ const romanticReasons = [
       text: 'A heavenly romantic birthday melody dedicated to My Love Nishika! May your 26th year be filled with divine melodies and infinite royal joy! 🎂✨',
       color: 'pink',
       styleClass: 'sticky-pink',
-      mediaType: 'photo',
-      mediaUrl: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=900&auto=format&fit=crop&q=80',
+      mediaType: 'none',
+      mediaUrl: '',
       likes: 44,
       isRoyal: false,
       localTime: 'September 2026'
@@ -4764,8 +4808,8 @@ const romanticReasons = [
       text: 'Wishing our magnificent My Love Nishika a spectacular birthday filled with grand surprises, unending laughter, and pure happiness! 👑💖',
       color: 'purple',
       styleClass: 'sticky-purple',
-      mediaType: 'photo',
-      mediaUrl: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&auto=format&fit=crop&q=80',
+      mediaType: 'none',
+      mediaUrl: '',
       likes: 31,
       isRoyal: false,
       localTime: 'Special Blessing'
@@ -4778,8 +4822,8 @@ const romanticReasons = [
       text: 'Celebrating your grace, kindness, and royal brilliance. May all your celestial dreams turn into reality this year! 🌟✨',
       color: 'sapphire',
       styleClass: 'sticky-cyan',
-      mediaType: 'photo',
-      mediaUrl: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=900&auto=format&fit=crop&q=80',
+      mediaType: 'none',
+      mediaUrl: '',
       likes: 36,
       isRoyal: false,
       localTime: 'Anniversary Blessing'
@@ -4792,8 +4836,8 @@ const romanticReasons = [
       text: 'May every sunrise bring you radiant smiles and every sunset bring you peaceful serenity. Happy Birthday My Love Nishika! 🎂🥂',
       color: 'peach',
       styleClass: 'sticky-peach',
-      mediaType: 'photo',
-      mediaUrl: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=900&auto=format&fit=crop&q=80',
+      mediaType: 'none',
+      mediaUrl: '',
       likes: 27,
       isRoyal: false,
       localTime: 'Grand Celebration'
@@ -5156,34 +5200,20 @@ const romanticReasons = [
               const author = p.dedicatedBy || 'Dilip 👑';
               const caption = p.caption || `Our unforgettable memory with ${p.celebrant || state.recipientName} 💖`;
 
-              cloudPhotos.push({
-                id: p.id || ('gs_photo_' + Math.random()),
-                imgUrl: photoUrl,
-                dataUrl: photoUrl,
-                rawDriveUrl: p.driveUrl || '',
-                caption: caption,
-                tag: p.tag || 'Real Moment 📸',
-                celebrant: p.celebrant || 'Nishika',
-                dedicatedBy: author,
-                localTime: p.localTime || 'Recently',
-                timestamp: p.timestamp || new Date().toISOString()
-              });
-
-              cloudWishes.push({
-                id: p.id || ('photo_sticky_' + Math.random()),
-                author: author,
-                name: author,
-                message: caption,
-                text: caption,
-                color: 'peach',
-                styleClass: 'theme-peach',
-                mediaType: 'photo',
-                mediaUrl: photoUrl,
-                likes: 24,
-                isRoyal: true,
-                localTime: p.localTime || 'Recently',
-                timestamp: p.timestamp || new Date().toISOString()
-              });
+              if (photoUrl) {
+                cloudPhotos.push({
+                  id: p.id || ('gs_photo_' + Math.random()),
+                  imgUrl: photoUrl,
+                  dataUrl: photoUrl,
+                  rawDriveUrl: p.driveUrl || '',
+                  caption: caption,
+                  tag: p.tag || 'Real Moment 📸',
+                  celebrant: p.celebrant || 'Nishika',
+                  dedicatedBy: author,
+                  localTime: p.localTime || 'Recently',
+                  timestamp: p.timestamp || new Date().toISOString()
+                });
+              }
             });
           }
         }
@@ -5226,34 +5256,20 @@ const romanticReasons = [
               const author = p.dedicatedBy || 'Dilip 👑';
               const caption = p.caption || `Our unforgettable memory with ${p.celebrant || state.recipientName} 💖`;
 
-              cloudPhotos.push({
-                id: p.id || ('gs_photo_' + Math.random()),
-                imgUrl: photoUrl,
-                dataUrl: photoUrl,
-                rawDriveUrl: p.driveUrl || '',
-                caption: caption,
-                tag: p.tag || 'Real Moment 📸',
-                celebrant: p.celebrant || 'Nishika',
-                dedicatedBy: author,
-                localTime: p.localTime || 'Recently',
-                timestamp: p.timestamp || new Date().toISOString()
-              });
-
-              cloudWishes.push({
-                id: p.id || ('photo_sticky_' + Math.random()),
-                author: author,
-                name: author,
-                message: caption,
-                text: caption,
-                color: 'peach',
-                styleClass: 'theme-peach',
-                mediaType: 'photo',
-                mediaUrl: photoUrl,
-                likes: 24,
-                isRoyal: true,
-                localTime: p.localTime || 'Recently',
-                timestamp: p.timestamp || new Date().toISOString()
-              });
+              if (photoUrl) {
+                cloudPhotos.push({
+                  id: p.id || ('gs_photo_' + Math.random()),
+                  imgUrl: photoUrl,
+                  dataUrl: photoUrl,
+                  rawDriveUrl: p.driveUrl || '',
+                  caption: caption,
+                  tag: p.tag || 'Real Moment 📸',
+                  celebrant: p.celebrant || 'Nishika',
+                  dedicatedBy: author,
+                  localTime: p.localTime || 'Recently',
+                  timestamp: p.timestamp || new Date().toISOString()
+                });
+              }
             });
           }
         }
@@ -5262,11 +5278,12 @@ const romanticReasons = [
       }
     }
 
-    // Merge Photos into state.uploadedPhotos & re-render Polaroid Gallery
-    if (cloudPhotos.length > 0) {
+    // Merge Photos strictly into state.uploadedPhotos (Polaroid Gallery) with URL deduplication
+    if (cloudPhotos.length > 0 || (state.uploadedPhotos && state.uploadedPhotos.length > 0)) {
       const photoMap = new Map();
       [...cloudPhotos, ...(state.uploadedPhotos || [])].forEach(p => {
-        const key = (p.imgUrl || p.dataUrl || p.caption).trim().toLowerCase();
+        const raw = (p.imgUrl || p.dataUrl || p.driveUrl || '').trim();
+        const key = raw ? raw.toLowerCase() : (p.caption || '').trim().toLowerCase();
         if (key && !photoMap.has(key)) {
           photoMap.set(key, p);
         }
@@ -5276,12 +5293,36 @@ const romanticReasons = [
       renderAllPolaroidGallery();
     }
 
-    // Merge Wishes into state.pinnedWishes & re-render Sticky Wish Wall
+    // Merge Wishes strictly into state.pinnedWishes (Sticky Wish Wall) & deduplicate images
     const mergedMap = new Map();
+    const seenMediaUrls = new Set();
+
     [...cloudWishes, ...(state.pinnedWishes || []), ...DEFAULT_MAIN_WISHES].forEach(w => {
-      const key = ((w.author || w.name) + '_' + (w.message || w.text)).trim().toLowerCase();
-      if (!mergedMap.has(key)) {
-        mergedMap.set(key, w);
+      if (!w || (!w.message && !w.text)) return;
+      const author = (w.author || w.name || '').trim();
+      const msg = (w.message || w.text || '').trim();
+      const textKey = (author + '_' + msg).toLowerCase();
+      const normMedia = (w.mediaUrl || w.mediaData || '').trim().toLowerCase();
+
+      // Avoid rendering identical photo attached across multiple notes
+      if (normMedia && seenMediaUrls.has(normMedia)) {
+        if (!mergedMap.has(textKey)) {
+          mergedMap.set(textKey, { ...w, mediaType: 'none', mediaUrl: '', mediaData: '' });
+        }
+        return;
+      }
+
+      if (!mergedMap.has(textKey)) {
+        mergedMap.set(textKey, w);
+        if (normMedia) seenMediaUrls.add(normMedia);
+      } else {
+        const existing = mergedMap.get(textKey);
+        if (!existing.mediaUrl && w.mediaUrl && !seenMediaUrls.has(normMedia)) {
+          existing.mediaUrl = w.mediaUrl;
+          existing.mediaData = w.mediaData || w.mediaUrl;
+          existing.mediaType = w.mediaType || 'photo';
+          if (normMedia) seenMediaUrls.add(normMedia);
+        }
       }
     });
 
@@ -5754,6 +5795,47 @@ const romanticReasons = [
     });
   }
 
+  // Delegated photo click handler across the document (Wish Pinboard, previews, etc.)
+  document.addEventListener('click', (e) => {
+    // Exclude like buttons, remove buttons, or form controls
+    if (e.target.closest('.sticky-like-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('button, input, textarea')) {
+      return;
+    }
+
+    const mediaWrap = e.target.closest('.sticky-media-wrap, .polaroid-photo, .polaroid-img-wrap, #mainPhotoPreviewBox');
+    if (!mediaWrap) return;
+
+    let url = mediaWrap.getAttribute('data-img') || (mediaWrap.querySelector('img') && mediaWrap.querySelector('img').src) || (mediaWrap.tagName === 'IMG' ? mediaWrap.src : '');
+    if (!url && mediaWrap.id === 'mainPhotoPreviewBox') {
+      const pImg = mediaWrap.querySelector('img');
+      if (pImg && pImg.src) url = pImg.src;
+    }
+
+    if (!url || url.length < 5 || url.includes('data:image/svg+xml;utf8,<svg')) return;
+
+    let author = mediaWrap.getAttribute('data-author') || '';
+    let msg = mediaWrap.getAttribute('data-msg') || '';
+
+    const stickyCard = mediaWrap.closest('.wish-sticky, .sticky-note, .polaroid-card');
+    if (stickyCard) {
+      if (!author) {
+        const authorEl = stickyCard.querySelector('.sticky-author-name, .polaroid-meta');
+        if (authorEl) author = authorEl.textContent.trim();
+      }
+      if (!msg) {
+        const msgEl = stickyCard.querySelector('.sticky-msg, .sticky-message, .polaroid-caption');
+        if (msgEl) msg = msgEl.textContent.trim().replace(/^["']|["']$/g, '');
+      }
+    } else if (mediaWrap.id === 'mainPhotoPreviewBox') {
+      const nameInput = document.getElementById('mainWishAuthor');
+      const msgInput = document.getElementById('mainWishText');
+      if (nameInput && nameInput.value) author = nameInput.value;
+      if (msgInput && msgInput.value) msg = msgInput.value;
+    }
+
+    openMediaLightbox('photo', url, author || 'Queen Nishika', msg || 'Attached Celebration Photo ✨');
+  });
+
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       if (mediaHoverPopout && mediaHoverPopout.classList.contains('active')) {
@@ -5766,7 +5848,7 @@ const romanticReasons = [
   });
 
   // --------------------------------------------------------------------------
-  // INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL ENGINE (Photos)
+  // INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL (Photos)
   // --------------------------------------------------------------------------
   const mediaHoverPopout = document.getElementById('mediaHoverPopout');
   const hoverPopoutViewport = document.getElementById('hoverPopoutViewport');
@@ -5775,33 +5857,42 @@ const romanticReasons = [
   const hoverPopoutBadge = document.getElementById('hoverPopoutBadge');
   const closeHoverPopoutBtn = document.getElementById('closeHoverPopoutBtn');
 
-  let hoverPopoutTimer = null;
-  let activeHoverTarget = null;
+  let hoverCinemaTimer = null;
+  let hoverCinemaGraceTimer = null;
+  let currentHoverOrigin = null;
+  let isCursorInsideCinema = false;
 
   function showHoverPopout(type, url, author, msg) {
     if (!mediaHoverPopout || !hoverPopoutViewport) return;
     if (mediaLightboxModal && mediaLightboxModal.classList.contains('active')) return;
 
-    hoverPopoutViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Hover Cinema Pop-Out" style="max-width:100%; max-height:58vh; object-fit:contain; border-radius:12px;" />`;
-    if (hoverPopoutBadge) hoverPopoutBadge.innerHTML = '<i class="fa-solid fa-camera"></i> <span>Photo Pop-Out 📸</span>';
+    hoverPopoutViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Cinema Pop-Out" style="max-width:100%; max-height:58vh; object-fit:contain; border-radius:12px; cursor:zoom-in;" />`;
+    if (hoverPopoutBadge) hoverPopoutBadge.innerHTML = '<i class="fa-solid fa-sparkles"></i> <span>Cinema Pop-Out 📸</span>';
 
-    const decodedAuthor = decodeURIComponent(author || 'Loving Well-wisher');
+    const decodedAuthor = decodeURIComponent(author || 'Queen Nishika');
     const decodedMsg = decodeURIComponent(msg || '');
 
     if (hoverPopoutAuthor) hoverPopoutAuthor.innerHTML = `<i class="fa-solid fa-crown"></i> <span>${escapeHtml(decodedAuthor)}</span>`;
     if (hoverPopoutCaption) hoverPopoutCaption.textContent = decodedMsg ? `"${decodedMsg}"` : 'Our sacred celebration moment ✨';
 
     mediaHoverPopout.classList.add('active');
+    mediaHoverPopout.setAttribute('aria-hidden', 'false');
   }
 
   function hideHoverPopout() {
-    if (hoverPopoutTimer) {
-      clearTimeout(hoverPopoutTimer);
-      hoverPopoutTimer = null;
+    if (hoverCinemaTimer) {
+      clearTimeout(hoverCinemaTimer);
+      hoverCinemaTimer = null;
     }
-    activeHoverTarget = null;
+    if (hoverCinemaGraceTimer) {
+      clearTimeout(hoverCinemaGraceTimer);
+      hoverCinemaGraceTimer = null;
+    }
+    currentHoverOrigin = null;
+    isCursorInsideCinema = false;
     if (!mediaHoverPopout) return;
     mediaHoverPopout.classList.remove('active');
+    mediaHoverPopout.setAttribute('aria-hidden', 'true');
     setTimeout(() => {
       if (!mediaHoverPopout.classList.contains('active') && hoverPopoutViewport) {
         hoverPopoutViewport.innerHTML = '';
@@ -5809,8 +5900,16 @@ const romanticReasons = [
     }, 250);
   }
 
+  function scheduleHideHoverPopout() {
+    if (hoverCinemaGraceTimer) clearTimeout(hoverCinemaGraceTimer);
+    hoverCinemaGraceTimer = setTimeout(() => {
+      if (!isCursorInsideCinema && !currentHoverOrigin) {
+        hideHoverPopout();
+      }
+    }, 220);
+  }
+
   function initMediaHoverPopout() {
-    // Dedicated Close Button
     if (closeHoverPopoutBtn) {
       closeHoverPopoutBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -5819,30 +5918,74 @@ const romanticReasons = [
       });
     }
 
-    const popoutCard = mediaHoverPopout ? mediaHoverPopout.querySelector('.hover-popout-card') : null;
-
-    // Hover detection on pointer-capable devices
-    document.addEventListener('mouseover', (e) => {
-      const photoTarget = e.target.closest('.sticky-media-wrap, .polaroid-photo, .polaroid-img-wrap, #mainPhotoPreviewBox img');
-      const target = photoTarget;
-      if (!target || target === activeHoverTarget) return;
-
-      if (e.target.closest('.sticky-like-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('#mediaHoverPopout')) {
-        return;
+    if (mediaHoverPopout) {
+      const popoutCard = mediaHoverPopout.querySelector('.hover-popout-card');
+      if (popoutCard) {
+        popoutCard.addEventListener('mouseenter', () => {
+          isCursorInsideCinema = true;
+          if (hoverCinemaGraceTimer) {
+            clearTimeout(hoverCinemaGraceTimer);
+            hoverCinemaGraceTimer = null;
+          }
+        });
+        popoutCard.addEventListener('mouseleave', () => {
+          isCursorInsideCinema = false;
+          scheduleHideHoverPopout();
+        });
       }
 
-      activeHoverTarget = target;
-      if (hoverPopoutTimer) clearTimeout(hoverPopoutTimer);
+      // Backdrop click dismisses popout
+      mediaHoverPopout.addEventListener('click', (e) => {
+        if (e.target === mediaHoverPopout) {
+          hideHoverPopout();
+        }
+      });
 
-      hoverPopoutTimer = setTimeout(() => {
-        if (target !== activeHoverTarget) return;
+      // Clicking viewport photo expands to persistent full Lightbox
+      if (hoverPopoutViewport) {
+        hoverPopoutViewport.addEventListener('click', () => {
+          const img = hoverPopoutViewport.querySelector('img');
+          if (img && img.src) {
+            const aName = hoverPopoutAuthor ? hoverPopoutAuthor.textContent.trim() : 'Queen Nishika';
+            const cText = hoverPopoutCaption ? hoverPopoutCaption.textContent.trim().replace(/^["']|["']$/g, '') : '';
+            hideHoverPopout();
+            openMediaLightbox('photo', img.src, aName, cText);
+          }
+        });
+      }
+    }
 
-        let type = 'photo';
+    // Dwelling hover detection on photos
+    document.addEventListener('mouseover', (e) => {
+      if (mediaLightboxModal && mediaLightboxModal.classList.contains('active')) return;
+
+      const photoTarget = e.target.closest('.sticky-media-wrap, .polaroid-photo, .polaroid-img-wrap, #mainPhotoPreviewBox');
+      if (!photoTarget) return;
+      if (e.target.closest('.sticky-like-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('#mediaHoverPopout')) return;
+
+      if (currentHoverOrigin === photoTarget) return;
+      currentHoverOrigin = photoTarget;
+
+      if (hoverCinemaGraceTimer) {
+        clearTimeout(hoverCinemaGraceTimer);
+        hoverCinemaGraceTimer = null;
+      }
+      if (hoverCinemaTimer) clearTimeout(hoverCinemaTimer);
+
+      hoverCinemaTimer = setTimeout(() => {
+        if (currentHoverOrigin !== photoTarget) return;
+
         let url = photoTarget.getAttribute('data-img') || (photoTarget.querySelector('img') && photoTarget.querySelector('img').src) || (photoTarget.tagName === 'IMG' ? photoTarget.src : '');
+        if (!url && photoTarget.id === 'mainPhotoPreviewBox') {
+          const pImg = photoTarget.querySelector('img');
+          if (pImg && pImg.src) url = pImg.src;
+        }
+        if (!url || url.length < 5 || url.includes('data:image/svg+xml;utf8,<svg')) return;
+
         let author = photoTarget.getAttribute('data-author') || '';
         let msg = photoTarget.getAttribute('data-msg') || '';
 
-        const stickyCard = target.closest('.wish-sticky, .sticky-note, .polaroid-card');
+        const stickyCard = photoTarget.closest('.wish-sticky, .sticky-note, .polaroid-card');
         if (stickyCard) {
           if (!author) {
             const authorEl = stickyCard.querySelector('.sticky-author-name, .polaroid-meta');
@@ -5852,61 +5995,31 @@ const romanticReasons = [
             const msgEl = stickyCard.querySelector('.sticky-msg, .sticky-message, .polaroid-caption');
             if (msgEl) msg = msgEl.textContent.trim().replace(/^["']|["']$/g, '');
           }
+        } else if (photoTarget.id === 'mainPhotoPreviewBox') {
+          const nameInput = document.getElementById('mainWishAuthor');
+          const msgInput = document.getElementById('mainWishText');
+          if (nameInput && nameInput.value) author = nameInput.value;
+          if (msgInput && msgInput.value) msg = msgInput.value;
         }
 
-        if (url && url.length > 5 && !url.includes('data:image/svg+xml;utf8,<svg')) {
-          showHoverPopout(type, url, author || 'Queen Nishika', msg);
-        }
-      }, 120);
+        showHoverPopout('photo', url, author || 'Queen Nishika', msg);
+      }, 300);
     }, { passive: true });
 
-    // When mouse moves away from the origin photo target
     document.addEventListener('mouseout', (e) => {
-      if (!activeHoverTarget) return;
-      const target = e.target.closest('.sticky-media-wrap, .polaroid-photo, .polaroid-img-wrap, #mainPhotoPreviewBox');
-      if (target && target === activeHoverTarget) {
+      const photoTarget = e.target.closest('.sticky-media-wrap, .polaroid-photo, .polaroid-img-wrap, #mainPhotoPreviewBox');
+      if (photoTarget && photoTarget === currentHoverOrigin) {
         const related = e.relatedTarget;
-        if (!related || (!target.contains(related) && !related.closest('.hover-popout-card, #mediaHoverPopout'))) {
-          hideHoverPopout();
+        if (!related || !photoTarget.contains(related)) {
+          currentHoverOrigin = null;
+          if (hoverCinemaTimer) {
+            clearTimeout(hoverCinemaTimer);
+            hoverCinemaTimer = null;
+          }
+          scheduleHideHoverPopout();
         }
       }
     }, { passive: true });
-
-    // Global cursor move monitor: if popout is active and cursor moves outside the photo frame/card, immediately restore normal mode
-    document.addEventListener('mousemove', (e) => {
-      if (!mediaHoverPopout || !mediaHoverPopout.classList.contains('active')) return;
-      // If cursor is within the popout card or still on the origin target, remain active
-      if (e.target.closest('.hover-popout-card') || (activeHoverTarget && activeHoverTarget.contains(e.target))) {
-        return;
-      }
-      // Moving cursor out from photo frame -> immediately goes back to normal mode
-      hideHoverPopout();
-    }, { passive: true });
-
-    if (mediaHoverPopout) {
-      // Backdrop cursor movement or click -> immediately dismiss
-      mediaHoverPopout.addEventListener('mousemove', (e) => {
-        if (e.target === mediaHoverPopout) {
-          hideHoverPopout();
-        }
-      });
-      mediaHoverPopout.addEventListener('mouseover', (e) => {
-        if (e.target === mediaHoverPopout) {
-          hideHoverPopout();
-        }
-      });
-      mediaHoverPopout.addEventListener('click', (e) => {
-        if (e.target === mediaHoverPopout) {
-          hideHoverPopout();
-        }
-      });
-    }
-
-    if (popoutCard) {
-      popoutCard.addEventListener('mouseleave', () => {
-        hideHoverPopout();
-      });
-    }
 
     window.addEventListener('scroll', () => {
       if (mediaHoverPopout && mediaHoverPopout.classList.contains('active')) {

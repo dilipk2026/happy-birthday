@@ -2067,66 +2067,8 @@
           </div>
         </div>
 
-        <div class="polaroid-grid" id="polaroidGrid">
-          <!-- Card 1: Sweet Smile -->
-          <div class="polaroid-card tilt-element">
-            <div class="polaroid-inner">
-              <div class="polaroid-front">
-                <div class="polaroid-photo photo-sweet">
-                  <div class="photo-art-illustration">
-                    <span class="art-emoji">👑</span>
-                    <span class="art-subtext">The Birthday Love</span>
-                  </div>
-                  <div class="photo-overlay-tag">Radiant Glow</div>
-                  <div class="sparkle-badge">✨</div>
-                </div>
-                <div class="polaroid-caption">
-                  <p class="caption-text">"Your smile is my absolute favorite thing in the universe. Keep shining, beautiful!"</p>
-                  <span class="caption-date">🎂 Sweetest Soul</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 2: Celebration Vibe -->
-          <div class="polaroid-card tilt-element">
-            <div class="polaroid-inner">
-              <div class="polaroid-front">
-                <div class="polaroid-photo photo-love">
-                  <div class="photo-art-illustration">
-                    <span class="art-emoji">💖</span>
-                    <span class="art-subtext">Pure Happiness</span>
-                  </div>
-                  <div class="photo-overlay-tag">Our Bond</div>
-                  <div class="sparkle-badge">🥂</div>
-                </div>
-                <div class="polaroid-caption">
-                  <p class="caption-text">"Every adventure is ten times sweeter and more exciting with you holding my hand."</p>
-                  <span class="caption-date">🌟 Endless Joy</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 3: Forever Bond -->
-          <div class="polaroid-card tilt-element">
-            <div class="polaroid-inner">
-              <div class="polaroid-front">
-                <div class="polaroid-photo photo-magic">
-                  <div class="photo-art-illustration">
-                    <span class="art-emoji">🎁</span>
-                    <span class="art-subtext">You Are The Gift</span>
-                  </div>
-                  <div class="photo-overlay-tag">Special Day</div>
-                  <div class="sparkle-badge">🌸</div>
-                </div>
-                <div class="polaroid-caption">
-                  <p class="caption-text">"You make every single ordinary day feel like an extraordinary celebration. I love you!"</p>
-                  <span class="caption-date">💕 Infinite Love</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="polaroid-grid" id="polaroidGrid" style="display: none;">
+          <!-- Dynamically populated when couple photos are uploaded -->
         </div>
 
         <!-- Dynamic Wish Sticky Notes Board -->
@@ -3777,22 +3719,24 @@
             <i class="fa-solid fa-crown"></i> <span>Queen Nishika</span>
           </div>
           <div class="hover-popout-badge" id="hoverPopoutBadge">
-            <i class="fa-solid fa-sparkles"></i> <span>Cinema Pop-Out</span>
+            <i class="fa-solid fa-sparkles"></i> <span>Cinema Pop-Out 📸</span>
           </div>
         </div>
         <button type="button" class="hover-popout-close-btn" id="closeHoverPopoutBtn" aria-label="Close Cinema Pop-Out" title="Close Pop-Out (Esc)">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
-      <div class="hover-popout-media-viewport" id="hoverPopoutViewport">
-        <!-- Enlarged Photo or Video Player injected dynamically -->
+      <div class="hover-popout-media-viewport" id="hoverPopoutViewport" title="Click to open Full Lightbox">
+        <!-- Enlarged Photo injected dynamically -->
       </div>
       <div class="hover-popout-footer">
         <p class="hover-popout-caption" id="hoverPopoutCaption">"Our unforgettable sacred memory"</p>
-        <span class="hover-popout-hint"><i class="fa-solid fa-hand-pointer"></i> Move mouse away or click ✕ to close</span>
+        <span class="hover-popout-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click image for Full Lightbox • Move away to dismiss</span>
       </div>
     </div>
   </div>
+
+
 
   <!-- MAIN WISH LIBRARY MODAL -->
   <div class="wish-library-overlay" id="mainWishLibraryModal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="mainWishLibraryTitle" aria-hidden="true">

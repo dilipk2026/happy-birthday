@@ -10,10 +10,7 @@ yarn-debug.log*
 yarn-error.log*
 *.log
 
-# Temp test files & generated reports
+# Temp files
 *.tmp
 *.bak
 scratch/
-playwright_test_results.json
-test-results/
-playwright-report/

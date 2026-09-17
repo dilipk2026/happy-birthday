@@ -113,10 +113,9 @@
     /* Ambient Canvas Background */
     #ambientCanvas {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 1;
     }
@@ -1092,6 +1091,14 @@
       border: 1.5px solid var(--accent-gold);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
       background: #000;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .media-preview-box:hover {
+      transform: translateY(-3px) scale(1.02);
+      border-color: #ffd700;
+      box-shadow: 0 10px 24px rgba(255, 64, 129, 0.35), 0 0 16px rgba(255, 215, 0, 0.4);
     }
 
     .media-preview-box img {
@@ -1099,6 +1106,11 @@
       height: 150px;
       object-fit: cover;
       display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .media-preview-box:hover img {
+      transform: scale(1.05);
     }
 
     .remove-preview-btn {
@@ -1929,10 +1941,9 @@
        ========================================================================== */
     .media-hover-popout-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       opacity: 0;
       visibility: hidden;
@@ -2199,10 +2210,9 @@
        ========================================================================== */
     .media-lightbox-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       background: rgba(5, 1, 10, 0.92);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -2211,6 +2221,7 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      box-sizing: border-box;
       animation: fadeIn 0.3s ease;
     }
 
@@ -2313,10 +2324,9 @@
        ========================================================================== */
     .quick-media-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       background: rgba(5, 1, 10, 0.92);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -2325,6 +2335,7 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      box-sizing: border-box;
       animation: fadeIn 0.3s ease;
     }
 
@@ -2398,18 +2409,21 @@
        ========================================================================== */
     .vip-modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(5, 1, 10, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 1, 10, 0.94);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
       z-index: 99999;
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      padding: max(14px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+      box-sizing: border-box;
       animation: fadeIn 0.3s ease;
     }
 
@@ -2419,33 +2433,56 @@
 
     .vip-modal-box {
       background: linear-gradient(160deg, #1e0930 0%, #0d0216 100%);
-      border: 1px solid var(--accent-gold);
-      border-radius: 28px;
+      border: 1.5px solid var(--accent-gold);
+      border-radius: clamp(20px, 4vw, 28px);
       max-width: 440px;
-      width: 100%;
-      padding: 36px 28px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 215, 0, 0.35);
+      width: min(94vw, 440px);
+      max-height: min(92vh, 760px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      margin: auto;
+      padding: clamp(22px, 4vw, 36px) clamp(16px, 3.5vw, 28px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 215, 0, 0.35);
       position: relative;
       text-align: center;
+      box-sizing: border-box;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 215, 0, 0.45) transparent;
       animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .vip-modal-box::-webkit-scrollbar {
+      width: 5px;
+    }
+    .vip-modal-box::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .vip-modal-box::-webkit-scrollbar-thumb {
+      background: rgba(255, 215, 0, 0.4);
+      border-radius: 10px;
+    }
+    .vip-modal-box::-webkit-scrollbar-thumb:hover {
+      background: #ffd700;
     }
 
     .modal-close-btn {
       position: absolute;
-      top: 14px;
-      right: 14px;
+      top: clamp(10px, 2vw, 14px);
+      right: clamp(10px, 2vw, 14px);
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--glass-border);
       color: #ffffff;
-      width: 36px;
-      height: 36px;
+      width: clamp(32px, 6vw, 36px);
+      height: clamp(32px, 6vw, 36px);
       border-radius: 50%;
-      font-size: 1.1rem;
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: var(--transition);
+      z-index: 10;
     }
 
     .modal-close-btn:hover {
@@ -2455,44 +2492,47 @@
     }
 
     .vip-crown-icon {
-      font-size: 2.4rem;
+      font-size: clamp(1.8rem, 4.5vw, 2.4rem);
       color: var(--accent-gold);
-      margin-bottom: 12px;
+      margin-bottom: clamp(6px, 1.5vw, 12px);
       text-shadow: 0 0 20px var(--gold-glow);
     }
 
     .vip-modal-box h3 {
       font-family: var(--font-display);
-      font-size: 1.45rem;
+      font-size: clamp(1.2rem, 3.5vw, 1.45rem);
       color: var(--accent-gold);
-      margin-bottom: 8px;
+      margin-bottom: clamp(4px, 1vw, 8px);
+      line-height: 1.3;
     }
 
     .vip-modal-box p {
-      font-size: 0.9rem;
+      font-size: clamp(0.78rem, 2.2vw, 0.9rem);
       color: var(--text-muted);
-      margin-bottom: 22px;
-      line-height: 1.5;
+      margin-bottom: clamp(12px, 2.5vw, 20px);
+      line-height: 1.45;
     }
 
     .pin-display {
       display: flex;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 22px;
+      gap: clamp(6px, 2vw, 12px);
+      margin-bottom: clamp(12px, 2.5vw, 20px);
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .pin-digit-slot {
-      width: 52px;
-      height: 62px;
+      width: clamp(42px, 9vw, 52px);
+      height: clamp(50px, 11vw, 62px);
       background: rgba(0, 0, 0, 0.45);
       border: 2px solid var(--glass-border);
-      border-radius: 14px;
+      border-radius: clamp(10px, 2vw, 14px);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-display);
-      font-size: 1.6rem;
+      font-size: clamp(1.25rem, 3.5vw, 1.6rem);
       font-weight: 700;
       color: #ffffff;
       transition: var(--transition);
@@ -2529,30 +2569,38 @@
     .keypad-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: clamp(6px, 1.8vw, 10px);
+      margin-bottom: clamp(12px, 2.5vw, 18px);
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .keypad-btn {
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 12px 0;
+      border-radius: clamp(10px, 2vw, 14px);
+      padding: clamp(8px, 2vw, 12px) 0;
+      min-height: clamp(38px, 8vw, 48px);
       font-family: var(--font-body);
-      font-size: 1.25rem;
+      font-size: clamp(1.05rem, 3vw, 1.25rem);
       font-weight: 700;
       color: #ffffff;
       cursor: pointer;
       transition: var(--transition);
+      touch-action: manipulation;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .keypad-btn:hover {
       background: rgba(255, 215, 0, 0.2);
       border-color: var(--accent-gold);
       color: var(--accent-gold);
-      transform: scale(1.05);
+      transform: scale(1.04);
     }
 
+    .keypad-btn:active,
     .keypad-btn.pressed {
       background: rgba(255, 215, 0, 0.4);
       transform: scale(0.95);
@@ -2563,9 +2611,10 @@
       background: linear-gradient(135deg, #ff4081 0%, #ffd700 100%);
       color: #1a0525;
       font-family: var(--font-body);
-      font-size: 1rem;
+      font-size: clamp(0.88rem, 2.2vw, 1rem);
       font-weight: 800;
-      padding: 14px 20px;
+      padding: clamp(11px, 2.5vw, 14px) 20px;
+      min-height: 44px;
       border-radius: 30px;
       border: none;
       cursor: pointer;
@@ -2575,7 +2624,9 @@
       justify-content: center;
       gap: 8px;
       transition: var(--transition);
-      margin-bottom: 14px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      touch-action: manipulation;
     }
 
     .vip-submit-btn:hover {
@@ -2584,10 +2635,10 @@
     }
 
     .pin-feedback-msg {
-      font-size: 0.88rem;
+      font-size: clamp(0.78rem, 2vw, 0.88rem);
       font-weight: 600;
-      margin-bottom: 14px;
-      min-height: 20px;
+      margin-bottom: 10px;
+      min-height: 18px;
     }
 
     .pin-feedback-msg.error {
@@ -2599,36 +2650,89 @@
     }
 
     .vip-hint-wrap {
-      margin-top: 8px;
+      margin-top: 4px;
     }
 
     .vip-hint-btn {
       background: transparent;
       border: none;
-      color: rgba(255, 215, 0, 0.7);
-      font-size: 0.82rem;
+      color: rgba(255, 215, 0, 0.75);
+      font-size: clamp(0.74rem, 2vw, 0.82rem);
       cursor: pointer;
       text-decoration: underline;
       display: inline-flex;
       align-items: center;
       gap: 5px;
+      padding: 4px 8px;
     }
 
     .vip-hint-text {
-      font-size: 0.82rem;
+      font-size: clamp(0.74rem, 2vw, 0.82rem);
       color: var(--accent-gold);
       background: rgba(0, 0, 0, 0.35);
       border: 1px solid rgba(255, 215, 0, 0.3);
       border-radius: 10px;
-      padding: 10px;
+      padding: 8px 12px;
       margin-top: 8px;
       display: none;
       animation: fadeIn 0.3s ease;
-      line-height: 1.4;
+      line-height: 1.45;
+      word-break: break-word;
     }
 
     .vip-hint-text.active {
       display: block;
+    }
+
+    /* Landscape mode & short screen height optimizations */
+    @media (max-height: 650px) {
+      .vip-modal-overlay {
+        align-items: flex-start !important;
+        padding-top: 10px !important;
+        padding-bottom: 16px !important;
+      }
+      .vip-modal-box {
+        margin: 10px auto !important;
+        max-height: calc(100vh - 20px) !important;
+        padding: 16px 14px !important;
+        border-radius: 20px !important;
+      }
+      .vip-crown-icon {
+        font-size: 1.5rem !important;
+        margin-bottom: 2px !important;
+      }
+      .vip-modal-box h3 {
+        font-size: 1.15rem !important;
+        margin-bottom: 2px !important;
+      }
+      .vip-modal-box p {
+        margin-bottom: 8px !important;
+        font-size: 0.78rem !important;
+      }
+      .pin-display {
+        margin-bottom: 10px !important;
+        gap: 6px !important;
+      }
+      .pin-digit-slot {
+        width: 38px !important;
+        height: 44px !important;
+        font-size: 1.15rem !important;
+      }
+      .keypad-grid {
+        margin-bottom: 10px !important;
+        gap: 6px !important;
+      }
+      .keypad-btn {
+        padding: 6px 0 !important;
+        min-height: 34px !important;
+        font-size: 1rem !important;
+      }
+      .vip-submit-btn {
+        padding: 8px 14px !important;
+        font-size: 0.86rem !important;
+        margin-bottom: 6px !important;
+        min-height: 38px !important;
+      }
     }
 
     /* Page Footer */
@@ -2736,12 +2840,12 @@
       html, body {
         overflow-x: hidden;
         width: 100%;
-        max-width: 100vw;
+        max-width: 100%;
       }
       .page-wrapper {
         padding: 8px 10px 30px;
         width: 100%;
-        max-width: 100vw;
+        max-width: 100%;
         overflow-x: hidden;
         box-sizing: border-box;
       }
@@ -2964,6 +3068,39 @@
         min-height: 140px !important;
         max-height: 42vh !important;
       }
+    }
+
+    /* Universal Responsive Master Engine for index.html */
+    section, .page-wrapper, .countdown-container, .features-grid, .memories-grid, .sticky-notes-grid, .glass-card {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow-x: clip !important;
+    }
+
+    h1, .hero-title {
+      font-size: clamp(1.8rem, 5vw, 3.2rem) !important;
+      line-height: 1.2 !important;
+      overflow-wrap: break-word !important;
+      word-break: break-word !important;
+    }
+
+    h2, .section-title {
+      font-size: clamp(1.4rem, 3.5vw, 2.2rem) !important;
+      line-height: 1.25 !important;
+      overflow-wrap: break-word !important;
+      word-break: break-word !important;
+    }
+
+    p, .section-desc, .sub-text {
+      font-size: clamp(0.85rem, 1.8vw, 1.05rem) !important;
+      line-height: 1.6 !important;
+      overflow-wrap: break-word !important;
+      word-break: break-word !important;
+    }
+
+    .sticky-note, .sticky-card, .sticky-body, .sticky-msg {
+      font-family: 'Comic Sans MS', 'Comic Sans', 'Comic Neue', cursive, sans-serif !important;
     }
   </style>
 </head>
@@ -3320,19 +3457,19 @@
             <i class="fa-solid fa-crown"></i> <span>Queen Nishika</span>
           </div>
           <div class="hover-popout-badge" id="hoverPopoutBadge">
-            <i class="fa-solid fa-camera"></i> <span>Photo Pop-Out</span>
+            <i class="fa-solid fa-camera"></i> <span>Photo Pop-Out 📸</span>
           </div>
         </div>
         <button type="button" class="hover-popout-close-btn" id="closeHoverPopoutBtn" aria-label="Close Pop-Out" title="Close Pop-Out (Esc)">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
-      <div class="hover-popout-media-viewport" id="hoverPopoutViewport">
+      <div class="hover-popout-media-viewport" id="hoverPopoutViewport" title="Click to open Full Lightbox">
         <!-- Enlarged Photo injected dynamically -->
       </div>
       <div class="hover-popout-footer">
-        <p class="hover-popout-caption" id="hoverPopoutCaption">"Our unforgettable sacred memory"</p>
-        <span class="hover-popout-hint"><i class="fa-solid fa-hand-pointer"></i> Move mouse away or click ✕ to close</span>
+        <p class="hover-popout-caption" id="hoverPopoutCaption">"Our sacred celebration moment ✨"</p>
+        <span class="hover-popout-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click image for Full Lightbox • Move away to dismiss</span>
       </div>
     </div>
   </div>
@@ -3386,7 +3523,7 @@
           <span>Need a Passcode Hint?</span>
         </button>
         <div id="vipHintText" class="vip-hint-text">
-          💖 <strong>VIP Hint:</strong> Enter the special 4-digit date of the day we first met in DDMM format ✨
+          💖 <strong>VIP Hint:</strong> Enter the special 4-digit date of the day we first met in (29 Dec) DDMM format ✨
         </div>
       </div>
     </div>
@@ -4338,7 +4475,7 @@
 
       // 7. GOOGLE SHEETS CLOUD INTEGRATION & STICKY WISH WALL ENGINE
       const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwPnRNoIYc1b8E2loZiXZhwlDXn3H2ZjH5b_t-C328paUo8u2mcGewGJKscj1W71zW-/exec';
-      const APP_VERSION = '2.2.0';
+      const APP_VERSION = '2.4.0';
       const LOCAL_STORAGE_WISHES_KEY = `eternal_love_sticky_wishes_v${APP_VERSION}`;
 
       // Purge outdated wishes keys from previous versions
@@ -4359,15 +4496,15 @@
         }
       }
 
-      // Default Pre-Populated Royal Dedications with Photos & Text Wishes
+      // Default Pre-Populated Royal Dedications (Only Google Sheets & Live Submissions Display Attached Photos)
       const DEFAULT_WISHES = [
         {
           id: 'def_1',
           name: 'Dilip (With Infinite Devotion 👑)',
           message: 'Happy Birthday to the most radiant, beautiful, and enchanting My Love Nishika! Every moment with you is poetry written in starlight. My whole heart and soul are consecrated to you forever! 💕✨',
           color: 'gold',
-          mediaType: 'photo',
-          mediaUrl: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=900&auto=format&fit=crop&q=80',
+          mediaType: 'none',
+          mediaUrl: '',
           likes: 52,
           isRoyal: true,
           localTime: 'Consecrated for Eternity'
@@ -4377,8 +4514,8 @@
           name: 'Celestial Blessings 🌟',
           message: 'A heavenly romantic birthday blessing dedicated to My Love Nishika! May your year ahead be filled with celestial wonder, endless smiles, and divine royal joy! 🎂✨',
           color: 'pink',
-          mediaType: 'photo',
-          mediaUrl: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=900&auto=format&fit=crop&q=80',
+          mediaType: 'none',
+          mediaUrl: '',
           likes: 38,
           isRoyal: false,
           localTime: 'September 2026'
@@ -4388,8 +4525,8 @@
           name: 'The Royal Court & Best Friends 🌸',
           message: 'Wishing our magnificent My Love Nishika a spectacular birthday filled with grand surprises, unending laughter, and pure happiness! 👑💖',
           color: 'purple',
-          mediaType: 'photo',
-          mediaUrl: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&auto=format&fit=crop&q=80',
+          mediaType: 'none',
+          mediaUrl: '',
           likes: 29,
           isRoyal: false,
           localTime: 'Special Blessing'
@@ -4399,8 +4536,8 @@
           name: 'Starlight Soulmates 💎',
           message: 'Celebrating your grace, kindness, and royal brilliance. May all your celestial dreams turn into reality this year! 🌟✨',
           color: 'sapphire',
-          mediaType: 'photo',
-          mediaUrl: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=900&auto=format&fit=crop&q=80',
+          mediaType: 'none',
+          mediaUrl: '',
           likes: 34,
           isRoyal: false,
           localTime: 'Anniversary Blessing'
@@ -4757,16 +4894,32 @@
         } catch(e) {}
 
         const mergedMap = new Map();
+        const seenMediaUrls = new Set();
+
         [...savedLocal, ...cloudWishes, ...DEFAULT_WISHES].forEach(w => {
           if (!w || (!w.message && !w.text)) return;
-          const key = ((w.name || w.author || '') + '_' + (w.message || w.text || '')).trim().toLowerCase();
+          const author = (w.name || w.author || '').trim();
+          const msg = (w.message || w.text || '').trim();
+          const key = (author + '_' + msg).toLowerCase();
+          const normMedia = (w.mediaUrl || w.mediaData || '').trim().toLowerCase();
+
+          // Avoid rendering duplicate photos across multiple sticky notes
+          if (normMedia && seenMediaUrls.has(normMedia)) {
+            if (!mergedMap.has(key)) {
+              mergedMap.set(key, { ...w, mediaType: 'none', mediaUrl: '', mediaData: '' });
+            }
+            return;
+          }
+
           if (!mergedMap.has(key)) {
             mergedMap.set(key, w);
+            if (normMedia) seenMediaUrls.add(normMedia);
           } else {
             const existing = mergedMap.get(key);
-            if (!existing.mediaUrl && w.mediaUrl) {
+            if (!existing.mediaUrl && w.mediaUrl && !seenMediaUrls.has(normMedia)) {
               existing.mediaUrl = w.mediaUrl;
               existing.mediaType = w.mediaType;
+              if (normMedia) seenMediaUrls.add(normMedia);
             }
           }
         });
@@ -5248,7 +5401,49 @@
         });
       }
 
-      // 10. INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL ENGINE (Photos)
+      // Delegated photo click handler across the document (Wish Pinboard, previews, etc.)
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('.sticky-like-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('button, input, textarea')) {
+          return;
+        }
+
+        const mediaWrap = e.target.closest('.sticky-media-wrap, .polaroid-img-wrap, .memory-card img, #photoPreviewBox');
+        if (!mediaWrap) return;
+
+        let url = mediaWrap.getAttribute('data-img') || (mediaWrap.querySelector('img') && mediaWrap.querySelector('img').src) || (mediaWrap.tagName === 'IMG' ? mediaWrap.src : '');
+        if (!url && mediaWrap.id === 'photoPreviewBox') {
+          const pImg = mediaWrap.querySelector('img');
+          if (pImg && pImg.src) url = pImg.src;
+        }
+
+        if (!url || url.length < 5 || url.includes('data:image/svg+xml;utf8,<svg')) return;
+
+        let author = mediaWrap.getAttribute('data-author') || '';
+        let msg = mediaWrap.getAttribute('data-msg') || '';
+
+        const stickyCard = mediaWrap.closest('.sticky-note, .polaroid-card, .memory-card');
+        if (stickyCard) {
+          if (!author) {
+            const authorEl = stickyCard.querySelector('.sticky-author-name, .polaroid-meta');
+            if (authorEl) author = authorEl.textContent.trim();
+          }
+          if (!msg) {
+            const msgEl = stickyCard.querySelector('.sticky-message, .polaroid-caption');
+            if (msgEl) msg = msgEl.textContent.trim().replace(/^["']|["']$/g, '');
+          }
+        } else if (mediaWrap.id === 'photoPreviewBox') {
+          const nameInput = document.getElementById('wishNameInput');
+          const msgInput = document.getElementById('wishTextInput');
+          if (nameInput && nameInput.value) author = nameInput.value;
+          if (msgInput && msgInput.value) msg = msgInput.value;
+        }
+
+        openLightbox('photo', url, author || 'Queen Nishika', msg || 'Attached Celebration Photo ✨');
+      });
+
+      // --------------------------------------------------------------------------
+      // INTERACTIVE HOVER POP-OUT FULLSCREEN CINEMA PORTAL (Photos)
+      // --------------------------------------------------------------------------
       const indexMediaHoverPopout = document.getElementById('mediaHoverPopout');
       const indexHoverPopoutViewport = document.getElementById('hoverPopoutViewport');
       const indexHoverPopoutAuthor = document.getElementById('hoverPopoutAuthor');
@@ -5256,38 +5451,56 @@
       const indexHoverPopoutBadge = document.getElementById('hoverPopoutBadge');
       const indexCloseHoverPopoutBtn = document.getElementById('closeHoverPopoutBtn');
 
-      let indexHoverTimer = null;
-      let indexActiveHoverTarget = null;
+      let indexHoverCinemaTimer = null;
+      let indexHoverCinemaGraceTimer = null;
+      let indexCurrentHoverOrigin = null;
+      let isIndexCursorInsideCinema = false;
 
       function showIndexHoverPopout(type, url, author, msg) {
         if (!indexMediaHoverPopout || !indexHoverPopoutViewport) return;
         if (mediaLightbox && mediaLightbox.classList.contains('active')) return;
 
-        indexHoverPopoutViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Hover Photo Pop-Out" style="max-width:100%; max-height:58vh; object-fit:contain; border-radius:12px;" />`;
+        indexHoverPopoutViewport.innerHTML = `<img src="${escapeHtml(url)}" alt="Cinema Pop-Out" style="max-width:100%; max-height:58vh; object-fit:contain; border-radius:12px; cursor:zoom-in;" />`;
         if (indexHoverPopoutBadge) indexHoverPopoutBadge.innerHTML = '<i class="fa-solid fa-camera"></i> <span>Photo Pop-Out 📸</span>';
 
-        const decodedAuthor = decodeURIComponent(author || 'Loving Well-wisher');
+        const decodedAuthor = decodeURIComponent(author || 'Queen Nishika');
         const decodedMsg = decodeURIComponent(msg || '');
 
         if (indexHoverPopoutAuthor) indexHoverPopoutAuthor.innerHTML = `<i class="fa-solid fa-crown"></i> <span>${escapeHtml(decodedAuthor)}</span>`;
         if (indexHoverPopoutCaption) indexHoverPopoutCaption.textContent = decodedMsg ? `"${decodedMsg}"` : 'Our sacred celebration moment ✨';
 
         indexMediaHoverPopout.classList.add('active');
+        indexMediaHoverPopout.setAttribute('aria-hidden', 'false');
       }
 
       function hideIndexHoverPopout() {
-        if (indexHoverTimer) {
-          clearTimeout(indexHoverTimer);
-          indexHoverTimer = null;
+        if (indexHoverCinemaTimer) {
+          clearTimeout(indexHoverCinemaTimer);
+          indexHoverCinemaTimer = null;
         }
-        indexActiveHoverTarget = null;
+        if (indexHoverCinemaGraceTimer) {
+          clearTimeout(indexHoverCinemaGraceTimer);
+          indexHoverCinemaGraceTimer = null;
+        }
+        indexCurrentHoverOrigin = null;
+        isIndexCursorInsideCinema = false;
         if (!indexMediaHoverPopout) return;
         indexMediaHoverPopout.classList.remove('active');
+        indexMediaHoverPopout.setAttribute('aria-hidden', 'true');
         setTimeout(() => {
           if (!indexMediaHoverPopout.classList.contains('active') && indexHoverPopoutViewport) {
             indexHoverPopoutViewport.innerHTML = '';
           }
         }, 250);
+      }
+
+      function scheduleHideIndexHoverPopout() {
+        if (indexHoverCinemaGraceTimer) clearTimeout(indexHoverCinemaGraceTimer);
+        indexHoverCinemaGraceTimer = setTimeout(() => {
+          if (!isIndexCursorInsideCinema && !indexCurrentHoverOrigin) {
+            hideIndexHoverPopout();
+          }
+        }, 220);
       }
 
       function initIndexHoverPopout() {
@@ -5299,34 +5512,67 @@
           });
         }
 
-        const indexPopoutCard = indexMediaHoverPopout ? indexMediaHoverPopout.querySelector('.hover-popout-card') : null;
+        if (indexMediaHoverPopout) {
+          const popoutCard = indexMediaHoverPopout.querySelector('.hover-popout-card');
+          if (popoutCard) {
+            popoutCard.addEventListener('mouseenter', () => {
+              isIndexCursorInsideCinema = true;
+              if (indexHoverCinemaGraceTimer) {
+                clearTimeout(indexHoverCinemaGraceTimer);
+                indexHoverCinemaGraceTimer = null;
+              }
+            });
+            popoutCard.addEventListener('mouseleave', () => {
+              isIndexCursorInsideCinema = false;
+              scheduleHideIndexHoverPopout();
+            });
+          }
 
-        window.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') {
-            if (indexMediaHoverPopout && indexMediaHoverPopout.classList.contains('active')) {
+          indexMediaHoverPopout.addEventListener('click', (e) => {
+            if (e.target === indexMediaHoverPopout) {
               hideIndexHoverPopout();
             }
-            if (mediaLightbox && mediaLightbox.classList.contains('active')) {
-              closeLightbox(false);
-            }
+          });
+
+          if (indexHoverPopoutViewport) {
+            indexHoverPopoutViewport.addEventListener('click', () => {
+              const img = indexHoverPopoutViewport.querySelector('img');
+              if (img && img.src) {
+                const aName = indexHoverPopoutAuthor ? indexHoverPopoutAuthor.textContent.trim() : 'Queen Nishika';
+                const cText = indexHoverPopoutCaption ? indexHoverPopoutCaption.textContent.trim().replace(/^["']|["']$/g, '') : '';
+                hideIndexHoverPopout();
+                openLightbox('photo', img.src, aName, cText);
+              }
+            });
           }
-        });
+        }
 
         document.addEventListener('mouseover', (e) => {
-          const photoTarget = e.target.closest('.sticky-media-wrap, .polaroid-img-wrap, .memory-card img, #photoPreviewBox img');
-          if (!photoTarget || photoTarget === indexActiveHoverTarget) return;
+          if (mediaLightbox && mediaLightbox.classList.contains('active')) return;
 
-          if (e.target.closest('.sticky-like-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('#mediaHoverPopout')) {
-            return;
+          const photoTarget = e.target.closest('.sticky-media-wrap, .polaroid-img-wrap, .memory-card img, #photoPreviewBox');
+          if (!photoTarget) return;
+          if (e.target.closest('.sticky-like-btn') || e.target.closest('.remove-preview-btn') || e.target.closest('#mediaHoverPopout')) return;
+
+          if (indexCurrentHoverOrigin === photoTarget) return;
+          indexCurrentHoverOrigin = photoTarget;
+
+          if (indexHoverCinemaGraceTimer) {
+            clearTimeout(indexHoverCinemaGraceTimer);
+            indexHoverCinemaGraceTimer = null;
           }
+          if (indexHoverCinemaTimer) clearTimeout(indexHoverCinemaTimer);
 
-          indexActiveHoverTarget = photoTarget;
-          if (indexHoverTimer) clearTimeout(indexHoverTimer);
-
-          indexHoverTimer = setTimeout(() => {
-            if (photoTarget !== indexActiveHoverTarget) return;
+          indexHoverCinemaTimer = setTimeout(() => {
+            if (indexCurrentHoverOrigin !== photoTarget) return;
 
             let url = photoTarget.getAttribute('data-img') || (photoTarget.querySelector('img') && photoTarget.querySelector('img').src) || (photoTarget.tagName === 'IMG' ? photoTarget.src : '');
+            if (!url && photoTarget.id === 'photoPreviewBox') {
+              const pImg = photoTarget.querySelector('img');
+              if (pImg && pImg.src) url = pImg.src;
+            }
+            if (!url || url.length < 5 || url.includes('data:image/svg+xml;utf8,<svg')) return;
+
             let author = photoTarget.getAttribute('data-author') || '';
             let msg = photoTarget.getAttribute('data-msg') || '';
 
@@ -5340,50 +5586,42 @@
                 const msgEl = stickyCard.querySelector('.sticky-message, .polaroid-caption');
                 if (msgEl) msg = msgEl.textContent.trim().replace(/^["']|["']$/g, '');
               }
+            } else if (photoTarget.id === 'photoPreviewBox') {
+              const nameInput = document.getElementById('wishNameInput');
+              const msgInput = document.getElementById('wishTextInput');
+              if (nameInput && nameInput.value) author = nameInput.value;
+              if (msgInput && msgInput.value) msg = msgInput.value;
             }
 
-            if (url && url.length > 5 && !url.includes('data:image/svg+xml;utf8,<svg')) {
-              showIndexHoverPopout('photo', url, author || 'Queen Nishika', msg);
-            }
-          }, 120);
+            showIndexHoverPopout('photo', url, author || 'Queen Nishika', msg);
+          }, 300);
         }, { passive: true });
 
         document.addEventListener('mouseout', (e) => {
-          if (!indexActiveHoverTarget) return;
-          const target = e.target.closest('.sticky-media-wrap, .polaroid-img-wrap, #photoPreviewBox');
-          if (target && target === indexActiveHoverTarget) {
+          const photoTarget = e.target.closest('.sticky-media-wrap, .polaroid-img-wrap, .memory-card img, #photoPreviewBox');
+          if (photoTarget && photoTarget === indexCurrentHoverOrigin) {
             const related = e.relatedTarget;
-            if (!related || (!target.contains(related) && !related.closest('.hover-popout-card, #mediaHoverPopout'))) {
-              hideIndexHoverPopout();
+            if (!related || !photoTarget.contains(related)) {
+              indexCurrentHoverOrigin = null;
+              if (indexHoverCinemaTimer) {
+                clearTimeout(indexHoverCinemaTimer);
+                indexHoverCinemaTimer = null;
+              }
+              scheduleHideIndexHoverPopout();
             }
           }
         }, { passive: true });
 
-        document.addEventListener('mousemove', (e) => {
-          if (!indexMediaHoverPopout || !indexMediaHoverPopout.classList.contains('active')) return;
-          if (e.target.closest('.hover-popout-card') || (indexActiveHoverTarget && indexActiveHoverTarget.contains(e.target))) {
-            return;
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            if (indexMediaHoverPopout && indexMediaHoverPopout.classList.contains('active')) {
+              hideIndexHoverPopout();
+            }
+            if (mediaLightbox && mediaLightbox.classList.contains('active')) {
+              closeLightbox(false);
+            }
           }
-          hideIndexHoverPopout();
-        }, { passive: true });
-
-        if (indexMediaHoverPopout) {
-          indexMediaHoverPopout.addEventListener('mousemove', (e) => {
-            if (e.target === indexMediaHoverPopout) hideIndexHoverPopout();
-          });
-          indexMediaHoverPopout.addEventListener('mouseover', (e) => {
-            if (e.target === indexMediaHoverPopout) hideIndexHoverPopout();
-          });
-          indexMediaHoverPopout.addEventListener('click', (e) => {
-            if (e.target === indexMediaHoverPopout) hideIndexHoverPopout();
-          });
-        }
-
-        if (indexPopoutCard) {
-          indexPopoutCard.addEventListener('mouseleave', () => {
-            hideIndexHoverPopout();
-          });
-        }
+        });
 
         window.addEventListener('scroll', () => {
           if (indexMediaHoverPopout && indexMediaHoverPopout.classList.contains('active')) {
