@@ -16,8 +16,9 @@
 </p>
 
 [![Live Portal](https://img.shields.io/badge/🚀%20LIVE%20CELEBRATION%20PORTAL-dilipk2026.github.io%2Fhappy--birthday-ff1493?style=for-the-badge&logo=githubpages&logoColor=white)](https://dilipk2026.github.io/happy-birthday/)
+[![Release](https://img.shields.io/badge/Version-v3.5.0%20FINAL%20RELEASE-ffd700?style=for-the-badge&logo=target&logoColor=black)](#-release-v350-highlights)
 [![Performance](https://img.shields.io/badge/Performance-60FPS%20%7C%20Zero--Lag-6366f1?style=for-the-badge&logo=speedtest&logoColor=white)](#-high-performance-zero-lag-engine)
-[![Platform](https://img.shields.io/badge/Experience-Mobile%20%26%20Desktop-ff69b4?style=for-the-badge&logo=safari&logoColor=white)](#-mobile-first-experience)
+[![Platform](https://img.shields.io/badge/Experience-Mobile%20%26%20Desktop-ff69b4?style=for-the-badge&logo=safari&logoColor=white)](#-multi-device-responsive-architecture)
 
 <p align="center">
   <img src="https://img.shields.io/badge/👑%20Celebrant-Queen%20Nishika-ffd700?style=flat-square" alt="Celebrant" />
@@ -32,7 +33,7 @@
 
 ### 🗺️ Quick Navigation
 
-[✨ Live Access](#-instant-live-access--qr-launch) • [🔑 Passcodes](#-vip-access-credentials--passcodes) • [📸 Visual Gallery](#-graphical-visual-showcase) • [🎬 Hover Cinema](#-interactive-hover-pop-out-fullscreen-cinema) • [💎 Core Features](#-interactive-feature-matrix) • [🎨 Comic Sans](#-bespoke-comic-sans-typography) • [🎵 Sound Engine](#-dual-mode-web-audio-synthesizer) • [☁️ Google Sheets](#️-google-sheets--cloud-backend) • [🚀 Quick Start](#-local-development--instant-hosting)
+[✨ Live Access](#-instant-live-access--qr-launch) • [🔑 Passcodes](#-vip-access-credentials--passcodes) • [📸 Visual Gallery](#-graphical-visual-showcase) • [🎬 Hover Cinema](#-interactive-hover-pop-out-fullscreen-cinema) • [💎 Core Features](#-interactive-feature-matrix) • [📱 Responsive Design](#-multi-device-responsive-architecture) • [🎨 Comic Sans](#-bespoke-comic-sans-typography) • [🎵 Sound Engine](#-dual-mode-web-audio-synthesizer) • [☁️ Google Sheets](#️-google-sheets--cloud-backend) • [🚀 Quick Start](#-local-development--instant-hosting)
 
 ---
 
@@ -70,7 +71,7 @@ The platform features an intelligent dual-stage router with time-locked portals 
 
 | Portal Stage | Passcode / PIN | Description & Romantic Clue | Access Direct Link |
 |:---|:---:|:---|:---:|
-| **🔒 Pre-Launch VIP PIN** | `2912` | *4-Digit Anniversary Date Keypad* | [Enter Live Portal](https://dilipk2026.github.io/happy-birthday/) |
+| **🔒 Pre-Launch VIP PIN** | `2912` | *4-Digit Anniversary Date Keypad* | [Enter Pre-Launch Portal](https://dilipk2026.github.io/happy-birthday/) |
 | **🎂 Royal Birthday Key** | `22092000` | *8-Digit Birthdate (`DDMMYYYY` - 22/09/2000)* | [Enter Celebration](https://dilipk2026.github.io/happy-birthday/main.html?preview=true) |
 | **⚡ Instant Bypass URL** | `?preview=true` | *Instant Full Access & Preview Parameter* | [Direct Preview Link](https://dilipk2026.github.io/happy-birthday/main.html?preview=true) |
 
@@ -200,6 +201,28 @@ graph LR
 - **🛡️ 220ms Grace Transition Window**: Bi-directional cursor tracking between the origin photo and pop-out card ensures smooth interaction with **zero flickering or rapid blinking**.
 - **🔍 Click-to-Lightbox Bridge**: Tapping or clicking the image in the Cinema Pop-Out expands it immediately into the full-screen `#mediaLightboxModal`.
 - **⌨️ Accessible Controls**: Dismiss seamlessly via backdrop click, `✕` button, `Escape` key, or page scrolling.
+
+---
+
+## 📱 Multi-Device Responsive Architecture
+
+Engineered for seamless fidelity across **Desktop**, **Laptop**, **Tablet**, and **Smartphone** screens:
+
+```
+  ┌─────────────────┬─────────────────┬─────────────────┬─────────────────┐
+  │ 🖥️ Desktop / 4K │ 💻 Laptop/Desk  │ 📱 Tablet       │ 📱 Smartphone   │
+  │ (1200px – 4K)   │ (1024px–1199px) │ (768px–1023px)  │ (320px–767px)   │
+  ├─────────────────┼─────────────────┼─────────────────┼─────────────────┤
+  │ Max Width:      │ Max Width:      │ Max Width:      │ Width: 100%     │
+  │ 1320px / 1680px │ 1040px / 94vw   │ 100% (fluid)    │ Zero Overflow-X │
+  │ 4-Col Grid      │ 3-Col Grid      │ 2-Col Grid      │ Single Column   │
+  │ Fluid Padding   │ Safe Margins    │ Scaled Keypad   │ 100dvh Modals   │
+  └─────────────────┴─────────────────┴─────────────────┴─────────────────┘
+```
+
+- **Dynamic Viewport Height (`100dvh`)**: Mobile overlays, lockscreens, and dialogs dynamically conform to mobile browser address bar expansions (iOS Safari & Android Chrome).
+- **Zero-Overflow Guarantee**: Every fixed-width overlay has been standardized to `inset: 0; width: 100%; height: 100%; box-sizing: border-box;`, eliminating `100vw` scrollbar gutters entirely.
+- **Dedicated Mobile Landscape Mode (`@media (max-height: 520px)`)**: Adapts modals, keypads, and control buttons into compact, vertically scrollable cards.
 
 ---
 

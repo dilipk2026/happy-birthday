@@ -5827,8 +5827,8 @@ const romanticReasons = [
         if (msgEl) msg = msgEl.textContent.trim().replace(/^["']|["']$/g, '');
       }
     } else if (mediaWrap.id === 'mainPhotoPreviewBox') {
-      const nameInput = document.getElementById('mainWishAuthor');
-      const msgInput = document.getElementById('mainWishText');
+      const nameInput = document.getElementById('mainWishAuthor') || document.getElementById('wishAuthorInput');
+      const msgInput = document.getElementById('mainWishText') || document.getElementById('wishTextInput');
       if (nameInput && nameInput.value) author = nameInput.value;
       if (msgInput && msgInput.value) msg = msgInput.value;
     }
@@ -5996,8 +5996,8 @@ const romanticReasons = [
             if (msgEl) msg = msgEl.textContent.trim().replace(/^["']|["']$/g, '');
           }
         } else if (photoTarget.id === 'mainPhotoPreviewBox') {
-          const nameInput = document.getElementById('mainWishAuthor');
-          const msgInput = document.getElementById('mainWishText');
+          const nameInput = document.getElementById('mainWishAuthor') || document.getElementById('wishAuthorInput');
+          const msgInput = document.getElementById('mainWishText') || document.getElementById('wishTextInput');
           if (nameInput && nameInput.value) author = nameInput.value;
           if (msgInput && msgInput.value) msg = msgInput.value;
         }

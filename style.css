@@ -14961,8 +14961,7 @@ p, .section-desc, .sub-text, .card-desc, .note-text {
   .modal-dialog,
   .wish-library-card,
   .keepsake-card-wrap,
-  .star-registry-card-wrap,
-  .page-passcode-card {
+  .star-registry-card-wrap {
     width: min(96vw, 440px) !important;
     max-height: 90vh !important;
     padding: 16px 12px !important;
@@ -15029,4 +15028,253 @@ p, .section-desc, .sub-text, .card-desc, .note-text {
   h1 { font-size: 3.8rem !important; }
   h2, .section-title { font-size: 2.8rem !important; }
   p, .section-desc { font-size: 1.2rem !important; }
+}
+
+
+/* =========================================================
+   FINAL PASSCODE MODAL WIDTH / ALIGNMENT FIX
+   Put this AFTER all existing passcode CSS
+   ========================================================= */
+
+.page-passcode-overlay {
+    padding: 20px !important;
+    box-sizing: border-box;
+}
+
+/* Main birthday card */
+.page-passcode-card {
+    width: 100% !important;
+    max-width: 520px !important;
+    min-width: 0 !important;
+
+    margin: auto !important;
+    padding: 30px 28px 26px !important;
+
+    box-sizing: border-box;
+}
+
+/* Header */
+.passcode-header {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+/* Password section */
+.passcode-input-container {
+    width: 100% !important;
+    max-width: 430px !important;
+    margin: 0 auto 20px !important;
+}
+
+/* Actual password box */
+.passcode-input-wrap {
+    width: 100% !important;
+    height: 58px !important;
+
+    box-sizing: border-box;
+
+    border-radius: 16px !important;
+
+    background: rgba(8, 5, 15, 0.65) !important;
+
+    border: 1px solid rgba(255, 210, 60, 0.45) !important;
+
+    box-shadow:
+        0 0 0 1px rgba(255, 210, 60, 0.04),
+        0 8px 25px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Lock icon */
+.passcode-lock-icon {
+    margin-left: 16px !important;
+    color: #ffd21c !important;
+}
+
+/* Password text */
+.passcode-field {
+    min-width: 0 !important;
+    padding: 0 10px !important;
+
+    font-size: 18px !important;
+    letter-spacing: 7px !important;
+
+    text-align: center !important;
+}
+
+/* Eye button */
+.passcode-eye-btn {
+    flex: 0 0 48px !important;
+    width: 48px !important;
+
+    color: rgba(255,255,255,0.55) !important;
+}
+
+.passcode-eye-btn:hover {
+    color: #ffd21c !important;
+}
+
+
+/* =========================================================
+   SLOT INDICATORS
+   ========================================================= */
+
+.passcode-slots-row {
+    width: 100% !important;
+
+    display: flex !important;
+    justify-content: center !important;
+
+    gap: 7px !important;
+
+    margin-top: 12px !important;
+}
+
+.passcode-dot {
+    width: 24px !important;
+    height: 4px !important;
+
+    border-radius: 10px !important;
+
+    background: rgba(255,255,255,0.16) !important;
+}
+
+.passcode-dot.filled {
+    background: #ffd21c !important;
+
+    box-shadow: 0 0 8px rgba(255,210,28,0.55) !important;
+}
+
+
+/* =========================================================
+   KEYPAD
+   ========================================================= */
+
+.passcode-keypad {
+    width: 100% !important;
+    max-width: 320px !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    gap: 8px !important;
+}
+
+.pk-btn {
+    height: 48px !important;
+
+    border-radius: 13px !important;
+
+    background: rgba(255,255,255,0.07) !important;
+
+    border: 1px solid rgba(255,255,255,0.15) !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+
+.pk-btn:hover {
+    background: rgba(255,210,60,0.12) !important;
+    border-color: rgba(255,210,60,0.4) !important;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.passcode-actions {
+    width: 100% !important;
+    max-width: 430px !important;
+
+    margin: 0 auto !important;
+}
+
+.passcode-submit-btn {
+    width: 100% !important;
+    min-height: 54px !important;
+
+    box-sizing: border-box;
+
+    border-radius: 15px !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff416c 0%,
+            #e65aa8 48%,
+            #bd78ed 100%
+        ) !important;
+
+    box-shadow:
+        0 8px 25px rgba(255, 65, 108, 0.22) !important;
+
+    font-size: 14px !important;
+    font-weight: 700 !important;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease !important;
+}
+
+.passcode-submit-btn:hover {
+    transform: translateY(-2px) !important;
+
+    box-shadow:
+        0 12px 30px rgba(255, 65, 108, 0.32) !important;
+
+    filter: brightness(1.06);
+}
+
+.passcode-submit-btn:active {
+    transform: scale(0.98) !important;
+}
+
+
+/* =========================================================
+   HINT
+   ========================================================= */
+
+.passcode-hint-wrapper {
+    margin-top: 14px !important;
+}
+
+.passcode-hint-btn {
+    color: #ffd21c !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .page-passcode-overlay {
+        padding: 12px !important;
+    }
+
+    .page-passcode-card {
+        max-width: 100% !important;
+        padding: 25px 16px 20px !important;
+        border-radius: 22px !important;
+    }
+
+    .passcode-input-container,
+    .passcode-actions {
+        max-width: 100% !important;
+    }
+
+    .passcode-keypad {
+        max-width: 300px !important;
+    }
+
+    .pk-btn {
+        height: 46px !important;
+    }
+
+    .passcode-field {
+        font-size: 17px !important;
+        letter-spacing: 5px !important;
+    }
 }
